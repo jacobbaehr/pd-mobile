@@ -2,37 +2,64 @@
 import * as React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 
-export interface Props {
-  name: string;
-  enthusiasmLevel?: number;
-  onIncrement?: () => void;
-  onDecrement?: () => void;
+interface Props {
+    personName: string;
+    enthusiasmLevel: number;
 }
 
-function Hello({ name, enthusiasmLevel = 1, onIncrement, onDecrement }: Props) {
-  if (enthusiasmLevel <= 0) {
-    throw new Error('You could be a little more enthusiastic. :D');
-  }
-
-  return (
-    <View style={styles.root}>
-        <Text style={styles.greeting}>
-            Hello {name + getExclamationMarks(enthusiasmLevel)}
-        </Text>
-        <View style={styles.buttons}>
-            <View style={styles.button}>
-                <Button title="-" onPress={onDecrement || (() => {})} color='red' />
-            </View>
-            <View style={styles.button}>
-                <Button title="+" onPress={onIncrement || (() => {})} color='blue' />
-            </View>
-        </View>
-    </View>
-  );
+interface State { 
+    enthusiasmOffset: number
 }
 
-export default Hello;
+export class Hello extends React.Component<Props, State> {
 
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            enthusiasmOffset: 0
+        };
+    }
+
+    private handleIncrement = (): void => {
+        this.setState({
+            enthusiasmOffset: this.state.enthusiasmOffset + 1
+        })
+    }
+
+    private handleDecrement = (): void => {
+        this.setState({
+            enthusiasmOffset: this.state.enthusiasmOffset - 1
+        })
+    }
+
+    private getExclamationMarks = (numChars: number): string => {
+        return Array(numChars + 1).join('!');
+    }
+
+    render() {
+        const enthusiasmLevel = this.props.enthusiasmLevel + this.state.enthusiasmOffset;
+
+        if (enthusiasmLevel <= 0) {
+            throw new Error('You could be a little more enthusiastic. :D');
+        }
+
+        return (
+            <View style={styles.root}>
+                <Text style={styles.greeting}>
+                    Hello {this.props.personName + this.getExclamationMarks(enthusiasmLevel)}
+                </Text>
+                <View style={styles.buttons}>
+                    <View style={styles.button}>
+                        <Button title="-" onPress={ this.handleDecrement } color='red' />
+                    </View>
+                    <View style={styles.button}>
+                        <Button title="+" onPress={ this.handleIncrement } color='blue' />
+                    </View>
+                </View>
+            </View>
+        );
+    };
+}
 // styles
 
 const styles = StyleSheet.create({
@@ -56,9 +83,3 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     }
 });
-
-// helpers
-
-function getExclamationMarks(numChars: number) {
-  return Array(numChars + 1).join('!');
-}

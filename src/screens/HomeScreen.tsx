@@ -1,21 +1,29 @@
 import * as React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { Hello } from '../components/Hello';
 
-export class HomeScreen extends React.Component<{}, {}> {
+
+interface HomeScreenState {
+    enthusiasmLevel: number
+}
+
+export class HomeScreen extends React.Component<{}, HomeScreenState> {
+
+    constructor(props: {}) {
+        super(props);
+
+        this.state = {
+            enthusiasmLevel: 1
+        };
+    }
+
     render() {
         console.log('AAAAAAAA&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
         return(
             <View style={styles.container}>
-                <Text style={styles.welcome}>
-                Let's track some tanks!!!!!!
-                </Text>
-                <Text style={styles.instructions}>
-                To get started, quit.
-                </Text>
-                <Text style={styles.instructions}>
-                Press Cmd+R to reload,{'\n'}
-                Cmd+D or shake for dev menu
-                </Text>
+                <Hello
+                    personName={ 'wade' }
+                    enthusiasmLevel={ this.state.enthusiasmLevel }/>
             </View>
         );
     }
@@ -28,14 +36,5 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       backgroundColor: '#F5FCFF',
     },
-    welcome: {
-      fontSize: 20,
-      textAlign: 'center',
-      margin: 10,
-    },
-    instructions: {
-      textAlign: 'center',
-      color: '#333333',
-      marginBottom: 5,
-    },
   });
+  
