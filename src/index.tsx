@@ -6,14 +6,6 @@
 
 import * as React from 'react';
 import { AppRegistry, StyleSheet, Text, View } from 'react-native';
-import { HomeScreen } from './screens/HomeScreen';
+import { App } from './Navigator/App';
 
-export default class TankTracker extends React.Component<object, object> {
-  render() {
-    return (
-      <HomeScreen />
-    );
-  }
-}
-
-AppRegistry.registerComponent('TankTracker', () => TankTracker);
+AppRegistry.registerComponent('TankTracker', () => App);
