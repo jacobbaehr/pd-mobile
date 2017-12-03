@@ -1,21 +1,26 @@
 import * as React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { NavigationScreenProp } from 'react-navigation';
 
-export class DetailsScreen extends React.Component<{}, {}> {
+interface DetailsScreenProps {
+    navigation: NavigationScreenProp<{ params: { name: string }}, {}>
+}
 
-    constructor(props: {}) {
+interface DetailsScreenState {
+    name: string
+}
+
+export class DetailsScreen extends React.Component<DetailsScreenProps, {}> {
+
+    constructor(props: DetailsScreenProps) {
         super(props);
-
-        this.state = {
-            enthusiasmLevel: 1
-        };
     }
 
     render() {
         return(
             <View style={styles.container}>
                 <Text>
-                    This is the details screen
+                    {this.props.navigation.state.params.name}
                 </Text>
             </View>
         );

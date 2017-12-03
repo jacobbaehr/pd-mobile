@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, SectionList } from 'react-native';
 import { Hello } from '../components/Hello';
-import { NavigationAction } from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
+import { SiteListItem } from './SiteListItem';
 
 
 interface HomeScreenProps {
-    navigation: any
+    navigation: NavigationScreenProp<{}, {}>
 }
 
 interface HomeScreenState {
-    enthusiasmLevel: number
+    sites: String[]
 }
 
 export class HomeScreen extends React.Component<HomeScreenProps, HomeScreenState> {
@@ -18,22 +19,29 @@ export class HomeScreen extends React.Component<HomeScreenProps, HomeScreenState
         super(props);
 
         this.state = {
-            enthusiasmLevel: 1
+            sites: ['Site 1',
+                'Site 2',
+                'Wawa',
+                'Buckeyes']
         };
     }
 
-    handleButtonPress = (): void => {
-        this.props.navigation.navigate('Details');
+    handleSiteSelected = (name: string): void => {
+        console.log('name: ' + name);
+        this.props.navigation.navigate('Details', { name });
     }
 
     render() {
-        console.log('AAAAAAAA&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
         return(
             <View style={styles.container}>
-                <Hello
-                    personName={ 'wade' }
-                    enthusiasmLevel={ this.state.enthusiasmLevel }/>
-                    <Button title={'Show Me More'} onPress={this.handleButtonPress} />
+                <SectionList
+                    style={{flex: 1}}
+                    renderItem={({item}) => <SiteListItem name={item} onSiteSelected={this.handleSiteSelected} />}
+                    renderSectionHeader={({section}) => <Text>{section.title}</Text>}
+                    sections={[
+                        {data: this.state.sites, title: 'Section 1'}
+                    ]}
+                />
             </View>
         );
     }
