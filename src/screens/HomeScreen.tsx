@@ -19,10 +19,9 @@ export class HomeScreen extends React.Component<HomeScreenProps, HomeScreenState
         super(props);
 
         this.state = {
-            sites: ['Site 1',
-                'Site 2',
-                'Wawa',
-                'Buckeyes']
+            sites: ['Chlorine',
+                'pH',
+                'Total Alkalinity']
         };
     }
 
@@ -36,10 +35,10 @@ export class HomeScreen extends React.Component<HomeScreenProps, HomeScreenState
             <View style={styles.container}>
                 <SectionList
                     style={{flex: 1}}
-                    renderItem={({item}) => <SiteListItem name={item} onSiteSelected={this.handleSiteSelected} />}
+                    renderItem={({item}) => <SiteListItem name={item} onSiteSelected={this.handleSiteSelected} key={item} />}
                     renderSectionHeader={({section}) => <Text>{section.title}</Text>}
                     sections={[
-                        {data: this.state.sites, title: 'Section 1'}
+                        {data: this.state.sites, title: 'Readings'}
                     ]}
                 />
             </View>
