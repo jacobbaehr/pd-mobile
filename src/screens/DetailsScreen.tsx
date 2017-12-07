@@ -1,9 +1,12 @@
 import * as React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
+import { dispatch } from '../Redux/AppState';
+import { setReading } from '../Redux/Actions';
+import { Reading } from '../Redux/Reducers';
 
 interface DetailsScreenProps {
-    navigation: NavigationScreenProp<{ params: { name: string }}, {}>
+    navigation: NavigationScreenProp<{ params: { reading: Reading }}, {}>
 }
 
 interface DetailsScreenState {
@@ -16,12 +19,17 @@ export class DetailsScreen extends React.Component<DetailsScreenProps, {}> {
         super(props);
     }
 
+    private handleButtonPress = () => {
+        dispatch(setReading(this.props.navigation.state.params.reading.identifier, 4));
+    }
+
     render() {
         return(
             <View style={styles.container}>
                 <Text>
-                    {this.props.navigation.state.params.name}
+                    {this.props.navigation.state.params.reading.name}
                 </Text>
+                <Button title={'Set Reading'} onPress={ this.handleButtonPress }/>
             </View>
         );
     }

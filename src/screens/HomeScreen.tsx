@@ -1,20 +1,29 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Button, SectionList } from 'react-native';
-import { Hello } from '../components/Hello';
 import { NavigationScreenProp } from 'react-navigation';
-import { SiteListItem } from './SiteListItem';
+import { connect } from 'react-redux';
 
+import { Hello } from '../components/Hello';
+import { SiteListItem } from './SiteListItem';
+import { AppState, Reading } from '../Redux/Reducers';
 
 interface HomeScreenProps {
-    navigation: NavigationScreenProp<{}, {}>
+    navigation: NavigationScreenProp<{}, {}>;
+    readings: Reading[];
 }
 
 interface HomeScreenState {
     sites: String[]
 }
 
-export class HomeScreen extends React.Component<HomeScreenProps, HomeScreenState> {
+const mapStateToProps = (state: AppState, ownProps: HomeScreenProps): HomeScreenProps => {
+    return {
+        navigation: ownProps.navigation,
+        readings: state.readings
+    };
+};
 
+class HomeScreenComponent extends React.Component<HomeScreenProps, HomeScreenState> {
     constructor(props: HomeScreenProps) {
         super(props);
 
@@ -45,6 +54,8 @@ export class HomeScreen extends React.Component<HomeScreenProps, HomeScreenState
         );
     }
 }
+
+export const HomeScreen = connect(mapStateToProps)(HomeScreenComponent);
 
 const styles = StyleSheet.create({
     container: {
