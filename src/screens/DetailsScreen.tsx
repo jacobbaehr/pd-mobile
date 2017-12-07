@@ -29,7 +29,7 @@ export class DetailsScreen extends React.Component<DetailsScreenProps, {}> {
                 <Text>
                     {this.props.navigation.state.params.reading.name}
                 </Text>
-                <Button title={'Set Reading'} onPress={ this.handleButtonPress }/>
+                <Button title="Set Reading" onPress={this.handleButtonPress} />
             </View>
         );
     }

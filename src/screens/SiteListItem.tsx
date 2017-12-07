@@ -1,29 +1,31 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Button, SectionList } from 'react-native';
 
+import { Reading } from '../Redux/Reducers';
+
 interface SiteListItemProps {
-    name: string;
+    reading: Reading
 
-    onSiteSelected: (name: string) => void;
-
-    value?: number;
+    onSiteSelected: (reading: Reading) => void;
 }
 
 export class SiteListItem extends React.Component<SiteListItemProps, {}> {
 
     private handleButtonPressed = (): void => {
-        this.props.onSiteSelected(this.props.name);
+        this.props.onSiteSelected(this.props.reading);
     }
 
     render() {
-
-        const readingTaken = (this.props.value !== null && this.props.value !== undefined);
+        const readingTaken = (this.props.reading.value !== null && this.props.reading.value !== undefined);
 
         const buttonColor = readingTaken ? 'blue' : 'red';
 
+        const reading = this.props.reading;
+        const readingName = (reading.name === undefined) ? 'Reading' : reading.name;
+
         return (
             <View style={styles.container}>
-                <Button title={this.props.name} onPress={this.handleButtonPressed} color={ buttonColor } />
+                <Button title={readingName} onPress={this.handleButtonPressed} color={ buttonColor } />
             </View>
         );
     }

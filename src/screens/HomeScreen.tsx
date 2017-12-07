@@ -12,10 +12,6 @@ interface HomeScreenProps {
     readings: Reading[];
 }
 
-interface HomeScreenState {
-    sites: String[]
-}
-
 const mapStateToProps = (state: AppState, ownProps: HomeScreenProps): HomeScreenProps => {
     return {
         navigation: ownProps.navigation,
@@ -23,20 +19,10 @@ const mapStateToProps = (state: AppState, ownProps: HomeScreenProps): HomeScreen
     };
 };
 
-class HomeScreenComponent extends React.Component<HomeScreenProps, HomeScreenState> {
-    constructor(props: HomeScreenProps) {
-        super(props);
+class HomeScreenComponent extends React.Component<HomeScreenProps, {}> {
 
-        this.state = {
-            sites: ['Chlorine',
-                'pH',
-                'Total Alkalinity']
-        };
-    }
-
-    handleSiteSelected = (name: string): void => {
-        console.log('name: ' + name);
-        this.props.navigation.navigate('Details', { name });
+    handleSiteSelected = (reading: Reading): void => {
+        this.props.navigation.navigate('Details', { reading });
     }
 
     render() {
@@ -44,10 +30,10 @@ class HomeScreenComponent extends React.Component<HomeScreenProps, HomeScreenSta
             <View style={styles.container}>
                 <SectionList
                     style={{flex: 1}}
-                    renderItem={({item}) => <SiteListItem name={item} onSiteSelected={this.handleSiteSelected} key={item} />}
+                    renderItem={({item}) => <SiteListItem reading={item} onSiteSelected={this.handleSiteSelected} key={item.identifier} />}
                     renderSectionHeader={({section}) => <Text>{section.title}</Text>}
                     sections={[
-                        {data: this.state.sites, title: 'Readings'}
+                        {data: this.props.readings, title: 'Readings'}
                     ]}
                 />
             </View>

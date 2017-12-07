@@ -10,6 +10,6 @@ const initialAppState = {
     ]
 };
 
-const store = createStore(readingsReducer, initialAppState);
+export const store = createStore(readingsReducer, initialAppState);
 
 export const dispatch = store.dispatch;

@@ -14,7 +14,9 @@ export class Reading {
     value?: number
 
     constructor(name: string, identifier: string, value?: number) {
-        // no-op
+        this.name = name;
+        this.identifier = identifier;
+        this.value = value;
     }
 };
 
