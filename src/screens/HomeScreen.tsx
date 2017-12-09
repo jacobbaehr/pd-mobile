@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 
 import { Hello } from '../components/Hello';
 import { SiteListItem } from './SiteListItem';
-import { AppState, Reading } from '../Redux/Reducers';
+import { AppState } from '../Redux/Reducers';
+import { Reading } from '../Models/Reading';
 
 interface HomeScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
@@ -30,11 +31,12 @@ class HomeScreenComponent extends React.Component<HomeScreenProps, {}> {
             <View style={styles.container}>
                 <SectionList
                     style={{flex: 1}}
-                    renderItem={({item}) => <SiteListItem reading={item} onSiteSelected={this.handleSiteSelected} key={item.identifier} />}
+                    renderItem={({item}) => <SiteListItem reading={item} onSiteSelected={this.handleSiteSelected} />}
                     renderSectionHeader={({section}) => <Text>{section.title}</Text>}
                     sections={[
                         {data: this.props.readings, title: 'Readings'}
                     ]}
+                    keyExtractor={item => (item as Reading).identifier}
                 />
             </View>
         );

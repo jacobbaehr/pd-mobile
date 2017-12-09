@@ -1,24 +1,7 @@
 import { AnyAction } from 'redux';
 
 import { SetReadingAction } from './Actions';
-
-// A class that represents an individual reading
-export class Reading {
-    // The user-visible name of the reading
-    name: string;
-    
-    // A unique string used to identify the reading programatically
-    identifier: string;
-    
-    // The value of the reading (null or undefined if reading not taken)
-    value?: number
-
-    constructor(name: string, identifier: string, value?: number) {
-        this.name = name;
-        this.identifier = identifier;
-        this.value = value;
-    }
-};
+import { Reading } from '../Models/Reading';
 
 // Describes the shape of the application redux state.
 export interface AppState {

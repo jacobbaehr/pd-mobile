@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Button, SectionList } from 'react-native';
 
-import { Reading } from '../Redux/Reducers';
+import { Reading } from '../Models/Reading';
 
 interface SiteListItemProps {
     reading: Reading
@@ -23,9 +23,11 @@ export class SiteListItem extends React.Component<SiteListItemProps, {}> {
         const reading = this.props.reading;
         const readingName = (reading.name === undefined) ? 'Reading' : reading.name;
 
+        const readingNameAndValue = `${readingName}: ${reading.getValueAsString()}`
+
         return (
             <View style={styles.container}>
-                <Button title={readingName} onPress={this.handleButtonPressed} color={ buttonColor } />
+                <Button title={readingNameAndValue} onPress={this.handleButtonPressed} color={ buttonColor } />
             </View>
         );
     }

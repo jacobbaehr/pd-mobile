@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { dispatch } from '../Redux/AppState';
 import { setReading } from '../Redux/Actions';
-import { Reading } from '../Redux/Reducers';
+import { Reading } from '../Models/Reading';
 
 interface DetailsScreenProps {
     navigation: NavigationScreenProp<{ params: { reading: Reading }}, {}>;

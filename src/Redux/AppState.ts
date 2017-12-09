@@ -1,6 +1,7 @@
 import { createStore } from 'redux';
 
-import { readingsReducer, Reading } from './Reducers';
+import { readingsReducer } from './Reducers';
+import { Reading } from '../Models/Reading';
 
 const initialAppState = {
     readings: [
