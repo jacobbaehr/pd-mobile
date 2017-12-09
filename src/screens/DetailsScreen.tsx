@@ -6,39 +6,47 @@ import { setReading } from '../Redux/Actions';
 import { Reading } from '../Redux/Reducers';
 
 interface DetailsScreenProps {
-    navigation: NavigationScreenProp<{ params: { reading: Reading }}, {}>
+    navigation: NavigationScreenProp<{ params: { reading: Reading }}, {}>;
 }
 
 interface DetailsScreenState {
-    isInputFocused: boolean
+    isInputFocused: boolean;
+    value?: number;
 }
 
 export class DetailsScreen extends React.Component<DetailsScreenProps, DetailsScreenState> {
 
+    reading: Reading;
+
     constructor(props: DetailsScreenProps) {
         super(props);
-
+        
+        this.reading = this.props.navigation.state.params.reading;
         this.state = {
-            isInputFocused: true
+            isInputFocused: true,
+            value: this.reading.value
         }
     }
 
     private handleButtonPress = () => {
-        dispatch(setReading(this.props.navigation.state.params.reading.identifier, 4));
+        dispatch(setReading(this.reading.identifier, this.state.value));
+        this.props.navigation.goBack();
     }
 
-    private handleTextChanged = () => {
-        console.log('yo');
+    private handleTextChanged = (text: string) => {
+        this.setState({value: Number(text)});
     }
 
     render() {
+        const defaultValueString = (this.state.value === undefined) ? '' : `${this.state.value}`;
+
         return(
             <View style={styles.container}>
                 <Text style={styles.readingNameLabel}>
-                    {this.props.navigation.state.params.reading.name}
+                    {this.reading.name}
                 </Text>
                 <TextInput style={styles.textInput} onChangeText={this.handleTextChanged} keyboardType={'numeric'}
-                    autoFocus={this.state.isInputFocused} />
+                    autoFocus={true} defaultValue={defaultValueString} />
                 <Button title="Set Reading" onPress={this.handleButtonPress} />
             </View>
         );

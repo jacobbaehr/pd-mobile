@@ -4,11 +4,11 @@ export const SET_READING = 'SET_READING';
 
 export interface SetReadingAction extends AnyAction {
     type: string;
-    value: number;
+    value?: number;
     identifier: string;
 }
 
-export const setReading = (readingID: string, value: number): SetReadingAction => {
+export const setReading = (readingID: string, value?: number): SetReadingAction => {
     return {
         type: SET_READING,
         value: value,
@@ -16,4 +16,3 @@ export const setReading = (readingID: string, value: number): SetReadingAction =
     };
 }
 
-const setReadingAction = setReading('chlorine', 4.3);
