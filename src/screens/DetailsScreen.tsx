@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { dispatch } from '../Redux/AppState';
 import { setReading } from '../Redux/Actions';
@@ -10,25 +10,35 @@ interface DetailsScreenProps {
 }
 
 interface DetailsScreenState {
-    name: string
+    isInputFocused: boolean
 }
 
-export class DetailsScreen extends React.Component<DetailsScreenProps, {}> {
+export class DetailsScreen extends React.Component<DetailsScreenProps, DetailsScreenState> {
 
     constructor(props: DetailsScreenProps) {
         super(props);
+
+        this.state = {
+            isInputFocused: true
+        }
     }
 
     private handleButtonPress = () => {
         dispatch(setReading(this.props.navigation.state.params.reading.identifier, 4));
     }
 
+    private handleTextChanged = () => {
+        console.log('yo');
+    }
+
     render() {
         return(
             <View style={styles.container}>
-                <Text>
+                <Text style={styles.readingNameLabel}>
                     {this.props.navigation.state.params.reading.name}
                 </Text>
+                <TextInput style={styles.textInput} onChangeText={this.handleTextChanged} keyboardType={'numeric'}
+                    autoFocus={this.state.isInputFocused} />
                 <Button title="Set Reading" onPress={this.handleButtonPress} />
             </View>
         );
@@ -38,9 +48,19 @@ export class DetailsScreen extends React.Component<DetailsScreenProps, {}> {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#F5FCFF',
+      alignItems: 'stretch',
+      backgroundColor: '#F5FCFF'
     },
+    readingNameLabel: {
+        margin: 15,
+        justifyContent: 'center'
+    },
+    textInput: {
+        height: 40,
+        borderWidth: 1,
+        borderColor: 'black',
+        margin: 15,
+        textAlign: 'center'
+    }
   });
   

@@ -55,3 +55,7 @@ fastlane/screenshots
 ./lib/**
 ./lib/*
 ./lib
+lib
+lib/
+lib/*
+lib/**
