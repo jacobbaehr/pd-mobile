@@ -10,7 +10,6 @@ interface DetailsScreenProps {
 }
 
 interface DetailsScreenState {
-    isInputFocused: boolean;
     value?: number;
 }
 
@@ -23,7 +22,6 @@ export class DetailsScreen extends React.Component<DetailsScreenProps, DetailsSc
         
         this.reading = this.props.navigation.state.params.reading;
         this.state = {
-            isInputFocused: true,
             value: this.reading.value
         }
     }

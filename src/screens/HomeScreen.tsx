@@ -31,6 +31,10 @@ class HomeScreenComponent extends React.Component<HomeScreenProps, {}> {
     }
 
     render() {
+        const isCalculateButtonActive = this.props.readings.filter(reading => {
+                return reading.value !== null && reading.value !== undefined
+            }).length > 0;
+
         return(
             <View style={styles.container}>
                 <SectionList
@@ -46,6 +50,7 @@ class HomeScreenComponent extends React.Component<HomeScreenProps, {}> {
                     styles={styles.button}
                     onPress={this.handleCalculatePressed}
                     title="Calculate"
+                    disabled={!isCalculateButtonActive}
                 />
             </View>
         );

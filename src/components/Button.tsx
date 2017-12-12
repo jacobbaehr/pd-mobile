@@ -6,7 +6,9 @@ interface ButtonProps {
 
     onPress: () => void;
 
-    styles: any
+    styles: any;
+
+    disabled?: boolean;
 }
 
 export class Button extends React.Component<ButtonProps, {}> {
@@ -20,7 +22,8 @@ export class Button extends React.Component<ButtonProps, {}> {
         return (
             <TouchableHighlight
                 style={containerStyles}
-                onPress={this.handleButtonPress}>
+                onPress={this.handleButtonPress}
+                disabled={this.props.disabled}>
                 <Text style={styles.text}>
                     { this.props.title }
                 </Text>
