@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Button, SectionList } from 'react-native';
+import { View, Text, StyleSheet, SectionList } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import { Hello } from '../components/Hello';
+import { Button } from '../components/Button';
 import { SiteListItem } from './SiteListItem';
 import { AppState } from '../Redux/Reducers';
 import { Reading } from '../Models/Reading';
@@ -26,6 +26,10 @@ class HomeScreenComponent extends React.Component<HomeScreenProps, {}> {
         this.props.navigation.navigate('Details', { reading });
     }
 
+    handleCalculatePressed = (): void => {
+        this.props.navigation.navigate('Results');
+    }
+
     render() {
         return(
             <View style={styles.container}>
@@ -38,6 +42,11 @@ class HomeScreenComponent extends React.Component<HomeScreenProps, {}> {
                     ]}
                     keyExtractor={item => (item as Reading).identifier}
                 />
+                <Button
+                    styles={styles.button}
+                    onPress={this.handleCalculatePressed}
+                    title="Calculate"
+                />
             </View>
         );
     }
@@ -47,10 +56,16 @@ export const HomeScreen = connect(mapStateToProps)(HomeScreenComponent);
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#F5FCFF',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF',
     },
-  });
+    button: {
+        alignSelf: 'stretch',
+        backgroundColor: 'purple',
+        height: 45,
+        margin: 15
+    }
+});
   
