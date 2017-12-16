@@ -13,7 +13,8 @@ const initialAppState = {
         new Reading('Cyanuric Acid', 'cyanuric_acid'),
         new Reading('Copper', 'copper'),
         new Reading('Total Dissolved Solids', 'total_dissolved_solids'),
-    ]
+    ],
+    chlorineFormula: '4 - free_chlorine'
 };
 
 export const store = createStore(readingsReducer, initialAppState);

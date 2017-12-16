@@ -13,6 +13,8 @@ interface ResultsScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
 
     readings: Reading[];
+
+    chlorineFormula: string;
 }
 
 interface ResultsScreenState { 
@@ -25,7 +27,8 @@ const mapStateToProps = (state: AppState, ownProps: ResultsScreenProps): Results
 
     return {
         navigation: ownProps.navigation,
-        readings: filteredReadings
+        readings: filteredReadings,
+        chlorineFormula: state.chlorineFormula
     };
 };
 
@@ -33,7 +36,7 @@ class ResultsScreenComponent extends React.Component<ResultsScreenProps, Results
     constructor(props: ResultsScreenProps) {
         super(props);
 
-        const treatments = CalculationService.calculateTreatments(this.props.readings);
+        const treatments = CalculationService.calculateTreatments(this.props.readings, this.props.chlorineFormula);
         this.state = { treatments };
     }
 

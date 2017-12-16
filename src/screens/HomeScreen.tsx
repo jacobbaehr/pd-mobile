@@ -30,6 +30,10 @@ class HomeScreenComponent extends React.Component<HomeScreenProps, {}> {
         this.props.navigation.navigate('Results');
     }
 
+    handleSettingsPressed = (): void => {
+        this.props.navigation.navigate('Settings');
+    }
+
     render() {
         const isCalculateButtonActive = this.props.readings.filter(reading => {
                 return reading.value !== null && reading.value !== undefined
@@ -52,6 +56,11 @@ class HomeScreenComponent extends React.Component<HomeScreenProps, {}> {
                     title="Calculate"
                     disabled={!isCalculateButtonActive}
                 />
+                <Button
+                    styles={styles.button}
+                    onPress={this.handleSettingsPressed}
+                    title="Edit Chlorine Formula"
+                />
             </View>
         );
     }
@@ -68,7 +77,7 @@ const styles = StyleSheet.create({
     },
     button: {
         alignSelf: 'stretch',
-        backgroundColor: 'purple',
+        backgroundColor: 'blue',
         height: 45,
         margin: 15
     }
