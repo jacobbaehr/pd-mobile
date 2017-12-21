@@ -7,30 +7,61 @@ import { setReading } from '../Redux/Actions';
 import { Pool } from '../Models/Pool';
 
 interface PoolScreenProps {
-    navigation: NavigationScreenProp<{ params: { pool: Pool }}, void>; 
+    navigation: NavigationScreenProp<{ params: { pool: Pool }}, void>;
 }
 
+interface PoolScreenState { 
+    volume: number;
 
+    name: string;
+}
 
-export class PoolScreen extends React.Component<PoolScreenProps>{
-    pool: Pool;
-    private handleTextChanged = (text: string) => {
-        this.setState({value: Number(text)});
+export class PoolScreen extends React.Component<PoolScreenProps, PoolScreenState> {
+
+    constructor(props: PoolScreenProps) {
+        super(props);
+
+        this.state = {
+            volume: 0,
+            name: ''
+        };
     }
 
+    /// Whenever user types, update our state with the new value for volume
+    private handleVolumeTextChanged = (text: string) => {
+        this.setState({volume: Number(text)});
+    }
+
+    /// Whenever user types, update our state with the new value for volume
+    private handleNameTextChanged = (text: string) => {
+        this.setState({name: text});
+    }
+
+    /// Whenever user presses "save", save a new pool with the specified volume.
     private handleButtonPressed = () => {
-        //**TODO** - setup dispatch to store pool size in redux
-        // dispatch(setReading(this.reading.identifier, this.state.value));
+        // Get the volume from our state
+        const volume = this.state.volume;
+
+        // Create a new pool with that volume
+        const pool = new Pool(volume);
+
+        // Save that pool
+        //WTFL?>?>??><":OL?"
+        
+        // On success, navigate back to previous screen.
         this.props.navigation.goBack();
     }
     render(){
         return(
             <View style={styles.container}>
-                <Text style={styles.readingNameLabel}>
-                </Text>
-                <TextInput style={styles.textInput} onChangeText={this.handleTextChanged} keyboardType={'numeric'}
+                <Text style={styles.poolNameLabel}>Pool Name</Text>
+                <TextInput style={styles.textInput} onChangeText={this.handleNameTextChanged} keyboardType={'default'}
                     autoFocus={true} />
-                <Button title="Set Pool Size" onPress={this.handleButtonPressed} styles={styles.button}/>
+                <Text style={styles.poolNameLabel}>Pool Volume</Text>
+                <TextInput style={styles.textInput} onChangeText={this.handleVolumeTextChanged} keyboardType={'numeric'}
+                    autoFocus={true} />
+                
+                <Button title="Save Pool" onPress={this.handleButtonPressed} styles={styles.button}/>
             </View>
         );
     }
@@ -41,7 +72,7 @@ export class PoolScreen extends React.Component<PoolScreenProps>{
           alignItems: 'stretch',
           backgroundColor: '#F5FCFF'
         },
-        readingNameLabel: {
+        poolNameLabel: {
             margin: 15,
             justifyContent: 'center'
         },
