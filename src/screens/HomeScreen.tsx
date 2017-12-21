@@ -33,6 +33,10 @@ class HomeScreenComponent extends React.Component<HomeScreenProps, {}> {
     handleSettingsPressed = (): void => {
         this.props.navigation.navigate('Settings');
     }
+    
+    handlePoolSelectPressed = (): void => {
+        this.props.navigation.navigate('Pool');
+    }
 
     render() {
         const isCalculateButtonActive = this.props.readings.filter(reading => {
@@ -49,6 +53,11 @@ class HomeScreenComponent extends React.Component<HomeScreenProps, {}> {
                         {data: this.props.readings, title: 'Readings'}
                     ]}
                     keyExtractor={item => (item as Reading).identifier}
+                />
+                <Button
+                    styles={styles.button}
+                    onPress={this.handlePoolSelectPressed}
+                    title="Pool Size"
                 />
                 <Button
                     styles={styles.button}
