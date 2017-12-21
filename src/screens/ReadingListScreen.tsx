@@ -8,19 +8,19 @@ import { SiteListItem } from './SiteListItem';
 import { AppState } from '../Redux/Reducers';
 import { Reading } from '../Models/Reading';
 
-interface HomeScreenProps {
+interface ReadingListScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
     readings: Reading[];
 }
 
-const mapStateToProps = (state: AppState, ownProps: HomeScreenProps): HomeScreenProps => {
+const mapStateToProps = (state: AppState, ownProps: ReadingListScreenProps): ReadingListScreenProps => {
     return {
         navigation: ownProps.navigation,
         readings: state.readings
     };
 };
 
-class HomeScreenComponent extends React.Component<HomeScreenProps, {}> {
+class ReadingListComponent extends React.Component<ReadingListScreenProps, {}> {
 
     handleSiteSelected = (reading: Reading): void => {
         this.props.navigation.navigate('Details', { reading });
@@ -75,7 +75,7 @@ class HomeScreenComponent extends React.Component<HomeScreenProps, {}> {
     }
 }
 
-export const HomeScreen = connect(mapStateToProps)(HomeScreenComponent);
+export const ReadingListScreen = connect(mapStateToProps)(ReadingListComponent);
 
 const styles = StyleSheet.create({
     container: {
