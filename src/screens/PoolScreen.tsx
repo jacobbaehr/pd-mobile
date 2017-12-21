@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, SectionList, TextInput } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { Button } from '../components/Button'
 import { dispatch } from '../Redux/AppState';
-import { setReading } from '../Redux/Actions';
+import { saveNewPool } from '../Redux/Actions';
 import { Pool } from '../Models/Pool';
 
 interface PoolScreenProps {
@@ -41,12 +41,15 @@ export class PoolScreen extends React.Component<PoolScreenProps, PoolScreenState
     private handleButtonPressed = () => {
         // Get the volume from our state
         const volume = this.state.volume;
+        const name = this.state.name;
 
+        console.log('VOLUME: ');
+        console.log(volume);
         // Create a new pool with that volume
-        const pool = new Pool(volume);
+        const pool = new Pool(volume, name);
 
         // Save that pool
-        //WTFL?>?>??><":OL?"
+        dispatch(saveNewPool(pool));
         
         // On success, navigate back to previous screen.
         this.props.navigation.goBack();

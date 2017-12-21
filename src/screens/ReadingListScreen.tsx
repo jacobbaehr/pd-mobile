@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { Button } from '../components/Button';
 import { SiteListItem } from './SiteListItem';
-import { AppState } from '../Redux/Reducers';
+import { AppState } from '../Redux/AppState';
 import { Reading } from '../Models/Reading';
 
 interface ReadingListScreenProps {

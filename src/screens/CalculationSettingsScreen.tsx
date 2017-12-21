@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { dispatch } from '../Redux/AppState';
 import { setFormula } from '../Redux/Actions';
 import { Reading } from '../Models/Reading';
-import { AppState } from '../Redux/Reducers';
+import { AppState } from '../Redux/AppState';
 import { Button } from '../components/Button';
 
 

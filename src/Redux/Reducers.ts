@@ -1,16 +1,9 @@
 import { AnyAction } from 'redux';
 
-import { SetReadingAction, SetFormulaAction, SET_FORMULA, SET_READING } from './Actions';
+import { SetReadingAction, SetFormulaAction, SavePoolAction, SET_FORMULA, SET_READING, SAVE_POOL } from './Actions';
+import { AppState } from './AppState';
 import { Reading } from '../Models/Reading';
 
-// Describes the shape of the application redux state.
-export interface AppState {
-    // All of the readings that a user has taken
-    readings: Reading[],
-
-    // TODO: make this an array of all treatment calculations
-    chlorineFormula: string
-};
 
 // Reducer that modifies the app state in response to a SetReadingAction.
 export const readingsReducer = (previousState: AppState, action: AnyAction): AppState => {
@@ -28,15 +21,21 @@ export const readingsReducer = (previousState: AppState, action: AnyAction): App
                 }
             });
             return {
-                readings: newReadings,
-                chlorineFormula: previousState.chlorineFormula
+                ...previousState,
+                readings: newReadings
             };
         case SET_FORMULA:
             const setFormulaAction = action as SetFormulaAction;
             return {
-                readings: previousState.readings,
+                ...previousState,
                 chlorineFormula: action.value
             };
+        case SAVE_POOL:
+            const savePoolAction = action as SavePoolAction;
+            return {
+                ...previousState,
+                poolsLastUpdated: previousState.poolsLastUpdated + 1
+            }
         default:
             return previousState;
     }

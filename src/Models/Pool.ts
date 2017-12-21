@@ -1,15 +1,31 @@
 /**
  * Represents a swimming pool (duh).
  */
-export class Pool{
-
+export class Pool {
     // The pool's volume, in gallons.
-    volume: number;
+    readonly poolVolume: number;
 
     // The pool's user-visible name
-    name: string
+    readonly poolName: string;
 
-    constructor(volume:number){
-        this.volume = volume;
+    // An ID that uniquely identifies this pool
+    readonly id: string;
+
+    // For Realm purposes
+    static schema = {
+        name: 'Pool',
+        primaryKey: 'objectId',
+        properties: {
+            poolVolume: 'double?',
+            poolName: 'string?',
+            objectId: 'string?'
+        }
+    };
+
+    constructor(volume: number, name: string, id: string = '-1') {
+        this.poolVolume = volume;
+        this.poolName = name;
+        // id will get reset later by the database wrapper
+        this.id = id;
     };
 }

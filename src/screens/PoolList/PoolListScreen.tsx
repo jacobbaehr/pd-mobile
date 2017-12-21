@@ -3,76 +3,94 @@ import { View, Text, StyleSheet, SectionList } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import { Button } from '../components/Button';
-import { SiteListItem } from './SiteListItem';
-import { AppState } from '../Redux/Reducers';
-import { Reading } from '../Models/Reading';
-import { Pool } from '../Models/Pool';
+import { Button } from '../../components/Button';
+import { PoolListItem } from './PoolListItem';
+import { AppState } from '../../Redux/AppState';
+import { Database } from '../../Models/Database';
+import { Reading } from '../../Models/Reading';
+import { Pool } from '../../Models/Pool';
 
 interface PoolListScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
+
+    // The id of the selected pool, if any
+    selectedPoolId?: string;
+
+    // This is a flag that just changes whenever we save a new pool.
+    poolsLastUpdated: number;
+}
+
+const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolListScreenProps => {
+    return {
+        navigation: ownProps.navigation,
+        selectedPoolId: state.selectedPoolId,
+        poolsLastUpdated: state.poolsLastUpdated
+    }
 }
 
 interface PoolListScreenState {
-    
+    initialLoadFinished: boolean;
 }
 
-class HomeScreenComponent extends React.Component<PoolListScreenProps, {}> {
+class PoolListScreenComponent extends React.Component<PoolListScreenProps, {}> {
 
-    handleSiteSelected = (reading: Reading): void => {
-        this.props.navigation.navigate('Details', { reading });
+    pools: Realm.Results<Pool>;
+
+    constructor(props: PoolListScreenProps) {
+        super(props);
+
+        this.state = {
+            initialLoadFinished: false
+        };
     }
 
-    handleCalculatePressed = (): void => {
-        this.props.navigation.navigate('Results');
+    componentDidMount() {
+        // Fetch pools from persistent storage
+        Database.prepare().then(() => {
+            this.pools = Database.loadPools();
+            this.setState({
+                initialLoadFinished: true
+            });
+        })
+        .catch((e) => {
+            console.error(e);
+        });
     }
 
-    handleSettingsPressed = (): void => {
-        this.props.navigation.navigate('Settings');
+    handlePoolSelected = (pool: Pool): void => {
+        // TODO: set selected pool in Redux
+        this.props.navigation.navigate('ReadingList');
     }
-    
-    handlePoolSelectPressed = (): void => {
+
+    handleAddPoolPressed = (): void => {
         this.props.navigation.navigate('Pool');
     }
 
     render() {
-        const isCalculateButtonActive = this.props.readings.filter(reading => {
-                return reading.value !== null && reading.value !== undefined
-            }).length > 0;
-
+        const pools = (this.pools === undefined) ? [] : this.pools.map(p => { return new Pool(p.poolVolume, p.poolName, p.id); });
+        // const pools = [];
         return(
             <View style={styles.container}>
                 <SectionList
                     style={{flex: 1}}
-                    renderItem={({item}) => <SiteListItem reading={item} onSiteSelected={this.handleSiteSelected} />}
+                    renderItem={({item}) => <PoolListItem pool={item} onPoolSelected={this.handlePoolSelected} />}
                     renderSectionHeader={({section}) => <Text>{section.title}</Text>}
                     sections={[
-                        {data: this.props.readings, title: 'Readings'}
+                        {data: pools, title: 'Pools'}
                     ]}
-                    keyExtractor={item => (item as Reading).identifier}
+                    keyExtractor={item => (item as Pool).id}
                 />
                 <Button
                     styles={styles.button}
-                    onPress={this.handlePoolSelectPressed}
-                    title="Pool Size"
-                />
-                <Button
-                    styles={styles.button}
-                    onPress={this.handleCalculatePressed}
-                    title="Calculate"
-                    disabled={!isCalculateButtonActive}
-                />
-                <Button
-                    styles={styles.button}
-                    onPress={this.handleSettingsPressed}
-                    title="Edit Chlorine Formula"
+                    onPress={this.handleAddPoolPressed}
+                    title="Add New Pool"
                 />
             </View>
         );
     }
 }
 
-export const HomeScreen = connect(mapStateToProps)(HomeScreenComponent);
+export const PoolListScreen = connect(mapStateToProps)(PoolListScreenComponent);
 
 const styles = StyleSheet.create({
     container: {
@@ -88,4 +106,3 @@ const styles = StyleSheet.create({
         margin: 15
     }
 });
-  

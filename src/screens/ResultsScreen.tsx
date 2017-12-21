@@ -4,7 +4,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
 import { dispatch } from '../Redux/AppState';
 import { setReading } from '../Redux/Actions';
-import { AppState } from '../Redux/Reducers';
+import { AppState } from '../Redux/AppState';
 import { Reading } from '../Models/Reading';
 import { Treatment } from '../Models/Treatment';
 import { CalculationService } from '../Services/CalculationService';
