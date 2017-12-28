@@ -67,8 +67,7 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, {}> {
     }
 
     render() {
-        const pools = (this.pools === undefined) ? [] : this.pools.map(p => { return new Pool(p.poolVolume, p.poolName, p.id); });
-        // const pools = [];
+        const pools = (this.pools === undefined) ? [] : this.pools.map(p => p);
         return(
             <View style={styles.container}>
                 <SectionList
@@ -78,7 +77,7 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, {}> {
                     sections={[
                         {data: pools, title: 'Pools'}
                     ]}
-                    keyExtractor={item => (item as Pool).id}
+                    keyExtractor={item => (item as Pool).objectId}
                 />
                 <Button
                     styles={styles.button}

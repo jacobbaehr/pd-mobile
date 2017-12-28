@@ -46,7 +46,7 @@ export class PoolScreen extends React.Component<PoolScreenProps, PoolScreenState
         console.log('VOLUME: ');
         console.log(volume);
         // Create a new pool with that volume
-        const pool = new Pool(volume, name);
+        const pool = Pool.make(name, volume);
 
         // Save that pool
         dispatch(saveNewPool(pool));

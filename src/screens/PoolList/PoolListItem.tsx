@@ -20,7 +20,7 @@ export class PoolListItem extends React.Component<PoolListItemProps, {}> {
 
         return (
             <View style={styles.container}>
-                <Button title={pool.poolName} onPress={this.handleButtonPressed} color={ 'orange' } />
+                <Button title={pool.name} onPress={this.handleButtonPressed} color={ 'orange' } />
             </View>
         );
     }

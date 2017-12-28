@@ -3,29 +3,29 @@
  */
 export class Pool {
     // The pool's volume, in gallons.
-    readonly poolVolume: number;
+    volume: number;
 
     // The pool's user-visible name
-    readonly poolName: string;
+    name: string;
 
     // An ID that uniquely identifies this pool
-    readonly id: string;
+    objectId: string;
 
     // For Realm purposes
     static schema = {
         name: 'Pool',
         primaryKey: 'objectId',
         properties: {
-            poolVolume: 'double?',
-            poolName: 'string?',
-            objectId: 'string?'
+            volume: 'double',
+            name: 'string',
+            objectId: 'string'
         }
     };
 
-    constructor(volume: number, name: string, id: string = '-1') {
-        this.poolVolume = volume;
-        this.poolName = name;
-        // id will get reset later by the database wrapper
-        this.id = id;
-    };
+    static make(name: string, volume: number): Pool {
+        let pool = new Pool();
+        pool.name = name;
+        pool.volume = volume;
+        return pool;
+    }
 }

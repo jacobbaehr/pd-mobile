@@ -11,7 +11,6 @@ export class Database {
         }
         await Realm.open({schema: [Pool]}).then((value: Realm) => {
             Database.realm = value;
-            console.log('got it!~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
             return Promise.resolve();
         }).catch((e: any) => {
             console.log('error openening databse');
@@ -30,23 +29,20 @@ export class Database {
 
     static saveNewPool = (pool: Pool) => {
         const realm = Database.realm;
-        console.log('saving!!!');
-        console.log(pool.poolVolume);
-        const newPool = new Pool(pool.poolVolume, pool.poolName, getObjectId());
-        const poolMap = {
-            poolVolume: newPool.poolVolume,
-            poolName: newPool.poolName,
-            objectId: newPool.id
-        }
+        pool.objectId = getObjectId();
         try {
             realm.write(() => {
-                realm.create(Pool.schema.name, poolMap);
+                realm.create(Pool.schema.name, {
+                    volume: pool.volume,
+                    name: pool.name,
+                    objectId: pool.objectId
+                });
             });
         } catch (e) {
             console.log(e);
             console.error('couldnt save it');
         }
-        return pool.id;
+        return pool.objectId;
     }
 }
 
