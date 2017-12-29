@@ -7,7 +7,18 @@ import { PoolScreen } from '../screens/PoolScreen';
 import { PoolListScreen } from '../screens/PoolList/PoolListScreen';
 
 export const App = StackNavigator({
-  PoolList: { screen: PoolListScreen },
+  PoolList: { 
+    screen: PoolListScreen,
+    navigationOptions: {
+      headerTintColor: 'lightgrey',
+      headerStyle: { 
+        backgroundColor: '#060D16', 
+        shadowOpacity: 0,
+        elevation: 0,
+        shadowColor: 'transparent'
+      }
+    }
+  },
   ReadingList: { screen: ReadingListScreen },
   Details: { screen: DetailsScreen },
   Results: { screen: ResultsScreen },
