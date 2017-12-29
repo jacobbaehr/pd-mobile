@@ -44,6 +44,12 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, {}> {
         };
     }
 
+    static navigationOptions = (navigation: any) => {
+        return {
+            title: 'Select a pool'
+        }
+    }
+
     componentDidMount() {
         // Fetch pools from persistent storage
         Database.prepare().then(() => {
@@ -73,7 +79,7 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, {}> {
                 <SectionList
                     style={{flex: 1}}
                     renderItem={({item}) => <PoolListItem pool={item} onPoolSelected={this.handlePoolSelected} />}
-                    renderSectionHeader={({section}) => <Text>{section.title}</Text>}
+                    renderSectionHeader={({section}) => null }
                     sections={[
                         {data: pools, title: 'Pools'}
                     ]}
