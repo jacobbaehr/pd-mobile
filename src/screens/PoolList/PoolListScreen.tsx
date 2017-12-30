@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
+        textAlign: 'justify',
         backgroundColor: '#060D16', 
     },
     button: {
@@ -109,5 +109,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'blue',
         height: 45,
         margin: 15
+    },
+    textFormat: {
+
     }
 });
