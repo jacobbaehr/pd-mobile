@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Button, SectionList } from 'react-native';
+import { View, Text, StyleSheet, Button, SectionList, TouchableHighlight } from 'react-native';
 
 import { Pool } from '../../Models/Pool';
 
@@ -20,15 +20,14 @@ export class PoolListItem extends React.Component<PoolListItemProps, {}> {
 
         return (
             <View style={styles.container}>
-                <View style={styles.content}>
-                    <Button 
-                        title={ `${pool.name}: \n ${pool.volume} gallons`}  
-                        //Should we change this to our Button Component rather than using React's button?
-                        //If not, what is the best way to split name and vol?
-                        onPress={this.handleButtonPressed} 
-                        color={ 'white' } 
-                    />
-                </View>
+                <TouchableHighlight
+                    style={ styles.content }
+                    onPress={this.handleButtonPressed}>
+                    <View style={{flex: 1}}>
+                        <Text style={styles.poolNameText}>{ pool.name }</Text>
+                        <Text style={styles.poolVolumeText}>{ pool.volume } gallons</Text>
+                    </View>
+                </TouchableHighlight>
             </View>
         );
     }
@@ -51,7 +50,10 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         padding: 2
     },
-    listText: {
-        
+    poolNameText: {
+        color: 'white'
+    },
+    poolVolumeText: {
+        color: 'white'
     }
 });

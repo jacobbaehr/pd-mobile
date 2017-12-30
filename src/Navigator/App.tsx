@@ -7,7 +7,7 @@ import { PoolScreen } from '../screens/PoolScreen';
 import { PoolListScreen } from '../screens/PoolList/PoolListScreen';
 
 export const App = StackNavigator({
-  PoolList: { 
+  PoolList: {
     screen: PoolListScreen,
     navigationOptions: {
       headerTintColor: 'lightgrey',
@@ -15,8 +15,9 @@ export const App = StackNavigator({
         backgroundColor: '#060D16',
         shadowOpacity: 0,
         elevation: 0,
-        shadowColor: 'transparent'
-      }
+        shadowColor: 'transparent',
+        statusBarStyle: 'light-content'
+      },
     }
   },
   ReadingList: { screen: ReadingListScreen },
