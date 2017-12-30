@@ -21,7 +21,12 @@ export class PoolListItem extends React.Component<PoolListItemProps, {}> {
         return (
             <View style={styles.container}>
                 <View style={styles.content}>
-                    <Button title={`${pool.name}: ${pool.volume}`} onPress={this.handleButtonPressed} color={ 'orange' } />
+                    <Button title={
+                        `${pool.name}: ${pool.volume}`
+                        } 
+                        onPress={this.handleButtonPressed} 
+                        color={ 'white' } 
+                        />
                 </View>
             </View>
         );
@@ -32,12 +37,17 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'transparent',
-        height: 70
+        height: 70,
+
     },
     content: {
         flex: 1,
         backgroundColor: '#091243',
         margin: 2,
         borderRadius: 5,
+        alignItems: 'flex-start'
+    },
+    listText: {
+        
     }
 });

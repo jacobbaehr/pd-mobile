@@ -76,15 +76,15 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, {}> {
         const pools = (this.pools === undefined) ? [] : this.pools.map(p => p);
         return(
             <View style={styles.container}>
-                <SectionList
-                    style={{flex: 1}}
-                    renderItem={({item}) => <PoolListItem pool={item} onPoolSelected={this.handlePoolSelected} />}
-                    renderSectionHeader={({section}) => null }
-                    sections={[
-                        {data: pools, title: 'Pools'}
-                    ]}
-                    keyExtractor={item => (item as Pool).objectId}
-                />
+                    <SectionList
+                        style={{flex:1}}
+                        renderItem={({item}) => <PoolListItem pool={item} onPoolSelected={this.handlePoolSelected} />}
+                        renderSectionHeader={({section}) => null }
+                        sections={[
+                            {data: pools, title: 'Pools'}
+                        ]}
+                        keyExtractor={item => (item as Pool).objectId}
+                    />
                 <Button
                     styles={styles.button}
                     onPress={this.handleAddPoolPressed}
@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        textAlign: 'justify',
         backgroundColor: '#060D16', 
     },
     button: {
@@ -110,7 +109,4 @@ const styles = StyleSheet.create({
         height: 45,
         margin: 15
     },
-    textFormat: {
-
-    }
 });
