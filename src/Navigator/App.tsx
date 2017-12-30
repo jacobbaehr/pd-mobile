@@ -12,7 +12,7 @@ export const App = StackNavigator({
     navigationOptions: {
       headerTintColor: 'lightgrey',
       headerStyle: { 
-        backgroundColor: '#060D16', 
+        backgroundColor: '#060D16',
         shadowOpacity: 0,
         elevation: 0,
         shadowColor: 'transparent'

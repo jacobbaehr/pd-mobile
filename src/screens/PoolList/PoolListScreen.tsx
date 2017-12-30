@@ -100,12 +100,12 @@ export const PoolListScreen = connect(mapStateToProps)(PoolListScreenComponent);
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        backgroundColor: '#060D16', 
+        justifyContent: 'flex-start',
+        backgroundColor: '#070D14', 
     },
     button: {
         alignSelf: 'stretch',
-        backgroundColor: 'blue',
+        backgroundColor: '#005C9E',
         height: 45,
         margin: 15
     },
