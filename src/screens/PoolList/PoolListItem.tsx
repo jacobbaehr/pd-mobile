@@ -22,7 +22,9 @@ export class PoolListItem extends React.Component<PoolListItemProps, {}> {
             <View style={styles.container}>
                 <View style={styles.content}>
                     <Button 
-                        title={ `${pool.name}: \n ${pool.volume} gallons`}
+                        title={ `${pool.name}: \n ${pool.volume} gallons`}  
+                        //Should we change this to our Button Component rather than using React's button?
+                        //If not, what is the best way to split name and vol?
                         onPress={this.handleButtonPressed} 
                         color={ 'white' } 
                     />
