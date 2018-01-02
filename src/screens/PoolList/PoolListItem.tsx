@@ -47,13 +47,17 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         borderWidth: .1,
         borderColor: '#BCBCC2',
-        alignItems: 'flex-start',
+        // alignItems: 'flex-start',
         padding: 2
     },
     poolNameText: {
-        color: 'white'
+        color: 'white',
+        fontSize: 17,
     },
     poolVolumeText: {
-        color: 'white'
+        color: 'white',
+        fontSize: 10,
+        justifyContent: 'flex-end',
+        marginTop: 10
     }
 });
