@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Button, SectionList, TouchableHighlight } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Pool } from '../../Models/Pool';
 
@@ -26,6 +27,7 @@ export class PoolListItem extends React.Component<PoolListItemProps, {}> {
                     <View style={{flex: 1}}>
                         <Text style={styles.poolNameText}>{ pool.name }</Text>
                         <Text style={styles.poolVolumeText}>{ pool.volume } gallons</Text>
+                        <Icon name="chevron-right" style={styles.iconStyle}></Icon>
                     </View>
                 </TouchableHighlight>
             </View>
@@ -38,7 +40,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'transparent',
         height: 70,
-
     },
     content: {
         flex: 1,
@@ -47,7 +48,6 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         borderWidth: .1,
         borderColor: '#BCBCC2',
-        // alignItems: 'flex-start',
         padding: 2
     },
     poolNameText: {
@@ -59,5 +59,12 @@ const styles = StyleSheet.create({
         fontSize: 10,
         justifyContent: 'flex-end',
         marginTop: 10
+    },
+    iconStyle: {
+        color: '#B3B3B3',
+        alignSelf: 'flex-end',
+        position: 'absolute',
+        top: 25,
+        fontSize: 15
     }
 });

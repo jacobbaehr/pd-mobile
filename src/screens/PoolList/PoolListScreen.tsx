@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Text, StyleSheet, SectionList } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Button } from '../../components/Button';
 import { PoolListItem } from './PoolListItem';
@@ -46,7 +47,9 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, {}> {
 
     static navigationOptions = (navigation: any) => {
         return {
-            title: 'Select a pool'
+            title: 'Select a pool',
+            headerLeft: <Icon name="bars" style={styles.settingIcon}></Icon>,
+            headerRight: <Icon name="cog" style={styles.settingIcon}></Icon>
         }
     }
 
@@ -109,4 +112,9 @@ const styles = StyleSheet.create({
         height: 45,
         margin: 15
     },
+    settingIcon: {
+        color: 'white',
+        fontSize: 22,
+        margin: 15
+    }
 });

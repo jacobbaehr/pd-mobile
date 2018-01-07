@@ -59,7 +59,7 @@ export class PoolScreen extends React.Component<PoolScreenProps, PoolScreenState
             <View style={styles.container}>
                 <Text style={styles.poolNameLabel}>Pool Name</Text>
                 <TextInput style={styles.textInput} onChangeText={this.handleNameTextChanged} keyboardType={'default'}
-                    autoFocus={true} />
+                    autoFocus={true}/>
                 <Text style={styles.poolNameLabel}>Pool Volume</Text>
                 <TextInput style={styles.textInput} onChangeText={this.handleVolumeTextChanged} keyboardType={'numeric'}
                     autoFocus={true} />
@@ -72,23 +72,27 @@ export class PoolScreen extends React.Component<PoolScreenProps, PoolScreenState
     const styles = StyleSheet.create({
         container: {
           flex: 1,
+          justifyContent: 'flex-start',
           alignItems: 'stretch',
-          backgroundColor: '#F5FCFF'
+          backgroundColor: '#070D14', 
         },
         poolNameLabel: {
             margin: 15,
-            justifyContent: 'center'
+            justifyContent: 'center',
+            color: '#ffffff'
         },
         textInput: {
             height: 40,
             borderWidth: 1,
-            borderColor: 'black',
+            borderColor: '#ffffff',
+            borderRadius: 5,
+            color: '#ffffff',
             margin: 15,
             textAlign: 'center'
         },
         button: {
             alignSelf: 'stretch',
-            backgroundColor: 'purple',
+            backgroundColor: '#005C9E',
             height: 45,
             margin: 15
         }
