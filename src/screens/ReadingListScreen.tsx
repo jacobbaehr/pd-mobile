@@ -2,9 +2,10 @@ import * as React from 'react';
 import { View, Text, StyleSheet, SectionList } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Button } from '../components/Button';
-import { SiteListItem } from './SiteListItem';
+import { ReadingListItem } from './ReadingListItem';
 import { AppState } from '../Redux/AppState';
 import { Reading } from '../Models/Reading';
 
@@ -22,16 +23,40 @@ const mapStateToProps = (state: AppState, ownProps: ReadingListScreenProps): Rea
 
 class ReadingListComponent extends React.Component<ReadingListScreenProps, {}> {
 
+    static navigationOptions = (navigationOptions: any) => {
+        const state = navigationOptions.navigation.state;
+        
+        const params = (state.params !== undefined)
+            ? state.params
+            : {onPressSettings: () => {}};
+        
+        return {
+            headerTintColor: 'lightgrey',
+            headerStyle: { 
+              backgroundColor: '#060D16',
+              shadowOpacity: 0,
+              elevation: 0,
+              shadowColor: 'transparent',
+            },
+            headerRight: <Icon onPress={params.onPressSettings} name={'cog'} style={styles.settingIcon}></Icon>
+
+        };
+    }
+
+    componentDidMount() {
+        this.props.navigation.setParams({ onPressSettings: this.onPressSettings });
+    }
+
+    private onPressSettings = () => {
+        this.props.navigation.navigate('Settings');
+    }
+
     handleSiteSelected = (reading: Reading): void => {
         this.props.navigation.navigate('Details', { reading });
     }
 
     handleCalculatePressed = (): void => {
         this.props.navigation.navigate('Results');
-    }
-
-    handleSettingsPressed = (): void => {
-        this.props.navigation.navigate('Settings');
     }
     
     handlePoolSelectPressed = (): void => {
@@ -47,7 +72,7 @@ class ReadingListComponent extends React.Component<ReadingListScreenProps, {}> {
             <View style={styles.container}>
                 <SectionList
                     style={{flex: 1}}
-                    renderItem={({item}) => <SiteListItem reading={item} onSiteSelected={this.handleSiteSelected} />}
+                    renderItem={({item}) => <ReadingListItem reading={item} onSiteSelected={this.handleSiteSelected} />}
                     renderSectionHeader={({section}) => <Text>{section.title}</Text>}
                     sections={[
                         {data: this.props.readings, title: 'Readings'}
@@ -65,11 +90,6 @@ class ReadingListComponent extends React.Component<ReadingListScreenProps, {}> {
                     title="Calculate"
                     disabled={!isCalculateButtonActive}
                 />
-                <Button
-                    styles={styles.button}
-                    onPress={this.handleSettingsPressed}
-                    title="Edit Chlorine Formula"
-                />
             </View>
         );
     }
@@ -80,14 +100,19 @@ export const ReadingListScreen = connect(mapStateToProps)(ReadingListComponent);
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        // justifyContent: 'center',
+        // alignItems: 'center',
         backgroundColor: '#F5FCFF',
     },
     button: {
         alignSelf: 'stretch',
         backgroundColor: 'blue',
         height: 45,
+        margin: 15
+    },
+    settingIcon: {
+        color: 'white',
+        fontSize: 22,
         margin: 15
     }
 });

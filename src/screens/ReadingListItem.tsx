@@ -3,13 +3,13 @@ import { View, Text, StyleSheet, Button, SectionList } from 'react-native';
 
 import { Reading } from '../Models/Reading';
 
-interface SiteListItemProps {
+interface ReadingListItemProps {
     reading: Reading
 
     onSiteSelected: (reading: Reading) => void;
 }
 
-export class SiteListItem extends React.Component<SiteListItemProps, {}> {
+export class ReadingListItem extends React.Component<ReadingListItemProps, {}> {
 
     private handleButtonPressed = (): void => {
         this.props.onSiteSelected(this.props.reading);

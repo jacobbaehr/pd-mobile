@@ -47,9 +47,7 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, {}> {
 
     static navigationOptions = (navigation: any) => {
         return {
-            title: 'Select a pool',
-            headerLeft: <Icon name="bars" style={styles.settingIcon}></Icon>,
-            headerRight: <Icon name="cog" style={styles.settingIcon}></Icon>
+            title: 'Select a pool'
         }
     }
 
@@ -110,11 +108,6 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         backgroundColor: '#005C9E',
         height: 45,
-        margin: 15
-    },
-    settingIcon: {
-        color: 'white',
-        fontSize: 22,
         margin: 15
     }
 });
