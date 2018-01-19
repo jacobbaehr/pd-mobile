@@ -46,8 +46,17 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, {}> {
     }
 
     static navigationOptions = (navigation: any) => {
+        const { setParams } = navigation;
+        // const editMode = state.params.mode === 'Edit';
         return {
-            title: 'Select a pool'
+            title: 'Select a pool',
+            headerRight: (
+                <Button 
+                    title={'Edit' ? 'Edit' : 'Done'}
+                    onPress={() => setParams({ mode: 'Edit' ? 'none' : 'info'})} 
+                    styles={styles.editStyle}
+                />
+            )
         }
     }
 
@@ -102,12 +111,17 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'flex-start',
-        backgroundColor: '#070D14', 
+        backgroundColor: '#070D14'
     },
     button: {
         alignSelf: 'stretch',
         backgroundColor: '#005C9E',
         height: 45,
         margin: 15
+    },
+    editStyle: {
+        margin: 5,
+        marginRight: 10,
+        
     }
 });
