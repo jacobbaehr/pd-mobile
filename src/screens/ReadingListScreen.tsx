@@ -31,6 +31,7 @@ class ReadingListComponent extends React.Component<ReadingListScreenProps, {}> {
             : {onPressSettings: () => {}};
         
         return {
+            title: 'Readings',
             headerTintColor: 'lightgrey',
             headerStyle: { 
               backgroundColor: '#060D16',
@@ -71,11 +72,11 @@ class ReadingListComponent extends React.Component<ReadingListScreenProps, {}> {
         return(
             <View style={styles.container}>
                 <SectionList
-                    style={{flex: 1}}
+                    style={{flex:1}}
                     renderItem={({item}) => <ReadingListItem reading={item} onSiteSelected={this.handleSiteSelected} />}
-                    renderSectionHeader={({section}) => <Text>{section.title}</Text>}
+                    renderSectionHeader={({section}) => <Text style={styles.list}>{section.title}</Text>}
                     sections={[
-                        {data: this.props.readings, title: 'Readings'}
+                        {data: this.props.readings}
                     ]}
                     keyExtractor={item => (item as Reading).identifier}
                 />
@@ -100,15 +101,17 @@ export const ReadingListScreen = connect(mapStateToProps)(ReadingListComponent);
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        justifyContent: 'flex-start',
+        backgroundColor: '#070D14',
+    },
+    list: {
+        textAlign: 'left'
     },
     button: {
         alignSelf: 'stretch',
-        backgroundColor: 'blue',
+        backgroundColor: '#005C9E',
         height: 45,
-        margin: 15
+        margin: 5
     },
     settingIcon: {
         color: 'white',

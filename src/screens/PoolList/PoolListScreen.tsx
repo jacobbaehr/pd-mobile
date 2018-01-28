@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, SectionList } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProp, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
+import  Swipeout from 'react-native-swipeout';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Button } from '../../components/Button';
@@ -19,21 +20,24 @@ interface PoolListScreenProps {
 
     // This is a flag that just changes whenever we save a new pool.
     poolsLastUpdated: number;
+    
 }
 
 const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolListScreenProps => {
     return {
         navigation: ownProps.navigation,
         selectedPoolId: state.selectedPoolId,
-        poolsLastUpdated: state.poolsLastUpdated
+        poolsLastUpdated: state.poolsLastUpdated,
+        
     }
 }
 
 interface PoolListScreenState {
     initialLoadFinished: boolean;
+    isEditing: boolean;
 }
 
-class PoolListScreenComponent extends React.Component<PoolListScreenProps, {}> {
+class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolListScreenState> {
 
     pools: Realm.Results<Pool>;
 
@@ -41,23 +45,33 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, {}> {
         super(props);
 
         this.state = {
-            initialLoadFinished: false
+            initialLoadFinished: false,
+            isEditing: false
         };
     }
 
-    static navigationOptions = (navigation: any) => {
-        const { setParams } = navigation;
-        // const editMode = state.params.mode === 'Edit';
+    static navigationOptions = (navigationOptions: any) => {
+        
+        const state = navigationOptions.navigation.state;
+        const params = (state.params !== undefined)
+            ? state.params
+            : {onPressEdit: () => {}};
         return {
-            title: 'Select a pool',
+            title: 'Pools',
             headerRight: (
                 <Button 
-                    title={'Edit' ? 'Edit' : 'Done'}
-                    onPress={() => setParams({ mode: 'Edit' ? 'none' : 'info'})} 
+                    title={'Edit'}
+                    onPress={() => {params.onPressEdit()}} 
                     styles={styles.editStyle}
                 />
             )
         }
+    }
+
+     onPressEdit = () => {
+        this.setState({
+            isEditing: !this.state.isEditing
+        })
     }
 
     componentDidMount() {
@@ -71,11 +85,13 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, {}> {
         .catch((e) => {
             console.error(e);
         });
+        this.props.navigation.setParams({ onPressEdit: this.onPressEdit });
     }
-
+    
     handlePoolSelected = (pool: Pool): void => {
         // TODO: set selected pool in Redux
-        this.props.navigation.navigate('ReadingList');
+        const nextScreen =  this.state.isEditing ? 'Pool' : 'ReadingList';
+        this.props.navigation.navigate(nextScreen);
     }
 
     handleAddPoolPressed = (): void => {
@@ -84,22 +100,25 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, {}> {
 
     render() {
         const pools = (this.pools === undefined) ? [] : this.pools.map(p => p);
+        
+
         return(
+            
             <View style={styles.container}>
-                    <SectionList
-                        style={{flex:1}}
-                        renderItem={({item}) => <PoolListItem pool={item} onPoolSelected={this.handlePoolSelected} />}
-                        renderSectionHeader={({section}) => null }
-                        sections={[
-                            {data: pools, title: 'Pools'}
-                        ]}
-                        keyExtractor={item => (item as Pool).objectId}
-                    />
+                <SectionList
+                    style={{flex:1}}
+                    renderItem={({item}) => <PoolListItem pool={item} onPoolSelected={this.handlePoolSelected} />}
+                    renderSectionHeader={({section}) => null }
+                    sections={[
+                        {data: pools, title: 'Pools'}
+                    ]}
+                    keyExtractor={item => (item as Pool).objectId}
+                />
                 <Button
                     styles={styles.button}
                     onPress={this.handleAddPoolPressed}
                     title="Add New Pool"
-                />
+                    />
             </View>
         );
     }
