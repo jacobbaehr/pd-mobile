@@ -11,6 +11,9 @@ export class Pool {
     // An ID that uniquely identifies this pool
     objectId: string;
 
+    // The objectId of the last recipe selected for this pool, if any
+    recipeId?: string;
+
     // For Realm purposes
     static schema = {
         name: 'Pool',
@@ -18,7 +21,8 @@ export class Pool {
         properties: {
             volume: 'double',
             name: 'string',
-            objectId: 'string'
+            objectId: 'string',
+            recipeId: 'string?'
         }
     };
 

@@ -2,6 +2,7 @@ import { StackNavigator } from 'react-navigation';
 import { ReadingListScreen } from '../screens/ReadingListScreen';
 import { DetailsScreen } from '../screens/DetailsScreen';
 import { ResultsScreen } from '../screens/ResultsScreen';
+import { RecipeListScreen } from '../screens/Recipes/RecipeListScreen';
 import { CalculationSettingsScreen } from '../screens/CalculationSettingsScreen';
 import { PoolScreen } from '../screens/PoolScreen';
 import { PoolListScreen } from '../screens/PoolList/PoolListScreen';
@@ -34,5 +35,6 @@ export const App = StackNavigator({
         shadowColor: 'transparent',
       },
     }
-  }
+  },
+  RecipeList: { screen: RecipeListScreen }
 });

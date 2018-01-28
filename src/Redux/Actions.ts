@@ -6,6 +6,7 @@ import { Database } from '../Models/Database';
 export const SET_READING = 'SET_READING';
 export const SET_FORMULA = 'SET_FORMULA';
 export const SAVE_POOL = 'SAVE_POOL';
+export const SELECT_POOL = 'SELECT_POOL';
 
 export interface SetReadingAction extends AnyAction {
     type: string;
@@ -41,6 +42,18 @@ export const saveNewPool = (pool: Pool): SavePoolAction => {
     Database.saveNewPool(pool);
     return {
         type: SAVE_POOL,
+        pool: pool
+    };
+}
+
+export interface SelectPoolAction extends AnyAction { 
+    pool: Pool;
+}
+
+// Sets the currently selected pool id
+export const selectPool = (pool: Pool): SelectPoolAction => {
+    return {
+        type: SELECT_POOL,
         pool: pool
     };
 }

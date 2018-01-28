@@ -7,7 +7,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Button } from '../../components/Button';
 import { PoolListItem } from './PoolListItem';
-import { AppState } from '../../Redux/AppState';
+import { AppState, dispatch } from '../../Redux/AppState';
+import { selectPool } from '../../Redux/Actions';
 import { Database } from '../../Models/Database';
 import { Reading } from '../../Models/Reading';
 import { Pool } from '../../Models/Pool';
@@ -89,8 +90,9 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
     }
     
     handlePoolSelected = (pool: Pool): void => {
-        // TODO: set selected pool in Redux
-        const nextScreen =  this.state.isEditing ? 'Pool' : 'ReadingList';
+        dispatch(selectPool(pool));
+
+        const nextScreen =  this.state.isEditing ? 'Pool' : 'RecipeList';
         this.props.navigation.navigate(nextScreen);
     }
 

@@ -1,6 +1,14 @@
 import { AnyAction } from 'redux';
 
-import { SetReadingAction, SetFormulaAction, SavePoolAction, SET_FORMULA, SET_READING, SAVE_POOL } from './Actions';
+import {
+    SetReadingAction,
+    SetFormulaAction,
+    SavePoolAction,
+    SelectPoolAction,
+    SET_FORMULA,
+    SET_READING,
+    SAVE_POOL,
+    SELECT_POOL } from './Actions';
 import { AppState } from './AppState';
 import { Reading } from '../Models/Reading';
 
@@ -35,6 +43,12 @@ export const readingsReducer = (previousState: AppState, action: AnyAction): App
             return {
                 ...previousState,
                 poolsLastUpdated: previousState.poolsLastUpdated + 1
+            }
+        case SELECT_POOL:
+            const selectPoolAction = action as SelectPoolAction;
+            return {
+                ...previousState,
+                selectedPoolId: selectPoolAction.pool.objectId
             }
         default:
             return previousState;
