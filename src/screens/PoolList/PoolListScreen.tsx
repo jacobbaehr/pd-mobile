@@ -57,11 +57,12 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
         const params = (state.params !== undefined)
             ? state.params
             : {onPressEdit: () => {}};
+        let isEditing = params.isEditing;
         return {
             title: 'Pools',
             headerRight: (
                 <Button 
-                    title={'Edit'}
+                    title={ isEditing ? 'Done' : 'Edit' }
                     onPress={() => {params.onPressEdit()}} 
                     styles={styles.editStyle}
                 />
@@ -70,9 +71,13 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
     }
 
      onPressEdit = () => {
-        this.setState({
-            isEditing: !this.state.isEditing
-        })
+        const isEditing = !this.state.isEditing;
+
+        // Re-renders the screen
+        this.setState({ isEditing });
+
+        // Re-renders the navbar (because React-Navigation is remarkably unintuitive)
+        this.props.navigation.setParams({ isEditing });
     }
 
     componentDidMount() {
@@ -86,8 +91,13 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
         .catch((e) => {
             console.error(e);
         });
-        this.props.navigation.setParams({ onPressEdit: this.onPressEdit });
+
+        this.props.navigation.setParams({
+            isEditing: false,
+            onPressEdit: this.onPressEdit
+        });
     }
+
     
     handlePoolSelected = (pool: Pool): void => {
         dispatch(selectPool(pool));
@@ -103,13 +113,11 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
     render() {
         const pools = (this.pools === undefined) ? [] : this.pools.map(p => p);
         
-
         return(
-            
             <View style={styles.container}>
                 <SectionList
                     style={{flex:1}}
-                    renderItem={({item}) => <PoolListItem pool={item} onPoolSelected={this.handlePoolSelected} />}
+                    renderItem={({item}) => <PoolListItem isEditing={this.state.isEditing} pool={item} onPoolSelected={this.handlePoolSelected} />}
                     renderSectionHeader={({section}) => null }
                     sections={[
                         {data: pools, title: 'Pools'}

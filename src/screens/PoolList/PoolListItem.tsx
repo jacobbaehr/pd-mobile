@@ -8,6 +8,8 @@ interface PoolListItemProps {
     pool: Pool;
 
     onPoolSelected: (pool: Pool) => void;
+
+    isEditing: boolean;
 }
 
 export class PoolListItem extends React.Component<PoolListItemProps, {}> {
@@ -18,9 +20,12 @@ export class PoolListItem extends React.Component<PoolListItemProps, {}> {
 
     render() {
         const pool = this.props.pool;
+        const containerStyles = this.props.isEditing ?
+            [styles.container, styles.editingContainer] :
+            [styles.container];
 
         return (
-            <View style={styles.container}>
+            <View style={containerStyles}>
                 <TouchableHighlight
                     style={ styles.content }
                     onPress={this.handleButtonPressed}>
@@ -40,6 +45,9 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'transparent',
         height: 70,
+    },
+    editingContainer: {
+        backgroundColor: 'red'
     },
     content: {
         flex: 1,
