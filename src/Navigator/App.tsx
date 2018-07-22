@@ -1,6 +1,6 @@
 import { StackNavigator } from 'react-navigation';
-import { ReadingListScreen } from '../screens/ReadingListScreen';
-import { DetailsScreen } from '../screens/DetailsScreen';
+import { InputEntryListScreen } from '../screens/InputEntryListScreen';
+import { InputDetailsScreen } from '../screens/InputDetailsScreen';
 import { ResultsScreen } from '../screens/ResultsScreen';
 import { RecipeListScreen } from '../screens/Recipes/RecipeListScreen';
 import { CalculationSettingsScreen } from '../screens/CalculationSettingsScreen';
@@ -20,8 +20,8 @@ export const App = StackNavigator({
       },
     }
   },
-  ReadingList: { screen: ReadingListScreen },
-  Details: { screen: DetailsScreen },
+  ReadingList: { screen: InputEntryListScreen },
+  Details: { screen: InputDetailsScreen },
   Results: { screen: ResultsScreen },
   Settings: { screen: CalculationSettingsScreen },
   Pool: { 

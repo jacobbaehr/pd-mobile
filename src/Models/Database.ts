@@ -1,9 +1,9 @@
 import * as Realm from 'realm';
 
-import { Pool } from '../Models/Pool';
-import { Input } from '../Models/Recipe/Input';
-import { Output } from '../Models/Recipe/Output';
-import { Recipe } from '../Models/Recipe/Recipe';
+import { Pool } from './Pool';
+import { Input } from './Recipe/Input';
+import { Output } from './Recipe/Output';
+import { Recipe } from './Recipe/Recipe';
 import { initialData } from '../InitialData';
 
 export class Database {
@@ -67,6 +67,13 @@ export class Database {
         }
         return Database.realm.objects<Recipe>(Recipe);
     }
+
+    static loadRecipe = (objectId: string): Recipe => {
+        if (Database.realm === undefined) {
+            console.error('loadRecipe called before realm loaded');
+        }
+        return Database.realm.objects<Recipe>(Recipe).filtered('objectId = $0', objectId)[0];
+    }
     
     static createInitialRecipes = () => {
         const realm = Database.realm;
@@ -85,6 +92,18 @@ export class Database {
             //  TODO: use async-storage to check necessary version, support migrations.
             // console.error('Error saving recipes');
         }
+    }
+
+    // Very unsafely commits the provided changes to the Realm store. This is the pattern Realm makes us use,
+    // it's unfortunately not async.
+    static commitUpdates = (updates: () => void) => {
+        if (Database.realm === undefined) {
+            console.error('commitUpdates called before realm loaded');
+        }
+        const realm = Database.realm;
+        realm.write(() => {
+            updates();
+        });
     }
 }
 

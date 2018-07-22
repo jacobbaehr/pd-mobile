@@ -2,48 +2,52 @@ import * as React from 'react';
 import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
-import { dispatch } from '../Redux/AppState';
-import { setReading } from '../Redux/Actions';
 import { AppState } from '../Redux/AppState';
-import { Reading } from '../Models/Reading';
-import { Treatment } from '../Models/Treatment';
+import { InputEntry } from '../Models/Recipe/InputEntry';
+import { OutputEntry } from '../Models/Recipe/OutputEntry';
+import { Recipe } from '../Models/Recipe/Recipe';
 import { CalculationService } from '../Services/CalculationService';
+import { Database } from '../Models/Database';
 
 interface ResultsScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
 
-    readings: Reading[];
+    readings: InputEntry[];
 
-    chlorineFormula: string;
+    recipeId: string;
 }
 
 interface ResultsScreenState { 
-    treatments: Treatment[];
+    treatments: OutputEntry[];
 }
 
 const mapStateToProps = (state: AppState, ownProps: ResultsScreenProps): ResultsScreenProps => {
 
-    const filteredReadings = state.readings.filter(reading => (reading.value !== null) && (reading.value !== undefined));
+    const filteredReadings = state.inputs.filter(input => (input.value !== null) && (input.value !== undefined));
 
     return {
         navigation: ownProps.navigation,
         readings: filteredReadings,
-        chlorineFormula: state.chlorineFormula
+        recipeId: state.recipeId!
     };
 };
 
-class ResultsScreenComponent extends React.Component<ResultsScreenProps, ResultsScreenState> {    
+class ResultsScreenComponent extends React.Component<ResultsScreenProps, ResultsScreenState> {
+
+    recipe: Recipe;
+
     constructor(props: ResultsScreenProps) {
         super(props);
 
-        const treatments = CalculationService.calculateTreatments(this.props.readings, this.props.chlorineFormula);
+        this.recipe = Database.loadRecipe(this.props.recipeId);
+        const treatments = CalculationService.calculateTreatments(this.recipe, props.readings);
         this.state = { treatments };
     }
 
     render() {
         let treatmentString = '';
         this.state.treatments.forEach(treatment => {
-            treatmentString += `\nAdd ${treatment.amount} ounces of ${treatment.name}`;
+            treatmentString += `\nAdd ${treatment.value} ounces of ${treatment.output.name}`;
         });
 
         return(

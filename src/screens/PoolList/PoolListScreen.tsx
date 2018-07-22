@@ -10,7 +10,6 @@ import { PoolListItem } from './PoolListItem';
 import { AppState, dispatch } from '../../Redux/AppState';
 import { selectPool } from '../../Redux/Actions';
 import { Database } from '../../Models/Database';
-import { Reading } from '../../Models/Reading';
 import { Pool } from '../../Models/Pool';
 
 interface PoolListScreenProps {

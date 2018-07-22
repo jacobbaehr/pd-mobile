@@ -4,8 +4,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { dispatch } from '../Redux/AppState';
-import { setFormula } from '../Redux/Actions';
-import { Reading } from '../Models/Reading';
+// import { Reading } from '../Models/Reading';
 import { AppState } from '../Redux/AppState';
 import { Button } from '../components/Button';
 
@@ -18,8 +17,7 @@ interface CalculationSettingsScreenProps {
 
 const mapStateToProps = (state: AppState, ownProps: CalculationSettingsScreenProps): CalculationSettingsScreenProps => {
     return {
-        navigation: ownProps.navigation,
-        chlorineFormula: state.chlorineFormula
+        navigation: ownProps.navigation
     };
 };
 
@@ -40,7 +38,7 @@ class CalculationSettingsScreenComponent extends React.Component<CalculationSett
     }
 
     private handleSave = () => {
-        dispatch(setFormula(this.state.text));
+        // dispatch(setFormula(this.state.text));
     };
 
     render() {

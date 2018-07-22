@@ -5,23 +5,39 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Button } from '../components/Button';
-import { ReadingListItem } from './ReadingListItem';
+import { InputEntryListItem } from './InputEntryListItem';
 import { AppState } from '../Redux/AppState';
-import { Reading } from '../Models/Reading';
+import { Input } from '../Models/Recipe/Input';
+import { Recipe } from '../Models/Recipe/Recipe';
+import { InputEntry } from '../Models/Recipe/InputEntry';
+import { Database } from '../Models/Database';
 
-interface ReadingListScreenProps {
-    navigation: NavigationScreenProp<{}, {}>;
-    readings: Reading[];
+interface InputEntryListScreenState {
+    recipe: Recipe
 }
 
-const mapStateToProps = (state: AppState, ownProps: ReadingListScreenProps): ReadingListScreenProps => {
+interface InputEntryListScreenProps {
+    navigation: NavigationScreenProp<{}, {}>;
+    entries: InputEntry[];
+    recipeId: string;
+}
+
+const mapStateToProps = (state: AppState, ownProps: InputEntryListScreenProps): InputEntryListScreenProps => {
     return {
         navigation: ownProps.navigation,
-        readings: state.readings
+        entries: state.inputs,
+        recipeId: state.recipeId!
     };
 };
 
-class ReadingListComponent extends React.Component<ReadingListScreenProps, {}> {
+class InputEntryListScreenComponent extends React.Component<InputEntryListScreenProps, InputEntryListScreenState> {
+
+    constructor(props: InputEntryListScreenProps) {
+        super(props);
+
+        let recipe = Database.loadRecipe(props.recipeId);
+        this.state = { recipe }
+    }
 
     static navigationOptions = (navigationOptions: any) => {
         const state = navigationOptions.navigation.state;
@@ -52,8 +68,8 @@ class ReadingListComponent extends React.Component<ReadingListScreenProps, {}> {
         this.props.navigation.navigate('Settings');
     }
 
-    handleSiteSelected = (reading: Reading): void => {
-        this.props.navigation.navigate('Details', { reading });
+    handleInputSelected = (input: Input, inputEntry?: InputEntry): void => {
+        this.props.navigation.navigate('Details', { input, inputEntry });
     }
 
     handleCalculatePressed = (): void => {
@@ -64,21 +80,28 @@ class ReadingListComponent extends React.Component<ReadingListScreenProps, {}> {
         this.props.navigation.navigate('Pool');
     }
 
+    private getEntryForInput = (input: Input): InputEntry | undefined => {
+        // array length will always be 0 (if entry not made) or 1 (if entry made)
+        let entriesForInput = this.props.entries.filter(entry => entry.inputID === input.objectId);
+        if (entriesForInput.length === 0) { return undefined }
+        return entriesForInput[0];
+    }
+
     render() {
-        const isCalculateButtonActive = this.props.readings.filter(reading => {
-                return reading.value !== null && reading.value !== undefined
+        const isCalculateButtonActive = this.props.entries.filter(entry => {
+                return entry.value !== null && entry.value !== undefined
             }).length > 0;
 
         return(
             <View style={styles.container}>
                 <SectionList
                     style={{flex:1}}
-                    renderItem={({item}) => <ReadingListItem reading={item} onSiteSelected={this.handleSiteSelected} />}
+                    renderItem={({item}) => <InputEntryListItem input={item} inputEntry={this.getEntryForInput(item)} onInputSelected={this.handleInputSelected} />}
                     renderSectionHeader={({section}) => <Text style={styles.list}>{section.title}</Text>}
                     sections={[
-                        {data: this.props.readings}
+                        {data: this.state.recipe.inputs}
                     ]}
-                    keyExtractor={item => (item as Reading).identifier}
+                    keyExtractor={item => (item as Input).objectId}
                 />
                 <Button
                     styles={styles.button}
@@ -96,7 +119,7 @@ class ReadingListComponent extends React.Component<ReadingListScreenProps, {}> {
     }
 }
 
-export const ReadingListScreen = connect(mapStateToProps)(ReadingListComponent);
+export const InputEntryListScreen = connect(mapStateToProps)(InputEntryListScreenComponent);
 
 const styles = StyleSheet.create({
     container: {

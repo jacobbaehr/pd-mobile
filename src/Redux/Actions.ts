@@ -1,35 +1,26 @@
 import { AnyAction } from 'redux';
 
 import { Pool } from '../Models/Pool';
+import { Recipe } from '../Models/Recipe/Recipe';
 import { Database } from '../Models/Database';
 
-export const SET_READING = 'SET_READING';
+export const RECORD_INPUT = 'RECORD_INPUT';
 export const SET_FORMULA = 'SET_FORMULA';
 export const SAVE_POOL = 'SAVE_POOL';
 export const SELECT_POOL = 'SELECT_POOL';
+export const SELECT_RECIPE = 'SELECT_RECIPE';
 
-export interface SetReadingAction extends AnyAction {
+export interface RecordInputAction extends AnyAction {
     type: string;
-    value?: number;
-    identifier: string;
+    value: number;
+    inputID: string;
 }
 
-export const setReading = (readingID: string, value?: number): SetReadingAction => {
+export const recordInput = (inputID: string, value: number): RecordInputAction => {
     return {
-        type: SET_READING,
+        type: RECORD_INPUT,
         value: value,
-        identifier: readingID
-    };
-}
-
-export interface SetFormulaAction extends AnyAction {
-    value?: string;
-}
-
-export const setFormula = (value?: string): SetFormulaAction => {
-    return { 
-        type: SET_FORMULA,
-        value: value
+        inputID: inputID
     };
 }
 
@@ -54,6 +45,18 @@ export interface SelectPoolAction extends AnyAction {
 export const selectPool = (pool: Pool): SelectPoolAction => {
     return {
         type: SELECT_POOL,
-        pool: pool
+        pool
     };
+}
+
+export interface SelectRecipeAction extends AnyAction {
+    recipe: Recipe;
+}
+
+// Sets the currently selected recipe
+export const selectRecipe = (recipe: Recipe): SelectRecipeAction => {
+    return {
+        type: SELECT_RECIPE,
+        recipe
+    }
 }

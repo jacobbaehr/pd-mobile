@@ -6,11 +6,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Button } from '../../components/Button';
 import { RecipeListItem } from './RecipeListItem';
-import { AppState } from '../../Redux/AppState';
+import { AppState, dispatch } from '../../Redux/AppState';
 import { Database } from '../../Models/Database';
-import { Reading } from '../../Models/Reading';
 import { Pool } from '../../Models/Pool';
 import { Recipe } from '../../Models/Recipe/Recipe';
+import { selectRecipe } from '../../Redux/Actions';
 
 interface RecipeListScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
@@ -63,8 +63,11 @@ class RecipeListScreenComponent extends React.Component<RecipeListScreenProps, {
     }
 
     handleRecipeSelected = (recipe: Recipe): void => {
-        // TODO: set pool selected recipe id, push readings screen
-        // this.props.navigation.navigate('ReadingList');
+        Database.commitUpdates(() => {
+            this.pool.recipeId = recipe.objectId;
+        });
+        dispatch(selectRecipe(recipe));
+        this.props.navigation.navigate('ReadingList');
     }
 
     render() {

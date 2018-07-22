@@ -1,28 +1,32 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Button, SectionList, TouchableHighlight } from 'react-native';
 
-import { Reading } from '../Models/Reading';
+import { InputEntry } from '../Models/Recipe/InputEntry';
+import { Input } from '../Models/Recipe/Input';
 
-interface ReadingListItemProps {
-    reading: Reading
+interface InputEntryListItemProps {
+    inputEntry?: InputEntry;
+    input: Input;
 
-    onSiteSelected: (reading: Reading) => void;
+    onInputSelected: (input: Input, inputEntry?: InputEntry) => void;
 }
 
-export class ReadingListItem extends React.Component<ReadingListItemProps, {}> {
+export class InputEntryListItem extends React.Component<InputEntryListItemProps, {}> {
 
     private handleButtonPressed = (): void => {
-        this.props.onSiteSelected(this.props.reading);
+        this.props.onInputSelected(this.props.input, this.props.inputEntry);
     }
 
     render() {
-        const readingTaken = (this.props.reading.value !== null && this.props.reading.value !== undefined);
+
+        const entry = this.props.inputEntry;
         
-        const reading = this.props.reading;
-        const readingName = (reading.name === undefined) ? 'Reading' : reading.name;
+        const readingTaken = (entry !== null) && (entry !== undefined);
         
-        const readingNameAndValue = `${readingName}: ${reading.getValueAsString()}`
-        const readingMessage= (!readingTaken) ? `Tap to log ${readingName}` : reading.getValueAsString();
+        const input = this.props.input;
+        const readingName = (input.name === undefined) ? 'Reading' : input.name;
+        
+        const readingMessage = readingTaken ? entry!.value : `Tap to log ${readingName}`;
 
         return (
             <View style={styles.container}>

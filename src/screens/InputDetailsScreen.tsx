@@ -1,33 +1,44 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
-import { dispatch } from '../Redux/AppState';
-import { setReading } from '../Redux/Actions';
-import { Reading } from '../Models/Reading';
 
-interface DetailsScreenProps {
-    navigation: NavigationScreenProp<{ params: { reading: Reading }}, {}>;
+import { dispatch } from '../Redux/AppState';
+import { recordInput } from '../Redux/Actions';
+import { Input } from '../Models/Recipe/Input';
+import { InputEntry } from '../Models/Recipe/InputEntry';
+
+interface InputDetailsScreenProps {
+    navigation: NavigationScreenProp<{ params: { input: Input, inputEntry?: InputEntry }}, {}>;
 }
 
-interface DetailsScreenState {
+interface InputDetailsScreenState {
     value?: number;
 }
 
-export class DetailsScreen extends React.Component<DetailsScreenProps, DetailsScreenState> {
+export class InputDetailsScreen extends React.Component<InputDetailsScreenProps, InputDetailsScreenState> {
 
-    reading: Reading;
+    input: Input;
+    entry?: InputEntry;
 
-    constructor(props: DetailsScreenProps) {
+    constructor(props: InputDetailsScreenProps) {
         super(props);
         
-        this.reading = this.props.navigation.state.params.reading;
-        this.state = {
-            value: this.reading.value
+        this.entry = this.props.navigation.state.params.inputEntry;
+        this.input = this.props.navigation.state.params.input;
+        if ((this.entry !== null) && (this.entry !== undefined)) {
+            this.state = {
+                value: this.entry.value
+            };
+        } else {
+            this.state = {};
         }
     }
 
     private handleButtonPress = () => {
-        dispatch(setReading(this.reading.identifier, this.state.value));
+        let value = this.state.value;
+        if (value != undefined) {
+            dispatch(recordInput(this.input.objectId, value));
+        }
         this.props.navigation.goBack();
     }
 
@@ -41,7 +52,7 @@ export class DetailsScreen extends React.Component<DetailsScreenProps, DetailsSc
         return(
             <View style={styles.container}>
                 <Text style={styles.readingNameLabel}>
-                    {this.reading.name}
+                    {this.input.name}
                 </Text>
                 <TextInput style={styles.textInput} onChangeText={this.handleTextChanged} keyboardType={'numeric'}
                     autoFocus={true} defaultValue={defaultValueString} />

@@ -1,35 +1,30 @@
 import { createStore } from 'redux';
 
 import { readingsReducer } from './Reducers';
-import { Reading } from '../Models/Reading';
+import { InputEntry } from '../Models/Recipe/InputEntry';
+import { OutputEntry } from '../Models/Recipe/OutputEntry';
 
 // Describes the shape of the application redux state.
 export interface AppState {
-    // All of the readings that a user has taken
-    readings: Reading[];
+    // All of the readings that a user has recorded
+    inputs: InputEntry[];
 
-    // TODO: make this an array of all treatment calculations
-    chlorineFormula: string;
+    // All of the outputs currently perscribed
+    outputs: OutputEntry[];
 
-    // The currently selected swimming pool, if any:
+    // The currently selected swimming pool, if any
     selectedPoolId?: string;
+
+    // The currently selected recipe, if any
+    recipeId?: string;
 
     // This increments whenever we update the list of pools
     poolsLastUpdated: number;
 };
 
 const initialAppState = {
-    readings: [
-        new Reading('Free Chlorine', 'free_chlorine'),
-        new Reading('Total Chlorine', 'total_chlorine'),
-        new Reading('pH', 'ph'),
-        new Reading('Total Alkalinity', 'total_alkalinity'),
-        new Reading('Calcium Hardness', 'calcium_hardness'),
-        new Reading('Cyanuric Acid', 'cyanuric_acid'),
-        new Reading('Copper', 'copper'),
-        new Reading('Total Dissolved Solids', 'total_dissolved_solids'),
-    ],
-    chlorineFormula: '4 - free_chlorine',
+    inputs: [],
+    outputs: [],
     poolsLastUpdated: 0
 };
 

@@ -1,42 +1,42 @@
 import { AnyAction } from 'redux';
 
 import {
-    SetReadingAction,
-    SetFormulaAction,
+    RecordInputAction,
     SavePoolAction,
     SelectPoolAction,
-    SET_FORMULA,
-    SET_READING,
+    RECORD_INPUT,
     SAVE_POOL,
-    SELECT_POOL } from './Actions';
+    SELECT_POOL, 
+    SELECT_RECIPE,
+    SelectRecipeAction} from './Actions';
 import { AppState } from './AppState';
-import { Reading } from '../Models/Reading';
+import { InputEntry } from '../Models/Recipe/InputEntry';
+import { OutputEntry } from '../Models/Recipe/OutputEntry';
 
 
 // Reducer that modifies the app state in response to a SetReadingAction.
 export const readingsReducer = (previousState: AppState, action: AnyAction): AppState => {
 
     switch(action.type) {
-        case SET_READING:
-            const setReadingAction = action as SetReadingAction;
-            let newReadings: Reading[] = [];
-            
-            previousState.readings.forEach(r => {
-                if (r.identifier === setReadingAction.identifier) {
-                    newReadings.push(new Reading(r.name, r.identifier, setReadingAction.value));
+        case RECORD_INPUT:
+            const recordInputAction = action as RecordInputAction;
+            let newInputs: InputEntry[] = [];
+
+            let inputAlreadyRecorded = false;
+            previousState.inputs.forEach(r => {
+                if (r.inputID === recordInputAction.inputID) {
+                    newInputs.push(InputEntry.make(recordInputAction.inputID, recordInputAction.value));
+                    inputAlreadyRecorded = true;
                 } else {
-                    newReadings.push(r);
+                    newInputs.push(r);
                 }
             });
+            if (!inputAlreadyRecorded) {
+                newInputs.push(InputEntry.make(recordInputAction.inputID, recordInputAction.value));
+            }
             return {
                 ...previousState,
-                readings: newReadings
-            };
-        case SET_FORMULA:
-            const setFormulaAction = action as SetFormulaAction;
-            return {
-                ...previousState,
-                chlorineFormula: action.value
+                inputs: newInputs
             };
         case SAVE_POOL:
             const savePoolAction = action as SavePoolAction;
@@ -49,6 +49,12 @@ export const readingsReducer = (previousState: AppState, action: AnyAction): App
             return {
                 ...previousState,
                 selectedPoolId: selectPoolAction.pool.objectId
+            }
+        case SELECT_RECIPE:
+            const selectRecipeAction = action as SelectRecipeAction;
+            return {
+                ...previousState,
+                recipeId: selectRecipeAction.recipe.objectId
             }
         default:
             return previousState;
