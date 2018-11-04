@@ -22,7 +22,7 @@ export interface AppState {
     poolsLastUpdated: number;
 };
 
-const initialAppState = {
+const initialAppState: AppState = {
     inputs: [],
     outputs: [],
     poolsLastUpdated: 0

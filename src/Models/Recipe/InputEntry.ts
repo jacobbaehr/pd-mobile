@@ -3,10 +3,10 @@
  */
 export class InputEntry {
     // The objectID of the corresponding input
-    inputID: string;
+    inputID!: string;
 
     // The value of the input
-    value: number;
+    value!: number;
     
     static make(inputID: string, value: number): InputEntry {
         let inputEntry = new InputEntry();

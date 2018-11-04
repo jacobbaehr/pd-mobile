@@ -39,7 +39,7 @@ interface PoolListScreenState {
 
 class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolListScreenState> {
 
-    pools: Realm.Results<Pool>;
+    pools!: Realm.Results<Pool>;
 
     constructor(props: PoolListScreenProps) {
         super(props);

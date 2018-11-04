@@ -3,13 +3,13 @@
  */
 export class Input {
     // The input's user-visible name
-    name: string;
+    name!: string;
 
     // The input's variable name for use in the output formulas
-    variableName: string;
+    variableName!: string;
 
     // An ID that uniquely identifies this input
-    objectId: string;
+    objectId!: string;
 
     // For Realm purposes
     static schema = {

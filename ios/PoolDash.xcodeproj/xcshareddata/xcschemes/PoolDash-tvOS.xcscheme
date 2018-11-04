@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "TankTracker-tvOS.app"
-               BlueprintName = "TankTracker-tvOS"
-               ReferencedContainer = "container:TankTracker.xcodeproj">
+               BuildableName = "PoolDash-tvOS.app"
+               BlueprintName = "PoolDash-tvOS"
+               ReferencedContainer = "container:PoolDash.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "TankTracker-tvOSTests.xctest"
-               BlueprintName = "TankTracker-tvOSTests"
-               ReferencedContainer = "container:TankTracker.xcodeproj">
+               BuildableName = "PoolDash-tvOSTests.xctest"
+               BlueprintName = "PoolDash-tvOSTests"
+               ReferencedContainer = "container:PoolDash.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -61,9 +61,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "TankTracker-tvOSTests.xctest"
-               BlueprintName = "TankTracker-tvOSTests"
-               ReferencedContainer = "container:TankTracker.xcodeproj">
+               BuildableName = "PoolDash-tvOSTests.xctest"
+               BlueprintName = "PoolDash-tvOSTests"
+               ReferencedContainer = "container:PoolDash.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -71,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "TankTracker-tvOS.app"
-            BlueprintName = "TankTracker-tvOS"
-            ReferencedContainer = "container:TankTracker.xcodeproj">
+            BuildableName = "PoolDash-tvOS.app"
+            BlueprintName = "PoolDash-tvOS"
+            ReferencedContainer = "container:PoolDash.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -94,9 +94,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "TankTracker-tvOS.app"
-            BlueprintName = "TankTracker-tvOS"
-            ReferencedContainer = "container:TankTracker.xcodeproj">
+            BuildableName = "PoolDash-tvOS.app"
+            BlueprintName = "PoolDash-tvOS"
+            ReferencedContainer = "container:PoolDash.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -113,9 +113,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "TankTracker-tvOS.app"
-            BlueprintName = "TankTracker-tvOS"
-            ReferencedContainer = "container:TankTracker.xcodeproj">
+            BuildableName = "PoolDash-tvOS.app"
+            BlueprintName = "PoolDash-tvOS"
+            ReferencedContainer = "container:PoolDash.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

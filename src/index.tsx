@@ -12,7 +12,7 @@ import { App } from './Navigator/App';
 import { store } from './Redux/AppState';
 
 
-class TankTracker extends React.Component<{}, {}> {
+class PoolDash extends React.Component<{}, {}> {
     render() {
         StatusBar.setBarStyle('light-content');
         
@@ -24,4 +24,4 @@ class TankTracker extends React.Component<{}, {}> {
     }
 }
 
-AppRegistry.registerComponent('TankTracker', () => TankTracker);
+AppRegistry.registerComponent('PoolDash', () => PoolDash);

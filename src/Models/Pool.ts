@@ -3,13 +3,13 @@
  */
 export class Pool {
     // The pool's volume, in gallons.
-    volume: number;
+    volume!: number;
 
     // The pool's user-visible name
-    name: string;
+    name!: string;
 
     // An ID that uniquely identifies this pool
-    objectId: string;
+    objectId!: string;
 
     // The objectId of the last recipe selected for this pool, if any
     recipeId?: string;

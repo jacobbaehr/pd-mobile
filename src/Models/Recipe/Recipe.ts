@@ -6,19 +6,19 @@ import { Output } from './Output';
  */
 export class Recipe {
     // The user-visible name of the recipe (ideally, should be unique)
-    name: string;
+    name!: string;
 
     // A brief description of this recipe
-    description: string;
+    description!: string;
 
     // An ID that uniquely identifies this recipe
-    objectId: string;
+    objectId!: string;
 
     // All the inputs to this recipe
-    inputs: Input[];
+    inputs!: Input[];
 
     // All the outputs to this recipe
-    outputs: Output[];
+    outputs!: Output[];
 
     // For Realm purposes
     static schema = {

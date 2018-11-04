@@ -5,16 +5,16 @@
  */
 export class Output {
     // The output's user-visible name
-    name: string;
+    name!: string;
 
     // The output's variable name, for use in subsequent output formulas in the same recipe
-    variableName: string;
+    variableName!: string;
 
     // An ID that uniquely identifies this input
-    objectId: string;
+    objectId!: string;
 
     // The javascript formula that determines how much (if any) of the output is necessary
-    formula: string;
+    formula!: string;
 
     // For Realm purposes
     static schema = {

@@ -31,8 +31,8 @@ interface RecipeListScreenState {
 }
 
 class RecipeListScreenComponent extends React.Component<RecipeListScreenProps, {}> {
-    pool: Pool;
-    recipes: Realm.Results<Recipe>;
+    pool!: Pool;
+    recipes!: Realm.Results<Recipe>;
 
     constructor(props: RecipeListScreenProps) {
         super(props);

@@ -1,34 +1,50 @@
 # PoolDash
+This app helps you chemically balance your swimming pool.
+
+### Why
+I've made 3 pool-care apps in the last decade, with over 50,000 users. However, I work full-time and can't support the apps by myself. I'm releasing the most useful core functionality (the chemical dosing calculator) as a free, open-source project so that anyone can use, investigate, and contribute (shoutout to [@wc0sby](https://github.com/wc0sby) for taking the lead).
+
+The app is written in React Native & will be available on iOS and Android. For now, if you're a developer, here is how you can build & run the app locally:
 
 # To Begin:
 
-`git pull`
+## Install the dependencies:
 
-`yarn install`
+[Homebrew](https://brew.sh/): `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+- This is a package-manager for OS X (it automates the complex installation open-source 3rd-party libraries, such as node)
 
-`tsc -w`
+[node](https://nodejs.org/en/): `brew install node`
+- This is the runtime environment for modern javascript-based applications
 
-`react-native start` (in a separate terminal window)
+[yarn](https://yarnpkg.com/en/): `npm install yarn`
+- This manages 3rd-party open-source javascript libraries efficiently (sort-of like a more specific version of brew)
 
-`react-native run-ios`
+## Build the project
+
+1) `git clone git@github.com:Gazzini/PoolDash.git` (or download the .zip file)
+
+2) `cd PoolDash`
+
+3) `yarn install` -- Installs all of the dependencies listed in package.json
+
+4) `yarn run tsc -w` -- Compiles all of the typescript code into javascript code (use "yarn run" to ensure you're using the local typescript version)
+
+5) `yarn run react-native start` -- Prepares the react-native environment to serve javascript files to your iOS or Android app (do this in a separate terminal tab)
+
+6) `react-native run-ios` -- Compiles & Runs the Xcode project, Launches the simulator, and loads your javascript bundle from your local React server
 
 
-# Calculations
-## V1 -- 2010
-The first version of Pool Doctor only supported 3 readings and recommended up to 3 chemicals, with no substitutions. It used linear calculations based on average effects within optimal ranges.
+# Required Next Steps:
+- [ ] Implement multiple service-plans, allow users to select a "recipe"
+- [ ] Move the formulas from `src/InitialData.ts` somewhere it can easily be accessed / edited in isolation
+- [ ] Implement [material styles](https://github.com/callstack/react-native-paper)
+- [ ] Persistently store chemical records for later viewing
+- [ ] Enable cloud-sync (using Realm, for now)
+- [ ] Submit to iOS store
+- [ ] Submit to Android store
+- [ ] Open-source attributions
 
-`(free_chlorine_target - free_chlorine) * chemical_multiplier * pool_volume = ounces of 67% calcium hypochlorite`
-
-### Target range problem
-Most chemicals have ideal ranges, not a single value that you should try to hit. So, the free chlorine should be between 2.0 and 4.0, and we should only make an adjustment when it falls outside of that range (and in this case, shoot for exactly 3.0).
-
-### Non-linear problem
-Some chemicals are measured in ppm (parts-per-million). With these, there is a constant, straight relationship between the amount of free chlorine you put into the pool, and the value of that reading (because you're just putting more "parts" in). To raise the free chlorine from 1.0 to 2.0 requires the same amount of chemical as raising it from 2.0 to 3.0.
-
-However, chemicals like pH work differently. As you add more Sodium Bicarbonate, the reading value approaches 8.4 asymptotically, meaning that it requires significantly more chemicals to 
-
-This was a decent solution, and for most people, it was an improvement over their existing system. However, I knew I could do better.
-
-This was, honestly, an improvement for most people. more thought than most people already put into their pool
-
-## V2 -- 2012
+# Nice-to-haves:
+- [ ] Graphs of pool chemicals over time
+- [ ] Youtube video links for each step of every "recipe"
+- [ ] Secret Project (🙊)
