@@ -15,6 +15,8 @@ interface ResultsScreenProps {
     readings: InputEntry[];
 
     recipeId: string;
+
+    poolId: string;
 }
 
 interface ResultsScreenState { 
@@ -23,12 +25,11 @@ interface ResultsScreenState {
 
 const mapStateToProps = (state: AppState, ownProps: ResultsScreenProps): ResultsScreenProps => {
 
-    const filteredReadings = state.inputs.filter(input => (input.value !== null) && (input.value !== undefined));
-
     return {
         navigation: ownProps.navigation,
-        readings: filteredReadings,
-        recipeId: state.recipeId!
+        readings: state.inputs,
+        recipeId: state.recipeId!,
+        poolId: state.selectedPoolId!
     };
 };
 
@@ -40,7 +41,10 @@ class ResultsScreenComponent extends React.Component<ResultsScreenProps, Results
         super(props);
 
         this.recipe = Database.loadRecipe(this.props.recipeId);
-        const treatments = CalculationService.calculateTreatments(this.recipe, props.readings);
+        console.log('1');
+        const pool = Database.loadPool(this.props.poolId);
+        const treatments = CalculationService.calculateTreatments(this.recipe, pool, props.readings);
+        console.log('2');
         this.state = { treatments };
     }
 

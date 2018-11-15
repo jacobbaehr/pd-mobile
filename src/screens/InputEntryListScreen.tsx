@@ -105,11 +105,6 @@ class InputEntryListScreenComponent extends React.Component<InputEntryListScreen
                 />
                 <Button
                     styles={styles.button}
-                    onPress={this.handlePoolSelectPressed}
-                    title="Pool Size"
-                />
-                <Button
-                    styles={styles.button}
                     onPress={this.handleCalculatePressed}
                     title="Calculate"
                     disabled={!isCalculateButtonActive}

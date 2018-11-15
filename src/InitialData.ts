@@ -9,7 +9,7 @@ export const initialData = {
             inputs: [
                 {
                     name: 'Free Chlorine',
-                    variableName: 'fc'
+                    variableName: 'fc'  // TODO: add master id here or something
                 },
                 {
                     name: 'pH',
@@ -29,12 +29,12 @@ export const initialData = {
                 {
                     name: 'Sodium Bicarbonate',
                     variableName: 'baking_soda',
-                    formula: 'return 6'
+                    formula: 'return 6;'
                 },
                 {
                     name: 'Sodium Carbonate',
                     variableName: 'soda_ash',
-                    formula: 'return 0'
+                    formula: 'return 0;'
                 }
             ]
         }

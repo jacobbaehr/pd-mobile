@@ -111,7 +111,6 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
 
     render() {
         const pools = (this.pools === undefined) ? [] : this.pools.map(p => p);
-        
         return(
             <View style={styles.container}>
                 <SectionList
@@ -126,7 +125,7 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
                 <Button
                     styles={styles.button}
                     onPress={this.handleAddPoolPressed}
-                    title="Add New Pool"
+                    title="Add Newasldkfjasdkl Pool"
                     />
             </View>
         );

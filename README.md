@@ -19,6 +19,12 @@ The app is written in React Native & will be available on iOS and Android. For n
 [yarn](https://yarnpkg.com/en/): `npm install yarn`
 - This manages 3rd-party open-source javascript libraries efficiently (sort-of like a more specific version of brew)
 
+[TypeScript](https://www.typescriptlang.org/): `npm install -g typescript`
+- This is the programming language that PoolDash is written in! It is Javascript with static types & even more dependencies 😅.
+
+[React Native](https://facebook.github.io/react-native/): `npm install -g react-native-cli`
+- This is the application framework that PoolDash is built on. It allows the app to run on both iOS and Android devices!
+
 ## Build the project
 
 1) `git clone git@github.com:Gazzini/PoolDash.git` (or download the .zip file)
@@ -27,9 +33,9 @@ The app is written in React Native & will be available on iOS and Android. For n
 
 3) `yarn install` -- Installs all of the dependencies listed in package.json
 
-4) `yarn run tsc -w` -- Compiles all of the typescript code into javascript code (use "yarn run" to ensure you're using the local typescript version)
+4) `tsc -w` -- Compiles all of the typescript code into javascript code (use "yarn run" to ensure you're using the local typescript version)
 
-5) `yarn run react-native start` -- Prepares the react-native environment to serve javascript files to your iOS or Android app (do this in a separate terminal tab)
+5) `react-native start` -- Prepares the react-native environment to serve javascript files to your iOS or Android app (do this in a separate terminal tab)
 
 6) `react-native run-ios` -- Compiles & Runs the Xcode project, Launches the simulator, and loads your javascript bundle from your local React server
 
