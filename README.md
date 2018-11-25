@@ -1,8 +1,15 @@
+# All Rights Reserved
+The source code is available for public scrutiny, and I welcome any discussion or contribution (via an issue or pull request). I believe that transparency & community are important to the future of the pool-care industry. However, the project is *not* published with an open-source license, and contributors must accept certain terms when submitting a pull request.
+
+Please message me directly if you wish to license or integrate this software into your business.
+
 # PoolDash
 This app helps you chemically balance your swimming pool.
 
 ### Why
-I've made 3 pool-care apps in the last decade, with over 50,000 users. However, I work full-time and can't support the apps by myself. I'm releasing the most useful core functionality (the chemical dosing calculator) as a free, open-source project so that anyone can use, investigate, and contribute (shoutout to [@wc0sby](https://github.com/wc0sby) for taking the lead).
+Pool care is complicated, but there are answers. However, most people providing these answers are incentivized to sell expensive chemicals and equipment. Pooldash decouples the advice from the sales.
+
+I've made 3 pool-care apps in the last decade, with over 50,000 users. However, I work full-time and can't support the apps by myself. I'm hopeful that allowing anyone to view the source-code will ease the burden on me & allow other community members to step up & contribute (shoutout to [@wc0sby](https://github.com/wc0sby) for taking the lead).
 
 The app is written in React Native & will be available on iOS and Android. For now, if you're a developer, here is how you can build & run the app locally:
 
