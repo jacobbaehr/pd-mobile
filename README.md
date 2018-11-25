@@ -1,3 +1,7 @@
+<p align="center">
+    <img src="https://raw.githubusercontent.com/Gazzini/PoolDash/master/img/logo.svg?sanitize=true" alt="pooldash" width="400" />
+</p>
+
 # All Rights Reserved
 The source code is available for public scrutiny, and I welcome any discussion or contribution (via an issue or pull request). I believe that transparency & community are important to the future of the pool-care industry. However, the project is *not* published with an open-source license, and contributors must accept certain terms when submitting a pull request.
 
