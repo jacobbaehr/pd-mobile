@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'transparent',
-        height: 70,
+        height: 230,
+        marginHorizontal: 12
     },
     editingContainer: {
         backgroundColor: 'red'
@@ -52,21 +53,32 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         backgroundColor: '#0B1520',
-        margin: 2,
-        borderRadius: 3,
+        marginBottom: 10,
+        borderRadius: 12,
         borderWidth: .1,
         borderColor: '#BCBCC2',
-        padding: 2
+        padding: 2,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+        elevation: 2
     },
     poolNameText: {
         color: 'white',
         fontSize: 17,
+        position: 'absolute',
+        bottom: 32,
+        left: 12,
+        right: 12
     },
     poolVolumeText: {
         color: 'white',
         fontSize: 10,
-        justifyContent: 'flex-end',
-        marginTop: 10
+        position: 'absolute',
+        bottom: 12,
+        left: 12,
+        right: 12
     },
     iconStyle: {
         color: '#B3B3B3',

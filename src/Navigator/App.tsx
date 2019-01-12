@@ -11,30 +11,14 @@ export const App = StackNavigator({
   PoolList: {
     screen: PoolListScreen,
     navigationOptions: {
-      headerTintColor: 'lightgrey',
-      headerStyle: { 
-        backgroundColor: '#060D16',
-        shadowOpacity: 0,
-        elevation: 0,
-        shadowColor: 'transparent',
-      },
+      headerVisible: false,
+      header: null
     }
   },
   ReadingList: { screen: InputEntryListScreen },
   Details: { screen: InputDetailsScreen },
   Results: { screen: ResultsScreen },
   Settings: { screen: CalculationSettingsScreen },
-  Pool: { 
-    screen: PoolScreen,
-    navigationOptions: {
-      headerTintColor: 'lightgrey',
-      headerStyle: { 
-        backgroundColor: '#060D16',
-        shadowOpacity: 0,
-        elevation: 0,
-        shadowColor: 'transparent',
-      },
-    }
-  },
+  Pool: { screen: PoolScreen },
   RecipeList: { screen: RecipeListScreen }
 });

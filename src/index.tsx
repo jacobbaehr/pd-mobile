@@ -14,7 +14,7 @@ import { store } from './Redux/AppState';
 
 class PoolDash extends React.Component<{}, {}> {
     render() {
-        StatusBar.setBarStyle('light-content');
+        StatusBar.setBarStyle('default');
         
         return(
             <Provider store={store} >

@@ -18,6 +18,10 @@ export const initialData = {
                 {
                     name: 'Total Alkalinity',
                     variableName: 'ta'
+                },
+                {
+                    name: 'Wade\'s Mood',
+                    variableName: 'wm'
                 }
             ],
             outputs: [
@@ -35,6 +39,11 @@ export const initialData = {
                     name: 'Sodium Carbonate',
                     variableName: 'soda_ash',
                     formula: 'return 0;'
+                },
+                {
+                    name: 'Vodka',
+                    variableName: 'vodka',
+                    formula: 'if (wm < 5) return 1000; return 0;'
                 }
             ]
         }

@@ -19,7 +19,7 @@ export class Database {
         }
         await Realm.open({schema: [Pool, Recipe, Input, Output]}).then((value: Realm) => {
             Database.realm = value;
-            // Database.createInitialRecipes();
+            Database.createInitialRecipes();
             return Promise.resolve();
         }).catch((e: any) => {
             console.log('error openening databse');

@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, SectionList } from 'react-native';
-import { NavigationScreenProp, NavigationActions } from 'react-navigation';
+import { View, StyleSheet, SectionList, Image, Dimensions } from 'react-native';
+import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import  Swipeout from 'react-native-swipeout';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 import { Button } from '../../components/Button';
 import { PoolListItem } from './PoolListItem';
@@ -11,6 +12,8 @@ import { AppState, dispatch } from '../../Redux/AppState';
 import { selectPool } from '../../Redux/Actions';
 import { Database } from '../../Models/Database';
 import { Pool } from '../../Models/Pool';
+import { PDText } from '../../components/PDText';
+import { PoolListFooter } from './PoolListFooter';
 
 interface PoolListScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
@@ -111,23 +114,39 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
 
     render() {
         const pools = (this.pools === undefined) ? [] : this.pools.map(p => p);
+        const isEmpty = pools.length == 0;
+        const imageWidth = Dimensions.get('window').width;
+        const imageHeight = imageWidth * 0.792;
+        const imageStyles = isEmpty ? [styles.image] : [styles.image, styles.invisible]
+        console.log('imageStyles: ');
+        console.log(imageStyles);
         return(
-            <View style={styles.container}>
-                <SectionList
-                    style={{flex:1}}
-                    renderItem={({item}) => <PoolListItem isEditing={this.state.isEditing} pool={item} onPoolSelected={this.handlePoolSelected} />}
-                    renderSectionHeader={({section}) => null }
-                    sections={[
-                        {data: pools, title: 'Pools'}
-                    ]}
-                    keyExtractor={item => (item as Pool).objectId}
-                />
-                <Button
-                    styles={styles.button}
-                    onPress={this.handleAddPoolPressed}
-                    title="Add Newasldkfjasdkl Pool"
+            <SafeAreaView style={{flex: 1, backgroundColor: '#F8F8F8'}} forceInset={{ bottom: 'never' }}>
+                <Image 
+                    style={imageStyles} 
+                    source={require('../../assets/pool_list_empty.png')}
+                    width={imageWidth} 
+                    height={imageHeight}/>
+                <View style={styles.container}>
+                    <PDText style={[styles.title, styles.titleTop]}>My</PDText>
+                    <PDText style={[styles.title, styles.titleBottom]}>Pools</PDText>
+                    <SectionList
+                        style={{flex:1}}
+                        renderItem={({item}) => <PoolListItem 
+                                                    isEditing={this.state.isEditing}
+                                                    pool={item}
+                                                    onPoolSelected={this.handlePoolSelected} />}
+                        renderSectionHeader={({section}) => null }
+                        sections={[
+                            {data: pools, title: 'Pools'}
+                        ]}
+                        renderSectionFooter={({section}) => <PoolListFooter 
+                                                                isEmpty={isEmpty} 
+                                                                handlePress={this.handleAddPoolPressed} />}
+                        keyExtractor={item => (item as Pool).objectId}
                     />
-            </View>
+                </View>
+            </SafeAreaView>
         );
     }
 }
@@ -138,17 +157,30 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'flex-start',
-        backgroundColor: '#070D14'
-    },
-    button: {
-        alignSelf: 'stretch',
-        backgroundColor: '#005C9E',
-        height: 45,
-        margin: 15
+        backgroundColor: 'transparent'
     },
     editStyle: {
         margin: 5,
         marginRight: 10,
-        
+    },
+    title: {
+        marginLeft: 12,
+        fontSize: 28,
+        fontWeight: 'bold'
+    },
+    titleBottom: {
+        color: '#1E6BFF',
+        marginBottom: 12
+    },
+    titleTop: {
+        color: '#000',
+        marginBottom: -3
+    },
+    image: {
+        position: 'absolute',
+        bottom: 0
+    },
+    invisible: {
+        opacity: 0
     }
 });
