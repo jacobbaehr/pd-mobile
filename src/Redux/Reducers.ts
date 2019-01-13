@@ -10,8 +10,8 @@ import {
     SELECT_RECIPE,
     SelectRecipeAction} from './Actions';
 import { AppState } from './AppState';
-import { InputEntry } from '../Models/Recipe/InputEntry';
-import { OutputEntry } from '../Models/Recipe/OutputEntry';
+import { InputEntry } from '../models/recipe/InputEntry';
+import { OutputEntry } from '../models/recipe/OutputEntry';
 
 
 // Reducer that modifies the app state in response to a SetReadingAction.
@@ -46,9 +46,12 @@ export const readingsReducer = (previousState: AppState, action: AnyAction): App
             }
         case SELECT_POOL:
             const selectPoolAction = action as SelectPoolAction;
+            const selectedPoolId = (selectPoolAction.pool === undefined)
+                ? undefined
+                : selectPoolAction.pool.objectId
             return {
                 ...previousState,
-                selectedPoolId: selectPoolAction.pool.objectId
+                selectedPoolId: selectedPoolId
             }
         case SELECT_RECIPE:
             const selectRecipeAction = action as SelectRecipeAction;

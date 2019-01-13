@@ -2,10 +2,10 @@ import { StackNavigator } from 'react-navigation';
 import { InputEntryListScreen } from '../screens/InputEntryListScreen';
 import { InputDetailsScreen } from '../screens/InputDetailsScreen';
 import { ResultsScreen } from '../screens/ResultsScreen';
-import { RecipeListScreen } from '../screens/Recipes/RecipeListScreen';
+import { RecipeListScreen } from '../screens/recipes/RecipeListScreen';
 import { CalculationSettingsScreen } from '../screens/CalculationSettingsScreen';
 import { PoolScreen } from '../screens/PoolScreen';
-import { PoolListScreen } from '../screens/PoolList/PoolListScreen';
+import { PoolListScreen } from '../screens/poolList/PoolListScreen';
 
 export const App = StackNavigator({
   PoolList: {

@@ -1,10 +1,10 @@
-import { InputEntry } from '../Models/Recipe/InputEntry';
-import { OutputEntry } from '../Models/Recipe/OutputEntry';
-import { Output } from '../Models/Recipe/Output';
-import { Input } from '../Models/Recipe/Input';
-import { Recipe } from '../Models/Recipe/Recipe';
-import { Pool } from '../Models/Pool';
-import { Database } from '../Models/Database';
+import { InputEntry } from '../models/recipe/InputEntry';
+import { OutputEntry } from '../models/recipe/OutputEntry';
+import { Output } from '../models/recipe/Output';
+import { Input } from '../models/recipe/Input';
+import { Recipe } from '../models/recipe/Recipe';
+import { Pool } from '../models/Pool';
+import { Database } from '../models/Database';
 
 export class CalculationService {
     static calculateTreatments = (recipe: Recipe, pool: Pool, recordedInputs: InputEntry[]): OutputEntry[] => {

@@ -6,11 +6,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Button } from '../components/Button';
 import { InputEntryListItem } from './InputEntryListItem';
-import { AppState } from '../Redux/AppState';
-import { Input } from '../Models/Recipe/Input';
-import { Recipe } from '../Models/Recipe/Recipe';
-import { InputEntry } from '../Models/Recipe/InputEntry';
-import { Database } from '../Models/Database';
+import { AppState } from '../redux/AppState';
+import { Input } from '../models/recipe/Input';
+import { Recipe } from '../models/recipe/Recipe';
+import { InputEntry } from '../models/recipe/InputEntry';
+import { Database } from '../models/Database';
 
 interface InputEntryListScreenState {
     recipe: Recipe

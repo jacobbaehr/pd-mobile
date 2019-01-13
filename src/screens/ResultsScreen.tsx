@@ -2,12 +2,12 @@ import * as React from 'react';
 import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
-import { AppState } from '../Redux/AppState';
-import { InputEntry } from '../Models/Recipe/InputEntry';
-import { OutputEntry } from '../Models/Recipe/OutputEntry';
-import { Recipe } from '../Models/Recipe/Recipe';
-import { CalculationService } from '../Services/CalculationService';
-import { Database } from '../Models/Database';
+import { AppState } from '../redux/AppState';
+import { InputEntry } from '../models/recipe/InputEntry';
+import { OutputEntry } from '../models/recipe/OutputEntry';
+import { Recipe } from '../models/recipe/Recipe';
+import { CalculationService } from '../services/CalculationService';
+import { Database } from '../models/Database';
 
 interface ResultsScreenProps {
     navigation: NavigationScreenProp<{}, {}>;

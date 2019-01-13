@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, StyleSheet, Button, SectionList, TouchableHighlight } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { Recipe } from '../../Models/Recipe/Recipe';
+import { Recipe } from '../../models/recipe/Recipe';
 
 interface RecipeListItemProps {
     recipe: Recipe;

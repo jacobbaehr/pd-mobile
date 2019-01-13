@@ -1,15 +1,13 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Button, SectionList, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, Button, SectionList, TouchableHighlight, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { Pool } from '../../Models/Pool';
+import { Pool } from '../../models/Pool';
 
 interface PoolListItemProps {
     pool: Pool;
 
     onPoolSelected: (pool: Pool) => void;
-
-    isEditing: boolean;
 }
 
 export class PoolListItem extends React.Component<PoolListItemProps, {}> {
@@ -20,19 +18,20 @@ export class PoolListItem extends React.Component<PoolListItemProps, {}> {
 
     render() {
         const pool = this.props.pool;
-        const containerStyles = this.props.isEditing ?
-            [styles.container, styles.editingContainer] :
-            [styles.container];
 
         return (
-            <View style={containerStyles}>
+            <View style={styles.container}>
                 <TouchableHighlight
                     style={ styles.content }
                     onPress={this.handleButtonPressed}>
                     <View style={{flex: 1}}>
                         <Text style={styles.poolNameText}>{ pool.name }</Text>
                         <Text style={styles.poolVolumeText}>{ pool.volume } gallons</Text>
-                        <Icon name="chevron-right" style={styles.iconStyle}></Icon>
+                        <Image
+                            style={styles.star} 
+                            source={require('../../assets/star.png')}
+                            width={17} 
+                            height={16}/>
                     </View>
                 </TouchableHighlight>
             </View>
@@ -80,11 +79,9 @@ const styles = StyleSheet.create({
         left: 12,
         right: 12
     },
-    iconStyle: {
-        color: '#B3B3B3',
-        alignSelf: 'flex-end',
+    star: {
         position: 'absolute',
-        top: 25,
-        fontSize: 15
+        top: 10,
+        right: 10
     }
 });

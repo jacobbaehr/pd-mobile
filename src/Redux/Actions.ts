@@ -1,8 +1,8 @@
 import { AnyAction } from 'redux';
 
-import { Pool } from '../Models/Pool';
-import { Recipe } from '../Models/Recipe/Recipe';
-import { Database } from '../Models/Database';
+import { Pool } from '../models/Pool';
+import { Recipe } from '../models/recipe/Recipe';
+import { Database } from '../models/Database';
 
 export const RECORD_INPUT = 'RECORD_INPUT';
 export const SET_FORMULA = 'SET_FORMULA';
@@ -38,11 +38,11 @@ export const saveNewPool = (pool: Pool): SavePoolAction => {
 }
 
 export interface SelectPoolAction extends AnyAction { 
-    pool: Pool;
+    pool?: Pool;
 }
 
 // Sets the currently selected pool id
-export const selectPool = (pool: Pool): SelectPoolAction => {
+export const selectPool = (pool?: Pool): SelectPoolAction => {
     return {
         type: SELECT_POOL,
         pool
@@ -59,4 +59,8 @@ export const selectRecipe = (recipe: Recipe): SelectRecipeAction => {
         type: SELECT_RECIPE,
         recipe
     }
+}
+
+export interface DeletePoolAvtion extends AnyAction {
+
 }

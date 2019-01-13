@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import { dispatch } from '../Redux/AppState';
-// import { Reading } from '../Models/Reading';
-import { AppState } from '../Redux/AppState';
+import { dispatch } from '../redux/AppState';
+// import { Reading } from '../models/Reading';
+import { AppState } from '../redux/AppState';
 import { Button } from '../components/Button';
 
 

@@ -1,9 +1,9 @@
 import * as Realm from 'realm';
 
 import { Pool } from './Pool';
-import { Input } from './Recipe/Input';
-import { Output } from './Recipe/Output';
-import { Recipe } from './Recipe/Recipe';
+import { Input } from './recipe/Input';
+import { Output } from './recipe/Output';
+import { Recipe } from './recipe/Recipe';
 import { initialData } from '../InitialData';
 
 export class Database {
@@ -59,6 +59,19 @@ export class Database {
             console.error('couldnt save it');
         }
         return pool.objectId;
+    }
+
+    static deletePool = (poolId: string) => {
+        const realm = Database.realm;
+        const pool = Database.loadPool(poolId);
+        try {
+            realm.write(() => {
+                realm.delete(pool);
+            });
+        } catch (e) {
+            console.log(e);
+            console.error('couldnt delete it');
+        }
     }
 
     static loadRecipes = (): Realm.Results<Recipe> => {

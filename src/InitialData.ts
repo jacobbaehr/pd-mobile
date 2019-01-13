@@ -1,4 +1,4 @@
-import { Recipe } from './Models/Recipe/Recipe';
+import { Recipe } from './models/recipe/Recipe';
 
 export const initialData = {
     recipes: [

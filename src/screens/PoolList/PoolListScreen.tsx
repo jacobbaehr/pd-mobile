@@ -8,10 +8,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Button } from '../../components/Button';
 import { PoolListItem } from './PoolListItem';
-import { AppState, dispatch } from '../../Redux/AppState';
-import { selectPool } from '../../Redux/Actions';
-import { Database } from '../../Models/Database';
-import { Pool } from '../../Models/Pool';
+import { AppState, dispatch } from '../../redux/AppState';
+import { selectPool } from '../../redux/Actions';
+import { Database } from '../../models/Database';
+import { Pool } from '../../models/Pool';
 import { PDText } from '../../components/PDText';
 import { PoolListFooter } from './PoolListFooter';
 
@@ -23,21 +23,18 @@ interface PoolListScreenProps {
 
     // This is a flag that just changes whenever we save a new pool.
     poolsLastUpdated: number;
-    
 }
 
 const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolListScreenProps => {
     return {
         navigation: ownProps.navigation,
         selectedPoolId: state.selectedPoolId,
-        poolsLastUpdated: state.poolsLastUpdated,
-        
+        poolsLastUpdated: state.poolsLastUpdated
     }
 }
 
 interface PoolListScreenState {
     initialLoadFinished: boolean;
-    isEditing: boolean;
 }
 
 class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolListScreenState> {
@@ -48,8 +45,7 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
         super(props);
 
         this.state = {
-            initialLoadFinished: false,
-            isEditing: false
+            initialLoadFinished: false
         };
     }
 
@@ -72,16 +68,6 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
         }
     }
 
-     onPressEdit = () => {
-        const isEditing = !this.state.isEditing;
-
-        // Re-renders the screen
-        this.setState({ isEditing });
-
-        // Re-renders the navbar (because React-Navigation is remarkably unintuitive)
-        this.props.navigation.setParams({ isEditing });
-    }
-
     componentDidMount() {
         // Fetch pools from persistent storage
         Database.prepare().then(() => {
@@ -95,16 +81,14 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
         });
 
         this.props.navigation.setParams({
-            isEditing: false,
-            onPressEdit: this.onPressEdit
+            isEditing: false
         });
     }
 
-    
     handlePoolSelected = (pool: Pool): void => {
         dispatch(selectPool(pool));
 
-        const nextScreen =  this.state.isEditing ? 'Pool' : 'RecipeList';
+        const nextScreen = 'RecipeList';
         this.props.navigation.navigate(nextScreen);
     }
 
@@ -122,7 +106,7 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
         console.log(imageStyles);
         return(
             <SafeAreaView style={{flex: 1, backgroundColor: '#F8F8F8'}} forceInset={{ bottom: 'never' }}>
-                <Image 
+                <Image
                     style={imageStyles} 
                     source={require('../../assets/pool_list_empty.png')}
                     width={imageWidth} 
@@ -132,8 +116,7 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
                     <PDText style={[styles.title, styles.titleBottom]}>Pools</PDText>
                     <SectionList
                         style={{flex:1}}
-                        renderItem={({item}) => <PoolListItem 
-                                                    isEditing={this.state.isEditing}
+                        renderItem={({item}) => <PoolListItem
                                                     pool={item}
                                                     onPoolSelected={this.handlePoolSelected} />}
                         renderSectionHeader={({section}) => null }
@@ -144,6 +127,7 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
                                                                 isEmpty={isEmpty} 
                                                                 handlePress={this.handleAddPoolPressed} />}
                         keyExtractor={item => (item as Pool).objectId}
+                        overScrollMode={'always'}
                     />
                 </View>
             </SafeAreaView>

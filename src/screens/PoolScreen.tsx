@@ -2,9 +2,9 @@ import * as React from 'react';
 import { View, Text, StyleSheet, SectionList, TextInput } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { Button } from '../components/Button'
-import { dispatch } from '../Redux/AppState';
-import { saveNewPool } from '../Redux/Actions';
-import { Pool } from '../Models/Pool';
+import { dispatch } from '../redux/AppState';
+import { saveNewPool } from '../redux/Actions';
+import { Pool } from '../models/Pool';
 
 interface PoolScreenProps {
     navigation: NavigationScreenProp<{ params: { pool: Pool }}, void>;

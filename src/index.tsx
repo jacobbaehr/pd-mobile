@@ -8,8 +8,8 @@ import * as React from 'react';
 import { AppRegistry, StatusBar } from 'react-native';
 import { Provider } from 'react-redux'
 
-import { App } from './Navigator/App';
-import { store } from './Redux/AppState';
+import { App } from './navigator/App';
+import { store } from './redux/AppState';
 
 
 class PoolDash extends React.Component<{}, {}> {

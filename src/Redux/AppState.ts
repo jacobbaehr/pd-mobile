@@ -1,8 +1,8 @@
 import { createStore } from 'redux';
 
 import { readingsReducer } from './Reducers';
-import { InputEntry } from '../Models/Recipe/InputEntry';
-import { OutputEntry } from '../Models/Recipe/OutputEntry';
+import { InputEntry } from '../models/recipe/InputEntry';
+import { OutputEntry } from '../models/recipe/OutputEntry';
 
 // Describes the shape of the application redux state.
 export interface AppState {
