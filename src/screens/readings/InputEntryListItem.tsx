@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Button, SectionList, TouchableHighlight } from 'react-native';
 
-import { InputEntry } from '../models/recipe/InputEntry';
-import { Input } from '../models/recipe/Input';
+import { InputEntry } from '../../models/recipe/InputEntry';
+import { Input } from '../../models/recipe/Input';
 
 interface InputEntryListItemProps {
     inputEntry?: InputEntry;

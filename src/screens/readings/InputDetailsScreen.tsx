@@ -2,10 +2,10 @@ import * as React from 'react';
 import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 
-import { dispatch } from '../redux/AppState';
-import { recordInput } from '../redux/Actions';
-import { Input } from '../models/recipe/Input';
-import { InputEntry } from '../models/recipe/InputEntry';
+import { dispatch } from '../../redux/AppState';
+import { recordInput } from '../../redux/Actions';
+import { Input } from '../../models/recipe/Input';
+import { InputEntry } from '../../models/recipe/InputEntry';
 
 interface InputDetailsScreenProps {
     navigation: NavigationScreenProp<{ params: { input: Input, inputEntry?: InputEntry }}, {}>;

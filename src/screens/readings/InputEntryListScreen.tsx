@@ -4,13 +4,13 @@ import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { Button } from '../components/Button';
+import { Button } from '../../components/Button';
 import { InputEntryListItem } from './InputEntryListItem';
-import { AppState } from '../redux/AppState';
-import { Input } from '../models/recipe/Input';
-import { Recipe } from '../models/recipe/Recipe';
-import { InputEntry } from '../models/recipe/InputEntry';
-import { Database } from '../models/Database';
+import { AppState } from '../../redux/AppState';
+import { Input } from '../../models/recipe/Input';
+import { Recipe } from '../../models/recipe/Recipe';
+import { InputEntry } from '../../models/recipe/InputEntry';
+import { Database } from '../../models/Database';
 
 interface InputEntryListScreenState {
     recipe: Recipe
@@ -36,6 +36,7 @@ class InputEntryListScreenComponent extends React.Component<InputEntryListScreen
         super(props);
 
         let recipe = Database.loadRecipe(props.recipeId);
+        
         this.state = { recipe }
     }
 
@@ -56,7 +57,6 @@ class InputEntryListScreenComponent extends React.Component<InputEntryListScreen
               shadowColor: 'transparent',
             },
             headerRight: <Icon onPress={params.onPressSettings} name={'cog'} style={styles.settingIcon}></Icon>
-
         };
     }
 

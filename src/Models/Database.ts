@@ -19,7 +19,7 @@ export class Database {
         }
         await Realm.open({schema: [Pool, Recipe, Input, Output]}).then((value: Realm) => {
             Database.realm = value;
-            Database.createInitialRecipes();
+            // Database.createInitialRecipes();
             return Promise.resolve();
         }).catch((e: any) => {
             console.log('error openening databse');
@@ -103,7 +103,7 @@ export class Database {
         } catch (e) {
             console.log(e);
             //  TODO: use async-storage to check necessary version, support migrations.
-            // console.error('Error saving recipes');
+            console.error('Error saving recipes');
         }
     }
 

@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, SectionList } from 'react-native';
+import { View, StyleSheet, SectionList } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Button } from '../../components/Button';
 import { RecipeListItem } from './RecipeListItem';
@@ -10,7 +9,7 @@ import { AppState, dispatch } from '../../redux/AppState';
 import { Database } from '../../models/Database';
 import { Pool } from '../../models/Pool';
 import { Recipe } from '../../models/recipe/Recipe';
-import { selectRecipe, selectPool } from '../../redux/Actions';
+import { selectRecipe } from '../../redux/Actions';
 
 interface RecipeListScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
@@ -70,13 +69,6 @@ class RecipeListScreenComponent extends React.Component<RecipeListScreenProps, {
         this.props.navigation.navigate('ReadingList');
     }
 
-    // TEMP: TODO: move this
-    handleDeletePoolSelected = () => {
-        Database.deletePool(this.pool.objectId);
-        dispatch(selectPool());
-        this.props.navigation.goBack();
-    }
-
     render() {
         const recipes = (this.recipes === undefined) ? [] : this.recipes.map(p => p);
         return(
@@ -90,7 +82,6 @@ class RecipeListScreenComponent extends React.Component<RecipeListScreenProps, {
                         ]}
                         keyExtractor={item => (item as Recipe).objectId}
                     />
-                    <Button onPress={this.handleDeletePoolSelected} title={'Delete Pool'} styles={{height: 70, backgroundColor: 'red'}} />
             </View>
         );
     }

@@ -1,24 +1,24 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, SectionList, TextInput } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
 import { Button } from '../components/Button'
 import { dispatch } from '../redux/AppState';
 import { saveNewPool } from '../redux/Actions';
 import { Pool } from '../models/Pool';
 
-interface PoolScreenProps {
+interface EditPoolScreenProps {
     navigation: NavigationScreenProp<{ params: { pool: Pool }}, void>;
 }
 
-interface PoolScreenState { 
+interface EditPoolScreenState { 
     volume: number;
 
     name: string;
 }
 
-export class PoolScreen extends React.Component<PoolScreenProps, PoolScreenState> {
+export class EditPoolScreen extends React.Component<EditPoolScreenProps, EditPoolScreenState> {
 
-    constructor(props: PoolScreenProps) {
+    constructor(props: EditPoolScreenProps) {
         super(props);
 
         this.state = {
@@ -56,20 +56,26 @@ export class PoolScreen extends React.Component<PoolScreenProps, PoolScreenState
     }
     render(){
         return(
-            <View style={styles.container}>
-                <Text style={styles.poolNameLabel}>Pool Name</Text>
-                <TextInput style={styles.textInput} onChangeText={this.handleNameTextChanged} keyboardType={'default'}
-                    autoFocus={true}/>
-                <Text style={styles.poolNameLabel}>Pool Volume</Text>
-                <TextInput style={styles.textInput} onChangeText={this.handleVolumeTextChanged} keyboardType={'numeric'}
-                    autoFocus={true} />
-                
-                <Button title="Save Pool" onPress={this.handleButtonPressed} styles={styles.button}/>
-            </View>
+            <SafeAreaView style={styles.safeArea}>
+                <View style={styles.container}>
+                    <Text style={styles.poolNameLabel}>Pool Name</Text>
+                    <TextInput style={styles.textInput} onChangeText={this.handleNameTextChanged} keyboardType={'default'}
+                        autoFocus={true}/>
+                    <Text style={styles.poolNameLabel}>Pool Volume</Text>
+                    <TextInput style={styles.textInput} onChangeText={this.handleVolumeTextChanged} keyboardType={'numeric'}
+                        autoFocus={true} />
+                    
+                    <Button title="Save Pool" onPress={this.handleButtonPressed} styles={styles.button}/>
+                </View>
+            </SafeAreaView>
         );
     }
 }
     const styles = StyleSheet.create({
+        safeArea: {
+            backgroundColor: '#070D14',
+            flex: 1
+        },
         container: {
           flex: 1,
           justifyContent: 'flex-start',

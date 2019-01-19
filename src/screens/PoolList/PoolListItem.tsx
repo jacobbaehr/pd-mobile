@@ -1,8 +1,13 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Button, SectionList, TouchableHighlight, Image } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { View, StyleSheet, Image } from 'react-native';
+// @ts-ignore
+import { Transition } from 'react-navigation-fluid-transitions';
+// @ts-ignore
+import TouchableScale from 'react-native-touchable-scale';
 
 import { Pool } from '../../models/Pool';
+import { PDText } from '../../components/PDText';
+import { PoolBackgroundView } from '../pool/PoolBackgroundView';
 
 interface PoolListItemProps {
     pool: Pool;
@@ -20,21 +25,24 @@ export class PoolListItem extends React.Component<PoolListItemProps, {}> {
         const pool = this.props.pool;
 
         return (
-            <View style={styles.container}>
-                <TouchableHighlight
-                    style={ styles.content }
-                    onPress={this.handleButtonPressed}>
-                    <View style={{flex: 1}}>
-                        <Text style={styles.poolNameText}>{ pool.name }</Text>
-                        <Text style={styles.poolVolumeText}>{ pool.volume } gallons</Text>
+            <TouchableScale
+                style={ styles.container }
+                onPress={this.handleButtonPressed}
+                underlayColor={'transparent'}
+                activeScale={0.99}>
+                <View style={ styles.content }>
+                    <PoolBackgroundView style={styles.background} pool={pool}></PoolBackgroundView>
+                    <PDText style={styles.poolNameText} shared={`pool_name_${pool.objectId}`}>{ pool.name }</PDText>
+                    <PDText style={styles.poolVolumeText} shared={`pool_volume_${pool.objectId}`}>{ pool.volume } gallons</PDText>
+                    <Transition shared={`pool_star_${pool.objectId}`}>
                         <Image
                             style={styles.star} 
                             source={require('../../assets/star.png')}
                             width={17} 
                             height={16}/>
-                    </View>
-                </TouchableHighlight>
-            </View>
+                    </Transition>
+                </View>
+            </TouchableScale>
         );
     }
 }
@@ -42,20 +50,14 @@ export class PoolListItem extends React.Component<PoolListItemProps, {}> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'transparent',
         height: 230,
-        marginHorizontal: 12
-    },
-    editingContainer: {
-        backgroundColor: 'red'
+        marginHorizontal: 12,
+        backgroundColor: 'transparent',
+        marginBottom: 10
     },
     content: {
         flex: 1,
-        backgroundColor: '#0B1520',
-        marginBottom: 10,
         borderRadius: 12,
-        borderWidth: .1,
-        borderColor: '#BCBCC2',
         padding: 2,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 10 },
@@ -63,21 +65,27 @@ const styles = StyleSheet.create({
         shadowRadius: 10,
         elevation: 2
     },
+    background: {
+        flex: 1,
+        borderRadius: 12
+    },
     poolNameText: {
         color: 'white',
-        fontSize: 17,
+        fontSize: 28,
         position: 'absolute',
         bottom: 32,
         left: 12,
-        right: 12
+        right: 12,
+        fontWeight: '600'
     },
     poolVolumeText: {
         color: 'white',
-        fontSize: 10,
+        fontSize: 16,
         position: 'absolute',
         bottom: 12,
         left: 12,
-        right: 12
+        right: 12,
+        fontWeight: '500'
     },
     star: {
         position: 'absolute',

@@ -8,20 +8,18 @@ import * as React from 'react';
 import { AppRegistry, StatusBar } from 'react-native';
 import { Provider } from 'react-redux'
 
-import { App } from './navigator/App';
+import { PDNavFluid } from './navigator/App';
 import { store } from './redux/AppState';
 
 
 class PoolDash extends React.Component<{}, {}> {
     render() {
         StatusBar.setBarStyle('default');
-        
         return(
             <Provider store={store} >
-                <App />
+                <PDNavFluid />
             </Provider>
         );
     }
 }
-
 AppRegistry.registerComponent('PoolDash', () => PoolDash);

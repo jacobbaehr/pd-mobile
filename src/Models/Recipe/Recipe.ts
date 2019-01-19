@@ -42,8 +42,4 @@ export class Recipe {
         recipe.outputs = outputs;
         return recipe;
     }
-
-    static fromJSON(json: string) {
-        
-    }
 }

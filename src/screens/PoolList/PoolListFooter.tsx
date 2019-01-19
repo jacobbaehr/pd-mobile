@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { TouchableHighlight, StyleSheet, Text, StatusBar, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { PDText } from '../../components/PDText';
+// @ts-ignore
+import TouchableScale from 'react-native-touchable-scale';
 
 interface PoolListFooterProps {
     isEmpty: boolean,
@@ -19,16 +21,17 @@ export class PoolListFooter extends React.Component<PoolListFooterProps, {}> {
             : [styles.button, styles.buttonNonEmpty];
 
         return (
-        <TouchableHighlight
+        <TouchableScale
             style={buttonStyles} 
             underlayColor={'#DDD'}
-            activeOpacity={0.6} 
+            activeOpacity={0.6}
+            activeScale={0.985}
             onPress={this.handlePress}>
                 <PDText 
                     style={styles.plusText}>
                         +
                 </PDText>
-        </TouchableHighlight>);
+        </TouchableScale>);
     }
 
     render() {

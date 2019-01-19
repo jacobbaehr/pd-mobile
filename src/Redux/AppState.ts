@@ -25,7 +25,8 @@ export interface AppState {
 const initialAppState: AppState = {
     inputs: [],
     outputs: [],
-    poolsLastUpdated: 0
+    poolsLastUpdated: 0,
+    recipeId: '002_initial_big3'
 };
 
 export const store = createStore(readingsReducer, initialAppState);

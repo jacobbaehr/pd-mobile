@@ -2,9 +2,8 @@ import * as React from 'react';
 import { View, StyleSheet, SectionList, Image, Dimensions } from 'react-native';
 import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
-import  Swipeout from 'react-native-swipeout';
-import Icon from 'react-native-vector-icons/FontAwesome';
-
+// @ts-ignore
+import { Transition } from 'react-navigation-fluid-transitions';
 
 import { Button } from '../../components/Button';
 import { PoolListItem } from './PoolListItem';
@@ -88,12 +87,12 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
     handlePoolSelected = (pool: Pool): void => {
         dispatch(selectPool(pool));
 
-        const nextScreen = 'RecipeList';
+        const nextScreen = 'PoolScreen';
         this.props.navigation.navigate(nextScreen);
     }
 
     handleAddPoolPressed = (): void => {
-        this.props.navigation.navigate('Pool');
+        this.props.navigation.navigate('EditPool');
     }
 
     render() {
@@ -102,8 +101,6 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
         const imageWidth = Dimensions.get('window').width;
         const imageHeight = imageWidth * 0.792;
         const imageStyles = isEmpty ? [styles.image] : [styles.image, styles.invisible]
-        console.log('imageStyles: ');
-        console.log(imageStyles);
         return(
             <SafeAreaView style={{flex: 1, backgroundColor: '#F8F8F8'}} forceInset={{ bottom: 'never' }}>
                 <Image
@@ -112,8 +109,12 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
                     width={imageWidth} 
                     height={imageHeight}/>
                 <View style={styles.container}>
-                    <PDText style={[styles.title, styles.titleTop]}>My</PDText>
-                    <PDText style={[styles.title, styles.titleBottom]}>Pools</PDText>
+                    <Transition appear='top'>
+                        <View>
+                            <PDText style={[styles.title, styles.titleTop]}>My</PDText>
+                            <PDText style={[styles.title, styles.titleBottom]}>Pools</PDText>
+                        </View>
+                    </Transition>
                     <SectionList
                         style={{flex:1}}
                         renderItem={({item}) => <PoolListItem
