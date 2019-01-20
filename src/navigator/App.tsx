@@ -15,12 +15,18 @@ const PDNavStack = createStackNavigator({
   PoolScreen: { screen: PoolScreen },
   ReadingList: { screen: InputEntryListScreen }
 }, {
-  navigationOptions: { header: null}
+  navigationOptions: { header: null }
 });
+
+/// Amazingly, this defines the nav options for its PARENT, which is PDNavFluid 🤯
+PDNavStack.navigationOptions = ( navigationProp: any ) => {
+  const { navigation } = navigationProp;
+  const gesturesEnabled = navigation.state.index == 0;
+  return { gesturesEnabled }
+};
 
 export const PDNavFluid = createFluidNavigator({
     PoolList: { screen: PoolListScreen },
-    ReadingList: { screen: InputEntryListScreen, navigationOptions: { mode: 'card' } },
     Details: { screen: InputDetailsScreen },
     Results: { screen: ResultsScreen },
     Settings: { screen: CalculationSettingsScreen },
@@ -39,4 +45,3 @@ export const PDNavFluid = createFluidNavigator({
         // easing: Easing.elastic(2)
     }
 });
-

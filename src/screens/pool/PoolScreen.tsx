@@ -1,7 +1,7 @@
 import * as React from 'react';
 // @ts-ignore
 import { Transition } from 'react-navigation-fluid-transitions';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, Alert } from 'react-native';
 import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { AppState, dispatch } from '../../redux/AppState';
@@ -11,6 +11,8 @@ import { Pool } from '../../models/Pool';
 import { PDText } from '../../components/PDText';
 import { GradientButton } from '../../components/GradientButton';
 import { PoolHeaderView } from './PoolHeaderView';
+
+import { PDNavFluid } from '../../navigator/App';
 
 interface PoolListScreenProps {
     navigation: NavigationScreenProp<{}, {}>;

@@ -102,6 +102,7 @@ class InputEntryListScreenComponent extends React.Component<InputEntryListScreen
                         {data: this.state.recipe.inputs}
                     ]}
                     keyExtractor={item => (item as Input).objectId}
+                    contentInsetAdjustmentBehavior={'always'}
                 />
                 <Button
                     styles={styles.button}

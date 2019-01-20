@@ -47,26 +47,7 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
             initialLoadFinished: false
         };
     }
-
-    static navigationOptions = (navigationOptions: any) => {
-        
-        const state = navigationOptions.navigation.state;
-        const params = (state.params !== undefined)
-            ? state.params
-            : {onPressEdit: () => {}};
-        let isEditing = params.isEditing;
-        return {
-            title: 'Pools',
-            headerRight: (
-                <Button 
-                    title={ isEditing ? 'Done' : 'Edit' }
-                    onPress={() => {params.onPressEdit()}} 
-                    styles={styles.editStyle}
-                />
-            )
-        }
-    }
-
+    
     componentDidMount() {
         // Fetch pools from persistent storage
         Database.prepare().then(() => {
@@ -78,13 +59,10 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
         .catch((e) => {
             console.error(e);
         });
-
-        this.props.navigation.setParams({
-            isEditing: false
-        });
     }
 
     handlePoolSelected = (pool: Pool): void => {
+
         dispatch(selectPool(pool));
 
         const nextScreen = 'PoolScreen';

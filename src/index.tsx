@@ -13,6 +13,8 @@ import { store } from './redux/AppState';
 
 
 class PoolDash extends React.Component<{}, {}> {
+    static router = PDNavFluid.router;
+
     render() {
         StatusBar.setBarStyle('default');
         return(
