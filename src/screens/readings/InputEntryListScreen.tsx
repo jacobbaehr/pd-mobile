@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, SectionList } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
+import { View, StyleSheet, SectionList, SectionListData } from 'react-native';
+import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Button } from '../../components/Button';
 import { InputEntryListItem } from './InputEntryListItem';
@@ -11,61 +10,50 @@ import { Input } from '../../models/recipe/Input';
 import { Recipe } from '../../models/recipe/Recipe';
 import { InputEntry } from '../../models/recipe/InputEntry';
 import { Database } from '../../models/Database';
+import { ReadingListHeader } from './ReadingListHeader';
+import { Pool } from '../../models/Pool';
+import { ReadingListSectionHeader } from './ReadingListSectionHeader';
 
-interface InputEntryListScreenState {
-    recipe: Recipe
-}
+interface InputEntryListScreenState {}
 
 interface InputEntryListScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
     entries: InputEntry[];
     recipeId: string;
+    poolId: string;
 }
 
 const mapStateToProps = (state: AppState, ownProps: InputEntryListScreenProps): InputEntryListScreenProps => {
     return {
         navigation: ownProps.navigation,
         entries: state.inputs,
-        recipeId: state.recipeId!
+        recipeId: state.recipeId!,
+        poolId: state.selectedPoolId!
     };
 };
 
 class InputEntryListScreenComponent extends React.Component<InputEntryListScreenProps, InputEntryListScreenState> {
 
+    pool: Pool
+    recipe: Recipe
+
     constructor(props: InputEntryListScreenProps) {
         super(props);
 
-        let recipe = Database.loadRecipe(props.recipeId);
-        
-        this.state = { recipe }
+        this.recipe = Database.loadRecipe(props.recipeId);
+        this.pool = Database.loadPool(props.poolId);
     }
 
-    static navigationOptions = (navigationOptions: any) => {
-        const state = navigationOptions.navigation.state;
-        
-        const params = (state.params !== undefined)
-            ? state.params
-            : {onPressSettings: () => {}};
-        
-        return {
-            title: 'Readings',
-            headerTintColor: 'lightgrey',
-            headerStyle: { 
-              backgroundColor: '#060D16',
-              shadowOpacity: 0,
-              elevation: 0,
-              shadowColor: 'transparent',
-            },
-            headerRight: <Icon onPress={params.onPressSettings} name={'cog'} style={styles.settingIcon}></Icon>
-        };
-    }
-
-    componentDidMount() {
-        this.props.navigation.setParams({ onPressSettings: this.onPressSettings });
-    }
-
-    private onPressSettings = () => {
-        this.props.navigation.navigate('Settings');
+    getRemainingInputs = (): Input[] => {
+        return this.recipe.inputs.filter(input => {
+            let inputComplete = false;
+            this.props.entries.forEach(entry => {
+                if (entry.inputID === input.objectId) {
+                    inputComplete = true;
+                }
+            });
+            return !inputComplete;
+        });
     }
 
     handleInputSelected = (input: Input, inputEntry?: InputEntry): void => {
@@ -80,6 +68,10 @@ class InputEntryListScreenComponent extends React.Component<InputEntryListScreen
         this.props.navigation.navigate('Pool');
     }
 
+    handleBackPressed = (): void => {
+        this.props.navigation.goBack();
+    }
+
     private getEntryForInput = (input: Input): InputEntry | undefined => {
         // array length will always be 0 (if entry not made) or 1 (if entry made)
         let entriesForInput = this.props.entries.filter(entry => entry.inputID === input.objectId);
@@ -88,29 +80,46 @@ class InputEntryListScreenComponent extends React.Component<InputEntryListScreen
     }
 
     render() {
-        const isCalculateButtonActive = this.props.entries.filter(entry => {
-                return entry.value !== null && entry.value !== undefined
-            }).length > 0;
+        const remaining = this.getRemainingInputs();
+        // TODO: clean this up
+        const completed = this.recipe.inputs.filter(input => 
+            remaining.filter(incomplete => 
+                incomplete.objectId == input.objectId
+            ).length == 0
+        );
+
+        const progress = (this.recipe.inputs.length == 0)
+            ? 1
+            : (completed.length / this.recipe.inputs.length);
+
+        const hasTakenEveryReading = completed.length == this.recipe.inputs.length;
+
+        let sections: SectionListData<Input>[] = [{data: remaining, title: 'Remaining Readings'}];
+        if (completed.length > 0) {
+            sections.push({data: completed, title: 'Completed Readings'});
+        }
 
         return(
+            <SafeAreaView style={{flex: 1, backgroundColor: '#F8F8F8'}} forceInset={{ bottom: 'never', top: 'never' }}>
             <View style={styles.container}>
                 <SectionList
                     style={{flex:1}}
+                    ListHeaderComponent={<ReadingListHeader handleBackPress={this.handleBackPressed } pool={this.pool} percentComplete={progress} />}
                     renderItem={({item}) => <InputEntryListItem input={item} inputEntry={this.getEntryForInput(item)} onInputSelected={this.handleInputSelected} />}
-                    renderSectionHeader={({section}) => <Text style={styles.list}>{section.title}</Text>}
-                    sections={[
-                        {data: this.state.recipe.inputs}
-                    ]}
+                    renderSectionHeader={({section}) => <ReadingListSectionHeader title={section.title} />}
+                    sections={sections}
                     keyExtractor={item => (item as Input).objectId}
                     contentInsetAdjustmentBehavior={'always'}
+                    stickySectionHeadersEnabled={false}
                 />
                 <Button
                     styles={styles.button}
                     onPress={this.handleCalculatePressed}
                     title="Calculate"
-                    disabled={!isCalculateButtonActive}
+                    disabled={!hasTakenEveryReading}
                 />
             </View>
+            </SafeAreaView>
         );
     }
 }
@@ -121,21 +130,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'flex-start',
-        backgroundColor: '#070D14',
-    },
-    list: {
-        textAlign: 'left'
+        backgroundColor: '#F8F8F8',
     },
     button: {
         alignSelf: 'stretch',
         backgroundColor: '#005C9E',
         height: 45,
         margin: 5
-    },
-    settingIcon: {
-        color: 'white',
-        fontSize: 22,
-        margin: 15
     }
 });
   

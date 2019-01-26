@@ -120,7 +120,6 @@ export const PoolScreen = connect(mapStateToProps)(PoolScreenComponent);
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-start',
         backgroundColor: 'transparent'
     },
     header: {  

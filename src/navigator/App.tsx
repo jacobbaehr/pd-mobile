@@ -13,7 +13,13 @@ import { PoolListScreen } from '../screens/poolList/PoolListScreen';
 
 const PDNavStack = createStackNavigator({
   PoolScreen: { screen: PoolScreen },
-  ReadingList: { screen: InputEntryListScreen }
+  ReadingList: { screen: InputEntryListScreen },
+  Details: { screen: InputDetailsScreen },
+  Results: { screen: ResultsScreen },
+  Settings: { screen: CalculationSettingsScreen },
+  EditPool: { screen: EditPoolScreen },
+  RecipeList: { screen: RecipeListScreen },
+
 }, {
   navigationOptions: { header: null }
 });
@@ -27,11 +33,6 @@ PDNavStack.navigationOptions = ( navigationProp: any ) => {
 
 export const PDNavFluid = createFluidNavigator({
     PoolList: { screen: PoolListScreen },
-    Details: { screen: InputDetailsScreen },
-    Results: { screen: ResultsScreen },
-    Settings: { screen: CalculationSettingsScreen },
-    EditPool: { screen: EditPoolScreen },
-    RecipeList: { screen: RecipeListScreen },
     PoolScreen: PDNavStack
   },
   {
