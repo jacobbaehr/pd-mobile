@@ -1,17 +1,18 @@
 import * as React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 // @ts-ignore
 import { Transition } from 'react-navigation-fluid-transitions';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
 
-import { Pool } from '../../models/Pool';
-import { PDText } from '../../components/PDText';
+import { Pool } from 'models/Pool';
+import { PDText } from 'components/PDText';
+import { images } from 'assets/images';
+
 import { PoolBackgroundView } from '../pool/PoolBackgroundView';
 
 interface PoolListItemProps {
     pool: Pool;
-
     onPoolSelected: (pool: Pool) => void;
 }
 
@@ -36,9 +37,9 @@ export class PoolListItem extends React.Component<PoolListItemProps, {}> {
                     <PDText style={styles.poolVolumeText} shared={`pool_volume_${pool.objectId}`}>{ pool.volume } gallons</PDText>
                     <Transition shared={`pool_star_${pool.objectId}`}>
                         <Image
-                            style={styles.star} 
-                            source={require('../../assets/star.png')}
-                            width={17} 
+                            style={styles.star}
+                            source={images.star}
+                            width={17}
                             height={16}/>
                     </Transition>
                 </View>

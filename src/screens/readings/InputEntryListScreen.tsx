@@ -3,7 +3,7 @@ import { View, StyleSheet, SectionList, SectionListData } from 'react-native';
 import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import { Button } from '../../components/Button';
+import { Button } from '../../components/buttons/Button';
 import { InputEntryListItem } from './InputEntryListItem';
 import { AppState } from '../../redux/AppState';
 import { Input } from '../../models/recipe/Input';
@@ -14,7 +14,7 @@ import { ReadingListHeader } from './ReadingListHeader';
 import { Pool } from '../../models/Pool';
 import { ReadingListSectionHeader } from './ReadingListSectionHeader';
 
-interface InputEntryListScreenState {}
+interface InputEntryListScreenState { }
 
 interface InputEntryListScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
@@ -63,7 +63,7 @@ class InputEntryListScreenComponent extends React.Component<InputEntryListScreen
     handleCalculatePressed = (): void => {
         this.props.navigation.navigate('Results');
     }
-    
+
     handlePoolSelectPressed = (): void => {
         this.props.navigation.navigate('Pool');
     }
@@ -82,8 +82,8 @@ class InputEntryListScreenComponent extends React.Component<InputEntryListScreen
     render() {
         const remaining = this.getRemainingInputs();
         // TODO: clean this up
-        const completed = this.recipe.inputs.filter(input => 
-            remaining.filter(incomplete => 
+        const completed = this.recipe.inputs.filter(input =>
+            remaining.filter(incomplete =>
                 incomplete.objectId == input.objectId
             ).length == 0
         );
@@ -94,31 +94,31 @@ class InputEntryListScreenComponent extends React.Component<InputEntryListScreen
 
         const hasTakenEveryReading = completed.length == this.recipe.inputs.length;
 
-        let sections: SectionListData<Input>[] = [{data: remaining, title: 'Remaining Readings'}];
+        let sections: SectionListData<Input>[] = [{ data: remaining, title: 'Remaining Readings' }];
         if (completed.length > 0) {
-            sections.push({data: completed, title: 'Completed Readings'});
+            sections.push({ data: completed, title: 'Completed Readings' });
         }
 
-        return(
-            <SafeAreaView style={{flex: 1, backgroundColor: '#F8F8F8'}} forceInset={{ bottom: 'never', top: 'never' }}>
-            <View style={styles.container}>
-                <SectionList
-                    style={{flex:1}}
-                    ListHeaderComponent={<ReadingListHeader handleBackPress={this.handleBackPressed } pool={this.pool} percentComplete={progress} />}
-                    renderItem={({item}) => <InputEntryListItem input={item} inputEntry={this.getEntryForInput(item)} onInputSelected={this.handleInputSelected} />}
-                    renderSectionHeader={({section}) => <ReadingListSectionHeader title={section.title} />}
-                    sections={sections}
-                    keyExtractor={item => (item as Input).objectId}
-                    contentInsetAdjustmentBehavior={'always'}
-                    stickySectionHeadersEnabled={false}
-                />
-                <Button
-                    styles={styles.button}
-                    onPress={this.handleCalculatePressed}
-                    title="Calculate"
-                    disabled={!hasTakenEveryReading}
-                />
-            </View>
+        return (
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#F8F8F8' }} forceInset={{ bottom: 'never', top: 'never' }}>
+                <View style={styles.container}>
+                    <SectionList
+                        style={{ flex: 1 }}
+                        ListHeaderComponent={<ReadingListHeader handleBackPress={this.handleBackPressed} pool={this.pool} percentComplete={progress} />}
+                        renderItem={({ item }) => <InputEntryListItem input={item} inputEntry={this.getEntryForInput(item)} onInputSelected={this.handleInputSelected} />}
+                        renderSectionHeader={({ section }) => <ReadingListSectionHeader title={section.title} />}
+                        sections={sections}
+                        keyExtractor={item => (item as Input).objectId}
+                        contentInsetAdjustmentBehavior={'always'}
+                        stickySectionHeadersEnabled={false}
+                    />
+                    <Button
+                        styles={styles.button}
+                        onPress={this.handleCalculatePressed}
+                        title="Calculate"
+                        disabled={!hasTakenEveryReading}
+                    />
+                </View>
             </SafeAreaView>
         );
     }
@@ -139,4 +139,3 @@ const styles = StyleSheet.create({
         margin: 5
     }
 });
-  

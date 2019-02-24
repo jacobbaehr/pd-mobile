@@ -1,13 +1,15 @@
 import * as React from 'react';
-import { StyleSheet, View, Image } from 'react-native';
-import { PDText } from './PDText';
+import { Image, StyleSheet, View } from 'react-native';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
 
+import { images } from 'assets/images';
+import { PDText } from 'components/PDText';
+
 
 interface BackButtonProps {
-    title: string
-    handleBackPressed: () => void
+    title: string;
+    handleBackPressed: () => void;
 }
 
 export class BackButton extends React.Component<BackButtonProps, {}> {
@@ -19,15 +21,15 @@ export class BackButton extends React.Component<BackButtonProps, {}> {
                     underlayColor={'#F8F8F8'}
                     activeScale={0.97}
                     onPress={this.props.handleBackPressed}>
-                            <Image
-                                style={styles.backButtonImage}
-                                source={require('../assets/back.png')}
-                                width={21}
-                                height={21}/>
-                            <PDText style={styles.backButtonText}>
-                                {this.props.title}
-                            </PDText>
-                        
+                    <Image
+                        style={styles.backButtonImage}
+                        source={images.back}
+                        width={21}
+                        height={21} />
+                    <PDText style={styles.backButtonText}>
+                        {this.props.title}
+                    </PDText>
+
                 </TouchableScale>
                 <View style={styles.backButtonSpacer}></View>
             </View>);

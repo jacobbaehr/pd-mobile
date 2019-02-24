@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
-import { PDText } from './PDText';
+
+import { PDText } from 'components/PDText';
 
 
-interface ButtonProps { 
+interface ButtonProps {
     title: string;
     onPress: () => void;
     styles: any;
@@ -27,17 +28,15 @@ export class GradientButton extends React.Component<ButtonProps, {}> {
                 onPress={this.handleButtonPress}
                 disabled={this.props.disabled}
                 activeScale={0.96}>
-
-                    <LinearGradient
-                        colors={['#07A5FF', '#FF0073']}
-                        start={{x: -0.1, y: -0.1}}
-                        end={{x: 1.15, y: 1.1}}
-                        style={styles.linearGradient}>
-
-                        <PDText style={styles.text}>
-                            { this.props.title }
-                        </PDText>
-                    </LinearGradient>
+                <LinearGradient
+                    colors={['#07A5FF', '#FF0073']}
+                    start={{ x: -0.1, y: -0.1 }}
+                    end={{ x: 1.15, y: 1.1 }}
+                    style={styles.linearGradient}>
+                    <PDText style={styles.text}>
+                        {this.props.title}
+                    </PDText>
+                </LinearGradient>
             </TouchableScale>
         );
     }

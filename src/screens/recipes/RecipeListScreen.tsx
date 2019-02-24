@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { View, StyleSheet, SectionList } from 'react-native';
+import { SectionList, StyleSheet, View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import { Button } from '../../components/Button';
+import { Database } from 'models/Database';
+import { Pool } from 'models/Pool';
+import { Recipe } from 'models/recipe/Recipe';
+import { selectRecipe } from 'redux/Actions';
+import { AppState, dispatch } from 'redux/AppState';
+
 import { RecipeListItem } from './RecipeListItem';
-import { AppState, dispatch } from '../../redux/AppState';
-import { Database } from '../../models/Database';
-import { Pool } from '../../models/Pool';
-import { Recipe } from '../../models/recipe/Recipe';
-import { selectRecipe } from '../../redux/Actions';
 
 interface RecipeListScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
@@ -22,14 +22,14 @@ const mapStateToProps = (state: AppState, ownProps: RecipeListScreenProps): Reci
     return {
         navigation: ownProps.navigation,
         selectedPoolId: state.selectedPoolId
-    }
-}
+    };
+};
 
 interface RecipeListScreenState {
     initialLoadFinished: boolean;
 }
 
-class RecipeListScreenComponent extends React.Component<RecipeListScreenProps, {}> {
+class RecipeListScreenComponent extends React.Component<RecipeListScreenProps, RecipeListScreenState> {
     pool!: Pool;
     recipes!: Realm.Results<Recipe>;
 
@@ -71,17 +71,17 @@ class RecipeListScreenComponent extends React.Component<RecipeListScreenProps, {
 
     render() {
         const recipes = (this.recipes === undefined) ? [] : this.recipes.map(p => p);
-        return(
+        return (
             <View style={styles.container}>
-                    <SectionList
-                        style={{flex:1}}
-                        renderItem={({item}) => <RecipeListItem recipe={item} onRecipeSelected={this.handleRecipeSelected} />}
-                        renderSectionHeader={({section}) => null }
-                        sections={[
-                            {data: recipes, title: 'Recipes'}
-                        ]}
-                        keyExtractor={item => (item as Recipe).objectId}
-                    />
+                <SectionList
+                    style={{ flex: 1 }}
+                    renderItem={({ item }) => <RecipeListItem recipe={item} onRecipeSelected={this.handleRecipeSelected} />}
+                    renderSectionHeader={({ section }) => null}
+                    sections={[
+                        { data: recipes, title: 'Recipes' }
+                    ]}
+                    keyExtractor={item => (item as Recipe).objectId}
+                />
             </View>
         );
     }

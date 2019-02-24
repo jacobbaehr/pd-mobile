@@ -1,10 +1,11 @@
 import * as Realm from 'realm';
 
+import { initialData } from 'InitialData';
+
 import { Pool } from './Pool';
 import { Input } from './recipe/Input';
 import { Output } from './recipe/Output';
 import { Recipe } from './recipe/Recipe';
-import { initialData } from '../InitialData';
 
 export class Database {
     static realm: Realm;
@@ -17,7 +18,7 @@ export class Database {
         if (Database.realm !== null && Database.realm !== undefined) {
             return Promise.resolve();
         }
-        await Realm.open({schema: [Pool, Recipe, Input, Output]}).then((value: Realm) => {
+        await Realm.open({ schema: [Pool, Recipe, Input, Output] }).then((value: Realm) => {
             Database.realm = value;
             // Database.createInitialRecipes();
             return Promise.resolve();
@@ -87,7 +88,7 @@ export class Database {
         }
         return Database.realm.objects<Recipe>(Recipe).filtered('objectId = $0', objectId)[0];
     }
-    
+
     static createInitialRecipes = () => {
         const realm = Database.realm;
         initialData.recipes[0].inputs.forEach((input: Input) => {

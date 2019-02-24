@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { dispatch } from '../redux/AppState';
 // import { Reading } from '../models/Reading';
 import { AppState } from '../redux/AppState';
-import { Button } from '../components/Button';
+import { Button } from '../components/buttons/Button';
 
 
 interface CalculationSettingsScreenProps {
@@ -42,12 +42,12 @@ class CalculationSettingsScreenComponent extends React.Component<CalculationSett
     };
 
     render() {
-        return(
+        return (
             <View>
                 <Text>Calcium Hypochlorite</Text>
-                <TextInput 
-                    onChangeText={(text) => this.setState({text})}
-                    value={this.state.text}/>
+                <TextInput
+                    onChangeText={(text) => this.setState({ text })}
+                    value={this.state.text} />
                 <Button title={'Save'} onPress={this.handleSave} styles={styles.button} />
             </View>
         );

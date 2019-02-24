@@ -1,18 +1,20 @@
 import * as React from 'react';
+import { Image, ScrollView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
 // @ts-ignore
 import { Transition } from 'react-navigation-fluid-transitions';
-import { View, StyleSheet, Image, Alert } from 'react-native';
-import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
-import { AppState, dispatch } from '../../redux/AppState';
-import { selectPool } from '../../redux/Actions';
-import { Database } from '../../models/Database';
-import { Pool } from '../../models/Pool';
-import { PDText } from '../../components/PDText';
-import { GradientButton } from '../../components/GradientButton';
-import { PoolHeaderView } from './PoolHeaderView';
 
-import { PDNavFluid } from '../../navigator/App';
+import { images } from 'assets/images';
+import { GradientButton } from 'components/buttons/GradientButton';
+import { ChartCard } from 'components/charts/ChartCard';
+import { PDText } from 'components/PDText';
+import { Database } from 'models/Database';
+import { Pool } from 'models/Pool';
+import { selectPool } from 'redux/Actions';
+import { AppState, dispatch } from 'redux/AppState';
+
+import { PoolHeaderView } from './PoolHeaderView';
 
 interface PoolListScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
@@ -29,8 +31,8 @@ const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolLi
         navigation: ownProps.navigation,
         selectedPoolId: state.selectedPoolId,
         poolsLastUpdated: state.poolsLastUpdated
-    }
-}
+    };
+};
 
 class PoolScreenComponent extends React.Component<PoolListScreenProps, {}> {
 
@@ -38,16 +40,18 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps, {}> {
 
     constructor(ownProps: PoolListScreenProps) {
         super(ownProps);
-        if (ownProps.selectedPoolId != undefined) {
+        if (ownProps.selectedPoolId) {
             this.pool = Database.loadPool(ownProps.selectedPoolId);
         }
     }
 
     componentDidMount() {
         // Fetch pool from persistent storage
-        if (this.props.selectedPoolId != undefined) {
+        if (this.props.selectedPoolId) {
             this.pool = Database.loadPool(this.props.selectedPoolId);
         }
+
+        // this.props.navigation.navigate('PoolHistory');
     }
 
     handleBackPressed = () => {
@@ -65,51 +69,64 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps, {}> {
         this.props.navigation.navigate('ReadingList');
     }
 
+    handleViewHistoryPressed = () => {
+        this.props.navigation.navigate('PoolHistory');
+    }
+
     render() {
-        return(
-            <SafeAreaView style={{flex: 1, backgroundColor: '#F8F8F8'}} forceInset={{ bottom: 'never', top: 'never' }}>
-                <PoolHeaderView pool={this.pool} style={styles.header} />
-                <View style={styles.container}>
-                    <Transition appear='left'>
-                        <PDText style={[styles.sectionTitle, styles.topSectionTitle]}>Service</PDText>
-                    </Transition>
-                    <Transition appear='right'>
-                        <View style={styles.serviceContainer}>
-                            <GradientButton onPress={ this.handleStartServicePressed } title={'Start Service'} styles={styles.startServiceButton} />
-                            <PDText style={styles.lastServiceLabel}>Last Serviced: 20 days ago</PDText>
-                        </View>
-                    </Transition>
-                    <Transition appear='left'>
-                        <PDText style={styles.sectionTitle}>Overview</PDText>
-                    </Transition>
-                    <Transition appear='right'>
-                        <View style={styles.serviceContainer}>
-                            <View style={{flexDirection: 'row'}}>
-                                <Image
-                                    style={styles.overviewWaterIcon}
-                                    source={require('../../assets/water_type.png')}
-                                    width={22}
-                                    height={14}/>
-                                <PDText style={styles.overviewText}>Saltwater</PDText>
+        const dateRanges = ['24H', '7D', '1M', '3M', '1Y', 'ALL'];
+        const labels = ['Jan', 'Feb', 'March'];
+        const values = [1000, 4000, 5000];
+
+        return (
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#F8F8F8' }} forceInset={{ bottom: 'never', top: 'never' }}>
+                <ScrollView>
+                    <PoolHeaderView pool={this.pool} style={styles.header} />
+                    <View style={styles.container}>
+                        <Transition appear='left'>
+                            <PDText style={[styles.sectionTitle, styles.topSectionTitle]}>Service</PDText>
+                        </Transition>
+                        <Transition appear='right'>
+                            <View>
+                                <GradientButton onPress={this.handleStartServicePressed} title={'Start Service'} styles={styles.startServiceButton} />
+                                <PDText style={styles.lastServiceLabel}>Last Serviced: 20 days ago</PDText>
                             </View>
-                            <View style={{flexDirection: 'row'}}>
-                                <Image
-                                    style={styles.overviewHistoryIcon}
-                                    source={require('../../assets/history.png')}
-                                    width={20}
-                                    height={18}/>
-                                <PDText style={styles.overviewText}>Big 3 + Salt</PDText>
+                        </Transition>
+                        <Transition appear='left'>
+                            <PDText style={styles.sectionTitle}>Overview</PDText>
+                        </Transition>
+                        <Transition appear='right'>
+                            <View>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Image
+                                        style={styles.overviewWaterIcon}
+                                        source={images.waterType}
+                                        width={22}
+                                        height={14} />
+                                    <PDText style={styles.overviewText}>Saltwater</PDText>
+                                </View>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Image
+                                        style={styles.overviewHistoryIcon}
+                                        source={images.history}
+                                        width={20}
+                                        height={18} />
+                                    <PDText style={styles.overviewText}>Big 3 + Salt</PDText>
+                                </View>
                             </View>
-                        </View>
-                    </Transition>
-                    <Transition appear='left'>
-                        <PDText style={styles.sectionTitle}>History</PDText>
-                    </Transition>
-                    <Transition appear='right'>
-                    <GradientButton onPress={() => {this.handleDeletePoolSelected}} title={'Delete Pool'} styles={styles.startServiceButton} />
-                    </Transition>
-                </View>
-                <GradientButton onPress={this.handleDeletePoolSelected} title={'Delete Pool'} styles={{}} />
+                        </Transition>
+                        <Transition appear='left'>
+                            <View style={{ flex: 1 }}>
+                                <PDText style={styles.sectionTitle}>History</PDText>
+                                <ChartCard titleText={'Chlorine'} dateRangeLabels={labels} values={values}>
+                                    <TouchableHighlight onPress={this.handleViewHistoryPressed} style={styles.historyButton} >
+                                        <Text style={styles.viewMoreHistoryText}>View More</Text>
+                                    </TouchableHighlight>
+                                </ChartCard>
+                            </View>
+                        </Transition>
+                    </View>
+                </ScrollView>
             </SafeAreaView>
         );
     }
@@ -120,28 +137,24 @@ export const PoolScreen = connect(mapStateToProps)(PoolScreenComponent);
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
+        marginHorizontal: 20
     },
-    header: {  
+    header: {
         height: 250,
         backgroundColor: '#2091F9'
     },
     sectionTitle: {
         fontWeight: '700',
         fontSize: 28,
-        marginHorizontal: 16,
         marginTop: 20,
         marginBottom: 4
     },
     topSectionTitle: {
         marginTop: 14
     },
-    serviceContainer: {
-        marginHorizontal: 16
-    },
     startServiceButton: {
-        height: 67,
-        paddingHorizontal: 6
+        height: 67
     },
     lastServiceLabel: {
         color: '#737373',
@@ -159,5 +172,23 @@ const styles = StyleSheet.create({
     },
     overviewHistoryIcon: {
         marginTop: 5
+    },
+    historyButton: {
+        backgroundColor: 'black',
+        flex: 1,
+        marginHorizontal: 20,
+        justifyContent: 'center',
+        alignContent: 'center',
+        borderRadius: 8,
+        marginBottom: 10,
+        marginTop: 15
+    },
+    viewMoreHistoryText: {
+        color: 'white',
+        fontSize: 24,
+        fontWeight: '700',
+        paddingVertical: 10,
+        textAlign: 'center',
+        fontFamily: 'Avenir Next'
     }
 });

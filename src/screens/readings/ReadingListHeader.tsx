@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { PDText } from '../../components/PDText';
-import { BackButton } from '../../components/BackButton';
+import { BackButton } from '../../components/buttons/BackButton';
 import { Pool } from '../../models/Pool';
 import { PDGradientText } from '../../components/PDGradientText';
 import { PDProgressBar } from '../../components/PDProgressBar';

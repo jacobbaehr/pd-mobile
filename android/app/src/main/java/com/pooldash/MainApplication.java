@@ -3,6 +3,8 @@ package com.pooldash;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.futurepress.staticserver.FPStaticServerPackage;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
 import io.realm.react.RealmReactPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import io.realm.react.RealmReactPackage;
@@ -29,7 +31,9 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
+            new MainReactPackage(),
+            new FPStaticServerPackage(),
+            new RNCWebViewPackage(),
             new RealmReactPackage(),
             new LinearGradientPackage(),
             new RealmReactPackage(),

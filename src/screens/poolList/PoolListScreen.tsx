@@ -1,18 +1,19 @@
 import * as React from 'react';
-import { View, StyleSheet, SectionList, Image, Dimensions } from 'react-native';
+import { Dimensions, Image, SectionList, StyleSheet, View } from 'react-native';
 import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
-import { connect } from 'react-redux';
 // @ts-ignore
 import { Transition } from 'react-navigation-fluid-transitions';
+import { connect } from 'react-redux';
 
-import { Button } from '../../components/Button';
-import { PoolListItem } from './PoolListItem';
-import { AppState, dispatch } from '../../redux/AppState';
-import { selectPool } from '../../redux/Actions';
-import { Database } from '../../models/Database';
-import { Pool } from '../../models/Pool';
-import { PDText } from '../../components/PDText';
+import { images } from 'assets/images';
+import { PDText } from 'components/PDText';
+import { Database } from 'models/Database';
+import { Pool } from 'models/Pool';
+import { selectPool } from 'redux/Actions';
+import { AppState, dispatch } from 'redux/AppState';
+
 import { PoolListFooter } from './PoolListFooter';
+import { PoolListItem } from './PoolListItem';
 
 interface PoolListScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
@@ -29,8 +30,8 @@ const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolLi
         navigation: ownProps.navigation,
         selectedPoolId: state.selectedPoolId,
         poolsLastUpdated: state.poolsLastUpdated
-    }
-}
+    };
+};
 
 interface PoolListScreenState {
     initialLoadFinished: boolean;
@@ -47,7 +48,7 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
             initialLoadFinished: false
         };
     }
-    
+
     componentDidMount() {
         // Fetch pools from persistent storage
         Database.prepare().then(() => {
@@ -55,8 +56,8 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
             this.setState({
                 initialLoadFinished: true
             });
-        })
-        .catch((e) => {
+            this.handlePoolSelected(this.pools.values().next().value);
+        }).catch((e) => {
             console.error(e);
         });
     }
@@ -75,17 +76,17 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
 
     render() {
         const pools = (this.pools === undefined) ? [] : this.pools.map(p => p);
-        const isEmpty = pools.length == 0;
+        const isEmpty = pools.length === 0;
         const imageWidth = Dimensions.get('window').width;
         const imageHeight = imageWidth * 0.792;
-        const imageStyles = isEmpty ? [styles.image] : [styles.image, styles.invisible]
-        return(
-            <SafeAreaView style={{flex: 1, backgroundColor: '#F8F8F8'}} forceInset={{ bottom: 'never' }}>
+        const imageStyles = isEmpty ? [styles.image] : [styles.image, styles.invisible];
+        return (
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#F8F8F8' }} forceInset={{ bottom: 'never' }}>
                 <Image
-                    style={imageStyles} 
-                    source={require('../../assets/pool_list_empty.png')}
-                    width={imageWidth} 
-                    height={imageHeight}/>
+                    style={imageStyles}
+                    source={images.poolListEmpty}
+                    width={imageWidth}
+                    height={imageHeight} />
                 <View style={styles.container}>
                     <Transition appear='top'>
                         <View>
@@ -94,17 +95,17 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
                         </View>
                     </Transition>
                     <SectionList
-                        style={{flex:1}}
-                        renderItem={({item}) => <PoolListItem
-                                                    pool={item}
-                                                    onPoolSelected={this.handlePoolSelected} />}
-                        renderSectionHeader={({section}) => null }
+                        style={{ flex: 1 }}
+                        renderItem={({ item }) => <PoolListItem
+                            pool={item}
+                            onPoolSelected={this.handlePoolSelected} />}
+                        renderSectionHeader={({ section }) => null}
                         sections={[
-                            {data: pools, title: 'Pools'}
+                            { data: pools, title: 'Pools' }
                         ]}
-                        renderSectionFooter={({section}) => <PoolListFooter 
-                                                                isEmpty={isEmpty} 
-                                                                handlePress={this.handleAddPoolPressed} />}
+                        renderSectionFooter={({ section }) => <PoolListFooter
+                            isEmpty={isEmpty}
+                            handlePress={this.handleAddPoolPressed} />}
                         keyExtractor={item => (item as Pool).objectId}
                         overScrollMode={'always'}
                     />
