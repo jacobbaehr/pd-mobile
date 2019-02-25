@@ -8,6 +8,8 @@ interface ButtonProps {
 
     styles: any;
 
+    textStyles?: any;
+
     disabled?: boolean;
 }
 
@@ -24,7 +26,7 @@ export class Button extends React.Component<ButtonProps, {}> {
                 style={containerStyles}
                 onPress={this.handleButtonPress}
                 disabled={this.props.disabled}>
-                <Text style={styles.text}>
+                <Text style={this.props.textStyles ? this.props.textStyles : styles.text}>
                     { this.props.title }
                 </Text>
             </TouchableHighlight>
@@ -40,6 +42,6 @@ const styles = StyleSheet.create({
         flex: 1,
         color: 'white',
         textAlign: 'center',
-        lineHeight: 45
+        margin: '.5%',
     }
 });

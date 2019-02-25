@@ -9,10 +9,8 @@ import { images } from 'assets/images';
 import { GradientButton } from 'components/buttons/GradientButton';
 import { ChartCard } from 'components/charts/ChartCard';
 import { PDText } from 'components/PDText';
-import { Database } from 'models/Database';
 import { Pool } from 'models/Pool';
-import { selectPool } from 'redux/Actions';
-import { AppState, dispatch } from 'redux/AppState';
+import { AppState } from 'redux/AppState';
 
 import { PoolHeaderView } from './PoolHeaderView';
 
@@ -20,7 +18,7 @@ interface PoolListScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
 
     // The id of the selected pool, if any
-    selectedPoolId?: string;
+    selectedPool?: Pool;
 
     // This is a flag that just changes whenever we save a new pool.
     poolsLastUpdated: number;
@@ -29,39 +27,13 @@ interface PoolListScreenProps {
 const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolListScreenProps => {
     return {
         navigation: ownProps.navigation,
-        selectedPoolId: state.selectedPoolId,
+        selectedPool: state.selectedPool,
         poolsLastUpdated: state.poolsLastUpdated
     };
 };
 
 class PoolScreenComponent extends React.Component<PoolListScreenProps, {}> {
-
-    pool!: Pool;
-
-    constructor(ownProps: PoolListScreenProps) {
-        super(ownProps);
-        if (ownProps.selectedPoolId) {
-            this.pool = Database.loadPool(ownProps.selectedPoolId);
-        }
-    }
-
-    componentDidMount() {
-        // Fetch pool from persistent storage
-        if (this.props.selectedPoolId) {
-            this.pool = Database.loadPool(this.props.selectedPoolId);
-        }
-
-        // this.props.navigation.navigate('PoolHistory');
-    }
-
     handleBackPressed = () => {
-        this.props.navigation.goBack();
-    }
-
-    // TEMP: TODO: move this
-    handleDeletePoolSelected = () => {
-        Database.deletePool(this.pool.objectId);
-        dispatch(selectPool());
         this.props.navigation.goBack();
     }
 
@@ -73,6 +45,10 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps, {}> {
         this.props.navigation.navigate('PoolHistory');
     }
 
+    handleEditButtonPressed = () => {
+        this.props.navigation.navigate('EditPool');
+    }
+
     render() {
         const dateRanges = ['24H', '7D', '1M', '3M', '1Y', 'ALL'];
         const labels = ['Jan', 'Feb', 'March'];
@@ -81,7 +57,7 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps, {}> {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#F8F8F8' }} forceInset={{ bottom: 'never', top: 'never' }}>
                 <ScrollView>
-                    <PoolHeaderView pool={this.pool} style={styles.header} />
+                    <PoolHeaderView pool={this.props.selectedPool} style={styles.header} actions={()=>this.handleEditButtonPressed()}/>
                     <View style={styles.container}>
                         <Transition appear='left'>
                             <PDText style={[styles.sectionTitle, styles.topSectionTitle]}>Service</PDText>

@@ -1,14 +1,15 @@
 import { AnyAction } from 'redux';
 
-import { Pool } from '../models/Pool';
-import { Recipe } from '../models/recipe/Recipe';
-import { Database } from '../models/Database';
+import { Recipe } from 'models/recipe/Recipe';
+import { Pool } from 'models/Pool';
+import { Database } from 'repository/Database';
 
 export const RECORD_INPUT = 'RECORD_INPUT';
 export const SET_FORMULA = 'SET_FORMULA';
 export const SAVE_POOL = 'SAVE_POOL';
 export const SELECT_POOL = 'SELECT_POOL';
 export const SELECT_RECIPE = 'SELECT_RECIPE';
+export const UPDATE_POOL = 'UPDATE_POOL';
 
 export interface RecordInputAction extends AnyAction {
     type: string;
@@ -22,7 +23,7 @@ export const recordInput = (inputID: string, value: number): RecordInputAction =
         value: value,
         inputID: inputID
     };
-}
+};
 
 export interface SavePoolAction extends AnyAction {
     pool: Pool;
@@ -35,9 +36,21 @@ export const saveNewPool = (pool: Pool): SavePoolAction => {
         type: SAVE_POOL,
         pool: pool
     };
+};
+
+export interface UpdatePoolAction extends AnyAction {
+    pool: Pool;
 }
 
-export interface SelectPoolAction extends AnyAction { 
+export const updatePool = (updatedPool: Pool): UpdatePoolAction => {
+    Database.updatePool(updatedPool);
+    return {
+        type: UPDATE_POOL,
+        pool: updatedPool
+    };
+};
+
+export interface SelectPoolAction extends AnyAction {
     pool?: Pool;
 }
 
@@ -47,7 +60,7 @@ export const selectPool = (pool?: Pool): SelectPoolAction => {
         type: SELECT_POOL,
         pool
     };
-}
+};
 
 export interface SelectRecipeAction extends AnyAction {
     recipe: Recipe;
@@ -58,8 +71,8 @@ export const selectRecipe = (recipe: Recipe): SelectRecipeAction => {
     return {
         type: SELECT_RECIPE,
         recipe
-    }
-}
+    };
+};
 
 export interface DeletePoolAvtion extends AnyAction {
 

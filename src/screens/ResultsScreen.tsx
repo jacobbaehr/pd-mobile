@@ -1,13 +1,15 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
-import { AppState } from '../redux/AppState';
-import { InputEntry } from '../models/recipe/InputEntry';
-import { OutputEntry } from '../models/recipe/OutputEntry';
-import { Recipe } from '../models/recipe/Recipe';
-import { CalculationService } from '../services/CalculationService';
-import { Database } from '../models/Database';
+
+import { InputEntry } from 'models/recipe/InputEntry';
+import { OutputEntry } from 'models/recipe/OutputEntry';
+import { Recipe } from 'models/recipe/Recipe';
+import { Pool } from 'models/Pool';
+import { AppState } from 'redux/AppState';
+import { Database } from 'repository/Database';
+import { CalculationService } from 'services/CalculationService';
 
 interface ResultsScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
@@ -16,10 +18,10 @@ interface ResultsScreenProps {
 
     recipeId: string;
 
-    poolId: string;
+    pool: Pool;
 }
 
-interface ResultsScreenState { 
+interface ResultsScreenState {
     treatments: OutputEntry[];
 }
 
@@ -29,7 +31,7 @@ const mapStateToProps = (state: AppState, ownProps: ResultsScreenProps): Results
         navigation: ownProps.navigation,
         readings: state.inputs,
         recipeId: state.recipeId!,
-        poolId: state.selectedPoolId!
+        pool: state.selectedPool!
     };
 };
 
@@ -42,7 +44,7 @@ class ResultsScreenComponent extends React.Component<ResultsScreenProps, Results
 
         this.recipe = Database.loadRecipe(this.props.recipeId);
         console.log('1');
-        const pool = Database.loadPool(this.props.poolId);
+        const pool = Database.loadPool(this.props.pool);
         const treatments = CalculationService.calculateTreatments(this.recipe, pool, props.readings);
         console.log('2');
         this.state = { treatments };

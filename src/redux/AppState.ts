@@ -1,8 +1,9 @@
 import { createStore } from 'redux';
 
-import { readingsReducer } from './Reducers';
 import { InputEntry } from '../models/recipe/InputEntry';
 import { OutputEntry } from '../models/recipe/OutputEntry';
+import { Pool } from '../models/Pool';
+import { readingsReducer } from './Reducers';
 
 // Describes the shape of the application redux state.
 export interface AppState {
@@ -13,14 +14,14 @@ export interface AppState {
     outputs: OutputEntry[];
 
     // The currently selected swimming pool, if any
-    selectedPoolId?: string;
+    selectedPool?: Pool;
 
     // The currently selected recipe, if any
     recipeId?: string;
 
     // This increments whenever we update the list of pools
     poolsLastUpdated: number;
-};
+}
 
 const initialAppState: AppState = {
     inputs: [],

@@ -1,7 +1,7 @@
 /**
  * Represents a swimming pool (duh).
  */
-export class Pool {
+export class PoolV0 {
     // The pool's volume, in gallons.
     volume!: number;
 
@@ -14,6 +14,9 @@ export class Pool {
     // The objectId of the last recipe selected for this pool, if any
     recipeId?: string;
 
+    // The pool water type
+    waterType!: string;
+
     // For Realm purposes
     static schema = {
         name: 'Pool',
@@ -22,14 +25,16 @@ export class Pool {
             volume: 'double',
             name: 'string',
             objectId: 'string',
-            recipeId: 'string?'
+            recipeId: 'string?',
+            waterType: 'string'
         }
     };
 
-    static make(name: string, volume: number): Pool {
-        let pool = new Pool();
+    static make(name: string, volume: number, waterType: string): PoolV0 {
+        const pool = new PoolV0();
         pool.name = name;
         pool.volume = volume;
+        pool.waterType = 'Chlorine';
         return pool;
     }
 }

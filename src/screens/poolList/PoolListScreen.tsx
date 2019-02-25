@@ -7,10 +7,10 @@ import { connect } from 'react-redux';
 
 import { images } from 'assets/images';
 import { PDText } from 'components/PDText';
-import { Database } from 'models/Database';
 import { Pool } from 'models/Pool';
 import { selectPool } from 'redux/Actions';
-import { AppState, dispatch } from 'redux/AppState';
+import { dispatch, AppState } from 'redux/AppState';
+import { Database } from 'repository/Database';
 
 import { PoolListFooter } from './PoolListFooter';
 import { PoolListItem } from './PoolListItem';
@@ -19,7 +19,7 @@ interface PoolListScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
 
     // The id of the selected pool, if any
-    selectedPoolId?: string;
+    selectedPool?: Pool;
 
     // This is a flag that just changes whenever we save a new pool.
     poolsLastUpdated: number;
@@ -28,7 +28,7 @@ interface PoolListScreenProps {
 const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolListScreenProps => {
     return {
         navigation: ownProps.navigation,
-        selectedPoolId: state.selectedPoolId,
+        selectedPool: state.selectedPool,
         poolsLastUpdated: state.poolsLastUpdated
     };
 };
@@ -53,25 +53,22 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
         // Fetch pools from persistent storage
         Database.prepare().then(() => {
             this.pools = Database.loadPools();
+            console.log(this.pools);
             this.setState({
                 initialLoadFinished: true
             });
-            this.handlePoolSelected(this.pools.values().next().value);
         }).catch((e) => {
             console.error(e);
         });
     }
 
-    handlePoolSelected = (pool: Pool): void => {
-
-        dispatch(selectPool(pool));
-
-        const nextScreen = 'PoolScreen';
-        this.props.navigation.navigate(nextScreen);
+    handlePoolSelected = async (pool: Pool): Promise<void> => {
+        await dispatch(selectPool(pool));
+        this.props.navigation.navigate('PoolScreen');
     }
 
     handleAddPoolPressed = (): void => {
-        this.props.navigation.navigate('EditPool');
+        this.props.navigation.navigate('CreatePool');
     }
 
     render() {
@@ -98,7 +95,7 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
                         style={{ flex: 1 }}
                         renderItem={({ item }) => <PoolListItem
                             pool={item}
-                            onPoolSelected={this.handlePoolSelected} />}
+                            onPoolSelected={() => this.handlePoolSelected(item)} />}
                         renderSectionHeader={({ section }) => null}
                         sections={[
                             { data: pools, title: 'Pools' }

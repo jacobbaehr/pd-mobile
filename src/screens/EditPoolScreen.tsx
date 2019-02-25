@@ -1,105 +1,119 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, SectionList, TextInput } from 'react-native';
-import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
-import { Button } from '../components/buttons/Button'
-import { dispatch } from '../redux/AppState';
-import { saveNewPool } from '../redux/Actions';
-import { Pool } from '../models/Pool';
+import { NavigationScreenProp } from 'react-navigation';
+import { connect } from 'react-redux';
+
+import { Pool } from 'models/Pool';
+import { saveNewPool, updatePool } from 'redux/Actions';
+import { dispatch, AppState } from 'redux/AppState';
+
+import { DataArr, PoolDetails } from './poolList/PoolDetails';
 
 interface EditPoolScreenProps {
-    navigation: NavigationScreenProp<{ params: { pool: Pool } }, void>;
+    navigation: NavigationScreenProp<{}, void>;
+    selectedPool?: Pool;
 }
 
 interface EditPoolScreenState {
-    volume: number;
-
+    volume: number | '';
+    type: string;
     name: string;
+    selectedName: string;
 }
 
-export class EditPoolScreen extends React.Component<EditPoolScreenProps, EditPoolScreenState> {
+const mapStateToProps = (state: AppState, ownProps: EditPoolScreenProps): EditPoolScreenProps => {
+    return {
+        navigation: ownProps.navigation,
+        selectedPool: state.selectedPool
+    };
+};
 
+export class EditPoolComponent extends React.Component<EditPoolScreenProps, EditPoolScreenState> {
     constructor(props: EditPoolScreenProps) {
         super(props);
-
         this.state = {
-            volume: 0,
-            name: ''
+            volume: '',
+            name: '',
+            type: '',
+            selectedName: ''
         };
     }
 
-    /// Whenever user types, update our state with the new value for volume
-    private handleVolumeTextChanged = (text: string) => {
-        this.setState({ volume: Number(text) });
+    componentDidMount() {
+        if(this.props.selectedPool){
+            const pool = {...this.props.selectedPool};
+            this.setState({
+                volume: pool.volume,
+                name: pool.name,
+                type: pool.waterType,
+                selectedName: pool.name
+            });
+        }
     }
 
-    /// Whenever user types, update our state with the new value for volume
-    private handleNameTextChanged = (text: string) => {
-        this.setState({ name: text });
-    }
+    private handleChange = (text:string, state:any) => {
+        this.setState({
+          [state]: text
+        }as Pick<EditPoolScreenState, keyof EditPoolScreenState>);
+      }
 
-    /// Whenever user presses "save", save a new pool with the specified volume.
-    private handleButtonPressed = () => {
-        // Get the volume from our state
-        const volume = this.state.volume;
-        const name = this.state.name;
-
-        console.log('VOLUME: ');
-        console.log(volume);
-        // Create a new pool with that volume
-        const pool = Pool.make(name, volume);
-
-        // Save that pool
-        dispatch(saveNewPool(pool));
+    private handleSaveButtonPressed = () => {
+        // model the pool object
+        // let pool = {} as Pool
+        if (this.props.selectedPool) {
+            const pool = {...this.props.selectedPool};
+            pool.volume = Number(this.state.volume);
+            pool.name = this.state.name;
+            pool.waterType = this.state.type;
+            // Update pool
+            dispatch(updatePool(pool));
+        }
+        else {
+            const pool = new Pool();
+            pool.volume = Number(this.state.volume);
+            pool.name = this.state.name;
+            pool.waterType = this.state.type;
+            // Create Pool
+            dispatch(saveNewPool(pool));
+        }
 
         // On success, navigate back to previous screen.
         this.props.navigation.goBack();
     }
-    render() {
-        return (
-            <SafeAreaView style={styles.safeArea}>
-                <View style={styles.container}>
-                    <Text style={styles.poolNameLabel}>Pool Name</Text>
-                    <TextInput style={styles.textInput} onChangeText={this.handleNameTextChanged} keyboardType={'default'}
-                        autoFocus={true} />
-                    <Text style={styles.poolNameLabel}>Pool Volume</Text>
-                    <TextInput style={styles.textInput} onChangeText={this.handleVolumeTextChanged} keyboardType={'numeric'}
-                        autoFocus={true} />
 
-                    <Button title="Save Pool" onPress={this.handleButtonPressed} styles={styles.button} />
-                </View>
-            </SafeAreaView>
+    // Navigation option to go back to previous screen
+    handleBackPressed = (): void => {
+        this.props.navigation.goBack();
+    }
+
+    properCase = (text:string) => {
+        const wordArr = text.split(' ');
+        const work = wordArr.map(i=>`${i.charAt(0).toUpperCase()}${i.slice(1)}`);
+        return work.join(' ');
+    }
+
+    render(){
+        // pass a new object to the array to generate an input field
+        // name
+        const data: DataArr[] = [
+            {label:'Name', stateName: 'name', value:this.state.name, inputType:'input', },
+            {label:'Water Type', stateName: 'type', value:this.state.type, inputType:'select', data: [{value: 'Salt Water'}, {value:'Chlorine'}] },
+            {label:'Volume', subLabel:' (Gallons) ', stateName: 'volume', value:String(this.state.volume), inputType:'input', }
+        ];
+        return(
+            <PoolDetails
+                header={this.props.selectedPool ? 'Edit' : 'Create'}
+                selectedPool={this.state.selectedName}
+                data={data}
+                name={this.state.name}
+                volume={this.state.volume || 0}
+                type={this.state.type}
+                goBack={this.handleBackPressed}
+                updateText={(t:string, s:string)=>this.handleChange(t, s)}
+                buttonAction={this.handleSaveButtonPressed}
+                navigation={this.props.navigation}
+                pool={this.props.selectedPool} />
         );
     }
 }
-const styles = StyleSheet.create({
-    safeArea: {
-        backgroundColor: '#070D14',
-        flex: 1
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'stretch',
-        backgroundColor: '#070D14',
-    },
-    poolNameLabel: {
-        margin: 15,
-        justifyContent: 'center',
-        color: '#ffffff'
-    },
-    textInput: {
-        height: 40,
-        borderWidth: 1,
-        borderColor: '#ffffff',
-        borderRadius: 5,
-        color: '#ffffff',
-        margin: 15,
-        textAlign: 'center'
-    },
-    button: {
-        alignSelf: 'stretch',
-        backgroundColor: '#005C9E',
-        height: 45,
-        margin: 15
-    }
-});
+
+export const EditPoolScreen = connect(mapStateToProps)(EditPoolComponent);

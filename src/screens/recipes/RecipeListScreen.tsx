@@ -3,11 +3,11 @@ import { SectionList, StyleSheet, View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import { Database } from 'models/Database';
-import { Pool } from 'models/Pool';
 import { Recipe } from 'models/recipe/Recipe';
+import { Pool } from 'models/Pool';
 import { selectRecipe } from 'redux/Actions';
-import { AppState, dispatch } from 'redux/AppState';
+import { dispatch, AppState } from 'redux/AppState';
+import { Database } from 'repository/Database';
 
 import { RecipeListItem } from './RecipeListItem';
 
@@ -15,13 +15,13 @@ interface RecipeListScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
 
     // The id of the selected pool
-    selectedPoolId?: string;
+    selectedPool?: Pool;
 }
 
 const mapStateToProps = (state: AppState, ownProps: RecipeListScreenProps): RecipeListScreenProps => {
     return {
         navigation: ownProps.navigation,
-        selectedPoolId: state.selectedPoolId
+        selectedPool: state.selectedPool
     };
 };
 
@@ -52,8 +52,8 @@ class RecipeListScreenComponent extends React.Component<RecipeListScreenProps, R
 
     componentDidMount() {
         // Fetch pool from persistent storage
-        if (this.props.selectedPoolId !== null && this.props.selectedPoolId !== undefined) {
-            this.pool = Database.loadPool(this.props.selectedPoolId);
+        if (this.props.selectedPool !== null && this.props.selectedPool !== undefined) {
+            this.pool = Database.loadPool(this.props.selectedPool);
             this.props.navigation.setParams({ poolName: this.pool.name });
         }
         this.recipes = Database.loadRecipes();
@@ -80,8 +80,7 @@ class RecipeListScreenComponent extends React.Component<RecipeListScreenProps, R
                     sections={[
                         { data: recipes, title: 'Recipes' }
                     ]}
-                    keyExtractor={item => (item as Recipe).objectId}
-                />
+                    keyExtractor={item => (item as Recipe).objectId} />
             </View>
         );
     }

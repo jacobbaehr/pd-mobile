@@ -6,8 +6,10 @@ import {
     SelectPoolAction,
     RECORD_INPUT,
     SAVE_POOL,
-    SELECT_POOL, 
+    SELECT_POOL,
     SELECT_RECIPE,
+    UPDATE_POOL,
+    UpdatePoolAction,
     SelectRecipeAction} from './Actions';
 import { AppState } from './AppState';
 import { InputEntry } from '../models/recipe/InputEntry';
@@ -44,15 +46,20 @@ export const readingsReducer = (previousState: AppState, action: AnyAction): App
                 ...previousState,
                 poolsLastUpdated: previousState.poolsLastUpdated + 1
             }
-        case SELECT_POOL:
-            const selectPoolAction = action as SelectPoolAction;
-            const selectedPoolId = (selectPoolAction.pool === undefined)
-                ? undefined
-                : selectPoolAction.pool.objectId
+        case UPDATE_POOL:
+            const updatePoolAction = action as UpdatePoolAction;
             return {
                 ...previousState,
-                selectedPoolId: selectedPoolId
+                selectedPool: action.pool
+
             }
+        case SELECT_POOL:
+            const selectPoolAction = action as SelectPoolAction;
+            const selectedPool = selectPoolAction.pool ? selectPoolAction.pool : undefined;
+            return {
+                ...previousState,
+                selectedPool
+            };
         case SELECT_RECIPE:
             const selectRecipeAction = action as SelectRecipeAction;
             return {

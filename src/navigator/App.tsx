@@ -2,24 +2,24 @@ import { createStackNavigator } from 'react-navigation';
 // @ts-ignore: fluid-transitions untyped
 import { createFluidNavigator } from 'react-navigation-fluid-transitions';
 
-import { CalculationSettingsScreen } from 'screens/CalculationSettingsScreen';
-import { EditPoolScreen } from 'screens/EditPoolScreen';
 import { PoolScreen } from 'screens/pool/PoolScreen';
 import { PoolHistoryScreen } from 'screens/poolHistory/PoolHistoryScreen';
 import { PoolListScreen } from 'screens/poolList/PoolListScreen';
 import { InputDetailsScreen } from 'screens/readings/InputDetailsScreen';
 import { InputEntryListScreen } from 'screens/readings/InputEntryListScreen';
 import { RecipeListScreen } from 'screens/recipes/RecipeListScreen';
+import { CalculationSettingsScreen } from 'screens/CalculationSettingsScreen';
+import { EditPoolScreen } from 'screens/EditPoolScreen';
 import { ResultsScreen } from 'screens/ResultsScreen';
 
-
 const PDNavStack = createStackNavigator({
+  // PoolList: { screen: PoolListScreen },
   PoolScreen: { screen: PoolScreen },
+  EditPool: { screen: EditPoolScreen},
   ReadingList: { screen: InputEntryListScreen },
   Details: { screen: InputDetailsScreen },
   Results: { screen: ResultsScreen },
   Settings: { screen: CalculationSettingsScreen },
-  EditPool: { screen: EditPoolScreen },
   RecipeList: { screen: RecipeListScreen },
   PoolHistory: { screen: PoolHistoryScreen }
 }, {
@@ -34,9 +34,10 @@ PDNavStack.navigationOptions = (navigationProp: any) => {
 };
 
 export const PDNavFluid = createFluidNavigator({
-  PoolList: { screen: PoolListScreen },
-  PoolScreen: PDNavStack
-},
+    PoolList: { screen: PoolListScreen },
+    PoolScreen: PDNavStack,
+    CreatePool: { screen: EditPoolScreen }
+  },
   {
     navigationOptions: {
       gesturesEnabled: true,

@@ -1,11 +1,12 @@
 import * as Realm from 'realm';
 
+import { Input } from 'models/recipe/Input';
+import { Output } from 'models/recipe/Output';
+import { Recipe } from 'models/recipe/Recipe';
+import { Pool } from 'models/Pool';
 import { initialData } from 'InitialData';
 
-import { Pool } from './Pool';
-import { Input } from './recipe/Input';
-import { Output } from './recipe/Output';
-import { Recipe } from './recipe/Recipe';
+import { Migrator } from './Migrator';
 
 export class Database {
     static realm: Realm;
@@ -18,12 +19,20 @@ export class Database {
         if (Database.realm !== null && Database.realm !== undefined) {
             return Promise.resolve();
         }
-        await Realm.open({ schema: [Pool, Recipe, Input, Output] }).then((value: Realm) => {
+
+        // migrate database
+        try {
+            Migrator.runMigrations();
+        } catch (e) {
+            console.warn(e);
+        }
+
+        await Realm.open(Migrator.getCurrentSchemaVersion()).then((value: Realm) => {
             Database.realm = value;
             // Database.createInitialRecipes();
             return Promise.resolve();
         }).catch((e: any) => {
-            console.log('error openening databse');
+            console.log('error openening database');
             console.error(e);
             return Promise.reject(e);
         });
@@ -37,11 +46,11 @@ export class Database {
     }
 
     // TODO: try/catch in case pool doesn't exist.
-    static loadPool = (objectId: string): Pool => {
+    static loadPool = (object: Pool): Pool => {
         if (Database.realm === undefined) {
             console.error('loadPool called before realm loaded');
         }
-        return Database.realm.objects<Pool>(Pool).filtered('objectId = $0', objectId)[0];
+        return Database.realm.objects<Pool>(Pool).filtered('objectId = $0', object.objectId)[0];
     }
 
     static saveNewPool = (pool: Pool) => {
@@ -52,6 +61,7 @@ export class Database {
                 realm.create(Pool.schema.name, {
                     volume: pool.volume,
                     name: pool.name,
+                    waterType: pool.waterType,
                     objectId: pool.objectId
                 });
             });
@@ -59,19 +69,39 @@ export class Database {
             console.log(e);
             console.error('couldnt save it');
         }
-        return pool.objectId;
+        return pool;
     }
 
-    static deletePool = (poolId: string) => {
+    static deletePool = async (poolObj: Pool) => {
         const realm = Database.realm;
-        const pool = Database.loadPool(poolId);
+        console.log(poolObj, 'here');
         try {
             realm.write(() => {
-                realm.delete(pool);
+                realm.delete(poolObj);
+                return Promise.resolve();
             });
+        // realm.removeListener('change',Database.loadPools)
         } catch (e) {
             console.log(e);
             console.error('couldnt delete it');
+            return Promise.reject(e);
+        }
+    }
+
+    static updatePool = (updatedPool: Pool) => {
+        const realm = Database.realm;
+        try {
+            realm.write(() => {
+                realm.create(
+                    Pool.schema.name, {
+                        objectId: updatedPool.objectId,
+                        volume: updatedPool.volume,
+                        name: updatedPool.name,
+                        waterType: updatedPool.waterType
+                }, true);
+            });
+        } catch (e) {
+            console.log(e);
         }
     }
 
@@ -123,4 +153,4 @@ export class Database {
 
 const getObjectId = (): string => {
     return Math.random().toString(36).slice(2);
-}
+};

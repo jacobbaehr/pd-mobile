@@ -7,7 +7,6 @@ import { BackButton } from 'components/buttons/BackButton';
 import { ChartCard } from 'components/charts/ChartCard';
 import { DateRangeSelector } from 'components/DateRangeSelector';
 import { PDGradientText } from 'components/PDGradientText';
-import { Database } from 'models/Database';
 import { Pool } from 'models/Pool';
 import { connect } from 'react-redux';
 import { AppState } from 'redux/AppState';
@@ -16,7 +15,7 @@ interface PoolHistoryProps {
     /**  */
     navigation: NavigationScreenProp<{}, {}>;
     /**  */
-    selectedPoolId?: string;
+    selectedPool?: Pool;
 }
 
 interface PoolHistoryState {
@@ -26,23 +25,17 @@ interface PoolHistoryState {
 const mapStateToProps = (state: AppState, ownProps: PoolHistoryProps): PoolHistoryProps => {
     return {
         navigation: ownProps.navigation,
-        selectedPoolId: state.selectedPoolId
+        selectedPool: state.selectedPool
     };
 };
 
 class PoolHistoryComponent extends React.PureComponent<PoolHistoryProps, PoolHistoryState> {
-    pool!: Pool;
-
     constructor(ownProps: PoolHistoryProps) {
         super(ownProps);
 
         this.state = {
             currentDateRange: ''
         };
-
-        if (ownProps.selectedPoolId) {
-            this.pool = Database.loadPool(ownProps.selectedPoolId);
-        }
     }
 
     handleBackPress = () => {
@@ -53,15 +46,19 @@ class PoolHistoryComponent extends React.PureComponent<PoolHistoryProps, PoolHis
         this.setState({ currentDateRange: selectedRange });
     }
 
-    render() {
+    render () {
         const dateRanges = ['24H', '7D', '1M', '3M', '1Y', 'ALL'];
         const labels = ['Jan', 'Feb', 'March'];
         const values = [1000, 4000, 5000];
+
+        const { selectedPool } = this.props;
+        const poolTitle = selectedPool ? selectedPool.name : '';
+
         return (
             <SafeAreaView style={{ backgroundColor: '#F8F8F8', flex: 1 }}>
                 <ScrollView style={styles.container}>
                     <BackButton
-                        title={this.pool.name}
+                        title={poolTitle}
                         handleBackPressed={this.handleBackPress} />
                     <PDGradientText style={styles.gradientText} colors={titleGradientColors}>
                         History
