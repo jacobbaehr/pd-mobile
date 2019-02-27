@@ -3,6 +3,7 @@ import { AnyAction } from 'redux';
 import { Recipe } from 'models/recipe/Recipe';
 import { Pool } from 'models/Pool';
 import { Database } from 'repository/Database';
+import { Reading } from 'models/recipe/Reading';
 
 export const RECORD_INPUT = 'RECORD_INPUT';
 export const SET_FORMULA = 'SET_FORMULA';
@@ -11,17 +12,17 @@ export const SELECT_POOL = 'SELECT_POOL';
 export const SELECT_RECIPE = 'SELECT_RECIPE';
 export const UPDATE_POOL = 'UPDATE_POOL';
 
-export interface RecordInputAction extends AnyAction {
+export interface RecordReadingAction extends AnyAction {
     type: string;
     value: number;
-    inputID: string;
+    reading: Reading;
 }
 
-export const recordInput = (inputID: string, value: number): RecordInputAction => {
+export const recordInput = (reading: Reading, value: number): RecordReadingAction => {
     return {
         type: RECORD_INPUT,
-        value: value,
-        inputID: inputID
+        value,
+        reading
     };
 };
 

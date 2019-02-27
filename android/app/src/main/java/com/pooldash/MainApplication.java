@@ -5,6 +5,8 @@ import android.app.Application;
 import com.facebook.react.ReactApplication;
 import com.futurepress.staticserver.FPStaticServerPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.swmansion.rnscreens.RNScreensPackage;
 import io.realm.react.RealmReactPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import io.realm.react.RealmReactPackage;
@@ -34,6 +36,8 @@ public class MainApplication extends Application implements ReactApplication {
             new MainReactPackage(),
             new FPStaticServerPackage(),
             new RNCWebViewPackage(),
+            new VectorIconsPackage(),
+            new RNScreensPackage(),
             new RealmReactPackage(),
             new LinearGradientPackage(),
             new RealmReactPackage(),

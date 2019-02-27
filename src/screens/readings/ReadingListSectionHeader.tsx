@@ -17,6 +17,8 @@ export class ReadingListSectionHeader extends React.Component<ReadingListSection
 const styles = StyleSheet.create({
     remainingText: {
         marginTop: 7,
+        marginBottom: 10,
+        marginHorizontal: 16,
         fontWeight: '700',
         fontSize: 28
     }

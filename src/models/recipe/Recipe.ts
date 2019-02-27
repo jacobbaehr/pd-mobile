@@ -1,5 +1,5 @@
-import { Input } from './Input';
-import { Output } from './Output';
+import { Reading } from './Reading';
+import { Treatment } from './Treatment';
 
 /**
  * Represents the instructions for a pool treatment
@@ -15,10 +15,10 @@ export class Recipe {
     objectId!: string;
 
     // All the inputs to this recipe
-    inputs!: Input[];
+    readings!: Reading[];
 
     // All the outputs to this recipe
-    outputs!: Output[];
+    treatments!: Treatment[];
 
     // For Realm purposes
     static schema = {
@@ -28,18 +28,18 @@ export class Recipe {
             name: 'string',
             description: 'string',
             objectId: 'string',
-            inputs: 'Input[]',
-            outputs: 'Output[]'
+            readings: 'Reading[]',
+            treatments: 'Treatment[]'
         }
     };
 
-    static make(name: string, description: string, inputs: Input[], outputs: Output[]): Recipe {
+    static make(name: string, description: string, readings: Reading[], treatments: Treatment[]): Recipe {
         let recipe = new Recipe();
         recipe.name = name;
         recipe.description = description;
         // TODO: verify that this works for to-many relationships in Realm.
-        recipe.inputs = inputs;
-        recipe.outputs = outputs;
+        recipe.readings = readings;
+        recipe.treatments = treatments;
         return recipe;
     }
 }

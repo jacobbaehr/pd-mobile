@@ -1,12 +1,13 @@
 import * as Realm from 'realm';
 
-import { Input } from 'models/recipe/Input';
-import { Output } from 'models/recipe/Output';
+import { Reading } from 'models/recipe/Reading';
+import { Treatment } from 'models/recipe/Treatment';
 import { Recipe } from 'models/recipe/Recipe';
 import { Pool } from 'models/Pool';
 import { initialData } from 'InitialData';
 
 import { Migrator } from './Migrator';
+import { LogEntry } from 'models/logs/LogEntry';
 
 export class Database {
     static realm: Realm;
@@ -29,7 +30,7 @@ export class Database {
 
         await Realm.open(Migrator.getCurrentSchemaVersion()).then((value: Realm) => {
             Database.realm = value;
-            // Database.createInitialRecipes();
+            Database.createInitialRecipes();
             return Promise.resolve();
         }).catch((e: any) => {
             console.log('error openening database');
@@ -70,6 +71,26 @@ export class Database {
             console.error('couldnt save it');
         }
         return pool;
+    }
+
+    static saveNewLogEntry = async (entry: LogEntry) => {
+        const realm = Database.realm;
+        try {
+            realm.write(() => {
+                const object: LogEntry = realm.create(LogEntry.schema.name, {
+                    objectId: entry.objectId,
+                    poolId: entry.poolId,
+                    readingEntries: entry.readingEntries,
+                    treatmentEntries: entry.treatmentEntries,
+                    ts: entry.ts
+                });
+                return Promise.resolve();
+            });
+        } catch (e) {
+            console.log(e);
+            console.error('couldnt save it');
+            return Promise.reject('error saving entry');
+        }
     }
 
     static deletePool = async (poolObj: Pool) => {
@@ -121,11 +142,11 @@ export class Database {
 
     static createInitialRecipes = () => {
         const realm = Database.realm;
-        initialData.recipes[0].inputs.forEach((input: Input) => {
-            input.objectId = getObjectId();
+        initialData.recipes[0].readings.forEach((reading: Reading) => {
+            reading.objectId = getObjectId();
         });
-        initialData.recipes[0].outputs.forEach((output: Output) => {
-            output.objectId = getObjectId();
+        initialData.recipes[0].treatments.forEach((treatment: Treatment) => {
+            treatment.objectId = getObjectId();
         });
         try {
             realm.write(() => {

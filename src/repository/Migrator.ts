@@ -1,14 +1,17 @@
-import { Input } from 'models/recipe/Input';
-import { Output } from 'models/recipe/Output';
+import { Reading } from 'models/recipe/Reading';
+import { Treatment } from 'models/recipe/Treatment';
 import { Recipe } from 'models/recipe/Recipe';
 import { Pool } from 'models/Pool';
+import { LogEntry } from 'models/logs/LogEntry';
+import { ReadingEntry } from 'models/logs/ReadingEntry';
+import { TreatmentEntry } from 'models/logs/TreatmentEntry';
 
 /**
  * List of schemas for the Realm database. This array should be updated every
  * time there is a change to the data model.
  */
 export const schemas = [
-    { schema: [Pool, Recipe, Input, Output], schemaVersion: 0 }
+    { schema: [Pool, Recipe, Reading, Treatment, LogEntry, ReadingEntry, TreatmentEntry], schemaVersion: 0 }
 ];
 
 /**

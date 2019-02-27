@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { PDText } from '../../components/PDText';
-import { BackButton } from '../../components/buttons/BackButton';
+import { BackButton } from 'components/buttons/BackButton';
 import { Pool } from '../../models/Pool';
 import { PDGradientText } from '../../components/PDGradientText';
 import { PDProgressBar } from '../../components/PDProgressBar';
@@ -45,7 +45,7 @@ const gradientColors: Color[] = ['#07A5FF', '#FF0073'];
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 15
+        marginHorizontal: 16
     },
     gradientText: {
         fontSize: 28,

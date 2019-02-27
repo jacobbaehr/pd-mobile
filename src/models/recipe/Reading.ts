@@ -1,7 +1,7 @@
 /**
  * Represents a reading or observation to be taken during performance of a recipe
  */
-export class Input {
+export class Reading {
     // The input's user-visible name
     name!: string;
 
@@ -13,7 +13,7 @@ export class Input {
 
     // For Realm purposes
     static schema = {
-        name: 'Input',
+        name: 'Reading',
         primaryKey: 'objectId',
         properties: {
             name: 'string',
@@ -22,10 +22,10 @@ export class Input {
         }
     };
 
-    static make(name: string, variableName: string, objectId: string): Input {
-        let input = new Input();
-        input.name = name;
-        input.variableName = variableName;
-        return input;
+    static make(name: string, variableName: string, objectId: string): Reading {
+        let reading = new Reading();
+        reading.name = name;
+        reading.variableName = variableName;
+        return reading;
     }
 }

@@ -3,33 +3,35 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import { InputEntry } from 'models/recipe/InputEntry';
-import { OutputEntry } from 'models/recipe/OutputEntry';
+import { ReadingEntry } from 'models/logs/ReadingEntry';
+import { TreatmentEntry } from 'models/logs/TreatmentEntry';
 import { Recipe } from 'models/recipe/Recipe';
 import { Pool } from 'models/Pool';
 import { AppState } from 'redux/AppState';
 import { Database } from 'repository/Database';
 import { CalculationService } from 'services/CalculationService';
+import { GradientButton } from 'components/buttons/GradientButton';
+import { LogEntry } from 'models/logs/LogEntry';
 
 interface ResultsScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
 
-    readings: InputEntry[];
+    readings: ReadingEntry[];
 
     recipeId: string;
 
     pool: Pool;
 }
 
-interface ResultsScreenState {
-    treatments: OutputEntry[];
+interface ResultsScreenState { 
+    treatmentEntries: TreatmentEntry[];
 }
 
 const mapStateToProps = (state: AppState, ownProps: ResultsScreenProps): ResultsScreenProps => {
 
     return {
         navigation: ownProps.navigation,
-        readings: state.inputs,
+        readings: state.readingEntries,
         recipeId: state.recipeId!,
         pool: state.selectedPool!
     };
@@ -44,16 +46,25 @@ class ResultsScreenComponent extends React.Component<ResultsScreenProps, Results
 
         this.recipe = Database.loadRecipe(this.props.recipeId);
         console.log('1');
-        const pool = Database.loadPool(this.props.pool);
-        const treatments = CalculationService.calculateTreatments(this.recipe, pool, props.readings);
+        const treatmentEntries = CalculationService.calculateTreatments(this.recipe, this.props.pool, props.readings);
         console.log('2');
-        this.state = { treatments };
+        this.state = { treatmentEntries };
+    }
+
+    save = async () => {
+        const id = Math.random().toString(36).slice(2);
+        const ts = new Date().getTime();
+        const logEntry = LogEntry.make(id, this.props.pool.objectId, ts, this.props.readings, this.state.treatmentEntries);
+        console.log(logEntry);
+        await Database.saveNewLogEntry(logEntry);
+
+        this.props.navigation.popToTop();
     }
 
     render() {
         let treatmentString = '';
-        this.state.treatments.forEach(treatment => {
-            treatmentString += `\nAdd ${treatment.value} ounces of ${treatment.output.name}`;
+        this.state.treatmentEntries.forEach(treatmentEntry => {
+            treatmentString += `\nAdd ${treatmentEntry.amount} ounces of ${treatmentEntry.treatmentName}`;
         });
 
         return(
@@ -61,6 +72,7 @@ class ResultsScreenComponent extends React.Component<ResultsScreenProps, Results
                 <Text style={styles.text}>
                     {treatmentString}
                 </Text>
+                <GradientButton title={'save'} onPress={this.save} styles={styles.button}/>
             </View>
         );
     }
@@ -75,6 +87,10 @@ const styles = StyleSheet.create({
         margin: 15,
         justifyContent: 'center',
         color: 'white'
+    },
+    button: {
+        marginHorizontal: 15,
+        height: 100
     }
 });
 

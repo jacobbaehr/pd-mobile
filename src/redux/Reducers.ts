@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 
 import {
-    RecordInputAction,
+    RecordReadingAction,
     SavePoolAction,
     SelectPoolAction,
     RECORD_INPUT,
@@ -12,8 +12,7 @@ import {
     UpdatePoolAction,
     SelectRecipeAction} from './Actions';
 import { AppState } from './AppState';
-import { InputEntry } from '../models/recipe/InputEntry';
-import { OutputEntry } from '../models/recipe/OutputEntry';
+import { ReadingEntry } from '../models/logs/ReadingEntry';
 
 
 // Reducer that modifies the app state in response to a SetReadingAction.
@@ -21,24 +20,24 @@ export const readingsReducer = (previousState: AppState, action: AnyAction): App
 
     switch(action.type) {
         case RECORD_INPUT:
-            const recordInputAction = action as RecordInputAction;
-            let newInputs: InputEntry[] = [];
+            const recordReadingAction = action as RecordReadingAction;
+            let newInputs: ReadingEntry[] = [];
 
             let inputAlreadyRecorded = false;
-            previousState.inputs.forEach(r => {
-                if (r.inputID === recordInputAction.inputID) {
-                    newInputs.push(InputEntry.make(recordInputAction.inputID, recordInputAction.value));
+            previousState.readingEntries.forEach(r => {
+                if (r.readingId === recordReadingAction.inputID) {
+                    newInputs.push(ReadingEntry.make(recordReadingAction.reading, recordReadingAction.value));
                     inputAlreadyRecorded = true;
                 } else {
                     newInputs.push(r);
                 }
             });
             if (!inputAlreadyRecorded) {
-                newInputs.push(InputEntry.make(recordInputAction.inputID, recordInputAction.value));
+                newInputs.push(ReadingEntry.make(recordReadingAction.reading, recordReadingAction.value));
             }
             return {
                 ...previousState,
-                inputs: newInputs
+                readingEntries: newInputs
             };
         case SAVE_POOL:
             const savePoolAction = action as SavePoolAction;

@@ -1,17 +1,17 @@
 import { createStore } from 'redux';
 
-import { InputEntry } from '../models/recipe/InputEntry';
-import { OutputEntry } from '../models/recipe/OutputEntry';
-import { Pool } from '../models/Pool';
 import { readingsReducer } from './Reducers';
+import { ReadingEntry } from '../models/logs/ReadingEntry';
+import { TreatmentEntry } from '../models/logs/TreatmentEntry';
+import { Pool } from '../models/Pool';
 
 // Describes the shape of the application redux state.
 export interface AppState {
     // All of the readings that a user has recorded
-    inputs: InputEntry[];
+    readingEntries: ReadingEntry[];
 
     // All of the outputs currently perscribed
-    outputs: OutputEntry[];
+    outputs: TreatmentEntry[];
 
     // The currently selected swimming pool, if any
     selectedPool?: Pool;
@@ -24,7 +24,7 @@ export interface AppState {
 }
 
 const initialAppState: AppState = {
-    inputs: [],
+    readingEntries: [],
     outputs: [],
     poolsLastUpdated: 0,
     recipeId: '002_initial_big3'

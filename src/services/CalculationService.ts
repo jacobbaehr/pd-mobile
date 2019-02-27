@@ -1,14 +1,14 @@
-import { Input } from '../models/recipe/Input';
-import { InputEntry } from '../models/recipe/InputEntry';
-import { Output } from '../models/recipe/Output';
-import { OutputEntry } from '../models/recipe/OutputEntry';
+import { ReadingEntry } from '../models/logs/ReadingEntry';
+import { TreatmentEntry } from '../models/logs/TreatmentEntry';
+import { Treatment } from '../models/recipe/Treatment';
+import { Reading } from '../models/recipe/Reading';
 import { Recipe } from '../models/recipe/Recipe';
 import { Pool } from '../models/Pool';
 import { Database } from '../repository/Database';
 
 export class CalculationService {
-    static calculateTreatments = (recipe: Recipe, pool: Pool, recordedInputs: InputEntry[]): OutputEntry[] => {
-
+    static calculateTreatments = (recipe: Recipe, pool: Pool, recordedInputs: ReadingEntry[]): TreatmentEntry[] => {
+        
         // const freeChlorineReading = readings.filter(r => r.identifier === 'free_chlorine');
         // const free_chlorine = freeChlorineReading[0].value;
         // const chlorineAmount = eval(chlorineFormula);
@@ -17,13 +17,13 @@ export class CalculationService {
         // Call each output function with the parameters, store results in array.
         // Filter & display array.
 
-        const recipeParamNames = recipe.inputs.map(input => input.variableName);
+        let recipeParamNames = recipe.readings.map(reading => reading.variableName);
         recipeParamNames.splice(0, 0, 'volume');
         const paramString = recipeParamNames.join(', ');
 
         /// Ensure these are in the correct order
-        const inputValues = recipe.inputs.map(input => {
-            const record = recordedInputs.find(ri => ri.inputID === input.objectId);
+        let inputValues = recipe.readings.map(reading => {
+            let record = recordedInputs.find(ri => ri.readingId === reading.objectId)
             if ((record === null) || (record === undefined)) {
                 return null;  // TODO: handle case where some inputs are empty?
             }
@@ -35,12 +35,12 @@ export class CalculationService {
         console.log(paramString);
         console.log(inputString);
 
-        const outputs = recipe.outputs.map(output => {
-            const formula = 'function x(' + paramString + ') { ' + output.formula + ' } x(' + inputString + ');';
+        let outputs = recipe.treatments.map( treatment => {
+            const formula = 'function x(' + paramString + ') { ' + treatment.formula + ' } x(' + inputString + ');';
             const value = eval(formula);
             console.log('formula: ' + formula);
             console.log('value: ' + String(value));
-            return OutputEntry.make(output, value);
+            return TreatmentEntry.make(treatment, value);
         });
 
         return outputs;
@@ -48,16 +48,16 @@ export class CalculationService {
 }
 
 const calculateValueForOutput = (
-    output: Output,
+    treatment: Treatment,
     poolVolume: number,
-    inputs: Input[],
-    inputEntries: InputEntry[]): number => {
+    inputs: Reading[],
+    inputEntries: ReadingEntry[]): number => {
 
-        const formula = output.formula;
+        const formula = treatment.formula;
         // TODO: finish this, my brain === mush
         const params = inputs.map(r => {
-            if (inputEntries.filter(e => e.inputID === r.objectId).length > 0) {
-                return '';
+            if (inputEntries.filter(e => e.readingId === r.objectId).length > 0) {
+                return ''
             }
         });
 

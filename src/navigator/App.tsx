@@ -5,19 +5,19 @@ import { createFluidNavigator } from 'react-navigation-fluid-transitions';
 import { PoolScreen } from 'screens/pool/PoolScreen';
 import { PoolHistoryScreen } from 'screens/poolHistory/PoolHistoryScreen';
 import { PoolListScreen } from 'screens/poolList/PoolListScreen';
-import { InputDetailsScreen } from 'screens/readings/InputDetailsScreen';
-import { InputEntryListScreen } from 'screens/readings/InputEntryListScreen';
+import { ReadingDetailsScreen } from 'screens/readings/ReadingDetailsScreen';
+import { ReadingListScreen } from 'screens/readings/ReadingListScreen';
 import { RecipeListScreen } from 'screens/recipes/RecipeListScreen';
 import { CalculationSettingsScreen } from 'screens/CalculationSettingsScreen';
 import { EditPoolScreen } from 'screens/EditPoolScreen';
-import { ResultsScreen } from 'screens/ResultsScreen';
+import { ResultsScreen } from 'screens/results/ResultsScreen';
 
 const PDNavStack = createStackNavigator({
   // PoolList: { screen: PoolListScreen },
   PoolScreen: { screen: PoolScreen },
   EditPool: { screen: EditPoolScreen},
-  ReadingList: { screen: InputEntryListScreen },
-  Details: { screen: InputDetailsScreen },
+  ReadingList: { screen: ReadingListScreen },
+  Details: { screen: ReadingDetailsScreen },
   Results: { screen: ResultsScreen },
   Settings: { screen: CalculationSettingsScreen },
   RecipeList: { screen: RecipeListScreen },

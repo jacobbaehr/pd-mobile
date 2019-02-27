@@ -580,6 +580,14 @@
     "@types/react" "*"
     "@types/react-native" "*"
 
+"@types/react-native-material-dropdown@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@types/react-native-material-dropdown/-/react-native-material-dropdown-0.11.0.tgz#66488a59389e03824e3848157a2844a066430bb5"
+  integrity sha512-qa88ZgIFNdLE0rPIKeE791zkUueqtEsAV6Cwm4svwNCXJ3ohhzWe3M3ARYPKEwMNzq4qk6Pc/Nci//XuGYEXwQ==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+
 "@types/react-native-vector-icons@^4.4.2":
   version "4.6.4"
   resolved "https://registry.yarnpkg.com/@types/react-native-vector-icons/-/react-native-vector-icons-4.6.4.tgz#83c2d88f0c2615a44b9059eb75c11f92702c1ee2"

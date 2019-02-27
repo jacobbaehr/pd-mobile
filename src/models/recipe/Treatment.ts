@@ -3,22 +3,22 @@
  * a formula that accepts the recipe inputs as parameters and returns whether the action
  * needs to be taken.
  */
-export class Output {
-    // The output's user-visible name
+export class Treatment {
+    // The treatment's user-visible name
     name!: string;
 
-    // The output's variable name, for use in subsequent output formulas in the same recipe
+    // The treatment's variable name, for use in subsequent treatment formulas in the same recipe
     variableName!: string;
 
     // An ID that uniquely identifies this input
     objectId!: string;
 
-    // The javascript formula that determines how much (if any) of the output is necessary
+    // The javascript formula that determines how much (if any) of the treatment is necessary
     formula!: string;
 
     // For Realm purposes
     static schema = {
-        name: 'Output',
+        name: 'Treatment',
         primaryKey: 'objectId',
         properties: {
             name: 'string',
@@ -28,11 +28,11 @@ export class Output {
         }
     };
 
-    static make(name: string, variableName: string, formula: string, objectId: string): Output {
-        let output = new Output();
-        output.name = name;
-        output.variableName = variableName;
-        output.formula = formula;
-        return output;
+    static make(name: string, variableName: string, formula: string, objectId: string): Treatment {
+        let treatment = new Treatment();
+        treatment.name = name;
+        treatment.variableName = variableName;
+        treatment.formula = formula;
+        return treatment;
     }
 }

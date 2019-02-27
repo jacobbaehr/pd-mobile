@@ -6,7 +6,7 @@ export const initialData = {
             name: 'Big 3',
             objectId: '002_initial_big3',
             description: 'This lazy recipe just measures your Free Chlorine, pH, and Total Alkalinity.',
-            inputs: [
+            readings: [
                 {
                     name: 'Free Chlorine',
                     variableName: 'fc'  // TODO: add master id here or something
@@ -24,7 +24,7 @@ export const initialData = {
                     variableName: 'wm'
                 }
             ],
-            outputs: [
+            treatments: [
                 {
                     name: '67% Calcium Hypochlorite',
                     variableName: 'chlorine',
