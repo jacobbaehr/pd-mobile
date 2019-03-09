@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, ScrollView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TouchableHighlight, View, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
 // @ts-ignore
 import { Transition } from 'react-navigation-fluid-transitions';
@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { images } from 'assets/images';
 import { GradientButton } from 'components/buttons/GradientButton';
 import { ChartCard } from 'components/charts/ChartCard';
+import { ChartCardViewModel } from 'components/charts/ChartCardViewModel';
 import { PDText } from 'components/PDText';
 import { Pool } from 'models/Pool';
 import { AppState } from 'redux/AppState';
@@ -32,7 +33,7 @@ const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolLi
     };
 };
 
-class PoolScreenComponent extends React.Component<PoolListScreenProps, {}> {
+class PoolScreenComponent extends React.Component<PoolListScreenProps> {
     handleBackPressed = () => {
         this.props.navigation.goBack();
     }
@@ -49,15 +50,32 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps, {}> {
         this.props.navigation.navigate('EditPool');
     }
 
+    private isDismissingFromScroll = false;
+    private handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+        console.log(event.nativeEvent.contentOffset.y);
+        if (this.isDismissingFromScroll) { return; }
+        
+        if (event.nativeEvent.contentOffset.y < -50) {
+            // this.isDismissingFromScroll = true;
+            // this.props.navigation.popToTop();
+        }
+    }
+
     render() {
         const dateRanges = ['24H', '7D', '1M', '3M', '1Y', 'ALL'];
-        const labels = ['Jan', 'Feb', 'March'];
+        const timestamps = [4, 5, 6];       // TODO: remove
         const values = [1000, 4000, 5000];
+        const vm: ChartCardViewModel = {
+            timestamps,
+            values,
+            title: 'Chlorine',
+            masterId: 'a9sd8f093'
+        };
 
         return (
-            <SafeAreaView style={{ flex: 1, backgroundColor: '#F8F8F8' }} forceInset={{ bottom: 'never', top: 'never' }}>
-                <ScrollView>
-                    <PoolHeaderView pool={this.props.selectedPool} style={styles.header} actions={()=>this.handleEditButtonPressed()}/>
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#2091F9' }} forceInset={{ bottom: 'never' }}>
+            <PoolHeaderView pool={this.props.selectedPool} style={styles.header} handlePressedEdit={this.handleEditButtonPressed}/>
+                <ScrollView onScroll={this.handleScroll} scrollEventThrottle={2} style={styles.scrollView}>
                     <View style={styles.container}>
                         <Transition appear='left'>
                             <PDText style={[styles.sectionTitle, styles.topSectionTitle]}>Service</PDText>
@@ -91,16 +109,14 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps, {}> {
                                 </View>
                             </View>
                         </Transition>
-                        <Transition appear='left'>
-                            <View style={{ flex: 1 }}>
-                                <PDText style={styles.sectionTitle}>History</PDText>
-                                <ChartCard titleText={'Chlorine'} dateRangeLabels={labels} values={values}>
-                                    <TouchableHighlight onPress={this.handleViewHistoryPressed} style={styles.historyButton} >
-                                        <Text style={styles.viewMoreHistoryText}>View More</Text>
-                                    </TouchableHighlight>
-                                </ChartCard>
-                            </View>
-                        </Transition>
+                        <View style={{ flex: 1 }}>
+                            <PDText style={styles.sectionTitle}>History</PDText>
+                            <ChartCard viewModel={vm} >
+                                <TouchableHighlight onPress={this.handleViewHistoryPressed} style={styles.historyButton}>
+                                    <Text style={styles.viewMoreHistoryText}>View More</Text>
+                                </TouchableHighlight>
+                            </ChartCard>
+                        </View>
                     </View>
                 </ScrollView>
             </SafeAreaView>
@@ -116,8 +132,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         marginHorizontal: 20
     },
+    scrollView: {
+        backgroundColor: '#F8F8F8'
+    },
     header: {
-        height: 250,
+        height: 210,
         backgroundColor: '#2091F9'
     },
     sectionTitle: {

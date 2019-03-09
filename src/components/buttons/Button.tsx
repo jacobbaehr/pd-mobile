@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TouchableHighlight, StyleSheet } from 'react-native';
+import { TouchableHighlight, StyleSheet, TextStyle } from 'react-native';
 import { PDText } from 'components/PDText';
 
 interface ButtonProps { 
@@ -22,6 +22,12 @@ export class Button extends React.Component<ButtonProps, {}> {
 
     render() {
         const containerStyles = StyleSheet.flatten([styles.container, this.props.styles]);
+        let textStyles: TextStyle;
+        if (this.props.textStyles != undefined) {
+            textStyles = StyleSheet.flatten([styles.text, this.props.textStyles]);
+        } else {
+            textStyles = styles.text;
+        }
         return (
             <TouchableHighlight
                 style={containerStyles}

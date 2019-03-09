@@ -2,6 +2,7 @@ import { Color } from 'csstype';
 import * as React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
+import { Database } from 'repository/Database';
 
 import { BackButton } from 'components/buttons/BackButton';
 import { ChartCard } from 'components/charts/ChartCard';
@@ -10,12 +11,15 @@ import { PDGradientText } from 'components/PDGradientText';
 import { Pool } from 'models/Pool';
 import { connect } from 'react-redux';
 import { AppState } from 'redux/AppState';
+import { ChartCardViewModel } from 'components/charts/ChartCardViewModel';
+import { Reading } from 'models/recipe/Reading';
+import { Treatment } from 'models/recipe/Treatment';
 
 interface PoolHistoryProps {
     /**  */
     navigation: NavigationScreenProp<{}, {}>;
     /**  */
-    selectedPool?: Pool;
+    selectedPool: Pool;
 }
 
 interface PoolHistoryState {
@@ -25,17 +29,22 @@ interface PoolHistoryState {
 const mapStateToProps = (state: AppState, ownProps: PoolHistoryProps): PoolHistoryProps => {
     return {
         navigation: ownProps.navigation,
-        selectedPool: state.selectedPool
+        selectedPool: state.selectedPool!
     };
 };
 
 class PoolHistoryComponent extends React.PureComponent<PoolHistoryProps, PoolHistoryState> {
+
+    private chartData: ChartCardViewModel[];
+
     constructor(ownProps: PoolHistoryProps) {
         super(ownProps);
 
         this.state = {
             currentDateRange: ''
         };
+
+        this.chartData = this.loadChartData();
     }
 
     handleBackPress = () => {
@@ -46,6 +55,58 @@ class PoolHistoryComponent extends React.PureComponent<PoolHistoryProps, PoolHis
         this.setState({ currentDateRange: selectedRange });
     }
 
+    private loadChartData = (): ChartCardViewModel[] => {
+        const data = Database.loadLogEntriesForPool(this.props.selectedPool.objectId);
+        const entries = (data === undefined) ? [] : data.map(le => le);
+
+        interface Graphable {
+            title: string;
+            id: string;
+        }
+        // get all different readings & treatments
+        let idsToGraph: Graphable[] = [];
+        entries.forEach(entry => {
+            entry.readingEntries.forEach(reading => {
+                const graphable: Graphable = {title: reading.readingName, id: reading.readingId };
+                if (idsToGraph.filter(g => { return g.title == graphable.title && g.id == graphable.id }).length == 0) {
+                    idsToGraph.push(graphable);
+                }
+            });
+            entry.treatmentEntries.forEach(treatment => {
+                const graphable: Graphable = {title: treatment.treatmentName, id: treatment.treatmentId };
+                if (idsToGraph.filter(g => { return g.title == graphable.title && g.id == graphable.id }).length == 0) {
+                    idsToGraph.push(graphable);
+                }
+            });
+        });
+
+        // get a chartcardviewmodel for each
+        return idsToGraph.map(graphable => {
+            let dates: number[] = [];
+            let values: number[] = [];
+            entries.forEach(entry => {
+                entry.readingEntries.forEach(reading => {
+                    if (reading.readingId === graphable.id) {
+                        dates.push(entry.ts);
+                        values.push(reading.value);
+                    }
+                });
+                entry.treatmentEntries.forEach(treatment => {
+                    if (treatment.treatmentId === graphable.id) {
+                        dates.push(entry.ts);
+                        values.push(treatment.amount);
+                    }
+                });
+            });
+            return {
+                title: graphable.title,
+                masterId: graphable.id,
+                values: values,
+                timestamps: dates
+            };
+        });
+    }
+
     render () {
         const dateRanges = ['24H', '7D', '1M', '3M', '1Y', 'ALL'];
         const labels = ['Jan', 'Feb', 'March'];
@@ -53,6 +114,10 @@ class PoolHistoryComponent extends React.PureComponent<PoolHistoryProps, PoolHis
 
         const { selectedPool } = this.props;
         const poolTitle = selectedPool ? selectedPool.name : '';
+
+        const charts = this.chartData.map(vm => {
+            return <ChartCard key={vm.masterId} viewModel={vm} containerStyles={styles.chartCard}/>
+        })
 
         return (
             <SafeAreaView style={{ backgroundColor: '#F8F8F8', flex: 1 }}>
@@ -65,9 +130,7 @@ class PoolHistoryComponent extends React.PureComponent<PoolHistoryProps, PoolHis
                     </PDGradientText>
                     <DateRangeSelector onRangeUpdated={this.onRangeChanged} dateRange={dateRanges} />
                     <View style={styles.chartContainer}>
-                        <ChartCard key={1} titleText={'Chlorine'} values={values} dateRangeLabels={labels} containerStyles={styles.chartCard} />
-                        <ChartCard key={2} titleText={'Other Chem'} values={values} dateRangeLabels={labels} containerStyles={styles.chartCard} />
-                        <ChartCard key={3} titleText={'Chem 2'} values={values} dateRangeLabels={labels} containerStyles={styles.chartCard} />
+                        {charts}
                     </View>
                 </ScrollView>
             </SafeAreaView >

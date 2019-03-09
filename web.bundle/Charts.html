@@ -4,6 +4,19 @@
         <title>Line Chart</title>
         <script src="Chart.bundle.js"></script>
         <script src="chartjs-plugin-annotation.min.js"></script>
+        <style type="text/css">
+            canvas {
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                outline: none;
+                -webkit-tap-highlight-color: rgba(255, 255, 255, 0); /* mobile webkit */
+            }
+        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=0.3, maximum-scale=0.3, user-scalable=no" />
     </head>
     <body>
         <div style="width:99%;">
@@ -97,7 +110,8 @@
                         padding: {
                             left: 60,
                             right: 60,
-                            top: 90
+                            top: 90,
+                            bottom: 20
                         }
                     },
 
@@ -146,6 +160,7 @@
 
                     // Tooltips
                     tooltips: {
+                        intersect: false,
                         backgroundColor: "#fff",
                         titleFontColor: "#000",
                         titleFontSize: 32,

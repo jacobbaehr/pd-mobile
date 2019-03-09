@@ -12,7 +12,7 @@ import { PoolBackgroundView } from './PoolBackgroundView';
 interface PoolHeaderViewProps {
     pool?: Pool;
     style?: StyleProp<ViewStyle>;
-    actions: ()=>void;
+    handlePressedEdit: ()=>void;
 }
 
 export class PoolHeaderView extends React.Component<PoolHeaderViewProps, {}> {
@@ -23,13 +23,11 @@ export class PoolHeaderView extends React.Component<PoolHeaderViewProps, {}> {
 
         return (
             <View style={this.props.style}>
-                {/* This is necessary for the fluid transition because the source view is nested in a list */}
-                <Transition shared={`pool_star_${this.props.pool.objectId}`}>
-                    <View style={styles.fakeStarView}></View>
-                </Transition>
                 <PoolBackgroundView pool={this.props.pool} style={styles.background} />
                 <View style={styles.buttonContainer}>
-                    <Button title={'Edit'} onPress={()=>this.props.actions()} styles={styles.button} textStyles={styles.buttonText}/>
+                    <Transition appear='right' >
+                        <Button title={'Edit'} onPress={this.props.handlePressedEdit} styles={styles.button} textStyles={styles.buttonText}/>
+                    </Transition>
                 </View>
                 <PDText style={styles.poolNameText} shared={`pool_name_${this.props.pool.objectId}`}>{ this.props.pool.name }</PDText>
                 <PDText style={styles.poolVolumeText} shared={`pool_volume_${this.props.pool.objectId}`}>{ this.props.pool.volume } gallons</PDText>
@@ -47,7 +45,7 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         right: 0,
-        height: 250
+        height: 190
     },
     poolNameText: {
         color: 'white',
@@ -75,17 +73,14 @@ const styles = StyleSheet.create({
         height: 16
     },
     buttonContainer: {
-        width: '98%',
-        top: '15%',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
+        position: 'absolute',
+        top: 15,
+        right: 15
     },
     button: {
+        position: 'relative',
         backgroundColor: 'rgba(0,0,0,.5)',
-        borderRadius: 10.4,
-        height: 21,
-        width: 52
+        borderRadius: 15
     },
     buttonText: {
         color: '#ffffff',
@@ -94,5 +89,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Avenir Next',
         fontSize: 13.2,
         fontWeight: '600',
+        paddingHorizontal: 15
     }
 });

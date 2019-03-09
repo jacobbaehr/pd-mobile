@@ -576,6 +576,7 @@
 "@types/react-native-material-dropdown@^0.11.0":
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/@types/react-native-material-dropdown/-/react-native-material-dropdown-0.11.0.tgz#66488a59389e03824e3848157a2844a066430bb5"
+  integrity sha512-qa88ZgIFNdLE0rPIKeE791zkUueqtEsAV6Cwm4svwNCXJ3ohhzWe3M3ARYPKEwMNzq4qk6Pc/Nci//XuGYEXwQ==
   dependencies:
     "@types/react" "*"
     "@types/react-native" "*"
@@ -2873,6 +2874,11 @@ mkdirp@^0.5.0, mkdirp@^0.5.1:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
   dependencies:
     minimist "0.0.8"
+
+moment@^2.24.0:
+  version "2.24.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
+  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
 
 morgan@^1.9.0:
   version "1.9.1"

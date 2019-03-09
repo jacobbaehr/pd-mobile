@@ -93,6 +93,11 @@ export class Database {
         }
     }
 
+    static loadLogEntriesForPool = (poolId: string): Realm.Results<LogEntry> => {
+        const realm = Database.realm;
+        return realm.objects<LogEntry>(LogEntry).filtered(`poolId = "${poolId}"`);
+    }
+
     static deletePool = async (poolObj: Pool) => {
         const realm = Database.realm;
         console.log(poolObj, 'here');

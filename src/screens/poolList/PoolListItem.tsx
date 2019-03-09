@@ -35,7 +35,7 @@ export class PoolListItem extends React.Component<PoolListItemProps, {}> {
                     <PoolBackgroundView style={styles.background} pool={pool}></PoolBackgroundView>
                     <PDText style={styles.poolNameText} shared={`pool_name_${pool.objectId}`}>{ pool.name }</PDText>
                     <PDText style={styles.poolVolumeText} shared={`pool_volume_${pool.objectId}`}>{ pool.volume } gallons</PDText>
-                    <Transition shared={`pool_star_${pool.objectId}`}>
+                    <Transition appear='right'>
                         <Image
                             style={styles.star}
                             source={images.star}
@@ -51,7 +51,7 @@ export class PoolListItem extends React.Component<PoolListItemProps, {}> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        height: 230,
+        height: 190,
         marginHorizontal: 12,
         backgroundColor: 'transparent',
         marginBottom: 10
