@@ -569,6 +569,11 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
+"@types/async@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@types/async/-/async-2.4.1.tgz#43c3b2c60eab41c25ca0009c07ca7d619d943119"
+  integrity sha512-C09BK/wXzbW+/JK9zckhe+FeSbg7NmvVjUWwApnw7ksRpUq3ecGLiq2Aw1LlY4Z/VmtdhSaIs7jO5/MWRYMcOA==
+
 "@types/prop-types@*":
   version "15.5.8"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.5.8.tgz#8ae4e0ea205fe95c3901a5a1df7f66495e3a56ce"
@@ -822,6 +827,13 @@ async@^2.4.0:
   dependencies:
     lodash "^4.17.10"
 
+async@^2.6.2:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/async/-/async-2.6.2.tgz#18330ea7e6e313887f5d2f2a904bac6fe4dd5381"
+  integrity sha512-H1qVYh1MYhEEFLsP97cVKqCGo7KfCyTt6uEWqsTBr9SO84oK9Uwbyd/yCW+6rKJLHksBNUVWZDAjfS+Ccx0Bbg==
+  dependencies:
+    lodash "^4.17.11"
+
 asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
@@ -887,6 +899,11 @@ babel-preset-fbjs@^3.0.0, babel-preset-fbjs@^3.0.1:
 balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
+
+base-64@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/base-64/-/base-64-0.1.0.tgz#780a99c84e7d600260361511c4877613bf24f6bb"
+  integrity sha1-eAqZyE59YAJgNhURxId2E78k9rs=
 
 base64-js@0.0.8:
   version "0.0.8"
@@ -2500,7 +2517,7 @@ lodash.throttle@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
 
-lodash@^4.0.0, lodash@^4.17.10, lodash@^4.17.5, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.6.1:
+lodash@^4.0.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.5, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.6.1:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
@@ -3483,6 +3500,14 @@ react-native-drawer-layout@1.3.2:
   dependencies:
     react-native-dismiss-keyboard "1.0.0"
 
+react-native-fs@^2.13.3:
+  version "2.13.3"
+  resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.13.3.tgz#a422f0ecd8a093a7e99d8d51ff51440e090a18a8"
+  integrity sha512-B62LSSAEYQGItg7KVTzTVVCxezOYFBYp4DMVFbdoZUd1mZVFdqR2sy1HY1mye1VI/Lf3IbxSyZEQ0GmrrdwLjg==
+  dependencies:
+    base-64 "^0.1.0"
+    utf8 "^2.1.1"
+
 react-native-iphone-x-helper@^1.0.3:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.0.tgz#9f8a376eb00bc712115abff4420318a0063fa796"
@@ -3541,6 +3566,13 @@ react-native-safe-area-view@0.11.0:
 react-native-screens@^1.0.0-alpha.11, react-native-screens@^1.0.0-alpha.21:
   version "1.0.0-alpha.21"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-1.0.0-alpha.21.tgz#ba8d401e82fa3d0f30e7922dbb6446a8c000d7ef"
+
+react-native-super-grid@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-super-grid/-/react-native-super-grid-3.0.3.tgz#0fe577647826fe426e747c96627d8f6c343dd1be"
+  integrity sha512-cQc7fkT0pqSUtsfLjeyU559LWa92U65CfsPLMuDWfdOmb8Gh8YIfG6dQKqvgqiNhh2e1tF3n02OU232PFh74hg==
+  dependencies:
+    prop-types "^15.6.0"
 
 react-native-swipeout@^2.3.3:
   version "2.3.6"
@@ -4575,6 +4607,11 @@ url-parse@^1.2.0:
 use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
+
+utf8@^2.1.1:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/utf8/-/utf8-2.1.2.tgz#1fa0d9270e9be850d9b05027f63519bf46457d96"
+  integrity sha1-H6DZJw6b6FDZsFAn9jUZv0ZFfZY=
 
 util-deprecate@~1.0.1:
   version "1.0.2"

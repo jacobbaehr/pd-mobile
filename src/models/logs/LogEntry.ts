@@ -21,6 +21,9 @@ export class LogEntry {
 
     // All the treatments performed
     treatmentEntries!: TreatmentEntry[];
+
+    // The unique id of the recipe
+    recipeId!: string;
   
       // For Realm purposes
       static schema = {
@@ -31,7 +34,8 @@ export class LogEntry {
               poolId: 'string',
               readingEntries: 'ReadingEntry[]',
               treatmentEntries: 'TreatmentEntry[]',
-              ts: 'int'
+              ts: 'int',
+              recipeId: 'string'
           }
       };
     
@@ -40,13 +44,15 @@ export class LogEntry {
         poolId: string, 
         ts: number, 
         readingEntries: ReadingEntry[], 
-        treatmentEntries: TreatmentEntry[]): LogEntry {
+        treatmentEntries: TreatmentEntry[],
+        recipeId: string): LogEntry {
             let logEntry = new LogEntry();
             logEntry.objectId = objectId;
             logEntry.poolId = poolId;
             logEntry.ts = ts;
             logEntry.readingEntries = readingEntries;
             logEntry.treatmentEntries = treatmentEntries;
+            logEntry.recipeId = recipeId
             return logEntry;
     }
 }

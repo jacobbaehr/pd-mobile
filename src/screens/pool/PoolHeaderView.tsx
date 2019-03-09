@@ -8,11 +8,13 @@ import { PDText } from 'components/PDText';
 import { Pool } from 'models/Pool';
 
 import { PoolBackgroundView } from './PoolBackgroundView';
+import { CloseButton } from 'components/buttons/CloseButton';
 
 interface PoolHeaderViewProps {
     pool?: Pool;
     style?: StyleProp<ViewStyle>;
     handlePressedEdit: ()=>void;
+    handlePressedBack: ()=>void;
 }
 
 export class PoolHeaderView extends React.Component<PoolHeaderViewProps, {}> {
@@ -21,16 +23,23 @@ export class PoolHeaderView extends React.Component<PoolHeaderViewProps, {}> {
             return <View></View>;
         }
 
+        const detailsText = `${this.props.pool.volume} gallons, ${this.props.pool.waterType}`;
+
         return (
             <View style={this.props.style}>
                 <PoolBackgroundView pool={this.props.pool} style={styles.background} />
-                <View style={styles.buttonContainer}>
+                <View style={styles.buttonContainerRight}>
                     <Transition appear='right' >
                         <Button title={'Edit'} onPress={this.props.handlePressedEdit} styles={styles.button} textStyles={styles.buttonText}/>
                     </Transition>
                 </View>
+                <View style={styles.buttonContainerLeft}>
+                    <Transition appear='top' >
+                        <CloseButton onPress={this.props.handlePressedBack} />
+                    </Transition>
+                </View>
                 <PDText style={styles.poolNameText} shared={`pool_name_${this.props.pool.objectId}`}>{ this.props.pool.name }</PDText>
-                <PDText style={styles.poolVolumeText} shared={`pool_volume_${this.props.pool.objectId}`}>{ this.props.pool.volume } gallons</PDText>
+                <PDText style={styles.poolVolumeText} shared={`pool_volume_${this.props.pool.objectId}`}>{ detailsText }</PDText>
             </View>
         );
     }
@@ -72,10 +81,15 @@ const styles = StyleSheet.create({
         width: 17,
         height: 16
     },
-    buttonContainer: {
+    buttonContainerRight: {
         position: 'absolute',
         top: 15,
         right: 15
+    },
+    buttonContainerLeft: {
+        position: 'absolute',
+        top: 15,
+        left: 15
     },
     button: {
         position: 'relative',

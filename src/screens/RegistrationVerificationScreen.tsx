@@ -100,7 +100,7 @@ class RegistrationVerificationComponent extends
                             <BackButton
                                 title={''}
                                 imageSource={images.backWhite}
-                                handleBackPressed={this.handleBackPressed} />
+                                onPress={this.handleBackPressed} />
                             <DismissStackButton handleBackPressed={this.handleDismissPressed}/>
                         </View>
                             <Image source={images.pdProTitle} />

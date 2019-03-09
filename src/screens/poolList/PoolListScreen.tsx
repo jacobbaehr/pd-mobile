@@ -17,6 +17,7 @@ import { Database } from 'repository/Database';
 
 import { PoolListFooter } from './PoolListFooter';
 import { PoolListItem } from './PoolListItem';
+import { RecipeRepository } from 'repository/RecipeRepository';
 
 interface PoolListScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
@@ -46,6 +47,7 @@ interface PoolListScreenState {
 class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolListScreenState> {
 
     pools!: Realm.Results<Pool>;
+    recipeRepo: RecipeRepository;
 
     constructor(props: PoolListScreenProps) {
         super(props);
@@ -53,6 +55,8 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
         this.state = {
             initialLoadFinished: false
         };
+
+        this.recipeRepo = new RecipeRepository();
     }
 
     async componentDidMount() {
@@ -63,6 +67,8 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
             this.setState({
                 initialLoadFinished: true
             });
+            // Don't await this, assume it finishes on time (TODO: add state to make sure)
+            this.recipeRepo.savePreloadedRecipes();
         }).catch((e) => {
             console.error(e);
         });

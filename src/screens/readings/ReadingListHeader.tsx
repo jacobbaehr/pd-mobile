@@ -25,7 +25,7 @@ export class ReadingListHeader extends React.Component<ReadingListHeaderProps, {
             <View style={styles.container}>
                 <BackButton
                     title={this.props.pool.name}
-                    handleBackPressed={this.props.handleBackPress} />
+                    onPress={this.props.handleBackPress} />
                 <PDGradientText style={styles.gradientText} colors={gradientColors}>
                     Readings
                 </PDGradientText>

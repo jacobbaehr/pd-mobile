@@ -59,7 +59,7 @@ class ConfirmPurchaseComponent extends React.PureComponent<ConfirmPurchaseCombin
                         <View>
                             <View style={styles.titleContainer}>
                             <View style={styles.navButtonContainer}>
-                                <BackButton title={''} imageSource={images.backWhite} handleBackPressed={this.handleBackPressed} />
+                                <BackButton title={''} imageSource={images.backWhite} onPress={this.handleBackPressed} />
                                 <DismissStackButton handleBackPressed={this.handleDismissPressed}/>
                             </View>
                                 <Image source={images.pdProTitle} />

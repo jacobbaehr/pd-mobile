@@ -3,8 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import { GradientButton } from 'components/buttons/GradientButton';
-import { LogEntry } from 'models/logs/LogEntry';
 import { ReadingEntry } from 'models/logs/ReadingEntry';
 import { TreatmentEntry } from 'models/logs/TreatmentEntry';
 import { Recipe } from 'models/recipe/Recipe';
@@ -12,6 +10,9 @@ import { Pool } from 'models/Pool';
 import { AppState } from 'redux/AppState';
 import { Database } from 'repository/Database';
 import { CalculationService } from 'services/CalculationService';
+import { GradientButton } from 'components/buttons/GradientButton';
+import { LogEntry } from 'models/logs/LogEntry';
+import { RecipeRepository } from 'repository/RecipeRepository';
 
 interface ResultsScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
@@ -25,6 +26,7 @@ interface ResultsScreenProps {
 
 interface ResultsScreenState {
     treatmentEntries: TreatmentEntry[];
+    recipe?: Recipe
 }
 
 const mapStateToProps = (state: AppState, ownProps: ResultsScreenProps): ResultsScreenProps => {
@@ -39,22 +41,31 @@ const mapStateToProps = (state: AppState, ownProps: ResultsScreenProps): Results
 
 class ResultsScreenComponent extends React.Component<ResultsScreenProps, ResultsScreenState> {
 
-    recipe: Recipe;
+    recipe?: Recipe;
+    recipeRepo: RecipeRepository;
 
     constructor(props: ResultsScreenProps) {
         super(props);
 
-        this.recipe = Database.loadRecipe(this.props.recipeId);
+        this.recipeRepo = new RecipeRepository();
         console.log('1');
-        const treatmentEntries = CalculationService.calculateTreatments(this.recipe, this.props.pool, props.readings);
+        this.state = { treatmentEntries: [] };
+    }
+
+    async componentDidMount() {
+        this.recipe = await this.recipeRepo.loadLocalRecipeWithId(this.props.recipeId);
+        const treatmentEntries = CalculationService.calculateTreatments(this.recipe, this.props.pool, this.props.readings);
         console.log('2');
-        this.state = { treatmentEntries };
+        this.setState({
+            treatmentEntries,
+            recipe: this.recipe
+        });
     }
 
     save = async () => {
         const id = Math.random().toString(36).slice(2);
         const ts = new Date().getTime();
-        const logEntry = LogEntry.make(id, this.props.pool.objectId, ts, this.props.readings, this.state.treatmentEntries);
+        const logEntry = LogEntry.make(id, this.props.pool.objectId, ts, this.props.readings, this.state.treatmentEntries, this.props.recipeId);
         console.log(logEntry);
         await Database.saveNewLogEntry(logEntry);
 

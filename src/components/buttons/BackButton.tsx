@@ -7,8 +7,8 @@ import { images } from 'assets/images';
 import { PDText } from 'components/PDText';
 
 interface BackButtonProps {
-    title: string;
-    handleBackPressed: () => void;
+    title?: string;
+    onPress: () => void;
     imageSource?: string;
     scale?: {scale:boolean, scaleLines:number};
 }
@@ -29,7 +29,7 @@ export class BackButton extends React.Component<BackButtonProps, {}> {
                     style={styles.backButtonInnerContainer}
                     underlayColor={'#F8F8F8'}
                     activeScale={0.97}
-                    onPress={this.props.handleBackPressed}>
+                    onPress={this.props.onPress}>
                     <Image
                         style={styles.backButtonImage}
                         source={imageSource}

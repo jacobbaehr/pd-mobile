@@ -124,7 +124,7 @@ class PoolHistoryComponent extends React.PureComponent<PoolHistoryProps, PoolHis
                 <ScrollView style={styles.container}>
                     <BackButton
                         title={poolTitle}
-                        handleBackPressed={this.handleBackPress} />
+                        onPress={this.handleBackPress} />
                     <PDGradientText style={styles.gradientText} colors={titleGradientColors}>
                         History
                     </PDGradientText>
