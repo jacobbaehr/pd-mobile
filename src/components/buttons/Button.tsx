@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { TouchableHighlight, StyleSheet, TextStyle } from 'react-native';
+import { StyleSheet, TextStyle, TouchableHighlight } from 'react-native';
+
 import { PDText } from 'components/PDText';
 
-interface ButtonProps { 
+interface ButtonProps {
     title: string;
 
     onPress: () => void;
 
-    styles: any;
+    styles?: any;
 
     textStyles?: any;
 
@@ -21,16 +22,9 @@ export class Button extends React.Component<ButtonProps, {}> {
     }
 
     render() {
-        const containerStyles = StyleSheet.flatten([styles.container, this.props.styles]);
-        let textStyles: TextStyle;
-        if (this.props.textStyles != undefined) {
-            textStyles = StyleSheet.flatten([styles.text, this.props.textStyles]);
-        } else {
-            textStyles = styles.text;
-        }
         return (
             <TouchableHighlight
-                style={containerStyles}
+                style={[styles.container, this.props.styles]}
                 onPress={this.handleButtonPress}
                 disabled={this.props.disabled}>
                 <PDText style={this.props.textStyles ? this.props.textStyles : styles.text}>

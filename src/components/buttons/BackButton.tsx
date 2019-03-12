@@ -9,11 +9,20 @@ import { PDText } from 'components/PDText';
 interface BackButtonProps {
     title: string;
     handleBackPressed: () => void;
+    imageSource?: string;
     scale?: {scale:boolean, scaleLines:number};
 }
 
 export class BackButton extends React.Component<BackButtonProps, {}> {
+    private getText = () => {
+        return this.props.title ? (
+            <PDText style={styles.backButtonText} scale={this.props.scale}>
+                {this.props.title}
+            </PDText>
+        ) : null;
+    }
     render() {
+        const imageSource = this.props.imageSource ? this.props.imageSource : images.back;
         return (
             <View style={styles.backButtonOuterContainer}>
                 <TouchableScale
@@ -23,15 +32,11 @@ export class BackButton extends React.Component<BackButtonProps, {}> {
                     onPress={this.props.handleBackPressed}>
                     <Image
                         style={styles.backButtonImage}
-                        source={images.back}
+                        source={imageSource}
                         width={21}
                         height={21} />
-                    <PDText style={styles.backButtonText} scale={this.props.scale}>
-                        {this.props.title}
-                    </PDText>
-
+                    { this.getText() }
                 </TouchableScale>
-                <View style={styles.backButtonSpacer}></View>
             </View>
         );
     }
@@ -39,8 +44,7 @@ export class BackButton extends React.Component<BackButtonProps, {}> {
 
 const styles = StyleSheet.create({
     backButtonOuterContainer: {
-        flexDirection: 'row',
-        marginTop: 3
+        flexDirection: 'row'
     },
     backButtonInnerContainer: {
         flexDirection: 'row'
@@ -53,8 +57,5 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         fontSize: 28,
         color: 'black'
-    },
-    backButtonSpacer: {
-        flex: 1
     }
 });

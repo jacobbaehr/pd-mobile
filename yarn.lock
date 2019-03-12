@@ -581,14 +581,6 @@
     "@types/react" "*"
     "@types/react-native" "*"
 
-"@types/react-native-material-dropdown@^0.11.0":
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/@types/react-native-material-dropdown/-/react-native-material-dropdown-0.11.0.tgz#66488a59389e03824e3848157a2844a066430bb5"
-  integrity sha512-qa88ZgIFNdLE0rPIKeE791zkUueqtEsAV6Cwm4svwNCXJ3ohhzWe3M3ARYPKEwMNzq4qk6Pc/Nci//XuGYEXwQ==
-  dependencies:
-    "@types/react" "*"
-    "@types/react-native" "*"
-
 "@types/react-native-vector-icons@^4.4.2":
   version "4.6.4"
   resolved "https://registry.yarnpkg.com/@types/react-native-vector-icons/-/react-native-vector-icons-4.6.4.tgz#83c2d88f0c2615a44b9059eb75c11f92702c1ee2"
@@ -647,6 +639,14 @@ ajv@^6.5.5:
     fast-json-stable-stringify "^2.0.0"
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
+
+amazon-cognito-identity-js@^3.0.7:
+  version "3.0.7"
+  resolved "https://registry.yarnpkg.com/amazon-cognito-identity-js/-/amazon-cognito-identity-js-3.0.7.tgz#bed444e867e3f7fb9e40e7a0cf5f667cddc9f48b"
+  dependencies:
+    buffer "4.9.1"
+    crypto-js "^3.1.9-1"
+    js-cookie "^2.1.4"
 
 ansi-colors@^1.0.1:
   version "1.1.0"
@@ -897,7 +897,7 @@ base64-js@1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.1.2.tgz#d6400cac1c4c660976d90d07a04351d89395f5e8"
 
-base64-js@^1.1.2, base64-js@^1.2.3:
+base64-js@^1.0.2, base64-js@^1.1.2, base64-js@^1.2.3:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.3.0.tgz#cab1e6118f051095e58b5281aea8c1cd22bfc0e3"
 
@@ -1006,6 +1006,14 @@ buffer-fill@^1.0.0:
 buffer-from@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.1.tgz#32713bc028f75c02fdb710d7c7bcec1f2c6070ef"
+
+buffer@4.9.1:
+  version "4.9.1"
+  resolved "https://registry.yarnpkg.com/buffer/-/buffer-4.9.1.tgz#6d1bb601b07a4efced97094132093027c95bc298"
+  dependencies:
+    base64-js "^1.0.2"
+    ieee754 "^1.1.4"
+    isarray "^1.0.0"
 
 buffer@^3.0.1:
   version "3.6.0"
@@ -1305,6 +1313,10 @@ cross-spawn@^5.0.1, cross-spawn@^5.1.0:
     lru-cache "^4.0.1"
     shebang-command "^1.2.0"
     which "^1.2.9"
+
+crypto-js@^3.1.9-1:
+  version "3.1.9-1"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-3.1.9-1.tgz#fda19e761fc077e01ffbfdc6e9fdfc59e8806cd8"
 
 csstype@^2.2.0:
   version "2.6.0"
@@ -2320,6 +2332,10 @@ jest-worker@23.2.0, jest-worker@^23.2.0:
   resolved "https://registry.yarnpkg.com/jest-worker/-/jest-worker-23.2.0.tgz#faf706a8da36fae60eb26957257fa7b5d8ea02b9"
   dependencies:
     merge-stream "^1.0.1"
+
+js-cookie@^2.1.4:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-2.2.0.tgz#1b2c279a6eece380a12168b92485265b35b1effb"
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
@@ -3768,6 +3784,10 @@ realm@^2.21.0:
     stream-counter "^1.0.0"
     sync-request "^3.0.1"
     url-parse "^1.2.0"
+
+redux-thunk@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.3.0.tgz#51c2c19a185ed5187aaa9a2d08b666d0d6467622"
 
 redux@^3.7.2:
   version "3.7.2"

@@ -73,7 +73,8 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    entryFile: "index.js"
+    entryFile: "index.js",
+    nodeExecutableAndArgs: [“node”, “ — max-old-space-size=8192”]
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -137,6 +138,7 @@ android {
 }
 
 dependencies {
+    compile project(':amazon-cognito-identity-js')
     compile project(':react-native-webview')
     compile project(':react-native-vector-icons')
     compile project(':react-native-screens')

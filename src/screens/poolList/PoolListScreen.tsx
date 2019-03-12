@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { Dimensions, Image, SectionList, StyleSheet, View } from 'react-native';
+import { Dimensions, Image, ScrollView, SectionList, StyleSheet, View } from 'react-native';
 import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
 // @ts-ignore
 import { Transition } from 'react-navigation-fluid-transitions';
 import { connect } from 'react-redux';
 
 import { images } from 'assets/images';
+import { Button } from 'components/buttons/Button';
 import { PDText } from 'components/PDText';
 import { Pool } from 'models/Pool';
-import { selectPool } from 'redux/Actions';
+import { selectPool } from 'redux/selectedPool/Actions';
 import { dispatch, AppState } from 'redux/AppState';
 import { Database } from 'repository/Database';
 
@@ -79,34 +80,35 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
         const imageStyles = isEmpty ? [styles.image] : [styles.image, styles.invisible];
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#F8F8F8' }} forceInset={{ bottom: 'never' }}>
-                <Image
-                    style={imageStyles}
-                    source={images.poolListEmpty}
-                    width={imageWidth}
-                    height={imageHeight} />
-                <View style={styles.container}>
-                    <Transition appear='top'>
-                        <View>
-                            <PDText style={[styles.title, styles.titleTop]}>My</PDText>
-                            <PDText style={[styles.title, styles.titleBottom]}>Pools</PDText>
-                        </View>
-                    </Transition>
-                    <SectionList
-                        style={{ flex: 1 }}
-                        renderItem={({ item }) => <PoolListItem
-                            pool={item}
-                            onPoolSelected={() => this.handlePoolSelected(item)} />}
-                        renderSectionHeader={({ section }) => null}
-                        sections={[
-                            { data: pools, title: 'Pools' }
-                        ]}
-                        renderSectionFooter={({ section }) => <PoolListFooter
-                            isEmpty={isEmpty}
-                            handlePress={this.handleAddPoolPressed} />}
-                        keyExtractor={item => (item as Pool).objectId}
-                        overScrollMode={'always'}
-                    />
-                </View>
+                <ScrollView style={{ flex: 1 }}>
+                    <Image
+                        style={imageStyles}
+                        source={images.poolListEmpty}
+                        width={imageWidth}
+                        height={imageHeight} />
+                    <View style={styles.container}>
+                        <Transition appear='top'>
+                            <View>
+                                <PDText style={[styles.title, styles.titleTop]}>My</PDText>
+                                <PDText style={[styles.title, styles.titleBottom]}>Pools</PDText>
+                            </View>
+                        </Transition>
+                        <SectionList
+                            style={{ flex: 1 }}
+                            renderItem={({ item }) => <PoolListItem
+                                pool={item}
+                                onPoolSelected={() => this.handlePoolSelected(item)} />}
+                            renderSectionHeader={({ section }) => null}
+                            sections={[
+                                { data: pools, title: 'Pools' }
+                            ]}
+                            renderSectionFooter={({ section }) => <PoolListFooter
+                                isEmpty={isEmpty}
+                                handlePress={this.handleAddPoolPressed} />}
+                            keyExtractor={item => (item as Pool).objectId}
+                            overScrollMode={'always'} />
+                    </View>
+                </ScrollView>
             </SafeAreaView>
         );
     }

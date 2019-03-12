@@ -1,9 +1,17 @@
-import { createStore } from 'redux';
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
+import ReduxThunk from 'redux-thunk';
 
-import { readingsReducer } from './Reducers';
-import { ReadingEntry } from '../models/logs/ReadingEntry';
-import { TreatmentEntry } from '../models/logs/TreatmentEntry';
-import { Pool } from '../models/Pool';
+import { ReadingEntry } from 'models/logs/ReadingEntry';
+import { TreatmentEntry } from 'models/logs/TreatmentEntry';
+import { Pool } from 'models/Pool';
+import { User } from 'models/User';
+
+import { outputsReducer } from './outputs/Reducer';
+import { poolsLastUpdatedReducer } from './poolsLastUpdated/Reducer';
+import { readingEntriesReducer } from './readingEntries/Reducer';
+import { recipeIdReducer } from './recipeId/Reducer';
+import { selectedPoolReducer } from './selectedPool/Reducer';
+import { userReducer } from './user/Reducer';
 
 // Describes the shape of the application redux state.
 export interface AppState {
@@ -17,19 +25,36 @@ export interface AppState {
     selectedPool?: Pool;
 
     // The currently selected recipe, if any
-    recipeId?: string;
+    recipeId: string;
 
     // This increments whenever we update the list of pools
     poolsLastUpdated: number;
+
+    // User object including cognito user returned after user signs in
+    user: User;
 }
 
 const initialAppState: AppState = {
     readingEntries: [],
     outputs: [],
+    selectedPool: null,
+    recipeId: '002_initial_big3',
     poolsLastUpdated: 0,
-    recipeId: '002_initial_big3'
+    user: null
 };
 
-export const store = createStore(readingsReducer, initialAppState);
+const reducer = combineReducers({
+    readingEntries: readingEntriesReducer,
+    outputs: outputsReducer,
+    selectedPool: selectedPoolReducer,
+    recipeId: recipeIdReducer,
+    poolsLastUpdated: poolsLastUpdatedReducer,
+    user: userReducer
+});
+
+// apply all middleware for application
+const middleware = applyMiddleware(ReduxThunk);
+
+export const store = createStore(reducer, initialAppState, middleware);
 
 export const dispatch = store.dispatch;

@@ -8,9 +8,11 @@ import { PoolListScreen } from 'screens/poolList/PoolListScreen';
 import { ReadingDetailsScreen } from 'screens/readings/ReadingDetailsScreen';
 import { ReadingListScreen } from 'screens/readings/ReadingListScreen';
 import { RecipeListScreen } from 'screens/recipes/RecipeListScreen';
+import { ResultsScreen } from 'screens/results/ResultsScreen';
+import { AuthenticationScreen } from 'screens/AuthenticationScreen';
 import { CalculationSettingsScreen } from 'screens/CalculationSettingsScreen';
 import { EditPoolScreen } from 'screens/EditPoolScreen';
-import { ResultsScreen } from 'screens/results/ResultsScreen';
+import { RegistrationVerificationScreen } from 'screens/RegistrationVerificationScreen';
 
 const PDNavStack = createStackNavigator({
   // PoolList: { screen: PoolListScreen },
@@ -33,10 +35,18 @@ PDNavStack.navigationOptions = (navigationProp: any) => {
   return { gesturesEnabled };
 };
 
+const PDAuthenticationStack = createStackNavigator({
+  Authentication: { screen: AuthenticationScreen },
+  RegistrationVerification: { screen: RegistrationVerificationScreen }
+}, {
+  headerMode: 'none'
+});
+
 export const PDNavFluid = createFluidNavigator({
     PoolList: { screen: PoolListScreen },
     PoolScreen: PDNavStack,
-    CreatePool: { screen: EditPoolScreen }
+    CreatePool: { screen: EditPoolScreen },
+    Authentication: PDAuthenticationStack
   },
   {
     navigationOptions: {

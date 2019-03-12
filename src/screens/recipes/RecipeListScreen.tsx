@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { Recipe } from 'models/recipe/Recipe';
 import { Pool } from 'models/Pool';
-import { selectRecipe } from 'redux/Actions';
+import { selectRecipe } from 'redux/recipeId/Actions';
 import { dispatch, AppState } from 'redux/AppState';
 import { Database } from 'repository/Database';
 

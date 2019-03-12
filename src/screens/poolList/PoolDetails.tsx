@@ -7,7 +7,7 @@ import { SafeAreaView } from 'react-navigation';
 import { GradientButton } from 'components/buttons/GradientButton';
 import { PDText } from 'components/PDText';
 import { Pool } from 'models/Pool';
-import { selectPool } from 'redux/Actions';
+import { selectPool } from 'redux/selectedPool/Actions';
 import { dispatch } from 'redux/AppState';
 import { Database } from 'repository/Database';
 
@@ -122,6 +122,13 @@ export  class PoolDetails extends React.Component<PoolDetailProps, {}> {
 
     render() {
         const { header, selectedPool, goBack, buttonAction, data } = this.props;
+        const deletePoolButton = this.props.pool ?
+            (
+                <GradientButton
+                    onPress={()=>this.handleDeletePoolSelected(this.props.pool)}
+                    title={'Delete Pool'}
+                    containerStyles={styles.startServiceButton} />
+            ) : null;
         return (
             <SafeAreaView style={styles.safeArea}>
                 <KeyboardAwareScrollView>
@@ -133,7 +140,7 @@ export  class PoolDetails extends React.Component<PoolDetailProps, {}> {
                             actions={ ()=>buttonAction() } />
                         <PDText style={styles.sectionHeader}>Basic Information</PDText>
                         {this.renderFields(data)}
-                        {this.props.pool ? <GradientButton onPress={()=>this.handleDeletePoolSelected(this.props.pool)} title={'Delete Pool'} styles={styles.startServiceButton} /> : null}
+                        { deletePoolButton }
                     </View>
                 </KeyboardAwareScrollView>
             </SafeAreaView>

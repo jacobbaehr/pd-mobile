@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
 
+import { GradientButton } from 'components/buttons/GradientButton';
+import { LogEntry } from 'models/logs/LogEntry';
 import { ReadingEntry } from 'models/logs/ReadingEntry';
 import { TreatmentEntry } from 'models/logs/TreatmentEntry';
 import { Recipe } from 'models/recipe/Recipe';
@@ -10,8 +12,6 @@ import { Pool } from 'models/Pool';
 import { AppState } from 'redux/AppState';
 import { Database } from 'repository/Database';
 import { CalculationService } from 'services/CalculationService';
-import { GradientButton } from 'components/buttons/GradientButton';
-import { LogEntry } from 'models/logs/LogEntry';
 
 interface ResultsScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
@@ -23,7 +23,7 @@ interface ResultsScreenProps {
     pool: Pool;
 }
 
-interface ResultsScreenState { 
+interface ResultsScreenState {
     treatmentEntries: TreatmentEntry[];
 }
 
@@ -72,7 +72,7 @@ class ResultsScreenComponent extends React.Component<ResultsScreenProps, Results
                 <Text style={styles.text}>
                     {treatmentString}
                 </Text>
-                <GradientButton title={'save'} onPress={this.save} styles={styles.button}/>
+                <GradientButton title={'save'} onPress={this.save} containerStyles={styles.button}/>
             </View>
         );
     }

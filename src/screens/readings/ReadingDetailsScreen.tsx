@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
+import { Button, StyleSheet , Text, TextInput, View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 
-import { dispatch } from '../../redux/AppState';
-import { recordInput } from '../../redux/Actions';
-import { Reading } from '../../models/recipe/Reading';
-import { ReadingEntry } from '../../models/logs/ReadingEntry';
+import { ReadingEntry } from 'models/logs/ReadingEntry';
+import { Reading } from 'models/recipe/Reading';
+import { recordInput } from 'redux/readingEntries/Actions';
+import { dispatch } from 'redux/AppState';
 
 interface ReadingDetailsScreenProps {
     navigation: NavigationScreenProp<{ params: { reading: Reading, readingEntry?: ReadingEntry }}, {}>;
@@ -22,7 +22,7 @@ export class ReadingDetailsScreen extends React.Component<ReadingDetailsScreenPr
 
     constructor(props: ReadingDetailsScreenProps) {
         super(props);
-        
+
         this.entry = this.props.navigation.state.params.readingEntry;
         this.reading = this.props.navigation.state.params.reading;
         if ((this.entry !== null) && (this.entry !== undefined)) {
@@ -35,8 +35,8 @@ export class ReadingDetailsScreen extends React.Component<ReadingDetailsScreenPr
     }
 
     private handleButtonPress = () => {
-        let value = this.state.value;
-        if (value != undefined) {
+        const value = this.state.value;
+        if (value !== undefined) {
             dispatch(recordInput(this.reading, value));
         }
         this.props.navigation.goBack();
@@ -56,7 +56,7 @@ export class ReadingDetailsScreen extends React.Component<ReadingDetailsScreenPr
                 </Text>
                 <TextInput style={styles.textInput} onChangeText={this.handleTextChanged} keyboardType={'numeric'}
                     autoFocus={true} defaultValue={defaultValueString} />
-                <Button title="Set Reading" onPress={this.handleButtonPress} />
+                <Button title='Set Reading' onPress={this.handleButtonPress} />
             </View>
         );
     }
@@ -80,4 +80,3 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     }
   });
-  

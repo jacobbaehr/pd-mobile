@@ -1,13 +1,13 @@
 import * as Realm from 'realm';
 
+import { LogEntry } from 'models/logs/LogEntry';
 import { Reading } from 'models/recipe/Reading';
-import { Treatment } from 'models/recipe/Treatment';
 import { Recipe } from 'models/recipe/Recipe';
+import { Treatment } from 'models/recipe/Treatment';
 import { Pool } from 'models/Pool';
 import { initialData } from 'InitialData';
 
 import { Migrator } from './Migrator';
-import { LogEntry } from 'models/logs/LogEntry';
 
 export class Database {
     static realm: Realm;
@@ -22,15 +22,15 @@ export class Database {
         }
 
         // migrate database
-        try {
-            Migrator.runMigrations();
-        } catch (e) {
-            console.warn(e);
-        }
+        // try {
+        //     Migrator.runMigrations();
+        // } catch (e) {
+        //     console.warn(e);
+        // }
 
         await Realm.open(Migrator.getCurrentSchemaVersion()).then((value: Realm) => {
             Database.realm = value;
-            Database.createInitialRecipes();
+            // Database.createInitialRecipes();
             return Promise.resolve();
         }).catch((e: any) => {
             console.log('error openening database');

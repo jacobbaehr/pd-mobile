@@ -3,7 +3,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { Pool } from 'models/Pool';
-import { saveNewPool, updatePool } from 'redux/Actions';
+import { saveNewPool, updatePool } from 'redux/selectedPool/Actions';
 import { dispatch, AppState } from 'redux/AppState';
 
 import { DataArr, PoolDetails } from './poolList/PoolDetails';

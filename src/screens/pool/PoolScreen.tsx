@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, ScrollView, StyleSheet, Text, TouchableHighlight, View, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
+import { Image, NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
 // @ts-ignore
 import { Transition } from 'react-navigation-fluid-transitions';
@@ -34,6 +34,8 @@ const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolLi
 };
 
 class PoolScreenComponent extends React.Component<PoolListScreenProps> {
+    private isDismissingFromScroll = false;
+
     handleBackPressed = () => {
         this.props.navigation.goBack();
     }
@@ -50,15 +52,18 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
         this.props.navigation.navigate('EditPool');
     }
 
-    private isDismissingFromScroll = false;
-    private handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
         console.log(event.nativeEvent.contentOffset.y);
         if (this.isDismissingFromScroll) { return; }
-        
+
         if (event.nativeEvent.contentOffset.y < -50) {
             // this.isDismissingFromScroll = true;
             // this.props.navigation.popToTop();
         }
+    }
+
+    handleGetProPressed = () => {
+        this.props.navigation.navigate('Authentication', { screenType: 'Register' });
     }
 
     render() {
@@ -73,16 +78,16 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
         };
 
         return (
-            <SafeAreaView style={{ flex: 1, backgroundColor: '#2091F9' }} forceInset={{ bottom: 'never' }}>
-            <PoolHeaderView pool={this.props.selectedPool} style={styles.header} handlePressedEdit={this.handleEditButtonPressed}/>
-                <ScrollView onScroll={this.handleScroll} scrollEventThrottle={2} style={styles.scrollView}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#F8F8F8' }} forceInset={{ bottom: 'never', top: 'never' }}>
+                <ScrollView style={{ marginBottom: 15 }}>
+                    <PoolHeaderView pool={this.props.selectedPool} style={styles.header} handlePressedEdit={this.handleEditButtonPressed}/>
                     <View style={styles.container}>
                         <Transition appear='left'>
                             <PDText style={[styles.sectionTitle, styles.topSectionTitle]}>Service</PDText>
                         </Transition>
                         <Transition appear='right'>
                             <View>
-                                <GradientButton onPress={this.handleStartServicePressed} title={'Start Service'} styles={styles.startServiceButton} />
+                                <GradientButton onPress={this.handleStartServicePressed} title={'Start Service'} containerStyles={styles.startServiceButton} />
                                 <PDText style={styles.lastServiceLabel}>Last Serviced: 20 days ago</PDText>
                             </View>
                         </Transition>
@@ -117,6 +122,30 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
                                 </TouchableHighlight>
                             </ChartCard>
                         </View>
+                        <View style={{ flex: 1 }}>
+                            <PDText style={styles.sectionTitle}>History</PDText>
+                            <ChartCard viewModel={vm} >
+                                <TouchableHighlight onPress={this.handleViewHistoryPressed} style={styles.historyButton}>
+                                    <Text style={styles.viewMoreHistoryText}>View More</Text>
+                                </TouchableHighlight>
+                            </ChartCard>
+                        </View>
+                        <Transition appear='left'>
+                            <View style={{ flex: 1 }}>
+                                <PDText style={styles.sectionTitle}>Online Backup</PDText>
+                                <View style={styles.onlineBackupContainer}>
+                                    <Image style={styles.pdProImageStyles} source={images.pdProTitle} />
+                                    <Text style={styles.onlineBackupText}>
+                                        Get PoolDash Pro and never have to worry about dropping your phone in the pool again!
+                                    </Text>
+                                    <GradientButton
+                                        title={'Get PoolDash Pro'}
+                                        onPress={this.handleGetProPressed}
+                                        gradientStart={'#fc6076'}
+                                        gradientEnd={'#ff9944'}/>
+                                </View>
+                            </View>
+                        </Transition>
                     </View>
                 </ScrollView>
             </SafeAreaView>
@@ -185,5 +214,26 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         textAlign: 'center',
         fontFamily: 'Avenir Next'
+    },
+    onlineBackupContainer: {
+        backgroundColor: 'black',
+        shadowOffset: { width: 0, height: 2, },
+        shadowColor: 'grey',
+        shadowOpacity: 0.3,
+        paddingVertical: 10,
+        flex: 1,
+        borderRadius: 8,
+        paddingBottom: 10,
+        paddingHorizontal: 15,
+        alignItems: 'center'
+    },
+    pdProImageStyles: {
+        marginBottom: 10
+    },
+    onlineBackupText: {
+        color: '#9b9b9b',
+        fontWeight: '400',
+        fontSize: 20,
+        textAlign: 'center'
     }
 });
