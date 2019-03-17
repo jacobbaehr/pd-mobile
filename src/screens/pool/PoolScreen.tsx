@@ -63,7 +63,7 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
     }
 
     handleGetProPressed = () => {
-        this.props.navigation.navigate('Authentication', { screenType: 'Register' });
+        this.props.navigation.navigate('PurchasePro', { screenType: 'Register' });
     }
 
     render() {
@@ -87,7 +87,7 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
                         </Transition>
                         <Transition appear='right'>
                             <View>
-                                <GradientButton onPress={this.handleStartServicePressed} title={'Start Service'} containerStyles={styles.startServiceButton} />
+                                <GradientButton onPress={this.handleStartServicePressed} title={'Start Service'}/>
                                 <PDText style={styles.lastServiceLabel}>Last Serviced: 20 days ago</PDText>
                             </View>
                         </Transition>
@@ -114,14 +114,6 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
                                 </View>
                             </View>
                         </Transition>
-                        <View style={{ flex: 1 }}>
-                            <PDText style={styles.sectionTitle}>History</PDText>
-                            <ChartCard viewModel={vm} >
-                                <TouchableHighlight onPress={this.handleViewHistoryPressed} style={styles.historyButton}>
-                                    <Text style={styles.viewMoreHistoryText}>View More</Text>
-                                </TouchableHighlight>
-                            </ChartCard>
-                        </View>
                         <View style={{ flex: 1 }}>
                             <PDText style={styles.sectionTitle}>History</PDText>
                             <ChartCard viewModel={vm} >
@@ -176,9 +168,6 @@ const styles = StyleSheet.create({
     },
     topSectionTitle: {
         marginTop: 14
-    },
-    startServiceButton: {
-        height: 67
     },
     lastServiceLabel: {
         color: '#737373',

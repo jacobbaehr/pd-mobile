@@ -576,7 +576,6 @@
 "@types/react-native-material-dropdown@^0.11.0":
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/@types/react-native-material-dropdown/-/react-native-material-dropdown-0.11.0.tgz#66488a59389e03824e3848157a2844a066430bb5"
-  integrity sha512-qa88ZgIFNdLE0rPIKeE791zkUueqtEsAV6Cwm4svwNCXJ3ohhzWe3M3ARYPKEwMNzq4qk6Pc/Nci//XuGYEXwQ==
   dependencies:
     "@types/react" "*"
     "@types/react-native" "*"
@@ -2894,7 +2893,6 @@ mkdirp@^0.5.0, mkdirp@^0.5.1:
 moment@^2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
-  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
 
 morgan@^1.9.0:
   version "1.9.1"
@@ -3464,6 +3462,10 @@ react-is@^16.3.2, react-is@^16.5.2, react-is@^16.6.0:
 react-lifecycles-compat@^3, react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+
+react-native-config@^0.11.7:
+  version "0.11.7"
+  resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-0.11.7.tgz#a2b323f2ecd76a4df88cbb6bc86eaa2ef9febee7"
 
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"

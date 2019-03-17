@@ -7,8 +7,10 @@ import { connect } from 'react-redux';
 
 import { images } from 'assets/images';
 import { Button } from 'components/buttons/Button';
+import { GradientButton } from 'components/buttons/GradientButton';
 import { PDText } from 'components/PDText';
 import { Pool } from 'models/Pool';
+import { User } from 'models/User';
 import { selectPool } from 'redux/selectedPool/Actions';
 import { dispatch, AppState } from 'redux/AppState';
 import { Database } from 'repository/Database';
@@ -24,13 +26,16 @@ interface PoolListScreenProps {
 
     // This is a flag that just changes whenever we save a new pool.
     poolsLastUpdated: number;
+
+    user: User;
 }
 
 const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolListScreenProps => {
     return {
         navigation: ownProps.navigation,
         selectedPool: state.selectedPool,
-        poolsLastUpdated: state.poolsLastUpdated
+        poolsLastUpdated: state.poolsLastUpdated,
+        user: state.user
     };
 };
 
@@ -50,7 +55,7 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         // Fetch pools from persistent storage
         Database.prepare().then(() => {
             this.pools = Database.loadPools();

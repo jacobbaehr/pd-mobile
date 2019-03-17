@@ -2,18 +2,16 @@ import * as React from 'react';
 import { Alert, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { NavigationScreenProp } from 'react-navigation';
-// @ts-ignore
-import { Transition } from 'react-navigation-fluid-transitions';
 import { connect, DispatchProp } from 'react-redux';
 
 import { images } from 'assets/images';
 import { BackButton } from 'components/buttons/BackButton';
 import { DismissStackButton } from 'components/buttons/DismissStackButton';
-import { GradientButton } from 'components/buttons/GradientButton';
 import { TextButton } from 'components/buttons/TextButton';
 import { PDText } from 'components/PDText';
 import { SeparatorLine } from 'components/SeparatorLine';
 import { TextInputWithTitle } from 'components/TextInputWithTitle';
+import { updateUserAction } from 'redux/user/Actions';
 import { AppState } from 'redux/AppState';
 import { CognitoService } from 'services/CognitoService';
 
@@ -71,11 +69,24 @@ class AuthenticationComponent extends React.PureComponent<AuthenticationCombined
     }
 
     handleAuthButtonPressed = async (): Promise<void> => {
-        console.warn('main button pressed!');
-
         if (this.isLogin()) {
-            const session = await this.cognitoService.authenticateUser(this.state.email, this.state.password);
+            const authenticationSuccess = await this.cognitoService.authenticateUser(this.state.email, this.state.password);
+
+            if (!authenticationSuccess) {
+                Alert.alert('Error logging in', 'An error occurred while logging in. Please try again.');
+            }
             // save session in app state
+            const user = {
+                email: this.state.email,
+                auth: {
+                    cognitoSession: authenticationSuccess.cognitoSession,
+                    cognitoUser: authenticationSuccess.cognitoUser
+                }
+            };
+            this.props.dispatch(updateUserAction(user));
+
+            // navigate to confirm purchase
+            this.props.navigation.navigate('ConfirmPurchase', { prevScreen: 'Authentication' });
         } else {
             this.registerUser();
         }
@@ -101,12 +112,12 @@ class AuthenticationComponent extends React.PureComponent<AuthenticationCombined
         if (cognitoUser) {
             this.props.navigation.navigate('RegistrationVerification',
                 {
-                    email: this.state.email,
-                    password: this.state.password
+                    email: email,
+                    password: password
                 }
             );
         } else {
-            // alert error registering
+            Alert.alert('Error while registering', 'An error occurred during the registration process. Please try again.');
         }
     }
 

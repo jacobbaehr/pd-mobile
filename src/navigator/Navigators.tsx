@@ -2,6 +2,7 @@ import { createStackNavigator } from 'react-navigation';
 // @ts-ignore: fluid-transitions untyped
 import { createFluidNavigator } from 'react-navigation-fluid-transitions';
 
+import { ConfirmPurchaseScreen } from 'screens/confirmPurchase/ConfirmPurchaseScreen';
 import { PoolScreen } from 'screens/pool/PoolScreen';
 import { PoolHistoryScreen } from 'screens/poolHistory/PoolHistoryScreen';
 import { PoolListScreen } from 'screens/poolList/PoolListScreen';
@@ -35,9 +36,10 @@ PDNavStack.navigationOptions = (navigationProp: any) => {
   return { gesturesEnabled };
 };
 
-const PDAuthenticationStack = createStackNavigator({
+const PurchaseProStack = createStackNavigator({
   Authentication: { screen: AuthenticationScreen },
-  RegistrationVerification: { screen: RegistrationVerificationScreen }
+  RegistrationVerification: { screen: RegistrationVerificationScreen },
+  ConfirmPurchase: { screen: ConfirmPurchaseScreen }
 }, {
   headerMode: 'none'
 });
@@ -46,7 +48,7 @@ export const PDNavFluid = createFluidNavigator({
     PoolList: { screen: PoolListScreen },
     PoolScreen: PDNavStack,
     CreatePool: { screen: EditPoolScreen },
-    Authentication: PDAuthenticationStack
+    PurchasePro: PurchaseProStack
   },
   {
     navigationOptions: {
@@ -58,4 +60,5 @@ export const PDNavFluid = createFluidNavigator({
       // TODO: figure out a good easing function
       // easing: Easing.elastic(2)
     }
-  });
+  }
+);

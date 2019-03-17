@@ -7,6 +7,7 @@ import { AppState } from 'redux/AppState';
 export const SAVE_USER = 'user/SAVE_USER';
 export const UPDATE_USER = 'user/UPDATE_USER';
 export const DELETE_USER = 'user/DELETE_USER';
+export const HYDRATE_USER = 'user/HYDRATE_USER';
 
 export interface SaveUserAction {
     type: typeof SAVE_USER;
@@ -70,4 +71,21 @@ const makeDeleteUserAction = (user: User): DeleteUserAction => {
     };
 };
 
-export type UserActionsTypes = SaveUserAction | UpdateUserAction | DeleteUserAction;
+export interface HydrateUserAction {
+    type: typeof HYDRATE_USER;
+    payload: User;
+}
+
+export const hydrateUserAction = (user: User): HydrateUserAction => {
+    const action = makeHydrateUserAction(user);
+    return action;
+};
+
+const makeHydrateUserAction = (user: User): HydrateUserAction => {
+    return {
+        type: HYDRATE_USER,
+        payload: user
+    };
+};
+
+export type UserActionsTypes = SaveUserAction | UpdateUserAction | DeleteUserAction | HydrateUserAction;

@@ -1,6 +1,9 @@
-import { CognitoUser } from 'amazon-cognito-identity-js';
+import { CognitoUser, CognitoUserSession } from 'amazon-cognito-identity-js';
 
 export interface User {
     email: string;
-    cognitoUser: CognitoUser;
+    auth: {
+        cognitoUser: CognitoUser;
+        cognitoSession?: CognitoUserSession;
+    };
 }
