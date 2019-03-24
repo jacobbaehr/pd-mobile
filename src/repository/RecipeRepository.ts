@@ -1,8 +1,6 @@
 import * as RNFS from 'react-native-fs';
 import { Recipe } from 'models/recipe/Recipe';
-import { big3 } from './recipes/Big3';
-import * as async from 'async';
-import { Alert } from 'react-native';
+import { big3 } from 'repository/recipes/Big3';
 
 const recipeFolderName = 'recipes';
 const defaultRecipes: Recipe[] = [big3];
@@ -31,32 +29,32 @@ export class RecipeRepository {
         } catch (e) {
             return Promise.reject(e);
         }
-        async.forEach(defaultRecipes, async (recipe, callback) => {
-            try {
-                await this.saveRecipe(recipe);
-                callback();
-            } catch (e) {
-                callback(e);
-            }
-        }, (error) => {
-            if ((error !== undefined) || (error !== null)) {
-                return Promise.reject(error);
-            }
-            return Promise.resolve();
+        const promises = defaultRecipes.map(r => {
+            return new Promise(async (resolve) => {
+                await this.saveRecipe(r);
+                resolve();
+            });
         });
+        await Promise.all(promises);
     }
 
     /// Saves recipe, will overwrite existing file if it already exists.
     private saveRecipe = async (recipe: Recipe): Promise<Boolean> => {
         const filePath = this.getFilepathForRecipeId(recipe.objectId);
         const fileData = JSON.stringify(recipe);
+
+        const fileExists = await RNFS.exists(filePath);
+        if (fileExists) {
+            // TODO: reconsider returning false here when the recipe already exists
+            return false;
+        }
         
         try {
             await RNFS.writeFile(filePath, fileData, 'utf8');
             return true;
         } catch (e) {
             console.warn(JSON.stringify(e));
-            return Promise.reject(e);
+            return false;
         }
     }
 
