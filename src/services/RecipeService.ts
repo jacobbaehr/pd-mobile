@@ -1,18 +1,21 @@
-import { Recipe } from "models/recipe/Recipe";
-import { RecipeRepository } from "repository/RecipeRepository";
 import axios from 'axios';
-import { RecipeMeta } from "models/recipe/RecipeMeta";
+
+import { RecipesApiManager } from 'api/Recipes/RecipesApiManager';
+import { Recipe } from 'models/recipe/Recipe';
+import { RecipeMeta } from 'models/recipe/RecipeMeta';
+import { RecipeRepository } from 'repository/RecipeRepository';
 
 interface RecipesResponse {
     list: RecipeMeta[];
 }
 
 export class RecipeService {
-
+    recipeApiManager: RecipesApiManager;
     recipeRepo: RecipeRepository;
 
     constructor() {
         this.recipeRepo = new RecipeRepository();
+        this.recipeApiManager = new RecipesApiManager('https://api.pooldash.com/v1/recipes');
     }
 
     resolveRecipeWithId = async (recipeId: string): Promise<Recipe> => {
@@ -22,9 +25,9 @@ export class RecipeService {
             console.log('loaded locally!');
             return localRecipe;
         } catch (e) {
-            console.log('recipe not found locally, fetching remotely...')
+            console.log('recipe not found locally, fetching remotely...');
         }
-        
+
         try {
             const recipe = await this.fetchRecipeRemotely(recipeId);
             return recipe;
@@ -35,14 +38,14 @@ export class RecipeService {
     }
 
     fetchRecipeList = async (): Promise<RecipeMeta[]> => {
-        try {
-            const response = await axios.get<RecipesResponse>('https://api.pooldash.com/v1/recipes');
-            console.log('response: ');
-            console.log(response);
-            return response.data.list;
-        } catch (error) {
-            console.log(error);
+        const getRecipesResponse = await this.recipeApiManager.getDefaultRecipes();
+        if (getRecipesResponse.error) {
+            console.log(getRecipesResponse.error);
             return [];
+        } else {
+            console.log('response: ');
+            console.log(getRecipesResponse.response);
+            return getRecipesResponse.response.data.list;
         }
     }
 

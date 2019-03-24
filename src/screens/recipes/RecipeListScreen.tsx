@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SectionList, StyleSheet, View, Text, ScrollView } from 'react-native';
+import { ScrollView, SectionList, StyleSheet, Text, View } from 'react-native';
 import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 
@@ -10,15 +10,15 @@ import { selectRecipe } from 'redux/recipeId/Actions';
 import { dispatch, AppState } from 'redux/AppState';
 import { Database } from 'repository/Database';
 
-import { RecipeListItem } from './RecipeListItem';
 import { BackButton } from 'components/buttons/BackButton';
 import { PDGradientText } from 'components/PDGradientText';
 import { Color } from 'csstype';
+import { RecipeListItem } from './RecipeListItem';
 
-import { FlatGrid } from 'react-native-super-grid';
 import { GradientButton } from 'components/buttons/GradientButton';
 import { localeData } from 'moment';
-import { RecipeService } from 'services/recipe/RecipeService';
+import { FlatGrid } from 'react-native-super-grid';
+import { RecipeService } from 'services/RecipeService';
 
 interface RecipeListScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
