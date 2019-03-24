@@ -21,7 +21,7 @@ export class EditListHeader extends React.Component<EditListHeaderProps, {}> {
                     <View style={{width:'50%'}}>
                         <BackButton
                             title={this.props.buttonText ? this.props.buttonText: 'Back'}
-                            handleBackPressed={this.props.handleBackPress}
+                            onPress={this.props.handleBackPress}
                             scale={{scale:true, scaleLines:2}}
                         />
                     </View>

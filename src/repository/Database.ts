@@ -1,11 +1,7 @@
 import * as Realm from 'realm';
 
 import { LogEntry } from 'models/logs/LogEntry';
-import { Reading } from 'models/recipe/Reading';
-import { Recipe } from 'models/recipe/Recipe';
-import { Treatment } from 'models/recipe/Treatment';
 import { Pool } from 'models/Pool';
-import { initialData } from 'InitialData';
 
 import { Migrator } from './Migrator';
 
@@ -30,7 +26,6 @@ export class Database {
 
         await Realm.open(Migrator.getCurrentSchemaVersion()).then((value: Realm) => {
             Database.realm = value;
-            // Database.createInitialRecipes();
             return Promise.resolve();
         }).catch((e: any) => {
             console.log('error openening database');
@@ -82,7 +77,8 @@ export class Database {
                     poolId: entry.poolId,
                     readingEntries: entry.readingEntries,
                     treatmentEntries: entry.treatmentEntries,
-                    ts: entry.ts
+                    ts: entry.ts,
+                    recipeId: entry.recipeId
                 });
                 return Promise.resolve();
             });
@@ -128,39 +124,6 @@ export class Database {
             });
         } catch (e) {
             console.log(e);
-        }
-    }
-
-    static loadRecipes = (): Realm.Results<Recipe> => {
-        if (Database.realm === undefined) {
-            console.error('wait on realm to load');
-        }
-        return Database.realm.objects<Recipe>(Recipe);
-    }
-
-    static loadRecipe = (objectId: string): Recipe => {
-        if (Database.realm === undefined) {
-            console.error('loadRecipe called before realm loaded');
-        }
-        return Database.realm.objects<Recipe>(Recipe).filtered('objectId = $0', objectId)[0];
-    }
-
-    static createInitialRecipes = () => {
-        const realm = Database.realm;
-        initialData.recipes[0].readings.forEach((reading: Reading) => {
-            reading.objectId = getObjectId();
-        });
-        initialData.recipes[0].treatments.forEach((treatment: Treatment) => {
-            treatment.objectId = getObjectId();
-        });
-        try {
-            realm.write(() => {
-                realm.create(Recipe.schema.name, initialData.recipes[0]);
-            });
-        } catch (e) {
-            console.log(e);
-            //  TODO: use async-storage to check necessary version, support migrations.
-            console.error('Error saving recipes');
         }
     }
 

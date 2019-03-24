@@ -10,6 +10,7 @@ import { Reading } from '../../models/recipe/Reading';
 import { Recipe } from '../../models/recipe/Recipe';
 import { ReadingEntry } from '../../models/logs/ReadingEntry';
 import { Database } from 'repository/Database';
+import { RecipeRepository } from 'repository/RecipeRepository';
 import { ReadingListHeader } from './ReadingListHeader';
 import { Pool } from '../../models/Pool';
 import { ReadingListSectionHeader } from './ReadingListSectionHeader';
@@ -17,6 +18,7 @@ import { ReadingDetailsScreen } from './ReadingDetailsScreen';
 
 interface ReadingListScreenState {
     activeReadingId?: string;
+    recipe?: Recipe;
 }
 
 interface ReadingListScreenProps {
@@ -37,19 +39,31 @@ const mapStateToProps = (state: AppState, ownProps: ReadingListScreenProps): Rea
 
 class ReadingListScreenComponent extends React.Component<ReadingListScreenProps, ReadingListScreenState> {
 
-    recipe: Recipe
+    recipeRepo: RecipeRepository;
 
     constructor(props: ReadingListScreenProps) {
         super(props);
         this.state = {
             activeReadingId: undefined
         };
+        this.recipeRepo = new RecipeRepository();
+    }
 
-        this.recipe = Database.loadRecipe(props.recipeId);
+    async componentDidMount() {
+        try {
+            const recipe = await this.recipeRepo.loadLocalRecipeWithId(this.props.recipeId);
+            this.setState({ recipe });
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     getRemainingReadings = (): Reading[] => {
-        return this.recipe.readings.filter(reading => {
+        const recipe = this.state.recipe;
+        if (recipe === undefined) {
+            return [];
+        }
+        return recipe.readings.filter(reading => {
             let inputComplete = false;
             this.props.entries.forEach(entry => {
                 if (entry.readingId === reading.objectId) {
@@ -104,22 +118,30 @@ class ReadingListScreenComponent extends React.Component<ReadingListScreenProps,
 
     render() {
         const remaining = this.getRemainingReadings();
-        // TODO: clean this up
-        const completed = this.recipe.readings.filter(reading => 
-            remaining.filter(incomplete => 
-                incomplete.objectId == reading.objectId
-            ).length == 0
-        );
-
-        const progress = (this.recipe.readings.length == 0)
-            ? 1
-            : (completed.length / this.recipe.readings.length);
-
-        const hasTakenEveryReading = completed.length == this.recipe.readings.length;
-
         let sections: SectionListData<Reading>[] = [{data: remaining, title: 'Remaining Readings'}];
-        if (completed.length > 0) {
-            sections.push({data: completed, title: 'Completed Readings'});
+        let completed: Reading[] = [];
+        let hasTakenEveryReading = false;
+        let progress = 0;
+
+        const recipe = this.state.recipe;
+        if (recipe !== undefined) {
+            // TODO: clean this up
+            const completed = recipe.readings.filter(reading => 
+                remaining.filter(incomplete => 
+                    incomplete.objectId == reading.objectId
+                ).length == 0
+            );
+
+            progress = (recipe.readings.length == 0)
+                ? 1
+                : (completed.length / recipe.readings.length);
+
+            hasTakenEveryReading = completed.length == recipe.readings.length;
+
+            let sections: SectionListData<Reading>[] = [{data: remaining, title: 'Remaining Readings'}];
+            if (completed.length > 0) {
+                sections.push({data: completed, title: 'Completed Readings'});
+            }
         }
 
         return(

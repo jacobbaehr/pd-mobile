@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Image, NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
-import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
+import { Image, ScrollView, Text, TouchableHighlight, View, NativeSyntheticEvent, NativeScrollEvent, StyleSheet } from 'react-native';
+import { NavigationScreenProp, SafeAreaView, NavigationActions } from 'react-navigation';
 // @ts-ignore
 import { Transition } from 'react-navigation-fluid-transitions';
 import { connect } from 'react-redux';
@@ -14,6 +14,7 @@ import { Pool } from 'models/Pool';
 import { AppState } from 'redux/AppState';
 
 import { PoolHeaderView } from './PoolHeaderView';
+import { Button } from 'components/buttons/Button';
 
 interface PoolListScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
@@ -37,7 +38,7 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
     private isDismissingFromScroll = false;
 
     handleBackPressed = () => {
-        this.props.navigation.goBack();
+        this.props.navigation.dispatch(NavigationActions.back());
     }
 
     handleStartServicePressed = () => {
@@ -52,7 +53,11 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
         this.props.navigation.navigate('EditPool');
     }
 
-    handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    handleChangeRecipeButtonPressed = () => {
+        this.props.navigation.navigate('RecipeList');
+    }
+
+    private handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
         console.log(event.nativeEvent.contentOffset.y);
         if (this.isDismissingFromScroll) { return; }
 
@@ -78,9 +83,9 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
         };
 
         return (
-            <SafeAreaView style={{ flex: 1, backgroundColor: '#F8F8F8' }} forceInset={{ bottom: 'never', top: 'never' }}>
-                <ScrollView style={{ marginBottom: 15 }}>
-                    <PoolHeaderView pool={this.props.selectedPool} style={styles.header} handlePressedEdit={this.handleEditButtonPressed}/>
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#2091F9' }} forceInset={{ bottom: 'never' }}>
+            <PoolHeaderView pool={this.props.selectedPool} style={styles.header} handlePressedEdit={this.handleEditButtonPressed} handlePressedBack={this.handleBackPressed}/>
+                <ScrollView onScroll={this.handleScroll} scrollEventThrottle={2} style={styles.scrollView}>
                     <View style={styles.container}>
                         <Transition appear='left'>
                             <PDText style={[styles.sectionTitle, styles.topSectionTitle]}>Service</PDText>
@@ -92,26 +97,19 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
                             </View>
                         </Transition>
                         <Transition appear='left'>
-                            <PDText style={styles.sectionTitle}>Overview</PDText>
+                            <PDText style={styles.sectionTitle}>Recipe</PDText>
                         </Transition>
                         <Transition appear='right'>
                             <View>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Image
-                                        style={styles.overviewWaterIcon}
-                                        source={images.waterType}
-                                        width={22}
-                                        height={14} />
-                                    <PDText style={styles.overviewText}>Saltwater</PDText>
-                                </View>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Image
                                         style={styles.overviewHistoryIcon}
                                         source={images.history}
                                         width={20}
                                         height={18} />
-                                    <PDText style={styles.overviewText}>Big 3 + Salt</PDText>
+                                    <PDText style={styles.recipeName}>Big 3 + Salt</PDText>
                                 </View>
+                                <Button styles={styles.recipeChangeButton} textStyles={ styles.recipeChangeButtonText } title={ 'change' } onPress={ this.handleChangeRecipeButtonPressed } />
                             </View>
                         </Transition>
                         <View style={{ flex: 1 }}>
@@ -174,10 +172,21 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         fontSize: 16
     },
-    overviewText: {
+    recipeName: {
         fontSize: 22,
         fontWeight: '600',
         color: 'black',
+        marginLeft: 8
+    },
+    recipeChangeButton: {
+        backgroundColor: 'transparent',
+        flex: 0
+    },
+    recipeChangeButtonText: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: 'blue',
+        textDecorationLine: 'underline',
         marginLeft: 8
     },
     overviewWaterIcon: {
