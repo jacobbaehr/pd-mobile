@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { SectionList, StyleSheet, View } from 'react-native';
+import { SectionList, StyleSheet, View, Text, ScrollView } from 'react-native';
 import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { Recipe } from 'models/recipe/Recipe';
+import { RecipeMeta } from 'models/recipe/RecipeMeta';
 import { Pool } from 'models/Pool';
 import { selectRecipe } from 'redux/recipeId/Actions';
 import { dispatch, AppState } from 'redux/AppState';
@@ -13,6 +14,11 @@ import { RecipeListItem } from './RecipeListItem';
 import { BackButton } from 'components/buttons/BackButton';
 import { PDGradientText } from 'components/PDGradientText';
 import { Color } from 'csstype';
+
+import { FlatGrid } from 'react-native-super-grid';
+import { GradientButton } from 'components/buttons/GradientButton';
+import { localeData } from 'moment';
+import { RecipeService } from 'services/recipe/RecipeService';
 
 interface RecipeListScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
@@ -33,11 +39,13 @@ interface RecipeListScreenState {
 }
 
 class RecipeListScreenComponent extends React.Component<RecipeListScreenProps, RecipeListScreenState> {
-    recipes!: Recipe[];
+    recipes!: RecipeMeta[];
+    recipeService: RecipeService;
 
     constructor(props: RecipeListScreenProps) {
         super(props);
 
+        this.recipeService = new RecipeService();
         this.state = {
             initialLoadFinished: false
         };
@@ -52,13 +60,12 @@ class RecipeListScreenComponent extends React.Component<RecipeListScreenProps, R
         return { title: selectedPoolName };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         // Fetch pool from persistent storage
         if (this.props.pool !== null && this.props.pool !== undefined) {
             this.props.navigation.setParams({ poolName: this.props.pool.name });
         }
-        // this.recipes = Database.loadRecipes();
-        this.recipes = [];
+        this.recipes = await this.recipeService.fetchRecipeList();
 
         this.setState({ initialLoadFinished: true });
     }
@@ -98,14 +105,14 @@ class RecipeListScreenComponent extends React.Component<RecipeListScreenProps, R
                     Recipes
                 </PDGradientText>
                 <View style={styles.container}>
-                    <SectionList
-                        style={{ flex: 1 }}
-                        renderItem={({ item }) => <RecipeListItem recipe={item} onRecipeSelected={this.handleRecipeSelected} />}
-                        renderSectionHeader={({ section }) => null}
-                        sections={[
-                            { data: recipes, title: 'Recipes' }
-                        ]}
-                        keyExtractor={item => (item as Recipe).objectId} />
+                <ScrollView style={styles.scrollView}>
+                    <GradientButton title={'Use Default'} onPress={()=>{}} />
+                    <FlatGrid
+                        itemDimension={130}
+                        items={recipes}
+                        renderItem={({ item }) => (<Text>{item.name}: {item.id}</Text>)}
+                     />
+                </ScrollView>
                 </View>
             </SafeAreaView>
         );
@@ -136,5 +143,8 @@ const styles = StyleSheet.create({
     editStyle: {
         margin: 5,
         marginRight: 10,
+    },
+    scrollView: {
+        backgroundColor: '#F8F8F8'
     }
 });

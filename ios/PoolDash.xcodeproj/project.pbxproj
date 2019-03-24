@@ -182,6 +182,13 @@
 			remoteGlobalIDString = 3DBE0D0D1F3B181C0099AA32;
 			remoteInfo = "fishhook-tvOS";
 		};
+		359DEBA72246A53900DDB969 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C94BC51F30B342DFB6A5822B /* RNAWSCognito.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNAWSCognito;
+		};
 		35DB6330201CF267002048E1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4B2A6C1D39A640B3AC82B07F /* RealmReact.xcodeproj */;
@@ -356,13 +363,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
-		};
-		9134888A222C541D00029F43 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C94BC51F30B342DFB6A5822B /* RNAWSCognito.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RNAWSCognito;
 		};
 		91BD5208223B3C8A001704F7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -643,6 +643,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		359DEB7A2246A53900DDB969 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				359DEBA82246A53900DDB969 /* libRNAWSCognito.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		35DB632D201CF267002048E1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -733,14 +741,6 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* PoolDash.app */,
 				00E356EE1AD99517003FC87E /* PoolDashTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		9134885F222C541D00029F43 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				9134888B222C541D00029F43 /* libRNAWSCognito.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -920,8 +920,10 @@
 					ProjectRef = 4B2A6C1D39A640B3AC82B07F /* RealmReact.xcodeproj */;
 				},
 				{
-					ProductGroup = 9134885F222C541D00029F43 /* Products */;
+					ProductGroup = 359DEB7A2246A53900DDB969 /* Products */;
 					ProjectRef = C94BC51F30B342DFB6A5822B /* RNAWSCognito.xcodeproj */;
+				},
+				{
 					ProductGroup = 353DDC612234837200B9ABEA /* Products */;
 					ProjectRef = 0458C3319EA04416B67FF173 /* RNFS.xcodeproj */;
 				},
@@ -1067,6 +1069,13 @@
 			fileType = archive.ar;
 			path = "libfishhook-tvOS.a";
 			remoteRef = 35980F081FDF94C30077BCA3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		359DEBA82246A53900DDB969 /* libRNAWSCognito.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNAWSCognito.a;
+			remoteRef = 359DEBA72246A53900DDB969 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		35DB6331201CF267002048E1 /* libRealmReact.a */ = {
@@ -1242,13 +1251,6 @@
 			fileType = archive.ar;
 			path = libRCTText.a;
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		9134888B222C541D00029F43 /* libRNAWSCognito.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNAWSCognito.a;
-			remoteRef = 9134888A222C541D00029F43 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		91BD5209223B3C8A001704F7 /* libReactNativeConfig.a */ = {
