@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-import { RecipesApiManager } from 'api/Recipes/RecipesApiManager';
+import { RecipesApiManager } from 'api/recipes/RecipesApiManager';
 import { Recipe } from 'models/recipe/Recipe';
 import { RecipeMeta } from 'models/recipe/RecipeMeta';
 import { RecipeRepository } from 'repository/RecipeRepository';

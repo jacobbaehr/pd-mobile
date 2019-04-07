@@ -6,6 +6,7 @@ import { TreatmentEntry } from 'models/logs/TreatmentEntry';
 import { Pool } from 'models/Pool';
 import { User } from 'models/User';
 
+import { hasValidSubscriptionReducer } from './hasValidSubscription/Reducer';
 import { outputsReducer } from './outputs/Reducer';
 import { poolsLastUpdatedReducer } from './poolsLastUpdated/Reducer';
 import { readingEntriesReducer } from './readingEntries/Reducer';
@@ -32,6 +33,9 @@ export interface AppState {
 
     // User object including cognito user returned after user signs in
     user: User;
+
+    // Whether or not the user has a valid subscription
+    hasValidSubscription: boolean;
 }
 
 const initialAppState: AppState = {
@@ -40,7 +44,8 @@ const initialAppState: AppState = {
     selectedPool: null,
     recipeId: '002_initial_big3',
     poolsLastUpdated: 0,
-    user: null
+    user: null,
+    hasValidSubscription: false
 };
 
 const reducer = combineReducers({
@@ -49,7 +54,8 @@ const reducer = combineReducers({
     selectedPool: selectedPoolReducer,
     recipeId: recipeIdReducer,
     poolsLastUpdated: poolsLastUpdatedReducer,
-    user: userReducer
+    user: userReducer,
+    hasValidSubscription: hasValidSubscriptionReducer
 });
 
 // apply all middleware for application

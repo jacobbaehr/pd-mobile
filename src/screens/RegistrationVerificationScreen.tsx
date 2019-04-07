@@ -1,3 +1,4 @@
+import { CognitoUser } from 'amazon-cognito-identity-js';
 import * as React from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -12,9 +13,11 @@ import { PDText } from 'components/PDText';
 import { SeparatorLine } from 'components/SeparatorLine';
 import { TextInputWithTitle } from 'components/TextInputWithTitle';
 import { User } from 'models/User';
+import { updateValidSubscription } from 'redux/hasValidSubscription/Actions';
 import { updateUserAction } from 'redux/user/Actions';
 import { AppState } from 'redux/AppState';
 import { CognitoService } from 'services/CognitoService';
+import { InAppPurchasesService, PurchaserInfo } from 'services/InAppPurchasesService';
 
 interface RegistrationVerificationProps {
     navigation: NavigationScreenProp<any>;
@@ -45,33 +48,51 @@ class RegistrationVerificationComponent extends
 
     handleConfirmationCodeEntered = async (): Promise<void> => {
         const email = this.props.navigation.getParam('email');
-        const cognitoUser = this.props.user.auth.cognitoUser;
-        if (!email) {
-            // some error occurred - lets take them back to register and try again
-        }
+        const cognitoUser: CognitoUser = this.props.navigation.getParam('cognitoUser');
+
         const registrationConfirmed = await this.cognitoService.confirmRegistration(this.state.confirmationCode, email);
 
         if (registrationConfirmed) {
             // Authenticate user using props.user
             const password = this.props.navigation.getParam('password');
-            const session = await this.cognitoService.authenticateUser(email, password);
-            console.warn('session after register & auth - ', session);
+            const authResult = await this.cognitoService.authenticateUser(email, password);
+            if (authResult) {
+                const firstNameAttribute = await this.cognitoService.getUserAttribute('given_name', cognitoUser);
+                const lastNameAttribute = await this.cognitoService.getUserAttribute('family_name', cognitoUser);
+                const name = `${firstNameAttribute.getValue()} ${lastNameAttribute.getValue()}`;
 
-            const firstNameAttribute = await this.cognitoService.getUserAttribute('given_name', cognitoUser);
-            const lastNameAttribute = await this.cognitoService.getUserAttribute('family_name', cognitoUser);
+                // save session in app state
+                this.props.dispatch(updateUserAction({
+                    email,
+                    firstName: firstNameAttribute.getValue(),
+                    lastName: lastNameAttribute.getValue(),
+                    auth: {
+                        cognitoUser,
+                        cognitoSession: authResult.cognitoSession
+                    }
+                }));
 
-            const name = `${firstNameAttribute.getValue()} ${lastNameAttribute.getValue()}`;
-            console.warn('name - ', name);
+                // configure purchase
+                await InAppPurchasesService.configureInAppPurchasesProvider(cognitoUser.getUsername(), (info: PurchaserInfo) => {
+                    // handle any changes to purchaserInfo
+                    console.warn('user purchase info updated', info);
+                    if (info.activeEntitlements.length !== 0) {
+                        this.props.dispatch(updateValidSubscription(true));
+                    }
+                });
 
-            // save session in app state
-            this.props.dispatch(updateUserAction({ email, auth: { cognitoUser } }));
-
-            // navigate to confirm purchase
-            this.props.navigation.navigate('ConfirmPurchase', {
-                prevScreen: 'RegistrationVerification',
-                email,
-                name
-            });
+                // navigate to confirm purchase
+                this.props.navigation.navigate('ConfirmPurchase', {
+                    prevScreen: 'RegistrationVerification',
+                    email,
+                    name
+                });
+            } else {
+                // Alert error during registration verification
+                // resend code
+            }
+        } else {
+            // registration not confirmed
         }
     }
 

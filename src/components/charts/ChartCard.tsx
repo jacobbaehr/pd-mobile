@@ -1,8 +1,8 @@
+import * as moment from 'moment';
 import * as React from 'react';
 import { Platform, StyleProp, StyleSheet, Text, View, ViewStyle, WebView } from 'react-native';
-import { ChartCardViewModel } from './ChartCardViewModel';
-import * as moment from 'moment';
 
+import { ChartCardViewModel } from './ChartCardViewModel';
 
 interface ChartCardProps {
     viewModel: ChartCardViewModel;
@@ -15,12 +15,11 @@ export class ChartCard extends React.PureComponent<ChartCardProps> {
     constructor(props: ChartCardProps) {
         super(props);
         this.webView = null;
-        console.log('chart card constructor');
     }
 
     private getDateLabels = () => {
         let count = 0;
-        if (this.props.viewModel.timestamps.length == 0) {
+        if (this.props.viewModel.timestamps.length === 0) {
             return [];
         }
         const first = this.props.viewModel.timestamps[0];
@@ -29,7 +28,7 @@ export class ChartCard extends React.PureComponent<ChartCardProps> {
         return [
             this.formatTimestamp(first, dateFormat),
             this.formatTimestamp(last, dateFormat)
-        ].map(range => 
+        ].map(range =>
             <Text style={styles.labelText} key={count++}>{range}</Text>
         );
     }
@@ -40,7 +39,7 @@ export class ChartCard extends React.PureComponent<ChartCardProps> {
 
     private onChartsLoaded = (args: any) => {
         if (this.webView !== null) {
-            const labels = this.props.viewModel.timestamps.map(d => 
+            const labels = this.props.viewModel.timestamps.map(d =>
                 this.formatTimestamp(d, 'MMM D, ha')
             );
             console.log(labels);

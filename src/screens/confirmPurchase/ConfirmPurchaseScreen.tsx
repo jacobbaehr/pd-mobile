@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import Config from 'react-native-config';
 import LinearGradient from 'react-native-linear-gradient';
+import Purchases from 'react-native-purchases';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect, DispatchProp } from 'react-redux';
 
@@ -11,8 +13,8 @@ import { TextButton } from 'components/buttons/TextButton';
 import { PDText } from 'components/PDText';
 import { SeparatorLine } from 'components/SeparatorLine';
 import { User } from 'models/User';
+import { updateValidSubscription } from 'redux/hasValidSubscription/Actions';
 import { AppState } from 'redux/AppState';
-import { CognitoService } from 'services/CognitoService';
 
 interface ConfirmPurchaseProps {
     /**  */
@@ -25,7 +27,37 @@ type ConfirmPurchaseCombinedProps = ConfirmPurchaseProps & DispatchProp<any>;
 
 class ConfirmPurchaseComponent extends React.PureComponent<ConfirmPurchaseCombinedProps> {
     handlePurchaseConfirmed = async (): Promise<void> => {
-        // handle purchase confirmation
+        console.warn('attempting to make purchase');
+        try {
+            const entitlements = await Purchases.getEntitlements();
+            console.warn('entitlements - ', entitlements);
+            const products = await Purchases.getProducts([Config.PRO_SUBSCRIPTION_PRODUCT_ID]);
+            console.warn('product', products);
+            const purchaseMade = await Purchases.makePurchase(Config.PRO_SUBSCRIPTION_PRODUCT_ID);
+            if (purchaseMade.purchaserInfo.activeEntitlements !== 'undefined' &&
+                purchaseMade.purchaserInfo.activeEntitlements.includes(Config.PRO_SUBSCRIPTION_ENTITLEMENT_IDENTIFIER)) {
+                console.warn('Purchase successful! purchase made - ', purchaseMade);
+
+                // update redux state with purchase made
+                this.props.dispatch(updateValidSubscription(true));
+          }
+        } catch (e) {
+            console.warn('purchase error - ', e);
+            if (e.code === 2 && e.domain === 'SKErrorDomain' && e.userCancelled) {
+                // Already subscribed
+                // exit confirm purchase
+                this.props.dispatch(updateValidSubscription(true));
+            } else if (e.code === 0 && e.domain === 'SKErrorDomain' && !e.userCancelled) {
+                // no network connection
+                Alert.alert('Unable to complete transaction at this time.');
+                this.props.dispatch(updateValidSubscription(false));
+            } else {
+                this.props.dispatch(updateValidSubscription(false));
+                Alert.alert('Unable to complete transaction at this time.');
+            }
+        }
+        // save purchased in persistent storage
+        this.props.navigation.navigate('PoolScreen');
     }
 
     handleBackPressed = (): void => {

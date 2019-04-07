@@ -44,6 +44,7 @@ export class CognitoService {
             return await this.getSessionAsync(user);
         } catch (error) {
             console.warn(`ERROR loadUserSessionIfExists - ${error}`);
+            return null;
         }
     }
 
@@ -63,11 +64,15 @@ export class CognitoService {
             Pool: this.userPool
         });
 
-        const session: CognitoUserSession = await this.authenticateUserAsync(cognitoUser, authDetails);
-        return {
-            cognitoSession: session,
-            cognitoUser
-        };
+        try {
+            const session: CognitoUserSession = await this.authenticateUserAsync(cognitoUser, authDetails);
+            return {
+                cognitoSession: session,
+                cognitoUser
+            };
+        } catch (e) {
+            return null;
+        }
     }
 
     /**
@@ -79,7 +84,6 @@ export class CognitoService {
      * @returns valid Cognito User
      */
     public async registerUser(firstName: string, lastName: string, email: string, password: string): Promise<CognitoUser> {
-        // Build attribute list
         const attributeGivenName = new CognitoUserAttribute({
             Name: 'given_name',
             Value: firstName
@@ -90,11 +94,11 @@ export class CognitoService {
         });
         const attributeList = [attributeGivenName, attributeFamilyName];
 
-        // Sign up user
         try {
             return await this.registerUserAsync(email, password, attributeList);
         } catch (error) {
             console.warn('error while registering user! ', error);
+            return null;
         }
     }
 
@@ -114,6 +118,7 @@ export class CognitoService {
             return await this.confirmRegistrationAsync(cognitoUser, verificationCode);
         } catch (e) {
             console.warn('ERROR confirmRegistration: ', e);
+            return false;
         }
     }
 

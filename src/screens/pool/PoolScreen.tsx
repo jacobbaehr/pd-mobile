@@ -1,20 +1,21 @@
 import * as React from 'react';
-import { Image, ScrollView, Text, TouchableHighlight, View, NativeSyntheticEvent, NativeScrollEvent, StyleSheet } from 'react-native';
-import { NavigationScreenProp, SafeAreaView, NavigationActions } from 'react-navigation';
+import { Alert, Image, NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { NavigationActions, NavigationScreenProp, SafeAreaView } from 'react-navigation';
 // @ts-ignore
 import { Transition } from 'react-navigation-fluid-transitions';
 import { connect } from 'react-redux';
 
 import { images } from 'assets/images';
+import { Button } from 'components/buttons/Button';
 import { GradientButton } from 'components/buttons/GradientButton';
 import { ChartCard } from 'components/charts/ChartCard';
 import { ChartCardViewModel } from 'components/charts/ChartCardViewModel';
 import { PDText } from 'components/PDText';
 import { Pool } from 'models/Pool';
+import { User } from 'models/User';
 import { AppState } from 'redux/AppState';
 
 import { PoolHeaderView } from './PoolHeaderView';
-import { Button } from 'components/buttons/Button';
 
 interface PoolListScreenProps {
     navigation: NavigationScreenProp<{}, {}>;
@@ -24,13 +25,21 @@ interface PoolListScreenProps {
 
     // This is a flag that just changes whenever we save a new pool.
     poolsLastUpdated: number;
+
+    //
+    user: User;
+
+    //
+    hasValidSubscription: boolean;
 }
 
 const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolListScreenProps => {
     return {
         navigation: ownProps.navigation,
         selectedPool: state.selectedPool,
-        poolsLastUpdated: state.poolsLastUpdated
+        poolsLastUpdated: state.poolsLastUpdated,
+        user: state.user,
+        hasValidSubscription: state.hasValidSubscription
     };
 };
 
@@ -68,7 +77,21 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
     }
 
     handleGetProPressed = () => {
-        this.props.navigation.navigate('PurchasePro', { screenType: 'Register' });
+        if (this.props.hasValidSubscription) {
+            // Alert subscription already active
+            Alert.alert('Subscription already active!');
+            return;
+        }
+
+        if (!this.props.user) {
+            this.props.navigation.navigate('PurchasePro', { screenType: 'Register' });
+        } else {
+            const { email, firstName, lastName } = this.props.user;
+            this.props.navigation.navigate('ConfirmPurchase', {
+                email,
+                name: `${firstName} ${lastName}`
+            });
+        }
     }
 
     render() {
