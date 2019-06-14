@@ -48,8 +48,6 @@ class RegistrationVerificationComponent extends
 
     handleConfirmationCodeEntered = async (): Promise<void> => {
         const email = this.props.navigation.getParam('email');
-        const cognitoUser: CognitoUser = this.props.navigation.getParam('cognitoUser');
-
         const registrationConfirmed = await this.cognitoService.confirmRegistration(this.state.confirmationCode, email);
 
         if (registrationConfirmed) {
@@ -57,8 +55,8 @@ class RegistrationVerificationComponent extends
             const password = this.props.navigation.getParam('password');
             const authResult = await this.cognitoService.authenticateUser(email, password);
             if (authResult) {
-                const firstNameAttribute = await this.cognitoService.getUserAttribute('given_name', cognitoUser);
-                const lastNameAttribute = await this.cognitoService.getUserAttribute('family_name', cognitoUser);
+                const firstNameAttribute = await this.cognitoService.getUserAttribute('given_name', authResult.cognitoUser);
+                const lastNameAttribute = await this.cognitoService.getUserAttribute('family_name', authResult.cognitoUser);
                 const name = `${firstNameAttribute.getValue()} ${lastNameAttribute.getValue()}`;
 
                 // save session in app state
@@ -67,13 +65,13 @@ class RegistrationVerificationComponent extends
                     firstName: firstNameAttribute.getValue(),
                     lastName: lastNameAttribute.getValue(),
                     auth: {
-                        cognitoUser,
+                        cognitoUser: authResult.cognitoUser,
                         cognitoSession: authResult.cognitoSession
                     }
                 }));
 
                 // configure purchase
-                await InAppPurchasesService.configureInAppPurchasesProvider(cognitoUser.getUsername(), (info: PurchaserInfo) => {
+                await InAppPurchasesService.configureInAppPurchasesProvider(authResult.cognitoUser.getUsername(), (info: PurchaserInfo) => {
                     // handle any changes to purchaserInfo
                     console.warn('user purchase info updated', info);
                     if (info.activeEntitlements.length !== 0) {

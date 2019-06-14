@@ -17,7 +17,7 @@ export interface NetworkRequestResponse<ResponseType> {
  */
 export abstract class BaseApiManager {
     /** instance of axios object to send requests */
-    private axiosInstance: AxiosInstance;
+    protected axiosInstance: AxiosInstance;
 
     constructor (baseUrl: string) {
         this.axiosInstance = Axios.create({
@@ -35,10 +35,10 @@ export abstract class BaseApiManager {
      */
     public async makeRequest<ResponseType> (
         method: HttpRequestTypes,
+        headers: { [key: string]: string | number } = {},
         endpoint?: string,
-        headers?: { [key: string]: string },
-        urlParams?: { [key: string]: string },
-        requestBody?: { [key: string]: string }
+        urlParams?: { [key: string]: any },
+        requestBody?: { [key: string]: any }
         ): Promise<NetworkRequestResponse<ResponseType>> {
         try {
             const res = await this.axiosInstance.request<ResponseType>({

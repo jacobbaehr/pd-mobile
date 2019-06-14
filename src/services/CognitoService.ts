@@ -146,6 +146,7 @@ export class CognitoService {
     public async getUserAttribute(attributeName: string, cognitoUser: CognitoUser): Promise<CognitoUserAttribute> {
         try {
             const attributeList = await this.getUserAttributesAsync(cognitoUser);
+            console.warn(attributeList);
             const matchingAttribute = attributeList.filter(a => a.Name === attributeName)[0];
 
             if (matchingAttribute) {
@@ -218,7 +219,7 @@ export class CognitoService {
                     reject(null);
                     return;
                 }
-                console.log('successfully registered user!!', result.user);
+                console.warn('successfully registered user!!', result.user);
                 resolve(result.user);
             });
         });
@@ -240,7 +241,7 @@ export class CognitoService {
 
     private async getUserAttributesAsync(cognitoUser: CognitoUser): Promise<any> {
         return new Promise((resolve, reject) => {
-            cognitoUser.getUserAttributes((error, userAttributes: CognitoUserAttribute[]) => {
+            cognitoUser.getUserAttributes((error, userAttributes) => {
                 if (error) {
                     console.warn('ERROR getUserAttributesAsync: ', error, 'user attributes - ', userAttributes);
                     reject(null);

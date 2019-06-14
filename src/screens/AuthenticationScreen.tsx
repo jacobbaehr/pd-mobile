@@ -130,12 +130,12 @@ class AuthenticationComponent extends React.PureComponent<AuthenticationCombined
         const { firstName, lastName, email, password } = this.state;
 
         const cognitoUser = await this.cognitoService.registerUser(firstName, lastName, email, password);
+        console.warn('should be called after register success');
         if (cognitoUser) {
             this.props.navigation.navigate('RegistrationVerification',
                 {
                     email,
-                    password,
-                    cognitoUser
+                    password
                 }
             );
         } else {

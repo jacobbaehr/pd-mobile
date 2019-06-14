@@ -14,12 +14,16 @@ import { AppState } from 'redux/AppState';
 import { ChartCardViewModel } from 'components/charts/ChartCardViewModel';
 import { Reading } from 'models/recipe/Reading';
 import { Treatment } from 'models/recipe/Treatment';
+import { LogEntryApiManager } from 'api/logEntry/LogEntryApiManager';
+import { CognitoService } from 'services/CognitoService';
+import { User } from 'models/User';
 
 interface PoolHistoryProps {
     /**  */
     navigation: NavigationScreenProp<{}, {}>;
     /**  */
     selectedPool: Pool;
+    user: User;
 }
 
 interface PoolHistoryState {
@@ -29,7 +33,8 @@ interface PoolHistoryState {
 const mapStateToProps = (state: AppState, ownProps: PoolHistoryProps): PoolHistoryProps => {
     return {
         navigation: ownProps.navigation,
-        selectedPool: state.selectedPool!
+        selectedPool: state.selectedPool!,
+        user: state.user
     };
 };
 
@@ -53,6 +58,10 @@ class PoolHistoryComponent extends React.PureComponent<PoolHistoryProps, PoolHis
 
     onRangeChanged = (selectedRange: string) => {
         this.setState({ currentDateRange: selectedRange });
+        
+        // const manager = new LogEntryApiManager('/v1', () => { return })
+        const manager = new LogEntryApiManager('/eid', () => { return ''; }, this.props.user.auth.cognitoUser);
+        manager.getLogEntriesForPool(this.props.selectedPool.objectId);
     }
 
     private loadChartData = (): ChartCardViewModel[] => {
