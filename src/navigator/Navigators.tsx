@@ -52,11 +52,11 @@ export const PDNavFluid = createFluidNavigator({
   },
   {
     navigationOptions: {
-      gesturesEnabled: true,
-      gestureResponseDistance: { vertical: 250 }
+      // gesturesEnabled: true,
+      // gestureResponseDistance: { vertical: 250 }
     },
     transitionConfig: {
-      duration: 400
+      duration: 250
       // TODO: figure out a good easing function
       // easing: Easing.elastic(2)
     }

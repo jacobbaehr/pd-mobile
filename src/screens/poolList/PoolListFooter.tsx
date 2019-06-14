@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image, Dimensions } from 'react-native';
 import { PDText } from '../../components/PDText';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
+import { images } from 'assets/images';
 
 interface PoolListFooterProps {
     isEmpty: boolean,
@@ -38,6 +39,9 @@ export class PoolListFooter extends React.Component<PoolListFooterProps, {}> {
         if (!this.props.isEmpty) { 
             return this.getButton();
         }
+        const imageWidth = Dimensions.get('window').width;
+        const imageHeight = imageWidth * 0.792;
+        const imageStyles = this.props.isEmpty ? [styles.image] : [styles.image, styles.invisible];
         return (
             <View>
                 {this.getButton()}
@@ -47,6 +51,11 @@ export class PoolListFooter extends React.Component<PoolListFooterProps, {}> {
                 <PDText style={styles.bottomText}>
                     Tap the + icon above to get started.
                 </PDText>
+                <Image
+                        style={imageStyles}
+                        source={images.poolListEmpty}
+                        width={imageWidth}
+                        height={imageHeight} />
             </View>
         );
     }
@@ -58,7 +67,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderWidth: 3,
         borderRadius: 15,
-        height: 203,
+        height: 100,
         marginHorizontal: 14,
         marginTop: 20,
         justifyContent: 'center',
@@ -72,7 +81,8 @@ const styles = StyleSheet.create({
     },
     plusText: {
         color: 'black',
-        fontSize: 100
+        fontSize: 80
+        // marginTop: -10
     },
     topText: {
         color: '#3A3A3A',
@@ -89,5 +99,11 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         textAlign: 'center',
         marginTop: 22
+    },
+    image: {
+        opacity: 0.6
+    },
+    invisible: {
+        opacity: 0
     }
 });

@@ -21,8 +21,8 @@ export class CloseButton extends React.Component<CloseButtonProps, {}> {
                     <Image
                         style={styles.image}
                         source={images.closeDark}
-                        width={21}
-                        height={21} />
+                        width={30}
+                        height={30} />
                 </TouchableScale>
             </View>
         );

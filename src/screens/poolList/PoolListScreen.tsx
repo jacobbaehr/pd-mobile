@@ -86,17 +86,9 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
     render() {
         const pools = (this.pools === undefined) ? [] : this.pools.map(p => p);
         const isEmpty = pools.length === 0;
-        const imageWidth = Dimensions.get('window').width;
-        const imageHeight = imageWidth * 0.792;
-        const imageStyles = isEmpty ? [styles.image] : [styles.image, styles.invisible];
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#F8F8F8' }} forceInset={{ bottom: 'never' }}>
                 <ScrollView style={{ flex: 1 }}>
-                    <Image
-                        style={imageStyles}
-                        source={images.poolListEmpty}
-                        width={imageWidth}
-                        height={imageHeight} />
                     <View style={styles.container}>
                         <Transition appear='top'>
                             <View>
@@ -149,12 +141,5 @@ const styles = StyleSheet.create({
     titleTop: {
         color: '#000',
         marginBottom: -3
-    },
-    image: {
-        position: 'absolute',
-        bottom: 0
-    },
-    invisible: {
-        opacity: 0
     }
 });

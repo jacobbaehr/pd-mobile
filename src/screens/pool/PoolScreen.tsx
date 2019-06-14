@@ -71,8 +71,8 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
         if (this.isDismissingFromScroll) { return; }
 
         if (event.nativeEvent.contentOffset.y < -50) {
-            // this.isDismissingFromScroll = true;
-            // this.props.navigation.popToTop();
+            this.isDismissingFromScroll = true;
+            this.props.navigation.popToTop();
         }
     }
 
@@ -107,8 +107,8 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
 
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#2091F9' }} forceInset={{ bottom: 'never' }}>
-            <PoolHeaderView pool={this.props.selectedPool} style={styles.header} handlePressedEdit={this.handleEditButtonPressed} handlePressedBack={this.handleBackPressed}/>
                 <ScrollView onScroll={this.handleScroll} scrollEventThrottle={2} style={styles.scrollView}>
+                    <PoolHeaderView pool={this.props.selectedPool} style={styles.header} handlePressedEdit={this.handleEditButtonPressed} handlePressedBack={this.handleBackPressed}/>
                     <View style={styles.container}>
                         <Transition appear='left'>
                             <PDText style={[styles.sectionTitle, styles.topSectionTitle]}>Service</PDText>
@@ -171,11 +171,13 @@ export const PoolScreen = connect(mapStateToProps)(PoolScreenComponent);
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'transparent',
-        marginHorizontal: 20
+        backgroundColor: '#F8F8F8',
+        paddingHorizontal: 20,
+        paddingBottom: 200,
+        marginBottom: -180
     },
     scrollView: {
-        backgroundColor: '#F8F8F8'
+        backgroundColor: '#2091F9'
     },
     header: {
         height: 210,

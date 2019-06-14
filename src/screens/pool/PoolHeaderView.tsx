@@ -101,8 +101,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: '2%',
         fontFamily: 'Avenir Next',
-        fontSize: 13.2,
+        fontSize: 17,
         fontWeight: '600',
         paddingHorizontal: 15
+        // paddingVertical: 2
     }
 });
