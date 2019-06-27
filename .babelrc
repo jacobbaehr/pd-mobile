@@ -1,12 +1,12 @@
 {
-    "presets": ["module:metro-react-native-babel-preset"],
-    "plugins": [
-        [
-            "module-resolver", {
-                "root": ["./lib"],
-                "extensions": [".js"]
-            }
-        ]
-    ],
-    "sourceMaps": "inline"
+  "presets": ["module:metro-react-native-babel-preset"],
+  "plugins": [
+    [
+        "module-resolver", {
+            "root": ["./lib"],
+            "extensions": [".js"]
+        }
+    ]
+  ],
+  "sourceMaps": "inline"
 }

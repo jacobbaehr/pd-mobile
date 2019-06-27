@@ -2,20 +2,19 @@ import { CognitoUser } from 'amazon-cognito-identity-js';
 import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
 
-import { PDNavFluid } from 'navigator/Navigators';
+import { PDNav } from 'navigator/Navigators';
 import { updateValidSubscription } from 'redux/hasValidSubscription/Actions';
 import { hydrateUserAction } from 'redux/user/Actions';
 import { CognitoService } from 'services/CognitoService';
 import { InAppPurchasesService, PurchaserInfo } from 'services/InAppPurchasesService';
 
-export interface AppProps extends DispatchProp<any> {
-}
+export interface AppProps extends DispatchProp<any> {}
 
 export class AppComponent extends React.PureComponent<AppProps, {}> {
     /** */
     private cognitoService: CognitoService;
 
-    constructor(props) {
+    constructor(props: AppProps) {
         super(props);
         this.cognitoService = new CognitoService();
     }
@@ -61,7 +60,8 @@ export class AppComponent extends React.PureComponent<AppProps, {}> {
 
     render() {
         return (
-            <PDNavFluid />
+
+            <PDNav />
         );
     }
 }

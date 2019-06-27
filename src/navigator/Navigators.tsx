@@ -1,4 +1,4 @@
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
 // @ts-ignore: fluid-transitions untyped
 import { createFluidNavigator } from 'react-navigation-fluid-transitions';
 
@@ -44,7 +44,7 @@ const PurchaseProStack = createStackNavigator({
   headerMode: 'none'
 });
 
-export const PDNavFluid = createFluidNavigator({
+const PDNavFluid = createFluidNavigator({
     PoolList: { screen: PoolListScreen },
     PoolScreen: PDNavStack,
     CreatePool: { screen: EditPoolScreen },
@@ -55,10 +55,12 @@ export const PDNavFluid = createFluidNavigator({
       // gesturesEnabled: true,
       // gestureResponseDistance: { vertical: 250 }
     },
-    transitionConfig: {
-      duration: 250
+    transitionConfig: () => {
+      return { transitionSpec: { duration: 250 } }
       // TODO: figure out a good easing function
       // easing: Easing.elastic(2)
     }
   }
 );
+
+export const PDNav = createAppContainer(PDNavFluid);

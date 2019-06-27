@@ -32,7 +32,7 @@ export interface AppState {
     poolsLastUpdated: number;
 
     // User object including cognito user returned after user signs in
-    user: User;
+    user?: User;
 
     // Whether or not the user has a valid subscription
     hasValidSubscription: boolean;
@@ -61,6 +61,7 @@ const reducer = combineReducers({
 // apply all middleware for application
 const middleware = applyMiddleware(ReduxThunk);
 
-export const store = createStore(reducer, initialAppState, middleware);
+// TODO: fix as any on next line?
+export const store = createStore(reducer, initialAppState as any, middleware);
 
 export const dispatch = store.dispatch;
