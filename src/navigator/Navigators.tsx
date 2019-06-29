@@ -26,7 +26,7 @@ const PDNavStack = createStackNavigator({
   RecipeList: { screen: RecipeListScreen },
   PoolHistory: { screen: PoolHistoryScreen }
 }, {
-    navigationOptions: { header: null }
+    defaultNavigationOptions: { header: null }
   });
 
 /// Amazingly, this defines the nav options for its PARENT, which is PDNavFluid 🤯

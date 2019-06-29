@@ -38,6 +38,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* PoolDashTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* PoolDashTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		2E8AD321862B47A08BF88048 /* libRealmReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B791E4E5514D86AD76DA14 /* libRealmReact.a */; };
+		3532393622C5AC6B002653F5 /* web.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3532390322C5AC6B002653F5 /* web.bundle */; };
 		35AA8D7E22C544DD007A0D12 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35AA8D7D22C544DD007A0D12 /* JavaScriptCore.framework */; };
 		35E5997D22C54960006E67BC /* Purchases.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E5994A22C54960006E67BC /* Purchases.framework */; };
 		35E5997E22C54971006E67BC /* Purchases.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35E5994A22C54960006E67BC /* Purchases.framework */; };
@@ -477,6 +478,7 @@
 		2D02E4901E0B4A5D006451C7 /* PoolDash-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PoolDash-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		32D1004651EF46BBAD6553CB /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		3532390322C5AC6B002653F5 /* web.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = web.bundle; path = ../web.bundle; sourceTree = "<group>"; };
 		35AA8D7D22C544DD007A0D12 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		35E5994A22C54960006E67BC /* Purchases.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Purchases.framework; path = "../node_modules/react-native-purchases/ios/Purchases.framework"; sourceTree = "<group>"; };
 		56511E2682434C008290C8A6 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
@@ -665,6 +667,7 @@
 		13B07FAE1A68108700A75B9A /* PoolDash */ = {
 			isa = PBXGroup;
 			children = (
+				3532390322C5AC6B002653F5 /* web.bundle */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -1495,6 +1498,7 @@
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				25E6DCC4D3204B23890C19C5 /* Entypo.ttf in Resources */,
 				A7C6187A72F44ABD84310513 /* EvilIcons.ttf in Resources */,
+				3532393622C5AC6B002653F5 /* web.bundle in Resources */,
 				5DA2A715970B4662B531E389 /* Feather.ttf in Resources */,
 				AF1748943C2C48E58D70D5CB /* FontAwesome.ttf in Resources */,
 				CF8C88A7FCB2410981913103 /* Foundation.ttf in Resources */,

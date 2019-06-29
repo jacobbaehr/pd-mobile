@@ -45,9 +45,6 @@ export class PoolListFooter extends React.Component<PoolListFooterProps, {}> {
         return (
             <View>
                 {this.getButton()}
-                <PDText style={styles.topText}>
-                    Looks like you haven’t added any pools yet.
-                </PDText>
                 <PDText style={styles.bottomText}>
                     Tap the + icon above to get started.
                 </PDText>
@@ -83,14 +80,6 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 80
         // marginTop: -10
-    },
-    topText: {
-        color: '#3A3A3A',
-        fontSize: 22,
-        fontWeight: '600',
-        marginHorizontal: 20,
-        textAlign: 'center',
-        marginTop: 28
     },
     bottomText: {
         color: '#3A3A3A',

@@ -60,7 +60,6 @@ export class AppComponent extends React.PureComponent<AppProps, {}> {
 
     render() {
         return (
-
             <PDNav />
         );
     }

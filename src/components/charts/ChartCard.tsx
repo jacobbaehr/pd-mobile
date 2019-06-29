@@ -56,7 +56,7 @@ export class ChartCard extends React.PureComponent<ChartCardProps> {
 
     render() {
         const chartPath = Platform.OS === 'android' ? 'file:///android_asset/charts/Charts.html' : './web.bundle/Charts.html';
-        console.log('chart card render');
+        // console.log('chart card render');
         return (
             <View style={[styles.container, this.props.containerStyles]}>
                 <Text style={styles.title}>{this.props.viewModel.title}</Text>
