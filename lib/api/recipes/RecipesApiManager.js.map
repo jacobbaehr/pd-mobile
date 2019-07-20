@@ -1,1 +1,0 @@
-{"version":3,"file":"RecipesApiManager.js","sourceRoot":"","sources":["../../../src/api/recipes/RecipesApiManager.ts"],"names":[],"mappings":";;;;;;;;;;AAEA,uDAA8F;AAI9F;;GAEG;AACH,uBAA+B,SAAQ,+BAAc;IACjD;;OAEG;IACU,iBAAiB;;YAC1B,OAAO,MAAM,IAAI,CAAC,WAAW,CAAqB,iCAAgB,CAAC,GAAG,CAAC,CAAC;QAC5E,CAAC;KAAA;IAES,uBAAuB,CAAC,KAAiB;QAC/C,OAAO,KAAK,CAAC;IACjB,CAAC;CACJ;AAXD,8CAWC"}
