@@ -7,9 +7,6 @@ import { SafeAreaView } from 'react-navigation';
 import { GradientButton } from 'components/buttons/GradientButton';
 import { PDText } from 'components/PDText';
 import { Pool } from 'models/Pool';
-import { selectPool } from 'redux/selectedPool/Actions';
-import { dispatch } from 'redux/AppState';
-import { Database } from 'repository/Database';
 
 import { EditListHeader } from './PoolDetailsHeader';
 import { TextInputWithTitle } from 'components/TextInputWithTitle';
@@ -19,102 +16,18 @@ interface PoolDetailProps {
     name: string;
     type: string;
     volume: number;
-    selectedPool: string;
-    data: DataArr[];
+    originalPoolName: string;
     pool?: Pool;
     updateText(t:string,s:string): void;
     goBack(): void;
-    buttonAction(): void;
+    rightButtonAction?: ()=>void;
     navigation: any;
+    handleSavePoolPressed: ()=>void;
 }
 
-export interface DataArr {
-    label: string;
-    subLabel?: string;
-    stateName: string;
-    value: string;
-    inputType: 'input' | 'select';
-    data?: any;
-}
+const waterTypes = [{value: 'Salt Water'}, {value:'Chlorine'}];
 
 export  class PoolDetails extends React.Component<PoolDetailProps, {}> {
-    renderItems = (passedItem: any) => {
-        const { updateText } = this.props;
-        return (
-            <View style={styles.listContainer}>
-                <View style={{display: 'flex', flexDirection: 'row'}}>
-                    <PDText style={styles.poolNameLabel}>{passedItem.item.label}</PDText>
-                    <PDText style={styles.poolNameSubLabel}>{passedItem.item.subLabel}</PDText>
-                </View>
-                <TextInput
-                    style={styles.textInput}
-                    value={String(passedItem.item.value)}
-                    onChangeText={(t:string)=>updateText(t, passedItem.item.state)}
-                    keyboardType={'default'} />
-            </View>
-        );
-    }
-
-    renderFields = (objArr: DataArr[]) => {
-        return objArr.map((i:any,k:any) => {
-            switch (i.inputType) {
-                case 'input':
-                    return (
-                            <View style={styles.listContainer} key={k}>
-                                <View style={{display: 'flex', flexDirection: 'row'}}>
-                                    <PDText style={styles.poolNameLabel}>{i.label}</PDText>
-                                    <PDText style={styles.poolNameSubLabel}>{i.subLabel}</PDText>
-                                </View>
-                                {this.renderTextInput(i)}
-                            </View>
-                    );
-                case 'select':
-                    return (
-                        <View style={styles.listContainer} key={k}>
-                            <View style={{display: 'flex', flexDirection: 'row'}}>
-                                <PDText style={styles.poolNameLabel}>{i.label}</PDText>
-                                <PDText style={styles.poolNameSubLabel}>{i.subLabel}</PDText>
-                            </View>
-                            {this.renderSelector(i)}
-                        </View>
-                    );
-            }
-        });
-    }
-
-    handleDeletePoolSelected = async (pool: any) => {
-        dispatch(selectPool());
-        await Database.deletePool(pool);
-        this.props.navigation.navigate('PoolList');
-    }
-
-    renderSelector = (obj :DataArr) => {
-        const { updateText } = this.props;
-        return (
-            <Dropdown
-                data={obj.data}
-                value={obj.value}
-                textColor={'#1E6BFF'}
-                itemTextStyle={{
-                    color: '#1E6BFF',
-                    fontWeight: '500',
-                    fontSize: 22}}
-                fontSize={22}
-                dropdownOffset={{top: 0, left: 0}}
-                onChangeText={(t:string)=>updateText(t, obj.stateName)}>
-            </Dropdown>
-        );
-    }
-
-    renderTextInput = (obj:DataArr) => {
-        const { updateText } = this.props;
-        return (
-            <TextInput
-                style={styles.textInput}
-                onChangeText={(t:string)=>updateText(t, obj.stateName)}
-                value={String(obj.value)} />
-        );
-    }
 
     // Extracts section header from section list object
     renderHeader = (passedHeader:any) => {
@@ -122,14 +35,7 @@ export  class PoolDetails extends React.Component<PoolDetailProps, {}> {
     }
 
     render() {
-        const { header, selectedPool, goBack, buttonAction, data } = this.props;
-        const deletePoolButton = this.props.pool ?
-            (
-                <GradientButton
-                    onPress={()=>this.handleDeletePoolSelected(this.props.pool)}
-                    title={'Delete Pool'}
-                    containerStyles={styles.startServiceButton} />
-            ) : null;
+        const { header, originalPoolName, goBack, rightButtonAction } = this.props;
         return (
             <SafeAreaView style={styles.safeArea}>
                 <KeyboardAwareScrollView>
@@ -137,23 +43,52 @@ export  class PoolDetails extends React.Component<PoolDetailProps, {}> {
                         <EditListHeader
                             handleBackPress={ ()=>goBack() }
                             header={header}
-                            buttonText={selectedPool}
-                            actions={ ()=>buttonAction() } />
+                            buttonText={originalPoolName}
+                            rightButtonAction={ rightButtonAction } />
                         <PDText style={styles.sectionHeader}>Basic Information</PDText>
                         
-                        <TextInputWithTitle
-                            titleText='Name'
-                            onTextChanged={(s) => this.props.updateText('name', s)}
-                            // containerStyles?: StyleProp<ViewStyle>;
-                            // titleTextStyles?: StyleProp<TextStyle>;
-                            // inputStyles?: StyleProp<ViewStyle & TextStyle>;
-                            // secureTextEntry?: boolean;
-                            autoCapitalize='sentences'
-                            autoCorrect={false}
-                            keyboardType='default'
-                        />
-                        {this.renderFields(data)}
-                        { deletePoolButton }
+                        <View style={styles.listContainer}>
+                            <TextInputWithTitle
+                                titleText='Name'
+                                onTextChanged={(s) => this.props.updateText('name', s)}
+                                titleTextStyles={styles.poolNameLabel}
+                                inputStyles={styles.textInput}
+                                autoCapitalize='sentences'
+                                autoCorrect={false}
+                                keyboardType='default'
+                            />
+                        </View>
+                        <View style={styles.listContainer}>
+                            <PDText style={styles.waterTypeLabel}>Water Type</PDText>
+                            <Dropdown
+                                data={waterTypes}
+                                value={this.props.type}
+                                textColor={'#1E6BFF'}
+                                itemTextStyle={{
+                                    color: '#1E6BFF',
+                                    fontWeight: '500',
+                                    fontSize: 22}}
+                                fontSize={22}
+                                onChangeText={(t:string)=>this.props.updateText(t, 'type')}>
+                            </Dropdown>
+                        </View>
+                        <View style={styles.listContainer}>
+                            <TextInputWithTitle
+                                titleText='Volume'
+                                subtitleText='(Gallons)'
+                                onTextChanged={(s) => this.props.updateText('name', s)}
+                                titleTextStyles={styles.poolNameLabel}
+                                subtitleTextStyles={styles.poolNameSubLabel}
+                                inputStyles={styles.textInput}
+                                autoCapitalize='sentences'
+                                autoCorrect={false}
+                                keyboardType='default'
+                            />
+                        </View>
+                        <GradientButton
+                            onPress={()=>this.props.handleSavePoolPressed()}
+                            title={'Save'}
+                            containerStyles={styles.startServiceButton} />
                     </View>
                 </KeyboardAwareScrollView>
             </SafeAreaView>
@@ -187,6 +122,13 @@ export  class PoolDetails extends React.Component<PoolDetailProps, {}> {
         color: '#1E6BFF',
         fontWeight: '600',
         fontSize: 22
+    },
+    waterTypeLabel: {
+        justifyContent: 'center',
+        color: '#000000',
+        fontWeight: '600',
+        fontSize: 22,
+        marginBottom: -20
     },
     textInput: {
         borderBottomWidth: 2,

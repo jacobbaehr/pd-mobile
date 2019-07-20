@@ -5,8 +5,10 @@ import { connect } from 'react-redux';
 import { Pool } from 'models/Pool';
 import { saveNewPool, updatePool } from 'redux/selectedPool/Actions';
 import { dispatch, AppState } from 'redux/AppState';
+import { selectPool } from 'redux/selectedPool/Actions';
+import { Database } from 'repository/Database';
 
-import { DataArr, PoolDetails } from './poolList/PoolDetails';
+import { PoolDetails } from './poolList/PoolDetails';
 
 interface EditPoolScreenProps {
     navigation: NavigationScreenProp<{}, void>;
@@ -17,7 +19,7 @@ interface EditPoolScreenState {
     volume: number | '';
     type: string;
     name: string;
-    selectedName: string;
+    originalSelectedPoolName: string;
 }
 
 const mapStateToProps = (state: AppState, ownProps: EditPoolScreenProps): EditPoolScreenProps => {
@@ -34,7 +36,7 @@ export class EditPoolComponent extends React.Component<EditPoolScreenProps, Edit
             volume: '',
             name: '',
             type: '',
-            selectedName: ''
+            originalSelectedPoolName: ''
         };
     }
 
@@ -45,9 +47,19 @@ export class EditPoolComponent extends React.Component<EditPoolScreenProps, Edit
                 volume: pool.volume,
                 name: pool.name,
                 type: pool.waterType,
-                selectedName: pool.name
+                originalSelectedPoolName: pool.name
             });
         }
+    }
+
+    handleDeletePoolPressed = async () => {
+        dispatch(selectPool());
+        const pool = this.props.selectedPool;
+        if (pool === undefined || pool === null) {
+            return;
+        }
+        await Database.deletePool(pool);
+        this.props.navigation.navigate('PoolList');
     }
 
     private handleChange = (text:string, state:any) => {
@@ -92,26 +104,22 @@ export class EditPoolComponent extends React.Component<EditPoolScreenProps, Edit
     }
 
     render(){
-        // pass a new object to the array to generate an input field
-        // name
-        const data: DataArr[] = [
-            {label:'Name', stateName: 'name', value:this.state.name, inputType:'input', },
-            {label:'Water Type', stateName: 'type', value:this.state.type, inputType:'select', data: [{value: 'Salt Water'}, {value:'Chlorine'}] },
-            {label:'Volume', subLabel:' (Gallons) ', stateName: 'volume', value:String(this.state.volume), inputType:'input', }
-        ];
+        const deleteButtonAction = (this.props.selectedPool === null || this.props.selectedPool === undefined)
+            ? null
+            : this.handleDeletePoolPressed;
         return(
             <PoolDetails
                 header={this.props.selectedPool ? 'Edit' : 'Create'}
-                selectedPool={this.state.selectedName}
-                data={data}
+                originalPoolName={this.state.originalSelectedPoolName}
                 name={this.state.name}
                 volume={this.state.volume || 0}
                 type={this.state.type}
                 goBack={this.handleBackPressed}
                 updateText={(t:string, s:string)=>this.handleChange(t, s)}
-                buttonAction={this.handleSaveButtonPressed}
+                rightButtonAction={deleteButtonAction}
                 navigation={this.props.navigation}
-                pool={this.props.selectedPool} />
+                pool={this.props.selectedPool}
+                handleSavePoolPressed={this.handleSaveButtonPressed} />
         );
     }
 }

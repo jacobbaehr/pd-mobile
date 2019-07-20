@@ -3,10 +3,12 @@ import { StyleProp, StyleSheet, Text, TextInput, TextStyle, View, ViewStyle } fr
 
 export interface TextInputWithTitleProps {
     titleText: string;
+    subtitleText?: string;
     onTextChanged: (text: string) => void;
     placeholderText?: string;
     containerStyles?: StyleProp<ViewStyle>;
     titleTextStyles?: StyleProp<TextStyle>;
+    subtitleTextStyles?: StyleProp<TextStyle>;
     inputStyles?: StyleProp<ViewStyle & TextStyle>;
     secureTextEntry?: boolean;
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
@@ -18,7 +20,10 @@ export interface TextInputWithTitleProps {
 export const TextInputWithTitle: React.FunctionComponent<TextInputWithTitleProps> = (props: TextInputWithTitleProps) => {
     return (
         <View style={styles.container}>
-            <Text style={[styles.titleText, props.titleTextStyles]}>{props.titleText}</Text>
+            <View style={styles.titleContainer}>
+                <Text style={[styles.titleText, props.titleTextStyles]}>{props.titleText}</Text>
+                <Text style={[styles.subtitleText, props.subtitleTextStyles]}>{props.subtitleText}</Text>
+            </View>
             <TextInput
                 keyboardType={props.keyboardType}
                 autoCorrect={props.autoCorrect}
@@ -33,7 +38,16 @@ export const TextInputWithTitle: React.FunctionComponent<TextInputWithTitleProps
 
 const styles = StyleSheet.create({
     container: {},
+    titleContainer: {
+        flexDirection: 'row'
+    },
     titleText: {
+        fontFamily: 'Avenir Next',
+        fontSize: 18,
+        paddingBottom: 5,
+        marginRight: 5
+    },
+    subtitleText: {
         fontFamily: 'Avenir Next',
         fontSize: 18,
         paddingBottom: 5

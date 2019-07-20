@@ -9,12 +9,15 @@ import { PDGradientText } from 'components/PDGradientText';
 interface EditListHeaderProps {
     handleBackPress: () => void;
     buttonText: string;
-    actions: () => void;
+    rightButtonAction?: () => void;
     header: string;
 }
 
 export class EditListHeader extends React.Component<EditListHeaderProps, {}> {
     render() {
+        const rightButton = (this.props.rightButtonAction != undefined)
+            ? <Button title={'Delete'} onPress={()=>this.props.rightButtonAction()} styles={styles.button} textStyles={styles.buttonText}/>
+            : null;
         return (
             <View style={styles.container}>
                 <View style={styles.options}>
@@ -25,7 +28,7 @@ export class EditListHeader extends React.Component<EditListHeaderProps, {}> {
                             scale={{scale:true, scaleLines:2}}
                         />
                     </View>
-                    <Button title={'Save'} onPress={()=>this.props.actions()} styles={styles.button} textStyles={styles.buttonText}/>
+                    {rightButton}
                 </View>
                 <PDGradientText style={styles.gradientText} colors={gradientColors}>
                     {this.props.header}
