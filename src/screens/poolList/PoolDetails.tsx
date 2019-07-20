@@ -12,6 +12,7 @@ import { dispatch } from 'redux/AppState';
 import { Database } from 'repository/Database';
 
 import { EditListHeader } from './PoolDetailsHeader';
+import { TextInputWithTitle } from 'components/TextInputWithTitle';
 
 interface PoolDetailProps {
     header: string;
@@ -139,6 +140,18 @@ export  class PoolDetails extends React.Component<PoolDetailProps, {}> {
                             buttonText={selectedPool}
                             actions={ ()=>buttonAction() } />
                         <PDText style={styles.sectionHeader}>Basic Information</PDText>
+                        
+                        <TextInputWithTitle
+                            titleText='Name'
+                            onTextChanged={(s) => this.props.updateText('name', s)}
+                            // containerStyles?: StyleProp<ViewStyle>;
+                            // titleTextStyles?: StyleProp<TextStyle>;
+                            // inputStyles?: StyleProp<ViewStyle & TextStyle>;
+                            // secureTextEntry?: boolean;
+                            autoCapitalize='sentences'
+                            autoCorrect={false}
+                            keyboardType='default'
+                        />
                         {this.renderFields(data)}
                         { deletePoolButton }
                     </View>

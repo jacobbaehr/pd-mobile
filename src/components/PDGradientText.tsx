@@ -1,6 +1,7 @@
 
 import * as React from 'react';
-import { Text, TextProperties, StyleSheet, View, MaskedViewIOS } from 'react-native';
+import { Text, TextProperties, StyleSheet, View } from 'react-native';
+import MaskedView from '@react-native-community/masked-view';
 // @ts-ignore
 import { Transition } from 'react-navigation-fluid-transitions';
 import LinearGradient from 'react-native-linear-gradient';
@@ -18,7 +19,7 @@ export class PDGradientText extends React.Component<PDGradientTextProps, {}> {
         const textStyle = StyleSheet.flatten([styles.default, this.props.style]);
         return(
         <View style={{flexDirection: 'row'}}>
-            <MaskedViewIOS maskElement={<Text style={textStyle}>{this.props.children}</Text>}>
+            <MaskedView maskElement={<Text style={textStyle}>{this.props.children}</Text>}>
                 <LinearGradient
                     colors={this.props.colors}
                     start={{ x: -0.2, y: -0.3 }}
@@ -26,7 +27,7 @@ export class PDGradientText extends React.Component<PDGradientTextProps, {}> {
                     
                     <Text style={[textStyle, { opacity: 0 }]}>{this.props.children}</Text>
                 </LinearGradient>
-            </MaskedViewIOS>
+            </MaskedView>
             <View style={{flex: 1}} />
         </View>);
     }

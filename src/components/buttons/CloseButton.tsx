@@ -20,7 +20,7 @@ export class CloseButton extends React.Component<CloseButtonProps, {}> {
                     onPress={this.props.onPress}>
                     <Image
                         style={styles.image}
-                        source={images.closeDark}
+                        source={images.backTrans}
                         width={30}
                         height={30} />
                 </TouchableScale>

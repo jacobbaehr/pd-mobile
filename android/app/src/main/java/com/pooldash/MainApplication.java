@@ -1,6 +1,8 @@
 package com.pooldash;
 
 import com.facebook.react.ReactApplication;
+import org.reactnative.maskedview.RNCMaskedViewPackage;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
 import io.realm.react.RealmReactPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
@@ -31,6 +33,8 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNCMaskedViewPackage(),
+            new RNCWebViewPackage(),
             new RealmReactPackage(),
             new VectorIconsPackage(),
             new RNScreensPackage(),

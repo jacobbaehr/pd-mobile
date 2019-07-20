@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 import * as React from 'react';
-import { Platform, StyleProp, StyleSheet, Text, View, ViewStyle, WebView } from 'react-native';
+import { Platform, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { WebView } from 'react-native-webview';
 
 import { ChartCardViewModel } from './ChartCardViewModel';
 
@@ -50,13 +51,15 @@ export class ChartCard extends React.PureComponent<ChartCardProps> {
                 idealMin: 2000,
                 idealMax: 3500
             };
-            this.webView.postMessage(JSON.stringify(graphData));
+            this.webView.injectJavaScript(`setTimeout(() => {
+                window.graphData(${JSON.stringify(graphData)});
+            }, 100);`);
         }
     }
 
     render() {
         const chartPath = Platform.OS === 'android' ? 'file:///android_asset/charts/Charts.html' : './web.bundle/Charts.html';
-        // console.log('chart card render');
+        
         return (
             <View style={[styles.container, this.props.containerStyles]}>
                 <Text style={styles.title}>{this.props.viewModel.title}</Text>
@@ -90,7 +93,8 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         flex: 1,
         borderRadius: 8,
-        paddingBottom: 10
+        paddingBottom: 10,
+        minHeight: 175
     },
     title: {
         paddingHorizontal: 20,

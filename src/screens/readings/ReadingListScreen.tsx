@@ -9,12 +9,10 @@ import { AppState } from '../../redux/AppState';
 import { Reading } from '../../models/recipe/Reading';
 import { Recipe } from '../../models/recipe/Recipe';
 import { ReadingEntry } from '../../models/logs/ReadingEntry';
-import { Database } from 'repository/Database';
 import { RecipeRepository } from 'repository/RecipeRepository';
 import { ReadingListHeader } from './ReadingListHeader';
 import { Pool } from '../../models/Pool';
 import { ReadingListSectionHeader } from './ReadingListSectionHeader';
-import { ReadingDetailsScreen } from './ReadingDetailsScreen';
 
 interface ReadingListScreenState {
     activeReadingId?: string;

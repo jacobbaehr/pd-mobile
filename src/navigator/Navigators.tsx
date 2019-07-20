@@ -51,9 +51,10 @@ const PDNavFluid = createFluidNavigator({
     PurchasePro: PurchaseProStack
   },
   {
+    mode: 'card',
     navigationOptions: {
-      // gesturesEnabled: true,
-      // gestureResponseDistance: { vertical: 250 }
+      gesturesEnabled: true,
+      gestureResponseDistance: { horizontal: 50 }
     },
     transitionConfig: () => {
       return { transitionSpec: { duration: 250 } }

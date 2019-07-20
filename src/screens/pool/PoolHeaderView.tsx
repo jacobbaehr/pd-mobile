@@ -34,7 +34,7 @@ export class PoolHeaderView extends React.Component<PoolHeaderViewProps, {}> {
                     </Transition>
                 </View>
                 <View style={styles.buttonContainerLeft}>
-                    <Transition appear='top' >
+                    <Transition appear='left' >
                         <CloseButton onPress={this.props.handlePressedBack} />
                     </Transition>
                 </View>
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     },
     buttonContainerLeft: {
         position: 'absolute',
-        top: 15,
+        top: 14,
         left: 15
     },
     button: {

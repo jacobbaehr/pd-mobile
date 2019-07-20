@@ -79,7 +79,8 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
         this.props.navigation.navigate('PoolScreen');
     }
 
-    handleAddPoolPressed = (): void => {
+    handleAddPoolPressed = async () => {
+        await dispatch(selectPool(null));
         this.props.navigation.navigate('CreatePool');
     }
 

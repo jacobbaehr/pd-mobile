@@ -71,8 +71,8 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
         if (this.isDismissingFromScroll) { return; }
 
         if (event.nativeEvent.contentOffset.y < -50) {
-            this.isDismissingFromScroll = true;
-            this.props.navigation.popToTop();
+            // this.isDismissingFromScroll = true;
+            // this.props.navigation.popToTop();
         }
     }
 
@@ -110,7 +110,7 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
                 <ScrollView onScroll={this.handleScroll} scrollEventThrottle={2} style={styles.scrollView}>
                     <PoolHeaderView pool={this.props.selectedPool} style={styles.header} handlePressedEdit={this.handleEditButtonPressed} handlePressedBack={this.handleBackPressed}/>
                     <View style={styles.container}>
-                        <Transition appear='left'>
+                        <Transition appear='right'>
                             <PDText style={[styles.sectionTitle, styles.topSectionTitle]}>Service</PDText>
                         </Transition>
                         <Transition appear='right'>
@@ -119,7 +119,7 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
                                 <PDText style={styles.lastServiceLabel}>Last Serviced: 20 days ago</PDText>
                             </View>
                         </Transition>
-                        <Transition appear='left'>
+                        <Transition appear='right'>
                             <PDText style={styles.sectionTitle}>Recipe</PDText>
                         </Transition>
                         <Transition appear='right'>
@@ -135,15 +135,18 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
                                 <Button styles={styles.recipeChangeButton} textStyles={ styles.recipeChangeButtonText } title={ 'change' } onPress={ this.handleChangeRecipeButtonPressed } />
                             </View>
                         </Transition>
+                        
                         <View style={{ flex: 1 }}>
-                            <PDText style={styles.sectionTitle}>History</PDText>
+                            <Transition appear='right'>
+                                <PDText style={styles.sectionTitle}>History</PDText>
+                            </Transition>
                             <ChartCard viewModel={vm} >
                                 <TouchableHighlight onPress={this.handleViewHistoryPressed} style={styles.historyButton}>
                                     <Text style={styles.viewMoreHistoryText}>View More</Text>
                                 </TouchableHighlight>
                             </ChartCard>
                         </View>
-                        <Transition appear='left'>
+                        <Transition appear='right'>
                             <View style={{ flex: 1 }}>
                                 <PDText style={styles.sectionTitle}>Online Backup</PDText>
                                 <View style={styles.onlineBackupContainer}>

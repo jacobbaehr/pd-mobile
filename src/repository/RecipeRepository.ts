@@ -74,7 +74,7 @@ export class RecipeRepository {
     private getFilepathForRecipeId(recipeId: string): string {
         const fileName = recipeId + '.of';
         const filePath = `${RNFS.DocumentDirectoryPath}/${recipeFolderName}/${fileName}`;
-        console.warn(filePath);
+        // console.warn(filePath);
         return filePath;
     }
 

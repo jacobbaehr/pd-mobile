@@ -222,13 +222,10 @@
 
             return 1;
         }
-
-        // Add event listener to listen to events from RN
-        document.addEventListener("message", function(event) {
-            // Data in event can be found in event.data
-            var graphData = JSON.parse(event.data);
+        
+        window.graphData = function(graphData) {
             showGraph(graphData.points, graphData.dates, graphData.idealMin, graphData.idealMax);
-        });
+        }
         </script>
     </body>
 </html>

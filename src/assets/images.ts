@@ -1,6 +1,7 @@
 /** */
 export const images = {
     back: require('./images/back.png'),
+    backTrans: require('./images/back_trans.png'),
     closeDark: require('./images/close_dark.png'),
     history: require('./images/history.png'),
     incomplete: require('./images/incomplete.png'),
