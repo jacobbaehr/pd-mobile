@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, Text, TextInput, TextStyle, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextInput, TextStyle, View, ViewStyle, ReturnKeyType, NativeSyntheticEvent, TextInputSubmitEditingEventData } from 'react-native';
 
 export interface TextInputWithTitleProps {
     titleText: string;
@@ -14,27 +14,39 @@ export interface TextInputWithTitleProps {
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
     autoCorrect?: boolean;
     keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad';
+    returnKeyType?: ReturnKeyType;
+    onSubmitEditing?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
+    autoFocus?: boolean;
+    poorlyImplementedRefForwardingProp?: React.Ref<TextInput>;
 }
 
 /** */
-export const TextInputWithTitle: React.FunctionComponent<TextInputWithTitleProps> = (props: TextInputWithTitleProps) => {
-    return (
-        <View style={styles.container}>
-            <View style={styles.titleContainer}>
-                <Text style={[styles.titleText, props.titleTextStyles]}>{props.titleText}</Text>
-                <Text style={[styles.subtitleText, props.subtitleTextStyles]}>{props.subtitleText}</Text>
+export class TextInputWithTitle extends React.Component<TextInputWithTitleProps> {
+    render() {
+        const props = this.props;
+        return (
+            <View style={styles.container}>
+                <View style={styles.titleContainer}>
+                    <Text style={[styles.titleText, props.titleTextStyles]}>{props.titleText}</Text>
+                    <Text style={[styles.subtitleText, props.subtitleTextStyles]}>{props.subtitleText}</Text>
+                </View>
+                <TextInput
+                    keyboardType={props.keyboardType}
+                    autoCorrect={props.autoCorrect}
+                    autoCapitalize={props.autoCapitalize}
+                    secureTextEntry={props.secureTextEntry}
+                    placeholder={props.placeholderText}
+                    onChangeText={props.onTextChanged}
+                    style={[styles.input, props.inputStyles]}
+                    returnKeyType={props.returnKeyType}
+                    onSubmitEditing={props.onSubmitEditing} 
+                    ref={props.poorlyImplementedRefForwardingProp}
+                    autoFocus={props.autoFocus}
+                    />
             </View>
-            <TextInput
-                keyboardType={props.keyboardType}
-                autoCorrect={props.autoCorrect}
-                autoCapitalize={props.autoCapitalize}
-                secureTextEntry={props.secureTextEntry}
-                placeholder={props.placeholderText}
-                onChangeText={props.onTextChanged}
-                style={[styles.input, props.inputStyles]} />
-        </View>
-    );
-};
+        );
+    }
+}
 
 const styles = StyleSheet.create({
     container: {},

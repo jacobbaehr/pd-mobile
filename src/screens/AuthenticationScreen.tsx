@@ -1,6 +1,6 @@
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import * as React from 'react';
-import { Alert, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, ScrollView, StyleSheet, Text, View, TextInput } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { NavigationScreenProp } from 'react-navigation';
 import { connect, DispatchProp } from 'react-redux';
@@ -17,6 +17,9 @@ import { updateUserAction } from 'redux/user/Actions';
 import { AppState } from 'redux/AppState';
 import { CognitoService } from 'services/CognitoService';
 import { InAppPurchasesService, PurchaserInfo } from 'services/InAppPurchasesService';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+type KeyboardIdentifier = 'first' | 'last' | 'email' | 'password';
 
 interface AuthenticationProps {
     /**  */
@@ -37,15 +40,23 @@ interface AuthenticationState {
 class AuthenticationComponent extends React.PureComponent<AuthenticationCombinedProps, AuthenticationState> {
     private cognitoService: CognitoService;
 
+    private firstNameInput = React.createRef<TextInput>();
+    private lastNameInput = React.createRef<TextInput>();
+    private emailInput = React.createRef<TextInput>();
+    private passwordInput = React.createRef<TextInput>();
+
     constructor (props: AuthenticationCombinedProps) {
         super(props);
+
+        const screenType = props.navigation.getParam('screenType');
+
         this.state = {
             firstName: '',
             lastName: '',
             email: '',
             password: '',
             confirmationCode: '',
-            screenType: props.navigation.getParam('screenType')
+            screenType: screenType
         };
         this.cognitoService = new CognitoService();
     }
@@ -126,6 +137,23 @@ class AuthenticationComponent extends React.PureComponent<AuthenticationCombined
         this.props.navigation.navigate('PoolScreen');
     }
 
+    handleKeyboardDismissed = (keyboardId: KeyboardIdentifier) => {
+        switch (keyboardId) {
+            case 'first':
+                this.lastNameInput.current.focus();
+                break;
+            case 'last':
+                this.emailInput.current.focus();
+                break;
+            case 'email':
+                this.passwordInput.current.focus();
+                break;
+            case 'password':
+                this.handleAuthButtonPressed();
+                break;
+        }
+    }
+
     private registerUser = async () => {
         const { firstName, lastName, email, password } = this.state;
 
@@ -153,21 +181,50 @@ class AuthenticationComponent extends React.PureComponent<AuthenticationCombined
                 titleTextStyles={styles.inputTitleText}
                 titleText={'Email'}
                 keyboardType={'email-address'}
-                onTextChanged={this.onEmailChanged} />
+                onTextChanged={this.onEmailChanged}  
+                returnKeyType={'next'}
+                onSubmitEditing={() => {this.handleKeyboardDismissed('email');}}
+                poorlyImplementedRefForwardingProp={this.emailInput} />
         );
     }
 
     private getPasswordInput = (themeColor: string): any => {
         return (
-            <TextInputWithTitle inputStyles={{ color: themeColor }} key={'password input'} autoCorrect={false} secureTextEntry={true} titleTextStyles={styles.inputTitleText} titleText={'Password'} onTextChanged={this.onPasswordChanged} />
+            <TextInputWithTitle 
+                inputStyles={{ color: themeColor }}
+                key={'password input'} 
+                autoCorrect={false} 
+                secureTextEntry={true}
+                titleTextStyles={styles.inputTitleText} 
+                titleText={'Password'}
+                onTextChanged={this.onPasswordChanged} 
+                returnKeyType={'done'}
+                onSubmitEditing={() => {this.handleKeyboardDismissed('password');}}
+                poorlyImplementedRefForwardingProp={this.passwordInput} />
         );
     }
 
     private getRegisterInputs = (themeColor: string): any => {
         const nameInputs = (
             <View key={'nameInputs'}>
-                <TextInputWithTitle inputStyles={{ color: themeColor }} autoCorrect={false} titleTextStyles={styles.inputTitleText} titleText={'First Name'} onTextChanged={this.onFirstNameChanged} />
-                <TextInputWithTitle inputStyles={{ color: themeColor }} autoCorrect={false} titleTextStyles={styles.inputTitleText} titleText={'Last Name'} onTextChanged={this.onLastNameChanged} />
+                <TextInputWithTitle
+                    inputStyles={{ color: themeColor }}
+                    autoCorrect={false}
+                    titleTextStyles={styles.inputTitleText}
+                    titleText={'First Name'}
+                    onTextChanged={this.onFirstNameChanged}
+                    returnKeyType={'next'} 
+                    onSubmitEditing={() => {this.handleKeyboardDismissed('first');}}
+                    poorlyImplementedRefForwardingProp={this.firstNameInput} />
+                <TextInputWithTitle
+                    inputStyles={{ color: themeColor }}
+                    autoCorrect={false}
+                    titleTextStyles={styles.inputTitleText}
+                    titleText={'Last Name'}
+                    onTextChanged={this.onLastNameChanged}
+                    returnKeyType={'next'}
+                    onSubmitEditing={() => {this.handleKeyboardDismissed('last');}}
+                    poorlyImplementedRefForwardingProp={this.lastNameInput} />
             </View>
         );
         return [nameInputs, this.getEmailInput(themeColor), this.getPasswordInput(themeColor)];
@@ -198,7 +255,7 @@ class AuthenticationComponent extends React.PureComponent<AuthenticationCombined
                     start={{ x: 0, y: 0 }}
                     end={{ x: 0, y: 1 }}
                     style={styles.gradientBackground} >
-                    <ScrollView style={styles.contentContainer} contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
+                    <KeyboardAwareScrollView style={styles.contentContainer} contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
                         <View>
                             <View style={styles.titleContainer}>
                             <View style={styles.navButtonContainer}>
@@ -227,7 +284,7 @@ class AuthenticationComponent extends React.PureComponent<AuthenticationCombined
                                     containerStyles={styles.createAccountButton}
                                     textStyles={styles.mainAuthButtonText} />
                         </View>
-                    </ScrollView>
+                    </KeyboardAwareScrollView>
                 </LinearGradient>
             </View>
         );
