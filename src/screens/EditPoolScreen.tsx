@@ -41,7 +41,7 @@ export class EditPoolComponent extends React.Component<EditPoolScreenProps, Edit
     }
 
     componentDidMount() {
-        if(this.props.selectedPool){
+        if(this.props.selectedPool) {
             const pool = {...this.props.selectedPool};
             this.setState({
                 volume: pool.volume,
@@ -66,6 +66,7 @@ export class EditPoolComponent extends React.Component<EditPoolScreenProps, Edit
         this.setState({
           [state]: text
         }as Pick<EditPoolScreenState, keyof EditPoolScreenState>);
+        console.log(`state: ${state}`);
       }
 
     private handleSaveButtonPressed = () => {

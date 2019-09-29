@@ -2,8 +2,6 @@
 import * as React from 'react';
 import { Text, TextProperties, StyleSheet, View } from 'react-native';
 import MaskedView from '@react-native-community/masked-view';
-// @ts-ignore
-import { Transition } from 'react-navigation-fluid-transitions';
 import LinearGradient from 'react-native-linear-gradient';
 import { Color } from 'csstype';
 
@@ -15,7 +13,7 @@ interface PDGradientTextProps extends TextProperties {
 
 export class PDGradientText extends React.Component<PDGradientTextProps, {}> {
 
-    getText() {
+    render() {
         const textStyle = StyleSheet.flatten([styles.default, this.props.style]);
         return(
         <View style={{flexDirection: 'row'}}>
@@ -30,17 +28,6 @@ export class PDGradientText extends React.Component<PDGradientTextProps, {}> {
             </MaskedView>
             <View style={{flex: 1}} />
         </View>);
-    }
-
-    render() {
-        if (this.props.shared === undefined) {
-            return this.getText();
-        }
-        return (
-            <Transition shared={this.props.shared}>
-                {this.getText()}
-            </Transition>
-        )
     }
 }
 

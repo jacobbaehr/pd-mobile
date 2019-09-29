@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { Text, TextProperties, StyleSheet } from 'react-native';
-// @ts-ignore
-import { Transition } from 'react-navigation-fluid-transitions';
 
 interface PDTextProps extends TextProperties {
     shared?: string
@@ -10,7 +8,7 @@ interface PDTextProps extends TextProperties {
 
 export class PDText extends React.Component<PDTextProps, {}> {
 
-    getText = () => {
+    render() {
         let adjustsFontSizeToFit = false
         let numberOfLines = undefined
         if (this.props.scale !== undefined){
@@ -23,17 +21,6 @@ export class PDText extends React.Component<PDTextProps, {}> {
                 style={[styles.default, this.props.style]}
                 >{this.props.children}
             </Text>;
-    }
-
-    render() {
-        if (this.props.shared === undefined) {
-            return this.getText();
-        }
-        return (
-            <Transition shared={this.props.shared}>
-                {this.getText()}
-            </Transition>
-        )
     }
 }
 

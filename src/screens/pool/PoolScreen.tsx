@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { Alert, Image, NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import { NavigationActions, NavigationScreenProp, SafeAreaView } from 'react-navigation';
-// @ts-ignore
-import { Transition } from 'react-navigation-fluid-transitions';
 import { connect } from 'react-redux';
 
 import { images } from 'assets/images';
@@ -44,7 +42,6 @@ const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolLi
 };
 
 class PoolScreenComponent extends React.Component<PoolListScreenProps> {
-    private isDismissingFromScroll = false;
 
     handleBackPressed = () => {
         this.props.navigation.dispatch(NavigationActions.back());
@@ -64,16 +61,6 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
 
     handleChangeRecipeButtonPressed = () => {
         this.props.navigation.navigate('RecipeList');
-    }
-
-    private handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-        console.log(event.nativeEvent.contentOffset.y);
-        if (this.isDismissingFromScroll) { return; }
-
-        if (event.nativeEvent.contentOffset.y < -50) {
-            // this.isDismissingFromScroll = true;
-            // this.props.navigation.popToTop();
-        }
     }
 
     handleGetProPressed = () => {
@@ -107,22 +94,15 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
 
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#2091F9' }} forceInset={{ bottom: 'never' }}>
-                <ScrollView onScroll={this.handleScroll} scrollEventThrottle={2} style={styles.scrollView}>
+                <ScrollView scrollEventThrottle={2} style={styles.scrollView}>
                     <PoolHeaderView pool={this.props.selectedPool} style={styles.header} handlePressedEdit={this.handleEditButtonPressed} handlePressedBack={this.handleBackPressed}/>
                     <View style={styles.container}>
-                        <Transition appear='right'>
                             <PDText style={[styles.sectionTitle, styles.topSectionTitle]}>Service</PDText>
-                        </Transition>
-                        <Transition appear='right'>
                             <View>
                                 <GradientButton onPress={this.handleStartServicePressed} title={'Start Service'}/>
                                 <PDText style={styles.lastServiceLabel}>Last Serviced: 20 days ago</PDText>
                             </View>
-                        </Transition>
-                        <Transition appear='right'>
                             <PDText style={styles.sectionTitle}>Recipe</PDText>
-                        </Transition>
-                        <Transition appear='right'>
                             <View>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Image
@@ -134,19 +114,15 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
                                 </View>
                                 <Button styles={styles.recipeChangeButton} textStyles={ styles.recipeChangeButtonText } title={ 'change' } onPress={ this.handleChangeRecipeButtonPressed } />
                             </View>
-                        </Transition>
                         
                         <View style={{ flex: 1 }}>
-                            <Transition appear='right'>
                                 <PDText style={styles.sectionTitle}>History</PDText>
-                            </Transition>
                             <ChartCard viewModel={vm} >
                                 <TouchableHighlight onPress={this.handleViewHistoryPressed} style={styles.historyButton}>
                                     <Text style={styles.viewMoreHistoryText}>View More</Text>
                                 </TouchableHighlight>
                             </ChartCard>
                         </View>
-                        <Transition appear='right'>
                             <View style={{ flex: 1 }}>
                                 <PDText style={styles.sectionTitle}>Online Backup</PDText>
                                 <View style={styles.onlineBackupContainer}>
@@ -161,7 +137,6 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
                                         gradientEnd={'#ff9944'}/>
                                 </View>
                             </View>
-                        </Transition>
                     </View>
                 </ScrollView>
             </SafeAreaView>

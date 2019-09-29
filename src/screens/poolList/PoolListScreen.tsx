@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { Dimensions, Image, ScrollView, SectionList, StyleSheet, View } from 'react-native';
 import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
-// @ts-ignore
-import { Transition } from 'react-navigation-fluid-transitions';
 import { connect } from 'react-redux';
 
 import { images } from 'assets/images';
@@ -91,12 +89,10 @@ class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolL
             <SafeAreaView style={{ flex: 1, backgroundColor: '#F8F8F8' }} forceInset={{ bottom: 'never' }}>
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.container}>
-                        <Transition appear='top'>
-                            <View>
-                                <PDText style={[styles.title, styles.titleTop]}>My</PDText>
-                                <PDText style={[styles.title, styles.titleBottom]}>Pools</PDText>
-                            </View>
-                        </Transition>
+                        <View>
+                            <PDText style={[styles.title, styles.titleTop]}>My</PDText>
+                            <PDText style={[styles.title, styles.titleBottom]}>Pools</PDText>
+                        </View>
                         <SectionList
                             style={{ flex: 1 }}
                             renderItem={({ item }) => <PoolListItem

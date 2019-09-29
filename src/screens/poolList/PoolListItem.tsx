@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 // @ts-ignore
-import { Transition } from 'react-navigation-fluid-transitions';
-// @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
 
 import { Pool } from 'models/Pool';
@@ -35,13 +33,11 @@ export class PoolListItem extends React.Component<PoolListItemProps, {}> {
                     <PoolBackgroundView style={styles.background} pool={pool}></PoolBackgroundView>
                     <PDText style={styles.poolNameText} shared={`pool_name_${pool.objectId}`}>{ pool.name }</PDText>
                     <PDText style={styles.poolVolumeText} shared={`pool_volume_${pool.objectId}`}>{ pool.volume } gallons</PDText>
-                    <Transition appear='right'>
-                        <Image
-                            style={styles.star}
-                            source={images.star}
-                            width={17}
-                            height={16}/>
-                    </Transition>
+                    <Image
+                        style={styles.star}
+                        source={images.star}
+                        width={17}
+                        height={16}/>
                 </View>
             </TouchableScale>
         );

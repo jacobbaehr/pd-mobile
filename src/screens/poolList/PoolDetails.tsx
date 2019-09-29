@@ -38,7 +38,7 @@ export  class PoolDetails extends React.Component<PoolDetailProps, {}> {
         const { header, originalPoolName, goBack, rightButtonAction } = this.props;
         return (
             <SafeAreaView style={styles.safeArea}>
-                <KeyboardAwareScrollView>
+                <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
                     <View>
                         <EditListHeader
                             handleBackPress={ ()=>goBack() }
@@ -50,12 +50,13 @@ export  class PoolDetails extends React.Component<PoolDetailProps, {}> {
                         <View style={styles.listContainer}>
                             <TextInputWithTitle
                                 titleText='Name'
-                                onTextChanged={(s) => this.props.updateText('name', s)}
+                                onTextChanged={(s) => this.props.updateText(s, 'name')}
                                 titleTextStyles={styles.poolNameLabel}
                                 inputStyles={styles.textInput}
                                 autoCapitalize='sentences'
                                 autoCorrect={false}
                                 keyboardType='default'
+                                value={this.props.name}
                             />
                         </View>
                         <View style={styles.listContainer}>
@@ -76,13 +77,14 @@ export  class PoolDetails extends React.Component<PoolDetailProps, {}> {
                             <TextInputWithTitle
                                 titleText='Volume'
                                 subtitleText='(Gallons)'
-                                onTextChanged={(s) => this.props.updateText('name', s)}
+                                onTextChanged={(s) => this.props.updateText(s, 'volume')}
                                 titleTextStyles={styles.poolNameLabel}
                                 subtitleTextStyles={styles.poolNameSubLabel}
                                 inputStyles={styles.textInput}
                                 autoCapitalize='sentences'
                                 autoCorrect={false}
                                 keyboardType='default'
+                                value={`${this.props.volume}`}
                             />
                         </View>
                         <GradientButton

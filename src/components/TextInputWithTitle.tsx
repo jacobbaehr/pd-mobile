@@ -18,6 +18,7 @@ export interface TextInputWithTitleProps {
     onSubmitEditing?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
     autoFocus?: boolean;
     poorlyImplementedRefForwardingProp?: React.Ref<TextInput>;
+    value?: string;
 }
 
 /** */
@@ -42,6 +43,7 @@ export class TextInputWithTitle extends React.Component<TextInputWithTitleProps>
                     onSubmitEditing={props.onSubmitEditing} 
                     ref={props.poorlyImplementedRefForwardingProp}
                     autoFocus={props.autoFocus}
+                    value={props.value}
                     />
             </View>
         );

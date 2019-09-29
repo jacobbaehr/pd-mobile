@@ -1,6 +1,4 @@
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-// @ts-ignore: fluid-transitions untyped
-import { createFluidNavigator } from 'react-navigation-fluid-transitions';
 
 import { ConfirmPurchaseScreen } from 'screens/confirmPurchase/ConfirmPurchaseScreen';
 import { PoolScreen } from 'screens/pool/PoolScreen';
@@ -15,8 +13,18 @@ import { CalculationSettingsScreen } from 'screens/CalculationSettingsScreen';
 import { EditPoolScreen } from 'screens/EditPoolScreen';
 import { RegistrationVerificationScreen } from 'screens/RegistrationVerificationScreen';
 
+const PurchaseProStack = createStackNavigator({
+  Authentication: { screen: AuthenticationScreen },
+  RegistrationVerification: { screen: RegistrationVerificationScreen },
+  ConfirmPurchase: { screen: ConfirmPurchaseScreen }
+}, {
+  headerMode: 'none'
+});
+
 const PDNavStack = createStackNavigator({
-  // PoolList: { screen: PoolListScreen },
+  PoolList: { screen: PoolListScreen },
+  CreatePool: { screen: EditPoolScreen },
+  PurchasePro: PurchaseProStack,
   PoolScreen: { screen: PoolScreen },
   EditPool: { screen: EditPoolScreen},
   ReadingList: { screen: ReadingListScreen },
@@ -29,39 +37,4 @@ const PDNavStack = createStackNavigator({
     defaultNavigationOptions: { header: null }
   });
 
-/// Amazingly, this defines the nav options for its PARENT, which is PDNavFluid 🤯
-PDNavStack.navigationOptions = (navigationProp: any) => {
-  const { navigation } = navigationProp;
-  const gesturesEnabled = navigation.state.index === 0;
-  return { gesturesEnabled };
-};
-
-const PurchaseProStack = createStackNavigator({
-  Authentication: { screen: AuthenticationScreen },
-  RegistrationVerification: { screen: RegistrationVerificationScreen },
-  ConfirmPurchase: { screen: ConfirmPurchaseScreen }
-}, {
-  headerMode: 'none'
-});
-
-const PDNavFluid = createFluidNavigator({
-    PoolList: { screen: PoolListScreen },
-    PoolScreen: PDNavStack,
-    CreatePool: { screen: EditPoolScreen },
-    PurchasePro: PurchaseProStack
-  },
-  {
-    mode: 'card',
-    navigationOptions: {
-      gesturesEnabled: true,
-      gestureResponseDistance: { horizontal: 50 }
-    },
-    transitionConfig: () => {
-      return { transitionSpec: { duration: 250 } }
-      // TODO: figure out a good easing function
-      // easing: Easing.elastic(2)
-    }
-  }
-);
-
-export const PDNav = createAppContainer(PDNavFluid);
+export const PDNav = createAppContainer(PDNavStack);

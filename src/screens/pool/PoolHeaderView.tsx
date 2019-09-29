@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-// @ts-ignore
-import { Transition } from 'react-navigation-fluid-transitions';
 import { Button } from '../../components/buttons/Button';
 
 import { PDText } from 'components/PDText';
@@ -29,14 +27,10 @@ export class PoolHeaderView extends React.Component<PoolHeaderViewProps, {}> {
             <View style={this.props.style}>
                 <PoolBackgroundView pool={this.props.pool} style={styles.background} />
                 <View style={styles.buttonContainerRight}>
-                    <Transition appear='right' >
-                        <Button title={'Edit'} onPress={this.props.handlePressedEdit} styles={styles.button} textStyles={styles.buttonText}/>
-                    </Transition>
+                    <Button title={'Edit'} onPress={this.props.handlePressedEdit} styles={styles.button} textStyles={styles.buttonText}/>
                 </View>
                 <View style={styles.buttonContainerLeft}>
-                    <Transition appear='left' >
-                        <CloseButton onPress={this.props.handlePressedBack} />
-                    </Transition>
+                    <CloseButton onPress={this.props.handlePressedBack} />
                 </View>
                 <PDText style={styles.poolNameText} shared={`pool_name_${this.props.pool.objectId}`}>{ this.props.pool.name }</PDText>
                 <PDText style={styles.poolVolumeText} shared={`pool_volume_${this.props.pool.objectId}`}>{ detailsText }</PDText>
