@@ -1,0 +1,6 @@
+module Pods_pooldash_pooldashTests {
+  umbrella header "Pods-pooldash-pooldashTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

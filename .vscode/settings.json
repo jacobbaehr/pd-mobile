@@ -1,0 +1,8 @@
+{
+    "editor.formatOnSave": true,
+    "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
+    "editor.detectIndentation": false,
+    "editor.wordWrapColumn": 120,
+    "javascript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": true,
+    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": true
+}
