@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
         borderRadius: 24,
         marginHorizontal: 12,
         backgroundColor: 'white',
-        paddingBottom: 0
+        paddingBottom: 0,
+        marginBottom: 15
     },
     poolNameText: {
         color: 'black',

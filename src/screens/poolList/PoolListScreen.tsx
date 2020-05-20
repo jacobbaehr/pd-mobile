@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Image, SectionList, StyleSheet, View, SafeAreaView } from 'react-native';
+import { Image, SectionList, StyleSheet, View, ViewStyle } from 'react-native';
+import { useSafeArea } from 'react-native-safe-area-context';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -17,7 +18,6 @@ import { PoolListFooter } from './PoolListFooter';
 import { PoolListItem } from './PoolListItem';
 import { useRealmPoolsHook } from './hooks/RealmPoolHook';
 import { useNavigation } from '@react-navigation/native';
-import { createIconSetFromFontello } from 'react-native-vector-icons';
 
 interface PoolListScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'PoolList'>;
@@ -48,6 +48,7 @@ const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (p
 
     const pools = useRealmPoolsHook();
     const { navigate } = useNavigation();
+    const insets = useSafeArea();
 
     const handlePoolSelected = async (pool: Pool): Promise<void> => {
         console.log('selected: ', pool);
@@ -61,54 +62,56 @@ const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (p
     }
 
     const isEmpty = pools.length === 0;
+    const dynamicContainerStyles: ViewStyle = {
+        paddingTop: insets.top
+    };
     return (
-        <SafeAreaView style={ { flex: 1, backgroundColor: '#FFFFFF' } } >
-            <View style={ styles.container }>
-                <View style={ styles.header }>
-                    <View style={ styles.headerLeft }>
-                        <TouchableScale
-                            style={ styles.accountButton }
-                            underlayColor={ 'transparent' }
-                            activeScale={ 0.97 }
-                            onPress={ handleAddPoolPressed }>
-                            <Image
-                                style={ styles.accountButtonImage }
-                                source={ images.accountButton }
-                                width={ 38 }
-                                height={ 38 } />
-                        </TouchableScale>
-                        <PDText style={ styles.title }>My Pools</PDText>
-                    </View>
-                    <View style={ styles.headerRight }>
-                        <TouchableScale
-                            style={ styles.plusButton }
-                            underlayColor={ 'transparent' }
-                            activeScale={ 0.97 }
-                            onPress={ handleAddPoolPressed }>
-                            <Image
-                                style={ styles.plusButtonImage }
-                                source={ images.plusButton }
-                                width={ 38 }
-                                height={ 38 } />
-                        </TouchableScale>
-                    </View>
+        <View style={ [styles.container, dynamicContainerStyles] }>
+            <View style={ styles.header }>
+                <View style={ styles.headerLeft }>
+                    <TouchableScale
+                        style={ styles.accountButton }
+                        underlayColor={ 'transparent' }
+                        activeScale={ 0.97 }
+                        onPress={ handleAddPoolPressed }>
+                        <Image
+                            style={ styles.accountButtonImage }
+                            source={ images.accountButton }
+                            width={ 38 }
+                            height={ 38 } />
+                    </TouchableScale>
+                    <PDText style={ styles.title }>My Pools</PDText>
                 </View>
-                <SectionList
-                    style={ styles.sectionList }
-                    renderItem={ ({ item }) => <PoolListItem
-                        pool={ item }
-                        onPoolSelected={ handlePoolSelected } /> }
-                    renderSectionHeader={ () => null }
-                    sections={ [
-                        { data: pools, title: 'Pools' }
-                    ] }
-                    renderSectionFooter={ () => <PoolListFooter
-                        isEmpty={ isEmpty }
-                        handlePress={ handleAddPoolPressed } /> }
-                    keyExtractor={ item => (item as Pool).objectId }
-                    overScrollMode={ 'always' } />
+                <View style={ styles.headerRight }>
+                    <TouchableScale
+                        style={ styles.plusButton }
+                        underlayColor={ 'transparent' }
+                        activeScale={ 0.97 }
+                        onPress={ handleAddPoolPressed }>
+                        <Image
+                            style={ styles.plusButtonImage }
+                            source={ images.plusButton }
+                            width={ 38 }
+                            height={ 38 } />
+                    </TouchableScale>
+                </View>
             </View>
-        </SafeAreaView>
+            <SectionList
+                style={ styles.sectionList }
+                renderItem={ ({ item }) => <PoolListItem
+                    pool={ item }
+                    onPoolSelected={ handlePoolSelected } /> }
+                renderSectionHeader={ () => null }
+                sections={ [
+                    { data: pools, title: 'Pools' }
+                ] }
+                renderSectionFooter={ () => <PoolListFooter
+                    isEmpty={ isEmpty }
+                    handlePress={ handleAddPoolPressed } /> }
+                keyExtractor={ item => (item as Pool).objectId }
+                overScrollMode={ 'always' }
+                contentInset={ { bottom: 50 } } />
+        </View>
     );
 }
 
@@ -118,7 +121,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'flex-start',
-        backgroundColor: 'transparent'
+        backgroundColor: 'white'
     },
     header: {
         display: 'flex',

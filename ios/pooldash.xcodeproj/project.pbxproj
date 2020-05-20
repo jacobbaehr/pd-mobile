@@ -18,6 +18,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* pooldashTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* pooldashTests.m */; };
 		37F466CDA9BDC2B289009F44 /* libPods-pooldash-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3075F64F56A01E98CB2F5210 /* libPods-pooldash-tvOSTests.a */; };
 		474BA1D7C076469F85265083 /* libPods-pooldash-pooldashTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD4D19B077C692AEAE8C036C /* libPods-pooldash-pooldashTests.a */; };
+		76184A022475A1E000A57235 /* web.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 76184A012475A1E000A57235 /* web.bundle */; };
 		C714B223E69E339315BCDCDB /* libPods-pooldash.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A91E608466D6899D52ABB3D /* libPods-pooldash.a */; };
 		F0A1FAB1FB38C52751DA0F5A /* libPods-pooldash-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1B7F14E82C0F942D3BE019 /* libPods-pooldash-tvOS.a */; };
 /* End PBXBuildFile section */
@@ -59,6 +60,7 @@
 		3E7B2BF5D674C060C52A1E54 /* Pods-pooldash-pooldashTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pooldash-pooldashTests.debug.xcconfig"; path = "Target Support Files/Pods-pooldash-pooldashTests/Pods-pooldash-pooldashTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6A91E608466D6899D52ABB3D /* libPods-pooldash.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-pooldash.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F0FD7ECD15AD0F2F86797B0 /* Pods-pooldash.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pooldash.release.xcconfig"; path = "Target Support Files/Pods-pooldash/Pods-pooldash.release.xcconfig"; sourceTree = "<group>"; };
+		76184A012475A1E000A57235 /* web.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = web.bundle; path = ../web.bundle; sourceTree = "<group>"; };
 		794C1C6F8F73E317F0E5BF1D /* Pods-pooldash.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pooldash.debug.xcconfig"; path = "Target Support Files/Pods-pooldash/Pods-pooldash.debug.xcconfig"; sourceTree = "<group>"; };
 		D184144B6AC4EE141FDD0843 /* Pods-pooldash-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pooldash-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-pooldash-tvOS/Pods-pooldash-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		DA1B7F14E82C0F942D3BE019 /* libPods-pooldash-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-pooldash-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,6 +127,7 @@
 		13B07FAE1A68108700A75B9A /* pooldash */ = {
 			isa = PBXGroup;
 			children = (
+				76184A012475A1E000A57235 /* web.bundle */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -342,6 +345,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				76184A022475A1E000A57235 /* web.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
