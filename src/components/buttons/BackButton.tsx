@@ -6,11 +6,13 @@ import TouchableScale from 'react-native-touchable-scale';
 import { images } from '~/assets/images';
 import { PDText } from '~/components/PDText';
 
+type BackButtonColor = 'blue';
+
 interface BackButtonProps {
     title?: string;
     onPress: () => void;
-    imageSource?: string;
     scale?: { scale: boolean, scaleLines: number };
+    color?: BackButtonColor;
 }
 
 export class BackButton extends React.Component<BackButtonProps, {}> {
@@ -22,7 +24,10 @@ export class BackButton extends React.Component<BackButtonProps, {}> {
         ) : null;
     }
     render() {
-        const imageSource = this.props.imageSource ? this.props.imageSource : images.back;
+        let imageSource = images.backBlue;
+        if (this.props.color === 'blue') {
+            imageSource = images.backBlue;
+        }
         return (
             <View style={ styles.backButtonOuterContainer }>
                 <TouchableScale
@@ -33,8 +38,8 @@ export class BackButton extends React.Component<BackButtonProps, {}> {
                     <Image
                         style={ styles.backButtonImage }
                         source={ imageSource }
-                        width={ 21 }
-                        height={ 21 } />
+                        width={ 32 }
+                        height={ 32 } />
                     { this.getText() }
                 </TouchableScale>
             </View>
@@ -54,6 +59,7 @@ const styles = StyleSheet.create({
         marginRight: 10
     },
     backButtonText: {
+        paddingTop: 5,
         fontWeight: '700',
         fontSize: 28,
         color: 'black'

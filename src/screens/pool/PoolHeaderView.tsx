@@ -5,7 +5,6 @@ import { Button } from '~/components/buttons/Button';
 import { PDText } from '~/components/PDText';
 import { Pool } from '~/models/Pool';
 
-import { PoolBackgroundView } from './PoolBackgroundView';
 import { CloseButton } from '~/components/buttons/CloseButton';
 
 interface PoolHeaderViewProps {
@@ -21,19 +20,18 @@ export class PoolHeaderView extends React.Component<PoolHeaderViewProps, {}> {
             return <View></View>;
         }
 
-        const detailsText = `${this.props.pool.volume} gallons, ${this.props.pool.waterType}`;
+        const detailsText = `${this.props.pool.gallons} gallons, ${this.props.pool.waterType}`;
 
         return (
             <View style={ this.props.style }>
-                <PoolBackgroundView pool={ this.props.pool } style={ styles.background } />
                 <View style={ styles.buttonContainerRight }>
                     <Button title={ 'Edit' } onPress={ this.props.handlePressedEdit } styles={ styles.button } textStyles={ styles.buttonText } />
                 </View>
                 <View style={ styles.buttonContainerLeft }>
                     <CloseButton onPress={ this.props.handlePressedBack } />
                 </View>
-                <PDText style={ styles.poolNameText } shared={ `pool_name_${this.props.pool.objectId}` }>{ this.props.pool.name }</PDText>
-                <PDText style={ styles.poolVolumeText } shared={ `pool_volume_${this.props.pool.objectId}` }>{ detailsText }</PDText>
+                <PDText style={ styles.poolNameText } >{ this.props.pool.name }</PDText>
+                <PDText style={ styles.poolVolumeText } >{ detailsText }</PDText>
             </View>
         );
     }

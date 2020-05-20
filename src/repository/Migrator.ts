@@ -8,7 +8,7 @@ import { TreatmentEntry } from '~/models/logs/TreatmentEntry';
  * time there is a change to the data model.
  */
 export const schemas = [
-    { schema: [Pool, LogEntry, ReadingEntry, TreatmentEntry], schemaVersion: 0 }
+    { schema: [Pool.schema, LogEntry.schema, ReadingEntry.schema, TreatmentEntry.schema], schemaVersion: 0 }
 ];
 
 /**
@@ -25,7 +25,7 @@ export class Migrator {
     }
 
     /** Get the latest schema from the schema list */
-    public static getCurrentSchemaVersion() {
+    public static getCurrentSchemaVersion(): Realm.Configuration {
         return schemas[schemas.length - 1];
     }
 }

@@ -88,65 +88,65 @@ class ConfirmPurchaseComponent extends React.PureComponent<ConfirmPurchaseCombin
         const name = `${this.props.route.params.user.firstName} ${this.props.route.params.user.lastName}`;
 
         return (
-            <View style={styles.container}>
-                {/* <Image source={backgroundImage} resizeMode={'cover'} style={styles.backgroundImage} /> */}
+            <View style={ styles.container }>
+                {/* <Image source={backgroundImage} resizeMode={'cover'} style={styles.backgroundImage} /> */ }
                 <LinearGradient
-                    colors={['black', 'transparent']}
-                    locations={[0.67, 1]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 0, y: 1 }}
-                    style={styles.gradientBackground}>
+                    colors={ ['black', 'transparent'] }
+                    locations={ [0.67, 1] }
+                    start={ { x: 0, y: 0 } }
+                    end={ { x: 0, y: 1 } }
+                    style={ styles.gradientBackground }>
                     <ScrollView
-                        style={styles.contentContainer}
-                        contentContainerStyle={{
+                        style={ styles.contentContainer }
+                        contentContainerStyle={ {
                             flexGrow: 1,
                             justifyContent: 'space-between',
                             flexDirection: 'column',
-                        }}>
+                        } }>
                         <View>
-                            <View style={styles.titleContainer}>
-                                <View style={styles.navButtonContainer}>
+                            <View style={ styles.titleContainer }>
+                                <View style={ styles.navButtonContainer }>
                                     <BackButton
-                                        title={''}
-                                        imageSource={images.backWhite}
-                                        onPress={this.handleBackPressed}
+                                        title={ '' }
+
+                                        onPress={ this.handleBackPressed }
                                     />
-                                    <DismissStackButton handleBackPressed={this.handleDismissPressed} />
+                                    <DismissStackButton handleBackPressed={ this.handleDismissPressed } />
                                 </View>
-                                <Image source={images.pdProTitle} />
+                                <Image source={ images.pdProTitle } />
                             </View>
-                            <PDText style={styles.title}>Your Account</PDText>
-                            <SeparatorLine lineStyles={styles.horizontalPadding} />
-                            <View style={styles.accountInfoContainer}>
-                                <Text style={styles.accountInfoHeaderText}>Name</Text>
-                                <View style={styles.accountDetailsContainer}>
-                                    <Text style={[styles.accountInfoDetailsText, { color: screenThemeColor }]}>
-                                        {name}
+                            <PDText style={ styles.title }>Your Account</PDText>
+                            <SeparatorLine lineStyles={ styles.horizontalPadding } />
+                            <View style={ styles.accountInfoContainer }>
+                                <Text style={ styles.accountInfoHeaderText }>Name</Text>
+                                <View style={ styles.accountDetailsContainer }>
+                                    <Text style={ [styles.accountInfoDetailsText, { color: screenThemeColor }] }>
+                                        { name }
                                     </Text>
                                 </View>
-                                <Text style={[styles.accountInfoHeaderText, { marginTop: 10 }]}>Email</Text>
-                                <View style={styles.accountDetailsContainer}>
-                                    <Text style={[styles.accountInfoDetailsText, { color: screenThemeColor }]}>
-                                        {email}
+                                <Text style={ [styles.accountInfoHeaderText, { marginTop: 10 }] }>Email</Text>
+                                <View style={ styles.accountDetailsContainer }>
+                                    <Text style={ [styles.accountInfoDetailsText, { color: screenThemeColor }] }>
+                                        { email }
                                     </Text>
                                 </View>
                             </View>
                             <View>
-                                <Text style={styles.title}>Payment Details</Text>
-                                <View style={styles.paymentDetailsTextContainer}>
-                                    <Text style={styles.paymentDetailsText}>
-                                        You will be billed <Text style={{ color: screenThemeColor }}>$10 annually</Text>{' '}
+                                <Text style={ styles.title }>Payment Details</Text>
+                                <View style={ styles.paymentDetailsTextContainer }>
+                                    <Text style={ styles.paymentDetailsText }>
+                                        You will be billed <Text style={ { color: screenThemeColor } }>$10 annually</Text>{ ' ' }
                                         unless you cancel before the billing period ends.
-                                        <Text style={{ color: 'white' }}> Terms</Text>
+                                        <Text style={ { color: 'white' } }> Terms</Text>
                                     </Text>
                                 </View>
                             </View>
                         </View>
                         <TextButton
-                            text={'Confirm Purchase'}
-                            onPress={this.handlePurchaseConfirmed}
-                            containerStyles={styles.confirmPurchaseButton}
-                            textStyles={styles.confirmPurchaseButtonText}
+                            text={ 'Confirm Purchase' }
+                            onPress={ this.handlePurchaseConfirmed }
+                            containerStyles={ styles.confirmPurchaseButton }
+                            textStyles={ styles.confirmPurchaseButtonText }
                         />
                     </ScrollView>
                 </LinearGradient>

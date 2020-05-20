@@ -4,19 +4,19 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { PDNavStackParamList } from '~/navigator/Navigators';
 import { connect } from 'react-redux';
 import { Color } from 'csstype';
-import { localeData } from 'moment';
 import { FlatGrid } from 'react-native-super-grid';
 
 import { Recipe } from '~/models/recipe/Recipe';
 import { RecipeMeta } from '~/models/recipe/RecipeMeta';
 import { Pool } from '~/models/Pool';
-import { selectRecipe } from '~/redux/recipeId/Actions';
+import { selectRecipe } from '~/redux/recipeKey/Actions';
 import { dispatch, AppState } from '~/redux/AppState';
 import { Database } from '~/repository/Database';
 import { BackButton } from '~/components/buttons/BackButton';
 import { PDGradientText } from '~/components/PDGradientText';
 import { GradientButton } from '~/components/buttons/GradientButton';
 import { RecipeService } from '~/services/RecipeService';
+import { getRecipeKey } from '~/models/recipe/RecipeKey';
 
 interface RecipeListScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'RecipeList'>;
@@ -73,7 +73,7 @@ class RecipeListScreenComponent extends React.Component<RecipeListScreenProps, R
             if (this.props.pool === null) {
                 return;
             }
-            this.props.pool.recipeId = recipe.objectId;
+            // this.props.pool.recipeKey = getRecipeKey(recipe);
         });
         dispatch(selectRecipe(recipe));
         this.props.navigation.navigate('ReadingList');

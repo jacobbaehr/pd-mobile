@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { BackButton } from '~/components/buttons/BackButton';
 import { Button } from '~/components/buttons/Button';
-import { PDGradientText } from '~/components/PDGradientText';
+import { PDText } from '~/components/PDText';
 
 interface EditListHeaderProps {
     handleBackPress: () => void;
@@ -30,9 +30,9 @@ export class EditListHeader extends React.Component<EditListHeaderProps, {}> {
                     </View>
                     { rightButton }
                 </View>
-                <PDGradientText style={ styles.gradientText } colors={ gradientColors }>
+                <PDText style={ styles.headerText } >
                     { this.props.header }
-                </PDGradientText>
+                </PDText>
             </View>
         );
     }
@@ -71,5 +71,11 @@ const styles = StyleSheet.create({
         fontFamily: 'Avenir Next',
         fontSize: 13.2,
         fontWeight: '600',
+    },
+    headerText: {
+        marginTop: 5,
+        fontSize: 28,
+        fontWeight: '700',
+        color: '#1E6BFF'
     }
 });

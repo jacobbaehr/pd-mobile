@@ -1,14 +1,15 @@
 import * as RNFS from 'react-native-fs';
 import { Recipe } from '~/models/recipe/Recipe';
 import { big3 } from '~/repository/recipes/Big3';
+import { RecipeKey, getRecipeKey } from '~/models/recipe/RecipeKey';
 
 const recipeFolderName = 'recipes';
 const defaultRecipes: Recipe[] = [big3];
 
-export class RecipeRepository {
+export class RecipeRepo {
     /// Attempts to load the recipes from the Recipe folder
-    loadLocalRecipeWithId = async (recipeId: string): Promise<Recipe> => {
-        const filePath = this.getFilepathForRecipeId(recipeId);
+    static loadLocalRecipeWithKey = async (recipeKey: RecipeKey): Promise<Recipe> => {
+        const filePath = RecipeRepo.getFilepathForRecipeKey(recipeKey);
 
         const fileExists = await RNFS.exists(filePath);
         if (!fileExists) {
@@ -23,15 +24,15 @@ export class RecipeRepository {
     }
 
     /// Saves all the pre-packaged recipes to the file-system:
-    savePreloadedRecipes = async () => {
+    static savePreloadedRecipes = async () => {
         try {
-            await this.ensureRecipeDirectoryExists();
+            await RecipeRepo.ensureRecipeDirectoryExists();
         } catch (e) {
             return Promise.reject(e);
         }
         const promises = defaultRecipes.map(r => {
             return new Promise(async (resolve) => {
-                await this.saveRecipe(r);
+                await RecipeRepo.saveRecipe(r);
                 resolve();
             });
         });
@@ -39,8 +40,9 @@ export class RecipeRepository {
     }
 
     /// Saves recipe, will overwrite existing file if it already exists.
-    private saveRecipe = async (recipe: Recipe): Promise<Boolean> => {
-        const filePath = this.getFilepathForRecipeId(recipe.objectId);
+    private static saveRecipe = async (recipe: Recipe): Promise<Boolean> => {
+        const key = getRecipeKey(recipe);
+        const filePath = RecipeRepo.getFilepathForRecipeKey(key);
         const fileData = JSON.stringify(recipe);
 
         const fileExists = await RNFS.exists(filePath);
@@ -58,7 +60,7 @@ export class RecipeRepository {
         }
     }
 
-    private ensureRecipeDirectoryExists = async () => {
+    private static ensureRecipeDirectoryExists = async () => {
         const dirPath = `${RNFS.DocumentDirectoryPath}/${recipeFolderName}`
         const fileExists = await RNFS.exists(dirPath);
         if (!fileExists) {
@@ -71,15 +73,15 @@ export class RecipeRepository {
         }
     }
 
-    private getFilepathForRecipeId(recipeId: string): string {
-        const fileName = recipeId + '.of';
+    private static getFilepathForRecipeKey(recipeKey: RecipeKey): string {
+        const fileName = recipeKey + '.json';
         const filePath = `${RNFS.DocumentDirectoryPath}/${recipeFolderName}/${fileName}`;
         // console.warn(filePath);
         return filePath;
     }
 
-    private deleteRecipeWithId = async (recipeId: string): Promise<boolean> => {
-        const filePath = this.getFilepathForRecipeId(recipeId);
+    private static deleteRecipeWithId = async (recipeKey: RecipeKey): Promise<boolean> => {
+        const filePath = RecipeRepo.getFilepathForRecipeKey(recipeKey);
         const fileExists = await RNFS.exists(filePath);
         if (!fileExists) {
             return false;

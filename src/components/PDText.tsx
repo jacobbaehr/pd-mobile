@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Text, TextProps, StyleSheet } from 'react-native';
 
 interface PDTextProps extends TextProps {
-    shared?: string
     scale?: { scale: boolean, scaleLines: number }
 }
 
@@ -18,8 +17,9 @@ export class PDText extends React.Component<PDTextProps, {}> {
         return <Text
             adjustsFontSizeToFit={ adjustsFontSizeToFit }
             numberOfLines={ numberOfLines }
-            style={ [styles.default, this.props.style] }
-        >{ this.props.children }
+            style={ [styles.default, this.props.style] }>
+
+            { this.props.children }
         </Text>;
     }
 }

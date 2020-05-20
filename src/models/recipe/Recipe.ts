@@ -4,42 +4,22 @@ import { Treatment } from './Treatment';
 /**
  * Represents the instructions for a pool treatment
  */
-export class Recipe {
+export interface Recipe {
     // The user-visible name of the recipe (ideally, should be unique)
-    name!: string;
+    name: string;
 
     // A brief description of this recipe
-    description!: string;
+    description: string;
 
-    // An ID that uniquely identifies this recipe
-    objectId!: string;
+    // The id of the recipe (multiple versions of the same recipe will have the same id)
+    id: string;
+
+    // The timestamp when this recipe was last updated (this + id == unique key)
+    ts: number;
 
     // All the inputs to this recipe
-    readings!: Reading[];
+    readings: Reading[];
 
     // All the outputs to this recipe
-    treatments!: Treatment[];
-
-    // For Realm purposes
-    static schema = {
-        name: 'Recipe',
-        primaryKey: 'objectId',
-        properties: {
-            name: 'string',
-            description: 'string',
-            objectId: 'string',
-            readings: 'Reading[]',
-            treatments: 'Treatment[]'
-        }
-    };
-
-    static make(name: string, description: string, readings: Reading[], treatments: Treatment[]): Recipe {
-        let recipe = new Recipe();
-        recipe.name = name;
-        recipe.description = description;
-        // TODO: verify that this works for to-many relationships in Realm.
-        recipe.readings = readings;
-        recipe.treatments = treatments;
-        return recipe;
-    }
+    treatments: Treatment[];
 }

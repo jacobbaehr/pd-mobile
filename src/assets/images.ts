@@ -1,6 +1,7 @@
 /** */
 export const images = {
     back: require('./images/back.png'),
+    backBlue: require('./images/back_blue.png'),
     backTrans: require('./images/back_trans.png'),
     closeDark: require('./images/close_dark.png'),
     history: require('./images/history.png'),
@@ -12,5 +13,7 @@ export const images = {
     blueAuthenticationBackground: require('./images/blue_authentication_background.png'),
     pdProTitle: require('./images/pd_pro_title.png'),
     backWhite: require('./images/back_white.png'),
-    closeIcon: require('./images/close_icon.png')
+    closeIcon: require('./images/close_icon.png'),
+    plusButton: require('./images/plus.png'),
+    accountButton: require('./images/account_button.png')
 };

@@ -17,35 +17,15 @@ export class PoolListFooter extends React.Component<PoolListFooterProps, {}> {
         this.props.handlePress();
     }
 
-    getButton = () => {
-        const buttonStyles = this.props.isEmpty
-            ? [styles.button, styles.buttonEmpty]
-            : [styles.button, styles.buttonNonEmpty];
-
-        return (
-            <TouchableScale
-                style={ buttonStyles }
-                underlayColor={ '#DDD' }
-                activeOpacity={ 0.6 }
-                activeScale={ 0.985 }
-                onPress={ this.handlePress }>
-                <PDText
-                    style={ styles.plusText }>
-                    +
-                </PDText>
-            </TouchableScale>);
-    }
-
     render() {
-        if (!this.props.isEmpty) {
-            return this.getButton();
-        }
-        const imageWidth = Dimensions.get('window').width;
+        const imageWidth = Dimensions.get('window').width - 10;
         const imageHeight = imageWidth * 0.792;
-        const imageStyles = this.props.isEmpty ? [styles.image] : [styles.image, styles.invisible];
+        const imageStyles = [styles.image];
+        if (!this.props.isEmpty) {
+            return null;
+        }
         return (
             <View>
-                { this.getButton() }
                 <PDText style={ styles.bottomText }>
                     Tap the + icon above to get started.
                 </PDText>
@@ -88,12 +68,9 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         marginHorizontal: 20,
         textAlign: 'center',
-        marginTop: 22
+        marginTop: 100
     },
     image: {
-        opacity: 0.6
-    },
-    invisible: {
-        opacity: 0
+        alignSelf: 'center'
     }
 });

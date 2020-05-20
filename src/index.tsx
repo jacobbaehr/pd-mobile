@@ -5,14 +5,12 @@ import { Provider } from 'react-redux';
 import { store } from '~/redux/AppState';
 import { App } from '~/App';
 
-class PoolDash extends React.Component<{}, {}> {
-    render() {
-        StatusBar.setBarStyle('default');
-        return (
-            <Provider store={ store }>
-                <App />
-            </Provider>
-        );
-    }
+const PoolDash: React.FunctionComponent<{}> = () => {
+    StatusBar.setBarStyle('dark-content');
+    return (
+        <Provider store={ store }>
+            <App />
+        </Provider>
+    );
 }
 AppRegistry.registerComponent('pooldash', () => PoolDash);

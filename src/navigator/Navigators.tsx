@@ -12,11 +12,12 @@ import { RecipeListScreen } from '~/screens/recipes/RecipeListScreen';
 import { ResultsScreen } from '~/screens/results/ResultsScreen';
 import { AuthenticationScreen } from '~/screens/AuthenticationScreen';
 import { CalculationSettingsScreen } from '~/screens/CalculationSettingsScreen';
-import { EditPoolScreen } from '~/screens/EditPoolScreen';
+import { EditPoolScreen } from '~/screens/editPool/EditPoolScreen';
 import { RegistrationVerificationScreen } from '~/screens/RegistrationVerificationScreen';
 import { User } from '~/models/User';
 import { ReadingEntry } from '~/models/logs/ReadingEntry';
 import { Reading } from '~/models/recipe/Reading';
+import { PickerScreen, PDPickerRouteProps } from '~/screens/picker/PickerScreen';
 
 export const navigationRef: React.RefObject<NavigationContainerRef> = React.createRef();
 const Stack = createStackNavigator<PDNavStackParamList>();
@@ -31,22 +32,37 @@ const PurchaseProStack = (): JSX.Element => {
     );
 };
 
+const MainStack = (): JSX.Element => {
+    return (
+        <Stack.Navigator headerMode={ 'none' } mode={ 'card' }>
+            <Stack.Screen name="PoolList" component={ PoolListScreen } />
+            <Stack.Screen name="CreatePool" component={ EditPoolScreen } />
+            <Stack.Screen name="PoolScreen" component={ PoolScreen } />
+            <Stack.Screen name="EditPool" component={ EditPoolScreen } />
+            <Stack.Screen name="ReadingList" component={ ReadingListScreen } />
+            <Stack.Screen name="ReadingDetails" component={ ReadingDetailsScreen } />
+            <Stack.Screen name="Results" component={ ResultsScreen } />
+            <Stack.Screen name="Settings" component={ CalculationSettingsScreen } />
+            <Stack.Screen name="RecipeList" component={ RecipeListScreen } />
+            <Stack.Screen name="PoolHistory" component={ PoolHistoryScreen } />
+            <Stack.Screen name="PurchasePro" component={ PurchaseProStack } />
+        </Stack.Navigator>
+    );
+}
+
+const ModalScreens = (): JSX.Element => {
+    return (
+        <Stack.Navigator headerMode={ 'none' } mode={ 'modal' }>
+            <Stack.Screen name="Main" component={ MainStack } />
+            <Stack.Screen name="PickerScreen" component={ PickerScreen } />
+        </Stack.Navigator>
+    );
+}
+
 export const PDNavStack = (): JSX.Element => {
     return (
         <NavigationContainer ref={ navigationRef }>
-            <Stack.Navigator headerMode={ 'none' } mode={ 'card' }>
-                <Stack.Screen name="PoolList" component={ PoolListScreen } />
-                <Stack.Screen name="CreatePool" component={ EditPoolScreen } />
-                <Stack.Screen name="PoolScreen" component={ PoolScreen } />
-                <Stack.Screen name="EditPool" component={ EditPoolScreen } />
-                <Stack.Screen name="ReadingList" component={ ReadingListScreen } />
-                <Stack.Screen name="ReadingDetails" component={ ReadingDetailsScreen } />
-                <Stack.Screen name="Results" component={ ResultsScreen } />
-                <Stack.Screen name="Settings" component={ CalculationSettingsScreen } />
-                <Stack.Screen name="RecipeList" component={ RecipeListScreen } />
-                <Stack.Screen name="PoolHistory" component={ PoolHistoryScreen } />
-                <Stack.Screen name="PurchasePro" component={ PurchaseProStack } />
-            </Stack.Navigator>
+            { ModalScreens() }
         </NavigationContainer>
     );
 };
@@ -67,4 +83,6 @@ export type PDNavStackParamList = {
     Authentication: { screenType: 'Login' | 'Register' };
     RegistrationVerification: { email: string, password: string };
     ConfirmPurchase: { user: User };
+    PickerScreen: PDPickerRouteProps;
+    Main: undefined;
 };

@@ -5,14 +5,20 @@ import { ReadingEntry } from '~/models/logs/ReadingEntry';
 import { TreatmentEntry } from '~/models/logs/TreatmentEntry';
 import { Pool } from '~/models/Pool';
 import { User } from '~/models/User';
+import { PickerState } from './picker/PickerState';
 
 import { hasValidSubscriptionReducer } from './hasValidSubscription/Reducer';
 import { outputsReducer } from './outputs/Reducer';
 import { poolsLastUpdatedReducer } from './poolsLastUpdated/Reducer';
 import { readingEntriesReducer } from './readingEntries/Reducer';
-import { recipeIdReducer } from './recipeId/Reducer';
+import { recipeKeyReducer } from './recipeKey/Reducer';
 import { selectedPoolReducer } from './selectedPool/Reducer';
+import { pickerStateReducer } from './picker/Reducer';
 import { userReducer } from './user/Reducer';
+import { DeviceSettings } from '~/models/DeviceSettings';
+import { DeviceSettingsService } from '~/services/DeviceSettingsService';
+import { deviceSettingsReducer } from './deviceSettings/Reducer';
+import { RecipeKey } from '~/models/recipe/RecipeKey';
 
 // Describes the shape of the application redux state.
 export interface AppState {
@@ -26,7 +32,7 @@ export interface AppState {
     selectedPool: Pool | null;
 
     // The currently selected recipe, if any
-    recipeId: string;
+    recipeKey: RecipeKey;
 
     // This increments whenever we update the list of pools
     poolsLastUpdated: number;
@@ -36,26 +42,36 @@ export interface AppState {
 
     // Whether or not the user has a valid subscription
     hasValidSubscription: boolean;
+
+    // The most recent value from any picker screen
+    pickerState: PickerState | null;
+
+    // The device settings:
+    deviceSettings: DeviceSettings;
 }
 
 const initialAppState: AppState = {
     readingEntries: [],
     outputs: [],
     selectedPool: null,
-    recipeId: '002_initial_big3',
+    recipeKey: '002_initial_big3|1234',
     poolsLastUpdated: 0,
     user: null,
     hasValidSubscription: false,
+    pickerState: null,
+    deviceSettings: DeviceSettingsService.getDefaultSettings()
 };
 
 const reducer = combineReducers({
     readingEntries: readingEntriesReducer,
     outputs: outputsReducer,
     selectedPool: selectedPoolReducer,
-    recipeId: recipeIdReducer,
+    recipeKey: recipeKeyReducer,
     poolsLastUpdated: poolsLastUpdatedReducer,
     user: userReducer,
     hasValidSubscription: hasValidSubscriptionReducer,
+    pickerState: pickerStateReducer,
+    deviceSettings: deviceSettingsReducer
 });
 
 // apply all middleware for application

@@ -23,7 +23,6 @@ export class Database {
         // } catch (e) {
         //     console.warn(e);
         // }
-
         await Realm.open(Migrator.getCurrentSchemaVersion())
             .then((value: Realm) => {
                 Database.realm = value;
@@ -36,11 +35,12 @@ export class Database {
             });
     };
 
-    static loadPools = (): Realm.Results<Pool> => {
+    static loadPools = (): Realm.Collection<Pool> => {
         if (Database.realm === undefined) {
             console.error('wait on realm to load');
         }
-        return Database.realm.objects<Pool>(Pool);
+        const results = Database.realm.objects<Pool>(Pool.schema.name);
+        return results;
     };
 
     // TODO: try/catch in case pool doesn't exist.
@@ -57,7 +57,7 @@ export class Database {
         try {
             realm.write(() => {
                 realm.create(Pool.schema.name, {
-                    volume: pool.volume,
+                    gallons: pool.gallons,
                     name: pool.name,
                     waterType: pool.waterType,
                     objectId: pool.objectId,
@@ -80,7 +80,7 @@ export class Database {
                     readingEntries: entry.readingEntries,
                     treatmentEntries: entry.treatmentEntries,
                     ts: entry.ts,
-                    recipeId: entry.recipeId,
+                    recipeKey: entry.recipeKey,
                 });
                 return Promise.resolve();
             });
@@ -96,12 +96,12 @@ export class Database {
         return realm.objects<LogEntry>(LogEntry).filtered(`poolId = "${poolId}"`);
     };
 
-    static deletePool = async (poolObj: Pool) => {
+    static deletePool = (pool: Pool) => {
         const realm = Database.realm;
-        console.log(poolObj, 'here');
         try {
+            // We have to delete the actual realm object
             realm.write(() => {
-                realm.delete(poolObj);
+                realm.delete(pool);
                 return Promise.resolve();
             });
             // realm.removeListener('change',Database.loadPools)
@@ -120,7 +120,7 @@ export class Database {
                     Pool.schema.name,
                     {
                         objectId: updatedPool.objectId,
-                        volume: updatedPool.volume,
+                        volume: updatedPool.gallons,
                         name: updatedPool.name,
                         waterType: updatedPool.waterType,
                     },

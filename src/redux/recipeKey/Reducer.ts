@@ -1,12 +1,13 @@
 import { AnyAction } from 'redux';
 
 import { SelectRecipeAction, SELECT_RECIPE } from './Actions';
+import { RecipeKey } from '~/models/recipe/RecipeKey';
 
-export const recipeIdReducer = (previousState: string | null = null, action: AnyAction): string | null => {
+export const recipeKeyReducer = (previousState: RecipeKey | null = null, action: AnyAction): RecipeKey | null => {
     switch (action.type) {
         case SELECT_RECIPE:
             const selectRecipeAction = action as SelectRecipeAction;
-            return selectRecipeAction.recipe.objectId;
+            return selectRecipeAction.key;
         default:
             return previousState;
     }

@@ -1,22 +1,23 @@
 import * as React from 'react';
-import { Dimensions, Image, ScrollView, SectionList, StyleSheet, View, SafeAreaView } from 'react-native';
+import { Image, SectionList, StyleSheet, View, SafeAreaView } from 'react-native';
+// @ts-ignore
+import TouchableScale from 'react-native-touchable-scale';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { PDNavStackParamList } from '~/navigator/Navigators';
 import { connect } from 'react-redux';
 
 import { images } from '~/assets/images';
-import { Button } from '~/components/buttons/Button';
-import { GradientButton } from '~/components/buttons/GradientButton';
 import { PDText } from '~/components/PDText';
 import { Pool } from '~/models/Pool';
 import { User } from '~/models/User';
 import { selectPool } from '~/redux/selectedPool/Actions';
 import { dispatch, AppState } from '~/redux/AppState';
-import { Database } from '~/repository/Database';
 
 import { PoolListFooter } from './PoolListFooter';
 import { PoolListItem } from './PoolListItem';
-import { RecipeRepository } from '~/repository/RecipeRepository';
+import { useRealmPoolsHook } from './hooks/RealmPoolHook';
+import { useNavigation } from '@react-navigation/native';
+import { createIconSetFromFontello } from 'react-native-vector-icons';
 
 interface PoolListScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'PoolList'>;
@@ -43,76 +44,72 @@ interface PoolListScreenState {
     initialLoadFinished: boolean;
 }
 
-class PoolListScreenComponent extends React.Component<PoolListScreenProps, PoolListScreenState> {
+const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (props) => {
 
-    pools!: Realm.Results<Pool>;
-    recipeRepo: RecipeRepository;
+    const pools = useRealmPoolsHook();
+    const { navigate } = useNavigation();
 
-    constructor(props: PoolListScreenProps) {
-        super(props);
-
-        this.state = {
-            initialLoadFinished: false
-        };
-
-        this.recipeRepo = new RecipeRepository();
+    const handlePoolSelected = async (pool: Pool): Promise<void> => {
+        console.log('selected: ', pool);
+        dispatch(selectPool(pool));
+        navigate('PoolScreen');
     }
 
-    async componentDidMount() {
-        // Fetch pools from persistent storage
-        Database.prepare().then(() => {
-            this.pools = Database.loadPools();
-            console.log(this.pools);
-            this.setState({
-                initialLoadFinished: true
-            });
-            // Don't await this, assume it finishes on time (TODO: add state to make sure)
-            this.recipeRepo.savePreloadedRecipes();
-        }).catch((e) => {
-            console.error(e);
-        });
+    const handleAddPoolPressed = async () => {
+        dispatch(selectPool(null));
+        navigate('CreatePool');
     }
 
-    handlePoolSelected = async (pool: Pool): Promise<void> => {
-        await dispatch(selectPool(pool));
-        this.props.navigation.navigate('PoolScreen');
-    }
-
-    handleAddPoolPressed = async () => {
-        await dispatch(selectPool(null));
-        this.props.navigation.navigate('CreatePool');
-    }
-
-    render() {
-        const pools = (this.pools === undefined) ? [] : this.pools.map(p => p);
-        const isEmpty = pools.length === 0;
-        return (
-            <SafeAreaView style={ { flex: 1, backgroundColor: '#F8F8F8' } } >
-                <ScrollView style={ { flex: 1 } }>
-                    <View style={ styles.container }>
-                        <View>
-                            <PDText style={ [styles.title, styles.titleTop] }>My</PDText>
-                            <PDText style={ [styles.title, styles.titleBottom] }>Pools</PDText>
-                        </View>
-                        <SectionList
-                            style={ { flex: 1 } }
-                            renderItem={ ({ item }) => <PoolListItem
-                                pool={ item }
-                                onPoolSelected={ () => this.handlePoolSelected(item) } /> }
-                            renderSectionHeader={ ({ section }) => null }
-                            sections={ [
-                                { data: pools, title: 'Pools' }
-                            ] }
-                            renderSectionFooter={ ({ section }) => <PoolListFooter
-                                isEmpty={ isEmpty }
-                                handlePress={ this.handleAddPoolPressed } /> }
-                            keyExtractor={ item => (item as Pool).objectId }
-                            overScrollMode={ 'always' } />
+    const isEmpty = pools.length === 0;
+    return (
+        <SafeAreaView style={ { flex: 1, backgroundColor: '#FFFFFF' } } >
+            <View style={ styles.container }>
+                <View style={ styles.header }>
+                    <View style={ styles.headerLeft }>
+                        <TouchableScale
+                            style={ styles.accountButton }
+                            underlayColor={ 'transparent' }
+                            activeScale={ 0.97 }
+                            onPress={ handleAddPoolPressed }>
+                            <Image
+                                style={ styles.accountButtonImage }
+                                source={ images.accountButton }
+                                width={ 38 }
+                                height={ 38 } />
+                        </TouchableScale>
+                        <PDText style={ styles.title }>My Pools</PDText>
                     </View>
-                </ScrollView>
-            </SafeAreaView>
-        );
-    }
+                    <View style={ styles.headerRight }>
+                        <TouchableScale
+                            style={ styles.plusButton }
+                            underlayColor={ 'transparent' }
+                            activeScale={ 0.97 }
+                            onPress={ handleAddPoolPressed }>
+                            <Image
+                                style={ styles.plusButtonImage }
+                                source={ images.plusButton }
+                                width={ 38 }
+                                height={ 38 } />
+                        </TouchableScale>
+                    </View>
+                </View>
+                <SectionList
+                    style={ styles.sectionList }
+                    renderItem={ ({ item }) => <PoolListItem
+                        pool={ item }
+                        onPoolSelected={ handlePoolSelected } /> }
+                    renderSectionHeader={ () => null }
+                    sections={ [
+                        { data: pools, title: 'Pools' }
+                    ] }
+                    renderSectionFooter={ () => <PoolListFooter
+                        isEmpty={ isEmpty }
+                        handlePress={ handleAddPoolPressed } /> }
+                    keyExtractor={ item => (item as Pool).objectId }
+                    overScrollMode={ 'always' } />
+            </View>
+        </SafeAreaView>
+    );
 }
 
 export const PoolListScreen = connect(mapStateToProps)(PoolListScreenComponent);
@@ -123,21 +120,46 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         backgroundColor: 'transparent'
     },
+    header: {
+        display: 'flex',
+        flexDirection: 'row',
+        backgroundColor: 'white'
+    },
+    headerLeft: {
+        display: 'flex',
+        flexDirection: 'row',
+        flex: 1
+    },
+    headerRight: {
+        display: 'flex',
+        flexDirection: 'column'
+    },
     editStyle: {
         margin: 5,
         marginRight: 10,
     },
     title: {
-        marginLeft: 12,
+        color: '#1E6BFF',
+        // marginLeft: 12,
+        marginTop: 18,
         fontSize: 28,
         fontWeight: 'bold'
     },
-    titleBottom: {
-        color: '#1E6BFF',
-        marginBottom: 12
+    accountButton: {
+
     },
-    titleTop: {
-        color: '#000',
-        marginBottom: -3
+    accountButtonImage: {
+        margin: 18,
+        marginRight: 12
+    },
+    plusButton: {
+    },
+    plusButtonImage: {
+        margin: 18
+    },
+    sectionList: {
+        flex: 1,
+        paddingTop: 20,
+        backgroundColor: '#F5F5F5'
     }
 });

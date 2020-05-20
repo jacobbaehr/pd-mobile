@@ -13,14 +13,15 @@ import { Database } from '~/repository/Database';
 import { CalculationService } from '~/services/CalculationService';
 import { GradientButton } from '~/components/buttons/GradientButton';
 import { LogEntry } from '~/models/logs/LogEntry';
-import { RecipeRepository } from '~/repository/RecipeRepository';
+import { RecipeRepo } from '~/repository/RecipeRepo';
+import { RecipeKey } from '~/models/recipe/RecipeKey';
 
 interface ResultsScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'Results'>;
 
     readings: ReadingEntry[];
 
-    recipeId: string;
+    recipeKey: RecipeKey;
 
     pool: Pool;
 }
@@ -35,7 +36,7 @@ const mapStateToProps = (state: AppState, ownProps: ResultsScreenProps): Results
     return {
         navigation: ownProps.navigation,
         readings: state.readingEntries,
-        recipeId: state.recipeId!,
+        recipeKey: state.recipeKey!,
         pool: state.selectedPool!
     };
 };
@@ -43,18 +44,16 @@ const mapStateToProps = (state: AppState, ownProps: ResultsScreenProps): Results
 class ResultsScreenComponent extends React.Component<ResultsScreenProps, ResultsScreenState> {
 
     recipe?: Recipe;
-    recipeRepo: RecipeRepository;
 
     constructor(props: ResultsScreenProps) {
         super(props);
 
-        this.recipeRepo = new RecipeRepository();
         console.log('1');
         this.state = { treatmentEntries: [] };
     }
 
     async componentDidMount() {
-        this.recipe = await this.recipeRepo.loadLocalRecipeWithId(this.props.recipeId);
+        this.recipe = await RecipeRepo.loadLocalRecipeWithKey(this.props.recipeKey);
         const treatmentEntries = CalculationService.calculateTreatments(this.recipe, this.props.pool, this.props.readings);
         console.log('2');
         this.setState({
@@ -66,7 +65,7 @@ class ResultsScreenComponent extends React.Component<ResultsScreenProps, Results
     save = async () => {
         const id = Math.random().toString(36).slice(2);
         const ts = new Date().getTime();
-        const logEntry = LogEntry.make(id, this.props.pool.objectId, ts, this.props.readings, this.state.treatmentEntries, this.props.recipeId);
+        const logEntry = LogEntry.make(id, this.props.pool.objectId, ts, this.props.readings, this.state.treatmentEntries, this.props.recipeKey);
         console.log(logEntry);
         await Database.saveNewLogEntry(logEntry);
 

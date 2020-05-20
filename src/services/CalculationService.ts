@@ -8,7 +8,7 @@ import { Database } from '../repository/Database';
 
 export class CalculationService {
     static calculateTreatments = (recipe: Recipe, pool: Pool, recordedInputs: ReadingEntry[]): TreatmentEntry[] => {
-        
+
         // const freeChlorineReading = readings.filter(r => r.identifier === 'free_chlorine');
         // const free_chlorine = freeChlorineReading[0].value;
         // const chlorineAmount = eval(chlorineFormula);
@@ -29,13 +29,13 @@ export class CalculationService {
             }
             return record.value;
         });
-        inputValues.splice(0, 0, pool.volume);
+        inputValues.splice(0, 0, pool.gallons);
         const inputString = inputValues.join(', ');
 
         console.log(paramString);
         console.log(inputString);
 
-        let outputs = recipe.treatments.map( treatment => {
+        let outputs = recipe.treatments.map(treatment => {
             const formula = 'function x(' + paramString + ') { ' + treatment.formula + ' } x(' + inputString + ');';
             const value = eval(formula);
             console.log('formula: ' + formula);
@@ -53,13 +53,13 @@ const calculateValueForOutput = (
     inputs: Reading[],
     inputEntries: ReadingEntry[]): number => {
 
-        const formula = treatment.formula;
-        // TODO: finish this, my brain === mush
-        const params = inputs.map(r => {
-            if (inputEntries.filter(e => e.readingId === r.objectId).length > 0) {
-                return ''
-            }
-        });
+    const formula = treatment.formula;
+    // TODO: finish this, my brain === mush
+    const params = inputs.map(r => {
+        if (inputEntries.filter(e => e.readingId === r.objectId).length > 0) {
+            return ''
+        }
+    });
 
-        return 0;
+    return 0;
 };

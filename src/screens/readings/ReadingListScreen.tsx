@@ -9,12 +9,13 @@ import { AppState } from '~/redux/AppState';
 import { Reading } from '~/models/recipe/Reading';
 import { Recipe } from '~/models/recipe/Recipe';
 import { ReadingEntry } from '~/models/logs/ReadingEntry';
-import { RecipeRepository } from '~/repository/RecipeRepository';
+import { RecipeRepo } from '~/repository/RecipeRepo';
 import { Pool } from '~/models/Pool';
 
 import { ReadingListItem } from './ReadingListItem';
 import { ReadingListSectionHeader } from './ReadingListSectionHeader';
 import { ReadingListHeader } from './ReadingListHeader';
+import { RecipeKey } from '~/models/recipe/RecipeKey';
 
 interface ReadingListScreenState {
     activeReadingId?: string;
@@ -24,7 +25,7 @@ interface ReadingListScreenState {
 interface ReadingListScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'ReadingList'>;
     entries: ReadingEntry[];
-    recipeId: string;
+    recipeKey: RecipeKey;
     pool: Pool;
 }
 
@@ -32,26 +33,23 @@ const mapStateToProps = (state: AppState, ownProps: ReadingListScreenProps): Rea
     return {
         navigation: ownProps.navigation,
         entries: state.readingEntries,
-        recipeId: state.recipeId!,
+        recipeKey: state.recipeKey!,
         pool: state.selectedPool!
     };
 };
 
 class ReadingListScreenComponent extends React.Component<ReadingListScreenProps, ReadingListScreenState> {
 
-    recipeRepo: RecipeRepository;
-
     constructor(props: ReadingListScreenProps) {
         super(props);
         this.state = {
             activeReadingId: undefined
         };
-        this.recipeRepo = new RecipeRepository();
     }
 
     async componentDidMount() {
         try {
-            const recipe = await this.recipeRepo.loadLocalRecipeWithId(this.props.recipeId);
+            const recipe = await RecipeRepo.loadLocalRecipeWithKey(this.props.recipeKey);
             this.setState({ recipe });
         } catch (e) {
             console.error(e);

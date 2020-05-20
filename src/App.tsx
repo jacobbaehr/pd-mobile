@@ -2,19 +2,29 @@ import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
 
 import { PDNavStack } from '~/navigator/Navigators';
+import { Database } from './repository/Database';
+import { RecipeRepo } from './repository/RecipeRepo';
 
 export interface AppProps extends DispatchProp<any> { }
 
-export class AppComponent extends React.PureComponent<AppProps, {}> {
-    /** */
+export const AppComponent: React.FunctionComponent<AppProps> = () => {
 
-    constructor(props: AppProps) {
-        super(props);
-    }
+    const [isDatabaseLoaded, setIsDatabaseLoaded] = React.useState(false);
+    const [areRecipesPreloaded, setAreRecipesPreloaded] = React.useState(false);
+    React.useEffect(() => {
+        Database.prepare().finally(() => {
+            setIsDatabaseLoaded(true);
+        });
+    }, []);
+    React.useEffect(() => {
+        RecipeRepo.savePreloadedRecipes().finally(() => {
+            setAreRecipesPreloaded(true);
+        });
+    }, [])
 
-    render() {
-        return <PDNavStack />;
-    }
+    return (isDatabaseLoaded && areRecipesPreloaded)
+        ? <PDNavStack />
+        : <></>;
 }
 
 export const App = connect()(AppComponent);

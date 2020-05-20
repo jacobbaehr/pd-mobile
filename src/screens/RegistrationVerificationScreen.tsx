@@ -121,7 +121,7 @@ class RegistrationVerificationComponent extends
                                 <View style={ styles.navButtonContainer }>
                                     <BackButton
                                         title={ '' }
-                                        imageSource={ images.backWhite }
+
                                         onPress={ this.handleBackPressed } />
                                     <DismissStackButton handleBackPressed={ this.handleDismissPressed } />
                                 </View>

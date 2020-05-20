@@ -1,5 +1,6 @@
 import { ReadingEntry } from './ReadingEntry';
 import { TreatmentEntry } from './TreatmentEntry';
+import { RecipeKey } from '../recipe/RecipeKey';
 
 /**
  * Represents readingEntries and treatmentEntries for a given pool
@@ -21,7 +22,7 @@ export class LogEntry {
     treatmentEntries!: TreatmentEntry[];
 
     // The unique id of the recipe
-    recipeId!: string;
+    recipeKey!: RecipeKey;
 
     // For Realm purposes
     static schema = {
@@ -43,7 +44,7 @@ export class LogEntry {
         ts: number,
         readingEntries: ReadingEntry[],
         treatmentEntries: TreatmentEntry[],
-        recipeId: string,
+        recipeKey: RecipeKey,
     ): LogEntry {
         let logEntry = new LogEntry();
         logEntry.objectId = objectId;
@@ -51,7 +52,7 @@ export class LogEntry {
         logEntry.ts = ts;
         logEntry.readingEntries = readingEntries;
         logEntry.treatmentEntries = treatmentEntries;
-        logEntry.recipeId = recipeId;
+        logEntry.recipeKey = recipeKey;
         return logEntry;
     }
 }

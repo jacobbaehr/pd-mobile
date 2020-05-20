@@ -5,9 +5,7 @@ import TouchableScale from 'react-native-touchable-scale';
 
 import { Pool } from '~/models/Pool';
 import { PDText } from '~/components/PDText';
-import { images } from '~/assets/images';
-
-import { PoolBackgroundView } from '../pool/PoolBackgroundView';
+import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 
 interface PoolListItemProps {
     pool: Pool;
@@ -29,16 +27,9 @@ export class PoolListItem extends React.Component<PoolListItemProps, {}> {
                 onPress={ this.handleButtonPressed }
                 underlayColor={ 'transparent' }
                 activeScale={ 0.99 }>
-                <View style={ styles.content }>
-                    <PoolBackgroundView style={ styles.background } pool={ pool }></PoolBackgroundView>
-                    <PDText style={ styles.poolNameText } shared={ `pool_name_${pool.objectId}` }>{ pool.name }</PDText>
-                    <PDText style={ styles.poolVolumeText } shared={ `pool_volume_${pool.objectId}` }>{ pool.volume } gallons</PDText>
-                    <Image
-                        style={ styles.star }
-                        source={ images.star }
-                        width={ 17 }
-                        height={ 16 } />
-                </View>
+
+                <PDText style={ styles.poolNameText } >{ pool.name }</PDText>
+                <PDText style={ styles.poolVolumeText } >{ `${getDisplayForWaterType(pool.waterType)} | ${pool.gallons}` } gallons</PDText>
             </TouchableScale>
         );
     }
@@ -47,46 +38,27 @@ export class PoolListItem extends React.Component<PoolListItemProps, {}> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        height: 190,
+        borderRadius: 24,
         marginHorizontal: 12,
-        backgroundColor: 'transparent',
-        marginBottom: 10
-    },
-    content: {
-        flex: 1,
-        borderRadius: 12,
-        padding: 2,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.3,
-        shadowRadius: 10,
-        elevation: 2
-    },
-    background: {
-        flex: 1,
-        borderRadius: 12
+        backgroundColor: 'white',
+        paddingBottom: 0
     },
     poolNameText: {
-        color: 'white',
-        fontSize: 28,
-        position: 'absolute',
-        bottom: 32,
-        left: 12,
-        right: 12,
-        fontWeight: '600'
+        color: 'black',
+        fontSize: 22,
+        marginTop: 12,
+        marginLeft: 24,
+        marginRight: 12,
+        fontWeight: '700'
     },
     poolVolumeText: {
-        color: 'white',
+        color: 'black',
         fontSize: 16,
-        position: 'absolute',
-        bottom: 12,
-        left: 12,
-        right: 12,
-        fontWeight: '500'
-    },
-    star: {
-        position: 'absolute',
-        top: 10,
-        right: 10
+        // marginTop: 10,
+        marginLeft: 24,
+        marginRight: 12,
+        marginBottom: 12,
+        fontWeight: '600',
+        opacity: 0.6
     }
 });
