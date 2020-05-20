@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Alert, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
-import Config from 'react-native-config';
 import LinearGradient from 'react-native-linear-gradient';
 import Purchases from 'react-native-purchases';
 import { connect, DispatchProp } from 'react-redux';
