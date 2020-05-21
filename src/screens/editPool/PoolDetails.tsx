@@ -10,16 +10,18 @@ import { TextInputWithTitle } from '~/components/TextInputWithTitle';
 import { ChoosyButton } from '~/components/buttons/ChoosyButton';
 import { WaterTypeValue, getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { CycleButton } from '~/components/buttons/CycleButton';
+import { getDisplayForVolumeValue, VolumeUnits } from '~/models/Pool/VolumeUnits';
 
 interface PoolDetailProps {
-    header: string;
     name: string;
     type: WaterTypeValue;
+    volumeUnits: VolumeUnits;
     volumeText: string;
     originalPoolName: string;
     updateVolume: (text: string) => void;
     updateName: (text: string) => void;
     pressedTypeButton: () => void;
+    pressedUnitsButton: () => void;
     goBack(): void;
     rightButtonAction: (() => Promise<void>) | null;
     handleSavePoolPressed: () => void;
@@ -27,19 +29,17 @@ interface PoolDetailProps {
 
 export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => {
 
-    const { header, originalPoolName, goBack, rightButtonAction } = props;
+    const { originalPoolName, goBack, rightButtonAction } = props;
     const waterTypeDisplay = getDisplayForWaterType(props.type);
+    const volumeUnitsDisplay = getDisplayForVolumeValue(props.volumeUnits);
     return (
         <SafeAreaView style={ styles.safeArea }>
+            <EditListHeader
+                handleBackPress={ () => goBack() }
+                buttonText={ originalPoolName }
+                rightButtonAction={ rightButtonAction } />
             <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
                 <View>
-                    <EditListHeader
-                        handleBackPress={ () => goBack() }
-                        header={ header }
-                        buttonText={ originalPoolName }
-                        rightButtonAction={ rightButtonAction } />
-                    <PDText style={ styles.sectionHeader }>Basic Information</PDText>
-
                     <View style={ styles.listContainer }>
                         <TextInputWithTitle
                             titleText='Name'
@@ -53,19 +53,9 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
                             autoFocus={ true }
                         />
                     </View>
-                    <View style={ [styles.listContainer, styles.typeContainer] }>
-                        <PDText style={ styles.waterTypeLabel }>Water Type</PDText>
-                        <ChoosyButton
-                            title={ waterTypeDisplay || '' }
-                            onPress={ props.pressedTypeButton }
-                            styles={ styles.typeButton }
-                            textStyles={ styles.typeButtonText }
-                        />
-                    </View>
-                    <View style={ styles.listContainer }>
+                    <View style={ [styles.listContainer, styles.volumeContainer] }>
                         <TextInputWithTitle
                             titleText='Volume'
-                            subtitleText='(Gallons)'
                             onTextChanged={ (s) => props.updateVolume(s) }
                             titleTextStyles={ styles.poolNameLabel }
                             subtitleTextStyles={ styles.poolNameSubLabel }
@@ -74,8 +64,20 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
                             autoCorrect={ false }
                             keyboardType='numeric'
                             value={ props.volumeText }
+                            containerStyles={ styles.volumeTextContainer }
                         />
-                        <CycleButton
+                        <View style={ styles.volumeUnitsButtonWrapper }>
+                            <CycleButton
+                                title={ volumeUnitsDisplay || '' }
+                                onPress={ props.pressedUnitsButton }
+                                styles={ styles.volumeUnitsButton }
+                                textStyles={ styles.typeButtonText }
+                            />
+                        </View>
+                    </View>
+                    <View style={ [styles.listContainer, styles.typeContainer] }>
+                        <PDText style={ styles.waterTypeLabel }>Water Type</PDText>
+                        <ChoosyButton
                             title={ waterTypeDisplay || '' }
                             onPress={ props.pressedTypeButton }
                             styles={ styles.typeButton }
@@ -106,6 +108,21 @@ const styles = StyleSheet.create({
     listContainer: {
         marginTop: 10,
         marginHorizontal: 20
+    },
+    volumeContainer: {
+        display: 'flex',
+        flexDirection: 'row'
+    },
+    volumeTextContainer: {
+        flex: 1
+    },
+    volumeUnitsButtonWrapper: {
+        flex: 1
+    },
+    volumeUnitsButton: {
+        alignSelf: 'flex-start',
+        marginTop: 30,
+        marginLeft: 15
     },
     poolNameLabel: {
         justifyContent: 'center',
@@ -138,12 +155,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#005C9E',
         height: 45,
         margin: 15
-    },
-    sectionHeader: {
-        marginTop: 20,
-        marginHorizontal: 15,
-        fontWeight: '700',
-        fontSize: 28
     },
     startServiceButton: {
         height: 67,

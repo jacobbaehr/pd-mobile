@@ -10,7 +10,6 @@ interface EditListHeaderProps {
     handleBackPress: () => void;
     buttonText: string;
     rightButtonAction: (() => Promise<void>) | null;
-    header: string;
 }
 
 export class EditListHeader extends React.Component<EditListHeaderProps, {}> {
@@ -23,16 +22,13 @@ export class EditListHeader extends React.Component<EditListHeaderProps, {}> {
                 <View style={ styles.options }>
                     <View style={ { width: '50%' } }>
                         <BackButton
-                            title={ this.props.buttonText ? this.props.buttonText : 'Back' }
+                            title={ this.props.buttonText ? this.props.buttonText : 'Create' }
                             onPress={ this.props.handleBackPress }
                             scale={ { scale: true, scaleLines: 2 } }
                         />
                     </View>
                     { rightButton }
                 </View>
-                <PDText style={ styles.headerText } >
-                    { this.props.header }
-                </PDText>
             </View>
         );
     }
@@ -42,7 +38,10 @@ const gradientColors: Color[] = ['#FCCB90', '#D57EEB'];
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 15
+        marginHorizontal: 15,
+        display: 'flex',
+        flexDirection: 'row',
+        paddingBottom: 20
     },
     options: {
         display: 'flex',
@@ -71,11 +70,5 @@ const styles = StyleSheet.create({
         fontFamily: 'Avenir Next',
         fontSize: 13.2,
         fontWeight: '600',
-    },
-    headerText: {
-        marginTop: 5,
-        fontSize: 28,
-        fontWeight: '700',
-        color: '#1E6BFF'
     }
 });

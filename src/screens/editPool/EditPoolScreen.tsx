@@ -15,18 +15,23 @@ import { PDPickerRouteProps } from '../picker/PickerScreen';
 import { PickerState } from '~/redux/picker/PickerState';
 import { updatePickerState } from '~/redux/picker/Actions';
 import { WaterTypeValue, waterTypeOptions } from '~/models/Pool/WaterType';
+import { DeviceSettings } from '~/models/DeviceSettings';
+import { DeviceSettingsService } from '~/services/DeviceSettingsService';
+import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
 
 interface EditPoolScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'EditPool'>;
     selectedPool: Pool | null;
     pickerState: PickerState | null;
+    deviceSettings: DeviceSettings;
 }
 
 const mapStateToProps = (state: AppState, ownProps: EditPoolScreenProps): EditPoolScreenProps => {
     return {
         navigation: ownProps.navigation,
         selectedPool: state.selectedPool,
-        pickerState: state.pickerState
+        pickerState: state.pickerState,
+        deviceSettings: state.deviceSettings
     };
 };
 
@@ -37,9 +42,8 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
     const [name, updateName] = React.useState(pool?.name || '');
     const [type, updateType] = React.useState(pool?.waterType || 'salt_water');
     const [volumeText, updateVolumeText] = React.useState(`${pool?.gallons || ''}`);
-    // TODO: metric switch
 
-    // Only do this on first load?
+    // This happens on every render... whatever.
     React.useEffect(() => {
         const { pickerState } = props;
         if (pickerState && pickerState.key === 'water_type' && pickerState.value !== null) {
@@ -92,18 +96,39 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
         navigate('PickerScreen', pickerProps);
     }
 
+    const handlePressedUnitsButton = () => {
+        // Switch the units around
+        let deviceUnits = props.deviceSettings.units;
+        if (deviceUnits === 'metric') {
+            deviceUnits = 'us';
+        } else {
+            deviceUnits = 'metric';
+        }
+
+        // Save it & tell everybody to update accordingly
+        const newSettings = {
+            ...props.deviceSettings,
+            units: deviceUnits
+        };
+        DeviceSettingsService.saveSettings(newSettings);
+        dispatch(updateDeviceSettings(newSettings));
+    }
+
     const deleteButtonAction = pool ? handleDeletePoolPressed : null;
+    const volumeUnits = (props.deviceSettings.units === 'us') ? 'gallons' : 'liters';
+
     return (
         <PoolDetails
-            header={ pool ? 'Edit' : 'Create' }
             originalPoolName={ originalSelectedPoolName ?? '' }
             name={ name }
             volumeText={ volumeText }
+            volumeUnits={ volumeUnits }
             type={ type }
             goBack={ goBack }
             updateVolume={ updateVolumeText }
             updateName={ updateName }
             pressedTypeButton={ handlePressedTypeButton }
+            pressedUnitsButton={ handlePressedUnitsButton }
             rightButtonAction={ deleteButtonAction }
             handleSavePoolPressed={ handleSaveButtonPressed } />
     );

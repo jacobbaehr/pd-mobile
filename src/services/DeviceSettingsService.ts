@@ -1,4 +1,4 @@
-import { AsyncStorage } from "react-native"
+import AsyncStorage from "@react-native-community/async-storage";
 import { DeviceSettings } from "~/models/DeviceSettings";
 
 const DEVICE_SETTINGS_KEY = 'pd_device_settings_0';
@@ -22,7 +22,7 @@ export class DeviceSettingsService {
     }
 
     static saveSettings = async (settings: DeviceSettings): Promise<void> => {
-        const asString = await JSON.stringify(settings);
+        const asString = JSON.stringify(settings);
         await AsyncStorage.setItem(DEVICE_SETTINGS_KEY, asString);
     }
 }

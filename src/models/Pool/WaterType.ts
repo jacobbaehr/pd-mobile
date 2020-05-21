@@ -1,11 +1,9 @@
+import { DisplayValueOption } from '../Util';
+
 export type WaterTypeValue = 'chlorine' | 'salt_water' | 'bromine' | 'copper' | 'ozone';
 
-interface WaterTypeOption {
-    display: string;
-    value: WaterTypeValue;
-}
 
-export const waterTypeOptions: WaterTypeOption[] = [
+export const waterTypeOptions: DisplayValueOption<WaterTypeValue>[] = [
     {
         display: 'Chlorine',
         value: 'chlorine'
@@ -28,7 +26,7 @@ export const waterTypeOptions: WaterTypeOption[] = [
     }
 ];
 
-export const getDisplayForWaterType = (value: string): string | null => {
+export const getDisplayForWaterType = (value: WaterTypeValue): string | null => {
     for (let i = 0; i < waterTypeOptions.length; i++) {
         if (waterTypeOptions[i].value === value) {
             return waterTypeOptions[i].display;

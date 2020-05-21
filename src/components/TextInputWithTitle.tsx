@@ -26,25 +26,25 @@ export class TextInputWithTitle extends React.Component<TextInputWithTitleProps>
     render() {
         const props = this.props;
         return (
-            <View style={styles.container}>
-                <View style={styles.titleContainer}>
-                    <Text style={[styles.titleText, props.titleTextStyles]}>{props.titleText}</Text>
-                    <Text style={[styles.subtitleText, props.subtitleTextStyles]}>{props.subtitleText}</Text>
+            <View style={ [styles.container, props.containerStyles] }>
+                <View style={ styles.titleContainer }>
+                    <Text style={ [styles.titleText, props.titleTextStyles] }>{ props.titleText }</Text>
+                    <Text style={ [styles.subtitleText, props.subtitleTextStyles] }>{ props.subtitleText }</Text>
                 </View>
                 <TextInput
-                    keyboardType={props.keyboardType}
-                    autoCorrect={props.autoCorrect}
-                    autoCapitalize={props.autoCapitalize}
-                    secureTextEntry={props.secureTextEntry}
-                    placeholder={props.placeholderText}
-                    onChangeText={props.onTextChanged}
-                    style={[styles.input, props.inputStyles]}
-                    returnKeyType={props.returnKeyType}
-                    onSubmitEditing={props.onSubmitEditing} 
-                    ref={props.poorlyImplementedRefForwardingProp}
-                    autoFocus={props.autoFocus}
-                    value={props.value}
-                    />
+                    keyboardType={ props.keyboardType }
+                    autoCorrect={ props.autoCorrect }
+                    autoCapitalize={ props.autoCapitalize }
+                    secureTextEntry={ props.secureTextEntry }
+                    placeholder={ props.placeholderText }
+                    onChangeText={ props.onTextChanged }
+                    style={ [styles.input, props.inputStyles] }
+                    returnKeyType={ props.returnKeyType }
+                    onSubmitEditing={ props.onSubmitEditing }
+                    ref={ props.poorlyImplementedRefForwardingProp }
+                    autoFocus={ props.autoFocus }
+                    value={ props.value }
+                />
             </View>
         );
     }
