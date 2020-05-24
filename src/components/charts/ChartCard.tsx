@@ -64,7 +64,7 @@ export class ChartCard extends React.PureComponent<ChartCardProps> {
             <View style={ [styles.container, this.props.containerStyles] }>
                 <Text style={ styles.title }>{ this.props.viewModel.title }</Text>
                 <View style={ styles.chartContainer } >
-                    <View style={ styles.chartWebViewContainer }>
+                    <View style={ styles.chartWebViewContainer } pointerEvents={ this.props.viewModel.interactive ? 'auto' : 'none' }>
                         <WebView
                             ref={ (ref) => { this.webView = ref; } }
                             onLoadEnd={ this.onChartsLoaded }

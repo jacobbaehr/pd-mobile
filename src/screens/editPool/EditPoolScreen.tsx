@@ -18,6 +18,7 @@ import { WaterTypeValue, waterTypeOptions } from '~/models/Pool/WaterType';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
+import { Util } from '~/services/Util';
 
 interface EditPoolScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'EditPool'>;
@@ -65,17 +66,28 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
     }
 
     const handleSaveButtonPressed = () => {
+        let volume = Number(volumeText);
+        // Validate or bail
+        if (volume <= 0 || name.length === 0) {
+            return;
+        }
+
+        // Always save gallons, so convert from liters if necessary
+        let gallons = volume;
+        if (props.deviceSettings.units === 'metric') {
+            gallons = Util.litersToGallons(volume);
+        }
         if (pool) {
             const updatedPool = { ...pool };
             // TODO: worry about gallons vs liters
-            updatedPool.gallons = Number(volumeText);
+            updatedPool.gallons = gallons;
             updatedPool.name = name;
             updatedPool.waterType = type;
             dispatch(updatePool(updatedPool));
         }
         else {
             const newPool = new Pool();
-            newPool.gallons = Number(volumeText);
+            newPool.gallons = gallons;
             newPool.name = name;
             newPool.waterType = type;
             dispatch(saveNewPool(newPool));
@@ -91,7 +103,8 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
             title: 'Water Type',
             subtitle: '',
             items: waterTypeOptions.map((wt) => ({ name: wt.display, value: wt.value })),
-            pickerKey: 'water_type'
+            pickerKey: 'water_type',
+            prevSelection: type
         };
         navigate('PickerScreen', pickerProps);
     }

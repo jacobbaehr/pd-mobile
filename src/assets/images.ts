@@ -15,5 +15,6 @@ export const images = {
     backWhite: require('./images/back_white.png'),
     closeIcon: require('./images/close_icon.png'),
     plusButton: require('./images/plus.png'),
-    accountButton: require('./images/account_button.png')
+    accountButton: require('./images/account_button.png'),
+    logoGreenPlus: require('./images/logo_plus_green.png')
 };

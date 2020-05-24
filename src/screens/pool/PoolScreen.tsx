@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Alert, Image, ScrollView, StyleSheet, Text, TouchableHighlight, View, SafeAreaView } from 'react-native';
+import { Alert, Image, ScrollView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 
@@ -13,8 +13,11 @@ import { PDText } from '~/components/PDText';
 import { Pool } from '~/models/Pool';
 import { User } from '~/models/User';
 import { AppState } from '~/redux/AppState';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import { PoolHeaderView } from './PoolHeaderView';
+import { BoringButton } from '~/components/buttons/BoringButton';
+import { ChoosyButton } from '~/components/buttons/ChoosyButton';
 
 interface PoolListScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'PoolScreen'>;
@@ -86,64 +89,48 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
             values,
             title: 'Chlorine',
             masterId: 'a9sd8f093',
+            interactive: false
         };
 
         return (
-            <SafeAreaView style={{ flex: 1, backgroundColor: '#2091F9' }}>
-                <ScrollView scrollEventThrottle={2} style={styles.scrollView}>
-                    <PoolHeaderView
-                        pool={this.props.selectedPool}
-                        style={styles.header}
-                        handlePressedEdit={this.handleEditButtonPressed}
-                        handlePressedBack={this.handleBackPressed}
-                    />
-                    <View style={styles.container}>
-                        <PDText style={[styles.sectionTitle, styles.topSectionTitle]}>Service</PDText>
-                        <View>
-                            <GradientButton onPress={this.handleStartServicePressed} title={'Start Service'} />
-                            <PDText style={styles.lastServiceLabel}>Last Serviced: 20 days ago</PDText>
-                        </View>
-                        <PDText style={styles.sectionTitle}>Recipe</PDText>
-                        <View>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Image
-                                    style={styles.overviewHistoryIcon}
-                                    source={images.history}
-                                    width={20}
-                                    height={18}
+            <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } } forceInset={ { bottom: 'never' } } >
+                <PoolHeaderView
+                    pool={ this.props.selectedPool }
+                    handlePressedEdit={ this.handleEditButtonPressed }
+                    handlePressedBack={ this.handleBackPressed }
+                />
+                <ScrollView style={ styles.scrollView }>
+                    <View style={ styles.container }>
+                        <PDText style={ [styles.sectionTitle, styles.topSectionTitle] }>Recipe</PDText>
+                        <View style={ styles.recipeSection }>
+                            <View style={ { flexDirection: 'row' } }>
+                                <ChoosyButton
+                                    title={ 'Big 3 + Salt' }
+                                    onPress={ this.handleChangeRecipeButtonPressed }
+                                    styles={ styles.recipeButton }
+                                    textStyles={ styles.recipeButtonText }
                                 />
-                                <PDText style={styles.recipeName}>Big 3 + Salt</PDText>
                             </View>
-                            <Button
-                                styles={styles.recipeChangeButton}
-                                textStyles={styles.recipeChangeButtonText}
-                                title={'change'}
-                                onPress={this.handleChangeRecipeButtonPressed}
-                            />
+                            <BoringButton onPress={ this.handleStartServicePressed } title={ 'Start Service' } containerStyles={ styles.startButton } />
+                            <PDText style={ styles.lastServiceLabel }>Last Serviced: 20 days ago</PDText>
                         </View>
-                        <View style={{ flex: 1 }}>
-                            <PDText style={styles.sectionTitle}>History</PDText>
-                            <ChartCard viewModel={vm}>
-                                <TouchableHighlight
-                                    onPress={this.handleViewHistoryPressed}
-                                    style={styles.historyButton}>
-                                    <Text style={styles.viewMoreHistoryText}>View More</Text>
-                                </TouchableHighlight>
-                            </ChartCard>
+                        <View style={ { flex: 1 } }>
+                            <PDText style={ styles.sectionTitle }>Trends</PDText>
+                            <ChartCard viewModel={ vm } containerStyles={ styles.chartCard } />
                         </View>
-                        <View style={{ flex: 1 }}>
-                            <PDText style={styles.sectionTitle}>Online Backup</PDText>
-                            <View style={styles.onlineBackupContainer}>
-                                <Image style={styles.pdProImageStyles} source={images.pdProTitle} />
-                                <Text style={styles.onlineBackupText}>
-                                    Get PoolDash Pro and never have to worry about dropping your phone in the pool
-                                    again!
+                        <View style={ { flex: 1 } }>
+                            <PDText style={ styles.sectionTitle }>Want More?</PDText>
+                            <View style={ styles.plusContainer }>
+                                <Image style={ styles.pdProImageStyles } source={ images.logoGreenPlus } />
+                                <Text style={ styles.onlineBackupText }>
+                                    <>- Support the development of this app</>
+                                    <>- Unlock a few more features.</>
                                 </Text>
-                                <GradientButton
-                                    title={'Get PoolDash Pro'}
-                                    onPress={this.handleGetProPressed}
-                                    gradientStart={'#fc6076'}
-                                    gradientEnd={'#ff9944'}
+                                <BoringButton
+                                    title={ 'Get PoolDash Plus' }
+                                    onPress={ this.handleGetProPressed }
+                                    containerStyles={ styles.plusButton }
+                                    textStyles={ styles.plusButtonText }
                                 />
                             </View>
                         </View>
@@ -165,11 +152,7 @@ const styles = StyleSheet.create({
         marginBottom: -180,
     },
     scrollView: {
-        backgroundColor: '#2091F9',
-    },
-    header: {
-        height: 210,
-        backgroundColor: '#2091F9',
+        backgroundColor: '#F8F8F8',
     },
     sectionTitle: {
         fontWeight: '700',
@@ -180,33 +163,31 @@ const styles = StyleSheet.create({
     topSectionTitle: {
         marginTop: 14,
     },
+    startButton: {
+        backgroundColor: '#1E6BFF',
+        marginTop: 12,
+        marginBottom: 5
+    },
     lastServiceLabel: {
         color: '#737373',
         fontWeight: '600',
-        fontSize: 16,
+        fontSize: 16
     },
-    recipeName: {
+    recipeSection: {
+        marginHorizontal: 12,
+        marginBottom: 12
+    },
+    recipeButton: {
+
+    },
+    recipeButtonText: {
         fontSize: 22,
         fontWeight: '600',
-        color: 'black',
-        marginLeft: 8,
     },
-    recipeChangeButton: {
-        backgroundColor: 'transparent',
-        flex: 0,
-    },
-    recipeChangeButtonText: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: 'blue',
-        textDecorationLine: 'underline',
-        marginLeft: 8,
-    },
-    overviewWaterIcon: {
-        marginTop: 7,
-    },
-    overviewHistoryIcon: {
-        marginTop: 5,
+    chartCard: {
+        borderRadius: 24,
+        marginHorizontal: 12,
+        marginBottom: 12
     },
     historyButton: {
         backgroundColor: 'black',
@@ -226,20 +207,32 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Avenir Next',
     },
-    onlineBackupContainer: {
-        backgroundColor: 'black',
+    plusContainer: {
+        backgroundColor: 'white',
         shadowOffset: { width: 0, height: 2 },
         shadowColor: 'grey',
         shadowOpacity: 0.3,
         paddingVertical: 10,
         flex: 1,
-        borderRadius: 8,
-        paddingBottom: 10,
-        paddingHorizontal: 15,
+        borderRadius: 24,
+        borderWidth: 2,
+        borderColor: '#00C89F',
+        padding: 15,
         alignItems: 'center',
+        marginHorizontal: 12
     },
     pdProImageStyles: {
-        marginBottom: 10,
+        margin: 10,
+    },
+    plusButton: {
+        backgroundColor: '#E6FAF5',
+        borderRadius: 25,
+        shadowColor: 'transparent',
+        paddingHorizontal: 12,
+        marginVertical: 12
+    },
+    plusButtonText: {
+        color: '#009B7C'
     },
     onlineBackupText: {
         color: '#9b9b9b',

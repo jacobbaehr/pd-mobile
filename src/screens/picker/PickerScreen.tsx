@@ -16,6 +16,7 @@ export interface PDPickerRouteProps {
     subtitle: string,
     items: PickerItem[],
     pickerKey: PickerKey;
+    prevSelection?: string;
 }
 
 interface PickerScreenProps {
@@ -25,7 +26,7 @@ interface PickerScreenProps {
 
 export const PickerScreen: React.FunctionComponent<PickerScreenProps> = (props: PickerScreenProps) => {
 
-    const { title, subtitle, items, pickerKey } = props.route.params;
+    const { title, subtitle, items, pickerKey, prevSelection } = props.route.params;
     const { goBack } = useNavigation();
 
     const handleButtonPress = (value: string) => {
@@ -48,7 +49,7 @@ export const PickerScreen: React.FunctionComponent<PickerScreenProps> = (props: 
                 </View>
                 <SectionList
                     style={ { flex: 1, paddingTop: 20 } }
-                    renderItem={ ({ item }) => <PickerRow item={ item } onSelect={ handleButtonPress } /> }
+                    renderItem={ ({ item }) => <PickerRow item={ item } onSelect={ handleButtonPress } isSelected={ prevSelection === item.value } /> }
                     sections={ [{ data: items }] }
                     keyExtractor={ item => item.value }
                     overScrollMode={ 'always' } />

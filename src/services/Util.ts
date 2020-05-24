@@ -1,13 +1,12 @@
-import { Pool } from "~/models/Pool";
 import { DeviceSettings } from "~/models/DeviceSettings";
 
 export class Util {
-    static getDisplayVolume = (pool: Pool, settings: DeviceSettings): string => {
+    static getDisplayVolume = (gallons: number, settings: DeviceSettings): string => {
         switch (settings.units) {
             case 'us':
-                return `${pool.gallons} Gallons`;
+                return `${gallons.toLocaleString(undefined, { maximumFractionDigits: 0 })} Gallons`;
             case 'metric':
-                return `${Util.gallonsToLiters(pool.gallons).toFixed(0)} Liters`;
+                return `${Util.gallonsToLiters(gallons).toLocaleString(undefined, { maximumFractionDigits: 0 })} Liters`;
         }
     }
 

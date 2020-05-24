@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { StyleProp, StyleSheet, Text, TextInput, TextStyle, View, ViewStyle, ReturnKeyType, NativeSyntheticEvent, TextInputSubmitEditingEventData } from 'react-native';
 
+export interface Focusable {
+    focus: () => void;
+}
+
 export interface TextInputWithTitleProps {
     titleText: string;
     subtitleText?: string;
@@ -17,38 +21,44 @@ export interface TextInputWithTitleProps {
     returnKeyType?: ReturnKeyType;
     onSubmitEditing?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
     autoFocus?: boolean;
-    poorlyImplementedRefForwardingProp?: React.Ref<TextInput>;
     value?: string;
 }
 
 /** */
-export class TextInputWithTitle extends React.Component<TextInputWithTitleProps> {
-    render() {
-        const props = this.props;
-        return (
-            <View style={ [styles.container, props.containerStyles] }>
-                <View style={ styles.titleContainer }>
-                    <Text style={ [styles.titleText, props.titleTextStyles] }>{ props.titleText }</Text>
-                    <Text style={ [styles.subtitleText, props.subtitleTextStyles] }>{ props.subtitleText }</Text>
-                </View>
-                <TextInput
-                    keyboardType={ props.keyboardType }
-                    autoCorrect={ props.autoCorrect }
-                    autoCapitalize={ props.autoCapitalize }
-                    secureTextEntry={ props.secureTextEntry }
-                    placeholder={ props.placeholderText }
-                    onChangeText={ props.onTextChanged }
-                    style={ [styles.input, props.inputStyles] }
-                    returnKeyType={ props.returnKeyType }
-                    onSubmitEditing={ props.onSubmitEditing }
-                    ref={ props.poorlyImplementedRefForwardingProp }
-                    autoFocus={ props.autoFocus }
-                    value={ props.value }
-                />
+const TextInputWithTitleComponent = (props: TextInputWithTitleProps, ref: React.Ref<Focusable>) => {
+    const inputRef = React.useRef<TextInput>(null);
+
+    React.useImperativeHandle(ref, (): any => ({
+        focus: (): void => {
+            inputRef?.current?.focus();
+        }
+    }));
+
+    return (
+        <View style={ [styles.container, props.containerStyles] }>
+            <View style={ styles.titleContainer }>
+                <Text style={ [styles.titleText, props.titleTextStyles] }>{ props.titleText }</Text>
+                <Text style={ [styles.subtitleText, props.subtitleTextStyles] }>{ props.subtitleText }</Text>
             </View>
-        );
-    }
+            <TextInput
+                keyboardType={ props.keyboardType }
+                autoCorrect={ props.autoCorrect }
+                autoCapitalize={ props.autoCapitalize }
+                secureTextEntry={ props.secureTextEntry }
+                placeholder={ props.placeholderText }
+                onChangeText={ props.onTextChanged }
+                style={ [styles.input, props.inputStyles] }
+                returnKeyType={ props.returnKeyType }
+                onSubmitEditing={ props.onSubmitEditing }
+                ref={ inputRef }
+                autoFocus={ props.autoFocus }
+                value={ props.value }
+            />
+        </View>
+    );
 }
+
+export const TextInputWithTitle = React.forwardRef<Focusable, TextInputWithTitleProps>(TextInputWithTitleComponent);
 
 const styles = StyleSheet.create({
     container: {},

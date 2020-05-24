@@ -2,11 +2,11 @@ import * as React from 'react';
 import { StyleSheet, View, SafeAreaView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import { GradientButton } from '~/components/buttons/GradientButton';
+import { BoringButton } from '~/components/buttons/BoringButton';
 import { PDText } from '~/components/PDText';
 
 import { EditListHeader } from '../poolList/PoolDetailsHeader';
-import { TextInputWithTitle } from '~/components/TextInputWithTitle';
+import { TextInputWithTitle, Focusable } from '~/components/TextInputWithTitle';
 import { ChoosyButton } from '~/components/buttons/ChoosyButton';
 import { WaterTypeValue, getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { CycleButton } from '~/components/buttons/CycleButton';
@@ -32,13 +32,21 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
     const { originalPoolName, goBack, rightButtonAction } = props;
     const waterTypeDisplay = getDisplayForWaterType(props.type);
     const volumeUnitsDisplay = getDisplayForVolumeValue(props.volumeUnits);
+
+    const nameRef = React.useRef<Focusable>(null);
+    const volumeRef = React.useRef<Focusable>(null);
+
+    const onNameFieldSubmit = () => {
+        volumeRef.current?.focus();
+    }
+
     return (
         <SafeAreaView style={ styles.safeArea }>
             <EditListHeader
                 handleBackPress={ () => goBack() }
                 buttonText={ originalPoolName }
                 rightButtonAction={ rightButtonAction } />
-            <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
+            <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" style={ styles.scrollView }>
                 <View>
                     <View style={ styles.listContainer }>
                         <TextInputWithTitle
@@ -51,6 +59,8 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
                             keyboardType='default'
                             value={ props.name }
                             autoFocus={ true }
+                            ref={ nameRef }
+                            onSubmitEditing={ onNameFieldSubmit }
                         />
                     </View>
                     <View style={ [styles.listContainer, styles.volumeContainer] }>
@@ -65,6 +75,7 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
                             keyboardType='numeric'
                             value={ props.volumeText }
                             containerStyles={ styles.volumeTextContainer }
+                            ref={ volumeRef }
                         />
                         <View style={ styles.volumeUnitsButtonWrapper }>
                             <CycleButton
@@ -84,10 +95,10 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
                             textStyles={ styles.typeButtonText }
                         />
                     </View>
-                    <GradientButton
+                    <BoringButton
                         onPress={ () => props.handleSavePoolPressed() }
                         title={ 'Save' }
-                        containerStyles={ styles.startServiceButton } />
+                        containerStyles={ styles.saveButton } />
                 </View>
             </KeyboardAwareScrollView>
         </SafeAreaView>
@@ -99,6 +110,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         flex: 1
     },
+    scrollView: {
+        backgroundColor: '#F5F5F5'
+    },
     container: {
         flex: 1,
         justifyContent: 'flex-start',
@@ -107,7 +121,13 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         marginTop: 10,
-        marginHorizontal: 20
+        marginHorizontal: 20,
+        backgroundColor: 'white',
+        paddingTop: 12,
+        paddingHorizontal: 24,
+        borderRadius: 24,
+        borderWidth: 2,
+        borderColor: '#F0F0F0'
     },
     volumeContainer: {
         display: 'flex',
@@ -156,9 +176,11 @@ const styles = StyleSheet.create({
         height: 45,
         margin: 15
     },
-    startServiceButton: {
-        height: 67,
-        paddingHorizontal: 6
+    saveButton: {
+        marginTop: 25,
+        paddingHorizontal: 6,
+        backgroundColor: '#2c5fff',
+        marginHorizontal: 15
     },
     typeContainer: {
         // borderBottomWidth: 2,

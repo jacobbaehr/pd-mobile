@@ -8,4 +8,6 @@ export interface ChartCardViewModel {
     values: number[];
     /// The labels for the x axis (don't have to correspond to values)
     timestamps: number[];
+    /// Whether the view should be interactive
+    interactive: boolean;
 }

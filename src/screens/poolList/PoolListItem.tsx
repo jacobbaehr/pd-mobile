@@ -6,34 +6,51 @@ import TouchableScale from 'react-native-touchable-scale';
 import { Pool } from '~/models/Pool';
 import { PDText } from '~/components/PDText';
 import { getDisplayForWaterType } from '~/models/Pool/WaterType';
+import { AppState } from '~/redux/AppState';
+import { DeviceSettings } from '~/models/DeviceSettings';
+import { connect } from 'react-redux';
+import { getDisplayForVolumeValue } from '~/models/Pool/VolumeUnits';
+import { Util } from '~/services/Util';
 
-interface PoolListItemProps {
+interface PoolListItemInternalProps {
+    deviceSettings: DeviceSettings;
+}
+interface PoolListItemExternalProps {
     pool: Pool;
     onPoolSelected: (pool: Pool) => void;
 }
+type PoolListItemProps = PoolListItemInternalProps & PoolListItemExternalProps;
 
-export class PoolListItem extends React.Component<PoolListItemProps, {}> {
+const mapStateToProps = (state: AppState, ownProps: PoolListItemExternalProps): PoolListItemProps => {
+    return {
+        ...ownProps,
+        deviceSettings: state.deviceSettings
+    };
+};
 
-    private handleButtonPressed = (): void => {
-        this.props.onPoolSelected(this.props.pool);
+const PoolListComponent: React.FunctionComponent<PoolListItemProps> = (props) => {
+
+    const handleButtonPressed = (): void => {
+        props.onPoolSelected(props.pool);
     }
 
-    render() {
-        const pool = this.props.pool;
+    const pool = props.pool;
+    const volumeDisplay = Util.getDisplayVolume(pool.gallons, props.deviceSettings);
 
-        return (
-            <TouchableScale
-                style={ styles.container }
-                onPress={ this.handleButtonPressed }
-                underlayColor={ 'transparent' }
-                activeScale={ 0.99 }>
+    return (
+        <TouchableScale
+            style={ styles.container }
+            onPress={ handleButtonPressed }
+            underlayColor={ 'transparent' }
+            activeScale={ 0.99 }>
 
-                <PDText style={ styles.poolNameText } >{ pool.name }</PDText>
-                <PDText style={ styles.poolVolumeText } >{ `${getDisplayForWaterType(pool.waterType)} | ${pool.gallons}` } gallons</PDText>
-            </TouchableScale>
-        );
-    }
+            <PDText style={ styles.poolNameText } >{ pool.name }</PDText>
+            <PDText style={ styles.poolVolumeText } >{ `${getDisplayForWaterType(pool.waterType)} | ${volumeDisplay}` }</PDText>
+        </TouchableScale>
+    );
 }
+
+export const PoolListItem = connect(mapStateToProps)(PoolListComponent);
 
 const styles = StyleSheet.create({
     container: {

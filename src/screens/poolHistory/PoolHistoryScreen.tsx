@@ -113,7 +113,8 @@ class PoolHistoryComponent extends React.PureComponent<PoolHistoryProps, PoolHis
                 title: graphable.title,
                 masterId: graphable.id,
                 values: values,
-                timestamps: dates
+                timestamps: dates,
+                interactive: true
             };
         });
     }

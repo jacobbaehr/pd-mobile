@@ -34,14 +34,14 @@ export class EditListHeader extends React.Component<EditListHeaderProps, {}> {
     }
 }
 
-const gradientColors: Color[] = ['#FCCB90', '#D57EEB'];
-
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: 15,
+        paddingTop: 10,
         display: 'flex',
         flexDirection: 'row',
-        paddingBottom: 20
+        paddingBottom: 20,
+        backgroundColor: 'white'
     },
     options: {
         display: 'flex',

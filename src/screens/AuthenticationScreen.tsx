@@ -185,7 +185,7 @@ class AuthenticationComponent extends React.PureComponent<AuthenticationCombined
                 onTextChanged={ this.onEmailChanged }
                 returnKeyType={ 'next' }
                 onSubmitEditing={ () => { this.handleKeyboardDismissed('email'); } }
-                poorlyImplementedRefForwardingProp={ this.emailInput } />
+            />
         );
     }
 
@@ -201,7 +201,7 @@ class AuthenticationComponent extends React.PureComponent<AuthenticationCombined
                 onTextChanged={ this.onPasswordChanged }
                 returnKeyType={ 'done' }
                 onSubmitEditing={ () => { this.handleKeyboardDismissed('password'); } }
-                poorlyImplementedRefForwardingProp={ this.passwordInput } />
+            />
         );
     }
 
@@ -216,7 +216,7 @@ class AuthenticationComponent extends React.PureComponent<AuthenticationCombined
                     onTextChanged={ this.onFirstNameChanged }
                     returnKeyType={ 'next' }
                     onSubmitEditing={ () => { this.handleKeyboardDismissed('first'); } }
-                    poorlyImplementedRefForwardingProp={ this.firstNameInput } />
+                />
                 <TextInputWithTitle
                     inputStyles={ { color: themeColor } }
                     autoCorrect={ false }
@@ -225,7 +225,7 @@ class AuthenticationComponent extends React.PureComponent<AuthenticationCombined
                     onTextChanged={ this.onLastNameChanged }
                     returnKeyType={ 'next' }
                     onSubmitEditing={ () => { this.handleKeyboardDismissed('last'); } }
-                    poorlyImplementedRefForwardingProp={ this.lastNameInput } />
+                />
             </View>
         );
         return [nameInputs, this.getEmailInput(themeColor), this.getPasswordInput(themeColor)];
