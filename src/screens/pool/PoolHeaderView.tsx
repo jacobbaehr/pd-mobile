@@ -49,7 +49,7 @@ const PoolHeaderViewComponent: React.FunctionComponent<PoolHeaderViewProps> = (p
                     />
                 </View>
                 <View style={ styles.editButtonContainer }>
-                    <Button title={ 'Edit' } onPress={ props.handlePressedEdit } styles={ styles.editButton } textStyles={ styles.editButtonText } />
+                    <Button title={ 'Edit' } onPress={ props.handlePressedEdit } styles={ styles.editButton } textStyles={ styles.editButtonText } hitSlop={ 12 } />
                 </View>
             </View>
             <View style={ styles.infoRow }>

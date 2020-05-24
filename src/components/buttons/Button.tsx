@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { StyleSheet, TouchableHighlight } from 'react-native';
+import { StyleSheet } from 'react-native';
+// @ts-ignore
+import TouchableScale from 'react-native-touchable-scale';
 
 import { PDText } from '~/components/PDText';
 
@@ -13,6 +15,8 @@ interface ButtonProps {
     textStyles?: any;
 
     disabled?: boolean;
+
+    hitSlop?: number;
 }
 
 export class Button extends React.Component<ButtonProps, {}> {
@@ -22,15 +26,18 @@ export class Button extends React.Component<ButtonProps, {}> {
     }
 
     render() {
+        const slop = this.props.hitSlop || 0;
         return (
-            <TouchableHighlight
+            <TouchableScale
                 style={ [styles.container, this.props.styles] }
                 onPress={ this.handleButtonPress }
-                disabled={ this.props.disabled }>
+                disabled={ this.props.disabled }
+                activeScale={ 0.97 }
+                hitSlop={ { top: slop, left: slop, bottom: slop, right: slop } }>
                 <PDText style={ this.props.textStyles ? this.props.textStyles : styles.text }>
                     { this.props.title }
                 </PDText>
-            </TouchableHighlight>
+            </TouchableScale>
         );
     }
 }

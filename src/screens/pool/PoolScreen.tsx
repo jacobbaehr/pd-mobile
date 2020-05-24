@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 
 import { PDNavStackParamList } from '~/navigator/Navigators';
 import { images } from '~/assets/images';
-import { Button } from '~/components/buttons/Button';
-import { GradientButton } from '~/components/buttons/GradientButton';
 import { ChartCard } from '~/components/charts/ChartCard';
 import { ChartCardViewModel } from '~/components/charts/ChartCardViewModel';
 import { PDText } from '~/components/PDText';
@@ -105,7 +103,7 @@ class PoolScreenComponent extends React.Component<PoolListScreenProps> {
                         <View style={ styles.recipeSection }>
                             <View style={ { flexDirection: 'row' } }>
                                 <ChoosyButton
-                                    title={ 'Big 3 + Salt' }
+                                    title={ 'Pool Doctor' }
                                     onPress={ this.handleChangeRecipeButtonPressed }
                                     styles={ styles.recipeButton }
                                     textStyles={ styles.recipeButtonText }
