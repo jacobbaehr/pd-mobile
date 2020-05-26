@@ -1,93 +1,145 @@
 import * as React from 'react';
-import { View, StyleSheet, TouchableHighlight, Image } from 'react-native';
+import { View, StyleSheet, Image, NativeSyntheticEvent, TextInputEndEditingEventData, TextStyle } from 'react-native';
+// import Slider from '@react-native-community/slider';
+// @ts-ignore
+import Slider from 'react-native-slider';
 
 import { PDText } from '../../components/PDText';
-import { ReadingEntry } from '../../models/logs/ReadingEntry';
 import { Reading } from '../../models/recipe/Reading';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
 
-interface ReadingListItemProps {
-    readingEntry?: ReadingEntry;
-    reading: Reading;
-    isActive: Boolean;
+import { images } from '~/assets/images';
+import { TextInput } from 'react-native-gesture-handler';
 
-    onReadingSelected: (reading: Reading, readingEntry?: ReadingEntry) => void;
-    onInputReadingSelected: (reading: Reading, readingEntry?: ReadingEntry) => void;
+export interface ReadingState {
+    reading: Reading;
+    value?: string;
+    isOn: boolean;
 }
 
-export class ReadingListItem extends React.Component<ReadingListItemProps, {}> {
+interface ReadingListItemProps {
+    readingState: ReadingState;
+    onSlidingStart: () => void;
+    onSlidingComplete: (varName: string) => void;
+    onSliderUpdatedValue: (varName: string, value: number) => void;
+    onTextboxUpdated: (varName: string, text: string) => void;
+    onTextboxFinished: (varName: string, text: string) => void;
+    handleIconPressed: (varName: string) => void;
+    inputAccessoryId?: string;
+}
 
-    private handleCellPressed = (): void => {
-        this.props.onReadingSelected(this.props.reading, this.props.readingEntry);
+export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (props) => {
+
+    const [isSliding, setIsSliding] = React.useState(false);
+    const [textIsEditing, setTextIsEditing] = React.useState(false);
+
+    const isEditing = isSliding || textIsEditing;
+
+    const rs = props.readingState;
+    const r = rs.reading;
+
+    const readingTaken = rs.isOn;
+    const leftImageSource = readingTaken
+        ? images.greenCheck
+        : images.incomplete;
+
+    // The continuous slider would glitch around very slightly when dragging because of
+    // how we're updating the rs.value prop. The steps mitigate this, and also are more precise.
+    const sliderStep = Math.pow(10, -r.decimalPlaces);
+
+    // Keep the slider in range sliderMin <= x <= sliderMax
+    let sliderValue = (rs.value) ? parseFloat(rs.value) : 0;
+    sliderValue = Math.max(Math.min(sliderValue, r.sliderMax), r.sliderMin);
+
+    let readingNameText = r.name;
+    if (r.units) {
+        readingNameText = `${r.name} (${r.units})`;
     }
 
-    private handleInputButtonPressed = (): void => {
-        this.props.onInputReadingSelected(this.props.reading, this.props.readingEntry);
-    }
+    const textInputStyles: TextStyle[] = [styles.textInput];
+    if (!rs.isOn && !isEditing) {
+        textInputStyles.push(styles.textInputDisabled);
+    };
 
-    render() {
+    const onTextBeginEditing = () => {
+        setTextIsEditing(true);
+    };
 
-        const entry = this.props.readingEntry;
-        
-        const readingTaken = (entry !== null) && (entry !== undefined);
-        const leftImageSource = readingTaken
-            ? require('../../assets/check.png')
-            : require('../../assets/incomplete.png');
-        
-        const input = this.props.reading;
-        const readingName = (input.name === undefined) ? 'Reading' : input.name;
-        
-        // const readingMessage = readingTaken ? `${entry!.value}` : `Input ${readingName}`;
-        const buttonOrNothing = this.props.isActive
-            ? <TouchableScale
-                style={styles.inputButton}
-                onPress={this.handleInputButtonPressed}
-                activeScale={0.99}>
-                    <PDText style={styles.inputButtonTitle}>Input { readingName }</PDText>
-                </TouchableScale>
-            : null;
+    const onTextChange = (newText: string) => {
+        props.onTextboxUpdated(r.variableName, newText);
+    };
 
-        const caretOrNothing = this.props.isActive
-            ? null
-            : <Image style={styles.downCaret} source={require('../../assets/down_caret.png')} width={18} height={10}/>
+    const onTextEndEditing = (event: NativeSyntheticEvent<TextInputEndEditingEventData>) => {
+        setTextIsEditing(false);
+        const finalText = event.nativeEvent.text;
+        props.onTextboxFinished(r.variableName, finalText);
+    };
 
-        return (
-            <View style={styles.container}>
-                <TouchableHighlight
-                    style={ styles.content }
-                    underlayColor={'#FFFFFF'}
-                    onPress={this.handleCellPressed}>
-                    <View style={{flex:1}}>
-                        <View style={{flex: 1, flexDirection: 'row'}}>
-                            <Image
-                                style={styles.circleImage} 
-                                source={leftImageSource}
-                                width={28} 
-                                height={28}/>
-                            <PDText style={styles.readingName}>{ readingName }</PDText>
-                            {caretOrNothing}
-                            {/*<PDText style={[styles.readingValue, styles.infoReadingValue]}>{ readingMessage } </PDText>*/}
-                        </View>
-                        {buttonOrNothing}
-                    </View>
-                </TouchableHighlight>
+    const onSliderStart = () => {
+        setIsSliding(true);
+        props.onSlidingStart();
+    };
+
+    const onSliderEnd = () => {
+        setIsSliding(false);
+        props.onSlidingComplete(r.variableName);
+    };
+
+    return (
+        <View style={ styles.container }>
+            <View style={ styles.content }>
+                <View style={ styles.topRow }>
+                    <TouchableScale
+                        onPress={ () => props.handleIconPressed(r.variableName) }
+                        activeScale={ 1.2 }
+                        hitSlop={ { left: 25, right: 25, top: 25, bottom: 25 } }>
+                        <Image
+                            style={ styles.circleImage }
+                            source={ leftImageSource }
+                            width={ 28 }
+                            height={ 28 } />
+                    </TouchableScale>
+                    <PDText style={ styles.readingName }>{ readingNameText }</PDText>
+                    <TextInput
+                        style={ textInputStyles }
+                        onFocus={ onTextBeginEditing }
+                        onChangeText={ onTextChange }
+                        onEndEditing={ onTextEndEditing }
+                        keyboardType={ 'decimal-pad' }
+                        inputAccessoryViewID={ props.inputAccessoryId }>
+                        { rs.value }
+                    </TextInput>
+                </View>
+                <Slider
+                    style={ styles.slider }
+                    minimumValue={ r.sliderMin }
+                    maximumValue={ r.sliderMax }
+                    minimumTrackTintColor="#E3E3E3"
+                    maximumTrackTintColor="#E3E3E3"
+                    thumbImage={ images.sliderThumb }
+                    onSlidingStart={ onSliderStart }
+                    onSlidingComplete={ onSliderEnd }
+                    onValueChange={ (value: number) => props.onSliderUpdatedValue(r.variableName, value) }
+                    value={ sliderValue }
+                    step={ sliderStep }
+                    thumbTouchSize={ { width: 75, height: 55 } }
+                />
             </View>
-        );
-    }
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'transparent',
-        // height: 50,
         alignContent: 'stretch',
         borderRadius: 10
     },
     content: {
-        flex: 1,
         backgroundColor: 'white',
+        flex: 1,
         borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
@@ -97,40 +149,42 @@ const styles = StyleSheet.create({
         marginBottom: 12,
         marginHorizontal: 16
     },
-    circleImage: {
-        margin: 10
+    topRow: {
+        borderRadius: 10,
+        flex: 1,
+        flexDirection: 'row',
+        paddingHorizontal: 12,
+        paddingTop: 12,
+        paddingBottom: 3
     },
-    downCaret: {
-        marginTop: 21,
-        marginRight: 19
+    slider: {
+        flex: 1,
+        marginHorizontal: 12,
+        marginBottom: 6
+    },
+    circleImage: {
+        marginRight: 10
     },
     readingName: {
         color: 'black',
         fontSize: 18,
         fontWeight: '600',
-        lineHeight: 48,
-        flex: 1
+        flex: 1,
+        textAlignVertical: 'center',
+        marginTop: 3
     },
-    readingValue: {
-        color: 'white',
-        justifyContent: 'center',
+    textInput: {
+        width: 80,
+        borderWidth: 2,
+        borderColor: '#F8F8F8',
+        borderRadius: 6,
+        color: '#3910E8',
+        fontFamily: 'Avenir Next',
+        fontWeight: '600',
+        fontSize: 22,
+        textAlign: 'center'
     },
-    infoReadingValue: {
-        color: 'grey'
-    },
-    inputButton: {
-        backgroundColor: 'black',
-        margin: 16,
-        marginTop: 10,
-        borderRadius: 10
-    },
-    inputButtonTitle: {
-        color: 'white',
-        lineHeight: 50,
-        paddingVertical: 0,
-        fontWeight: '700',
-        fontSize: 24,
-        alignContent: 'center',
-        alignSelf: 'center'
+    textInputDisabled: {
+        color: '#BEBEBE'
     }
 });

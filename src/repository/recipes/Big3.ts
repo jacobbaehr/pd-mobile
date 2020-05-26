@@ -7,19 +7,37 @@ export const big3: Recipe = {
     description: 'This lazy recipe just measures your Free Chlorine, pH, and Total Alkalinity.',
     readings: [
         {
-            objectId: 'free_chlorine',
             name: 'Free Chlorine',
-            variableName: 'fc'
+            variableName: 'fc',
+            type: 'number',
+            units: 'ppm',
+            defaultValue: 3,
+            sliderMax: 6,
+            sliderMin: 0,
+            decimalPlaces: 1,
+            referenceId: 'fc'
         },
         {
-            objectId: 'ph',
             name: 'pH',
-            variableName: 'ph'
+            variableName: 'ph',
+            type: 'number',
+            units: null,
+            defaultValue: 7.2,
+            sliderMax: 9,
+            sliderMin: 5,
+            decimalPlaces: 1,
+            referenceId: 'ph'
         },
         {
-            objectId: 'ta',
             name: 'Total Alkalinity',
-            variableName: 'ta'
+            variableName: 'ta',
+            type: 'number',
+            units: 'ppm',
+            defaultValue: 100,
+            sliderMax: 150,
+            sliderMin: 50,
+            decimalPlaces: 0,
+            referenceId: 'ta'
         }
     ],
     treatments: [

@@ -23,7 +23,7 @@ export class CalculationService {
 
         /// Ensure these are in the correct order
         let inputValues = recipe.readings.map(reading => {
-            let record = recordedInputs.find(ri => ri.readingId === reading.objectId)
+            let record = recordedInputs.find(ri => ri.readingId === reading.variableName)
             if ((record === null) || (record === undefined)) {
                 return null;  // TODO: handle case where some inputs are empty?
             }
@@ -56,7 +56,7 @@ const calculateValueForOutput = (
     const formula = treatment.formula;
     // TODO: finish this, my brain === mush
     const params = inputs.map(r => {
-        if (inputEntries.filter(e => e.readingId === r.objectId).length > 0) {
+        if (inputEntries.filter(e => e.readingId === r.variableName).length > 0) {
             return ''
         }
     });

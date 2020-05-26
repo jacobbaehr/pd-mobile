@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Color } from 'csstype';
 import { StyleSheet, View, StyleProp, ViewStyle } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 
 interface PDProgressBarProps {
     /// From 0 to 1
@@ -10,36 +9,33 @@ interface PDProgressBarProps {
     style: StyleProp<ViewStyle>;
 }
 
-export class PDProgressBar extends React.Component<PDProgressBarProps, {}> {
-    render() {
-        const foregroundFlex = this.props.progress;
-        const backgroundFlex = 1 - foregroundFlex;
+export const PDProgressBar: React.FunctionComponent<PDProgressBarProps> = (props) => {
 
-        const containerStyle = StyleSheet.flatten([
-            styles.container,
-            this.props.style
-        ]);
+    const foregroundFlex = props.progress;
+    const backgroundFlex = 1 - foregroundFlex;
 
-        const backgroundStyle = {
-            backgroundColor: 'transparent',
-            flex: backgroundFlex
-        };  
-        return (
-            <View style={containerStyle}>
-                <LinearGradient
-                        colors={this.props.foregroundColors}
-                        start={{x: 0, y: 0}}
-                        end={{x: 1, y: 1}}
-                        style={{ flex: foregroundFlex }}>
-                </LinearGradient>
-                <View style={backgroundStyle} />
+    const containerStyle = StyleSheet.flatten([
+        styles.container,
+        props.style
+    ]);
+
+    const backgroundStyle = {
+        backgroundColor: 'transparent',
+        flex: backgroundFlex
+    };
+    return (
+        <View style={ containerStyle }>
+            <View
+                style={ { flex: foregroundFlex, backgroundColor: '#3910E8', borderRadius: 8 } }>
             </View>
-        );
-    }
+            <View style={ backgroundStyle } />
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        borderRadius: 8
     }
 });

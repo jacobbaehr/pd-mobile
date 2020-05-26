@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Alert, Image, ScrollView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { Alert, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 
@@ -16,10 +16,9 @@ import SafeAreaView from 'react-native-safe-area-view';
 import { PoolHeaderView } from './PoolHeaderView';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { ChoosyButton } from '~/components/buttons/ChoosyButton';
+import { useNavigation } from '@react-navigation/native';
 
 interface PoolListScreenProps {
-    navigation: StackNavigationProp<PDNavStackParamList, 'PoolScreen'>;
-
     // The id of the selected pool, if any
     selectedPool: Pool | null;
 
@@ -35,7 +34,6 @@ interface PoolListScreenProps {
 
 const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolListScreenProps => {
     return {
-        navigation: ownProps.navigation,
         selectedPool: state.selectedPool,
         poolsLastUpdated: state.poolsLastUpdated,
         user: state.user,
@@ -43,100 +41,97 @@ const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolLi
     };
 };
 
-class PoolScreenComponent extends React.Component<PoolListScreenProps> {
-    handleBackPressed = () => {
-        this.props.navigation.goBack();
+const PoolScreenComponent: React.FunctionComponent<PoolListScreenProps> = (props) => {
+
+    const { navigate, goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'PoolScreen'>>();
+
+    const handleBackPressed = () => {
+        goBack();
     };
 
-    handleStartServicePressed = () => {
-        this.props.navigation.navigate('ReadingList');
+    const handleStartServicePressed = () => {
+        navigate('ReadingList');
     };
 
-    handleViewHistoryPressed = () => {
-        this.props.navigation.navigate('PoolHistory');
+    const handleEditButtonPressed = () => {
+        navigate('EditPool');
     };
 
-    handleEditButtonPressed = () => {
-        this.props.navigation.navigate('EditPool');
+    const handleChangeRecipeButtonPressed = () => {
+        navigate('RecipeList');
     };
 
-    handleChangeRecipeButtonPressed = () => {
-        this.props.navigation.navigate('RecipeList');
-    };
-
-    handleGetProPressed = () => {
-        if (this.props.hasValidSubscription) {
+    const handleGetProPressed = () => {
+        if (props.hasValidSubscription) {
             // Alert subscription already active
             Alert.alert('Subscription already active!');
             return;
         }
 
-        if (!this.props.user) {
-            this.props.navigation.navigate('PurchasePro', { screenType: 'Register' });
+        if (!props.user) {
+            navigate('PurchasePro', { screenType: 'Register' });
         } else {
-            this.props.navigation.navigate('ConfirmPurchase', { user: this.props.user });
+            navigate('ConfirmPurchase', { user: props.user });
         }
     };
 
-    render() {
-        // const dateRanges = ['24H', '7D', '1M', '3M', '1Y', 'ALL'];
-        const timestamps = [4, 5, 6]; // TODO: remove
-        const values = [1000, 4000, 5000];
-        const vm: ChartCardViewModel = {
-            timestamps,
-            values,
-            title: 'Chlorine',
-            masterId: 'a9sd8f093',
-            interactive: false
-        };
+    // const dateRanges = ['24H', '7D', '1M', '3M', '1Y', 'ALL'];
+    const timestamps = [4, 5, 6]; // TODO: remove
+    const values = [1000, 4000, 5000];
+    const vm: ChartCardViewModel = {
+        timestamps,
+        values,
+        title: 'Chlorine',
+        masterId: 'a9sd8f093',
+        interactive: false
+    };
 
-        return (
-            <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } } forceInset={ { bottom: 'never' } } >
-                <PoolHeaderView
-                    pool={ this.props.selectedPool }
-                    handlePressedEdit={ this.handleEditButtonPressed }
-                    handlePressedBack={ this.handleBackPressed }
-                />
-                <ScrollView style={ styles.scrollView }>
-                    <View style={ styles.container }>
-                        <PDText style={ [styles.sectionTitle, styles.topSectionTitle] }>Recipe</PDText>
-                        <View style={ styles.recipeSection }>
-                            <View style={ { flexDirection: 'row' } }>
-                                <ChoosyButton
-                                    title={ 'Pool Doctor' }
-                                    onPress={ this.handleChangeRecipeButtonPressed }
-                                    styles={ styles.recipeButton }
-                                    textStyles={ styles.recipeButtonText }
-                                />
-                            </View>
-                            <BoringButton onPress={ this.handleStartServicePressed } title={ 'Start Service' } containerStyles={ styles.startButton } />
-                            <PDText style={ styles.lastServiceLabel }>Last Serviced: 20 days ago</PDText>
+    return (
+        <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } } forceInset={ { bottom: 'never' } } >
+            <PoolHeaderView
+                pool={ props.selectedPool }
+                handlePressedEdit={ handleEditButtonPressed }
+                handlePressedBack={ handleBackPressed }
+            />
+            <ScrollView style={ styles.scrollView }>
+                <View style={ styles.container }>
+                    <PDText style={ [styles.sectionTitle, styles.topSectionTitle] }>Recipe</PDText>
+                    <View style={ styles.recipeSection }>
+                        <View style={ { flexDirection: 'row' } }>
+                            <ChoosyButton
+                                title={ 'Pool Doctor' }
+                                onPress={ handleChangeRecipeButtonPressed }
+                                styles={ styles.recipeButton }
+                                textStyles={ styles.recipeButtonText }
+                            />
                         </View>
-                        <View style={ { flex: 1 } }>
-                            <PDText style={ styles.sectionTitle }>Trends</PDText>
-                            <ChartCard viewModel={ vm } containerStyles={ styles.chartCard } />
-                        </View>
-                        <View style={ { flex: 1 } }>
-                            <PDText style={ styles.sectionTitle }>Want More?</PDText>
-                            <View style={ styles.plusContainer }>
-                                <Image style={ styles.pdProImageStyles } source={ images.logoGreenPlus } />
-                                <Text style={ styles.onlineBackupText }>
-                                    <>- Support the development of this app</>
-                                    <>- Unlock a few more features.</>
-                                </Text>
-                                <BoringButton
-                                    title={ 'Get PoolDash Plus' }
-                                    onPress={ this.handleGetProPressed }
-                                    containerStyles={ styles.plusButton }
-                                    textStyles={ styles.plusButtonText }
-                                />
-                            </View>
+                        <BoringButton onPress={ handleStartServicePressed } title={ 'Start Service' } containerStyles={ styles.startButton } />
+                        <PDText style={ styles.lastServiceLabel }>Last Serviced: 20 days ago</PDText>
+                    </View>
+                    <View style={ { flex: 1 } }>
+                        <PDText style={ styles.sectionTitle }>Trends</PDText>
+                        <ChartCard viewModel={ vm } containerStyles={ styles.chartCard } />
+                    </View>
+                    <View style={ { flex: 1 } }>
+                        <PDText style={ styles.sectionTitle }>Want More?</PDText>
+                        <View style={ styles.plusContainer }>
+                            <Image style={ styles.pdProImageStyles } source={ images.logoGreenPlus } />
+                            <Text style={ styles.onlineBackupText }>
+                                <>- Support the development of this app</>
+                                <>- Unlock a few more features.</>
+                            </Text>
+                            <BoringButton
+                                title={ 'Get PoolDash Plus' }
+                                onPress={ handleGetProPressed }
+                                containerStyles={ styles.plusButton }
+                                textStyles={ styles.plusButtonText }
+                            />
                         </View>
                     </View>
-                </ScrollView>
-            </SafeAreaView>
-        );
-    }
+                </View>
+            </ScrollView>
+        </SafeAreaView>
+    );
 }
 
 export const PoolScreen = connect(mapStateToProps)(PoolScreenComponent);
@@ -176,7 +171,7 @@ const styles = StyleSheet.create({
         marginBottom: 12
     },
     recipeButton: {
-
+        backgroundColor: 'white'
     },
     recipeButtonText: {
         fontSize: 22,

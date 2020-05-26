@@ -25,7 +25,7 @@ export class ReadingEntry {
 
     static make(reading: Reading, value: number): ReadingEntry {
         let readingEntry = new ReadingEntry();
-        readingEntry.readingId = reading.objectId;
+        readingEntry.readingId = reading.variableName;
         readingEntry.readingName = reading.name;
         readingEntry.value = value;
         return readingEntry;

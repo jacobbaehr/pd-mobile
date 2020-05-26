@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, SectionList, SectionListData, LayoutAnimation, SafeAreaView } from 'react-native';
+import { View, StyleSheet, SectionList, SectionListData, SafeAreaView, LayoutAnimation, InputAccessoryView, Keyboard } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 
@@ -12,19 +12,16 @@ import { ReadingEntry } from '~/models/logs/ReadingEntry';
 import { RecipeRepo } from '~/repository/RecipeRepo';
 import { Pool } from '~/models/Pool';
 
-import { ReadingListItem } from './ReadingListItem';
-import { ReadingListSectionHeader } from './ReadingListSectionHeader';
+import { ReadingListItem, ReadingState } from './ReadingListItem';
 import { ReadingListHeader } from './ReadingListHeader';
 import { RecipeKey } from '~/models/recipe/RecipeKey';
-
-interface ReadingListScreenState {
-    activeReadingId?: string;
-    recipe?: Recipe;
-}
+import { useNavigation } from '@react-navigation/native';
+import { Haptic } from '~/services/HapticService';
+import { Util } from '~/services/Util';
+import { BoringButton } from '~/components/buttons/BoringButton';
 
 interface ReadingListScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'ReadingList'>;
-    entries: ReadingEntry[];
     recipeKey: RecipeKey;
     pool: Pool;
 }
@@ -32,139 +29,199 @@ interface ReadingListScreenProps {
 const mapStateToProps = (state: AppState, ownProps: ReadingListScreenProps): ReadingListScreenProps => {
     return {
         navigation: ownProps.navigation,
-        entries: state.readingEntries,
         recipeKey: state.recipeKey!,
         pool: state.selectedPool!
     };
 };
 
-class ReadingListScreenComponent extends React.Component<ReadingListScreenProps, ReadingListScreenState> {
+const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps> = (props) => {
 
-    constructor(props: ReadingListScreenProps) {
-        super(props);
-        this.state = {
-            activeReadingId: undefined
-        };
-    }
+    const [recipe, setRecipe] = React.useState<Recipe | undefined>();
+    const [isSliding, setIsSliding] = React.useState(false);
+    const [readingStates, setReadingStates] = React.useState<ReadingState[]>([]);
 
-    async componentDidMount() {
+    const { setOptions, navigate, goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'ReadingList'>>();
+    const keyboardAccessoryViewId = 'wowThisIsSomeReallyUniqueTextReadingListKeyboard';
+
+    React.useEffect(() => {
+        setOptions({ gestureEnabled: false });
         try {
-            const recipe = await RecipeRepo.loadLocalRecipeWithKey(this.props.recipeKey);
-            this.setState({ recipe });
+            const loadRecipe = async () => {
+                const recipe = await RecipeRepo.loadLocalRecipeWithKey(props.recipeKey);
+                console.log('Recipe:');
+                console.log(JSON.stringify(recipe));
+                const initialReadingStates = recipe.readings.map(r => ({
+                    reading: r,
+                    value: r.defaultValue.toFixed(r.decimalPlaces),
+                    isOn: false
+                }));
+                console.log('2');
+                setRecipe(recipe);
+                setReadingStates(initialReadingStates);
+            }
+            loadRecipe();
         } catch (e) {
             console.error(e);
         }
-    }
+    }, []);
 
-    getRemainingReadings = (): Reading[] => {
-        const recipe = this.state.recipe;
-        if (recipe === undefined) {
-            return [];
-        }
-        return recipe.readings.filter(reading => {
-            let inputComplete = false;
-            this.props.entries.forEach(entry => {
-                if (entry.readingId === reading.objectId) {
-                    inputComplete = true;
-                }
-            });
-            return !inputComplete;
+    const handleCalculatePressed = (): void => {
+        navigate('Results');
+    };
+
+    const handleBackPressed = (): void => {
+        goBack();
+    };
+
+    const handleSlidingStopped = (varName: string) => {
+        setIsSliding(false);
+        let isChanged = false;
+        const rs = Util.deepCopy(readingStates);
+        rs.forEach((r) => {
+            if (r.reading.variableName === varName && !r.isOn) {
+                isChanged = true;
+                r.isOn = true;
+            }
         });
-    }
+        if (isChanged) {
+            // Animate the progress bar change here:
+            const springAnimationProperties = {
+                type: LayoutAnimation.Types.keyboard,
+                property: LayoutAnimation.Properties.scaleXY,
+            };
+            const animationConfig = {
+                duration: 250, // how long the animation will take	
+                create: undefined,
+                update: springAnimationProperties,
+                delete: undefined
+            };
+            LayoutAnimation.configureNext(animationConfig);
+            setReadingStates(rs);
+        }
+    };
 
-    handleReadingSelected = (input: Reading, inputEntry?: ReadingEntry): void => {
+    const handleSlidingStarted = () => {
+        setIsSliding(true);
+    };
+
+    const handleSliderUpdatedValue = (varName: string, value: number) => {
+        const rs = Util.deepCopy(readingStates);
+        let isChanged = false;
+        rs.forEach((r) => {
+            if (r.reading.variableName === varName) {
+                const newValue = value.toFixed(r.reading.decimalPlaces);
+                if (newValue !== r.value) {
+                    isChanged = true;
+                    r.value = newValue;
+                }
+            }
+        });
+        if (isChanged) {
+            setReadingStates(rs);
+            Haptic.bumpyGlide();
+        }
+    };
+
+    const handleTextboxUpdated = (varName: string, text: string) => {
+        const rs = Util.deepCopy(readingStates);
+        rs.forEach((r) => {
+            if (r.reading.variableName === varName) {
+                r.value = text;
+            }
+        });
+        setReadingStates(rs);
+    };
+
+    const handleTextboxDismissed = (varName: string, text: string) => {
+        const rs = Util.deepCopy(readingStates);
+        rs.forEach((r) => {
+            if (r.reading.variableName === varName) {
+                r.value = text;
+                r.isOn = text.length > 0;
+            }
+        });
+        setReadingStates(rs);
+    };
+
+    const handleIconPressed = (varName: string) => {
+        Haptic.light();
+        const rs = Util.deepCopy(readingStates);
+        rs.forEach((r) => {
+            if (r.reading.variableName === varName) {
+                r.isOn = !r.isOn;
+                if (r.isOn && !r.value) {
+                    r.value = r.reading.defaultValue.toFixed(r.reading.decimalPlaces);
+                }
+            }
+        });
+        // Animate the progress bar change here:
         const springAnimationProperties = {
-            type: LayoutAnimation.Types.spring,
+            type: LayoutAnimation.Types.keyboard,
             property: LayoutAnimation.Properties.scaleXY,
-            springDamping: 0.7
         };
-        //   const fadeAnimationProperties = {
-        //     type: LayoutAnimation.Types.spring,
-        //     property: LayoutAnimation.Properties.opacity,
-        //     springDamping: 0.3
-        //   };
         const animationConfig = {
-            duration: 500, // how long the animation will take
+            duration: 250, // how long the animation will take	
             create: undefined,
             update: springAnimationProperties,
             delete: undefined
         };
         LayoutAnimation.configureNext(animationConfig);
-        this.setState({
-            activeReadingId: input.objectId
-        });
+        setReadingStates(rs);
     }
 
-    handleInputReadingSelected = (reading: Reading, readingEntry?: ReadingEntry): void => {
-        this.props.navigation.navigate('ReadingDetails', { reading, readingEntry });
+    // Really, we shouldn't be using a sectionlist, because there's only 1 section
+    let sections: SectionListData<ReadingState>[] = [{ data: readingStates }];
+
+    let progress = 0;
+    if (recipe) {
+        const completed = readingStates.filter(r => r.isOn);
+        progress = (readingStates.length == 0)
+            ? 1
+            : (completed.length / readingStates.length);
     }
 
-    handleCalculatePressed = (): void => {
-        this.props.navigation.navigate('Results');
-    }
-
-    handleBackPressed = (): void => {
-        this.props.navigation.goBack();
-    }
-
-    private getEntryForReading = (reading: Reading): ReadingEntry | undefined => {
-        // array length will always be 0 (if entry not made) or 1 (if entry made)
-        let entriesForInput = this.props.entries.filter(entry => entry.readingId === reading.objectId);
-        if (entriesForInput.length === 0) { return undefined }
-        return entriesForInput[0];
-    }
-
-    render() {
-        const remaining = this.getRemainingReadings();
-        let sections: SectionListData<Reading>[] = [{ data: remaining, title: 'Remaining Readings' }];
-        let completed: Reading[] = [];
-        let hasTakenEveryReading = false;
-        let progress = 0;
-
-        const recipe = this.state.recipe;
-        if (recipe !== undefined) {
-            // TODO: clean this up
-            const completed = recipe.readings.filter(reading =>
-                remaining.filter(incomplete =>
-                    incomplete.objectId == reading.objectId
-                ).length == 0
-            );
-
-            progress = (recipe.readings.length == 0)
-                ? 1
-                : (completed.length / recipe.readings.length);
-
-            hasTakenEveryReading = completed.length == recipe.readings.length;
-
-            let sections: SectionListData<Reading>[] = [{ data: remaining, title: 'Remaining Readings' }];
-            if (completed.length > 0) {
-                sections.push({ data: completed, title: 'Completed Readings' });
-            }
-        }
-
-        return (
-            <SafeAreaView style={ { flex: 1, backgroundColor: '#F8F8F8' } }>
-                <View style={ styles.container }>
-                    <SectionList
-                        style={ styles.sectionList }
-                        ListHeaderComponent={ <ReadingListHeader handleBackPress={ this.handleBackPressed } pool={ this.props.pool } percentComplete={ progress } /> }
-                        renderItem={ ({ item }) => <ReadingListItem reading={ item } readingEntry={ this.getEntryForReading(item) } onReadingSelected={ this.handleReadingSelected } onInputReadingSelected={ this.handleInputReadingSelected } isActive={ this.state.activeReadingId == item.objectId } /> }
-                        renderSectionHeader={ ({ section }) => <ReadingListSectionHeader title={ section.title } /> }
-                        sections={ sections }
-                        keyExtractor={ item => (item as Reading).objectId }
-                        contentInsetAdjustmentBehavior={ 'always' }
-                        stickySectionHeadersEnabled={ false }
-                    />
-                    <Button
-                        styles={ styles.button }
-                        onPress={ this.handleCalculatePressed }
-                        title="Calculate"
-                        disabled={ !hasTakenEveryReading }
+    return (
+        <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } }>
+            <View style={ styles.container }>
+                <ReadingListHeader handleBackPress={ handleBackPressed } pool={ props.pool } percentComplete={ progress } />
+                <SectionList
+                    style={ styles.sectionList }
+                    scrollEnabled={ !isSliding }
+                    keyboardDismissMode={ 'interactive' }
+                    keyboardShouldPersistTaps={ 'handled' }
+                    renderItem={ ({ item }) => <ReadingListItem
+                        readingState={ item }
+                        onTextboxUpdated={ handleTextboxUpdated }
+                        onTextboxFinished={ handleTextboxDismissed }
+                        onSlidingStart={ handleSlidingStarted }
+                        onSlidingComplete={ handleSlidingStopped }
+                        onSliderUpdatedValue={ handleSliderUpdatedValue }
+                        handleIconPressed={ handleIconPressed }
+                        inputAccessoryId={ keyboardAccessoryViewId } /> }
+                    sections={ sections }
+                    keyExtractor={ (item) => item.reading.variableName }
+                    contentInsetAdjustmentBehavior={ 'always' }
+                    stickySectionHeadersEnabled={ false }
+                    canCancelContentTouches={ true }
+                />
+                <BoringButton
+                    containerStyles={ styles.button }
+                    onPress={ handleCalculatePressed }
+                    title="Calculate"
+                />
+            </View>
+            <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
+                <View style={ styles.keyboardAccessoryContainer }>
+                    <BoringButton
+                        containerStyles={ styles.keyboardAccessoryButton }
+                        textStyles={ styles.keyboardAccessoryButtonText }
+                        onPress={ () => { Keyboard.dismiss(); Haptic.light(); } }
+                        title="Done Typing"
                     />
                 </View>
-            </SafeAreaView>
-        );
-    }
+            </InputAccessoryView>
+        </SafeAreaView>
+    );
 }
 
 export const ReadingListScreen = connect(mapStateToProps)(ReadingListScreenComponent);
@@ -173,15 +230,29 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'flex-start',
-        backgroundColor: '#F8F8F8',
+        backgroundColor: 'white',
     },
     sectionList: {
-        flex: 1
+        flex: 1,
+        backgroundColor: '#F8F8F8',
+        paddingTop: 12
     },
     button: {
         alignSelf: 'stretch',
-        backgroundColor: '#005C9E',
-        height: 45,
-        margin: 5
+        backgroundColor: '#3910E8',
+        margin: 12,
+        marginBottom: 24
+    },
+    keyboardAccessoryContainer: {
+        backgroundColor: '#F8F8F8',
+        padding: 12,
+    },
+    keyboardAccessoryButton: {
+        backgroundColor: '#3910E8',
+        marginHorizontal: 24
+    },
+    keyboardAccessoryButtonText: {
+        color: 'white',
+        fontSize: 18
     }
 });

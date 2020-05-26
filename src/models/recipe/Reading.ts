@@ -1,35 +1,31 @@
 /**
  * Represents a reading or observation to be taken during performance of a recipe
  */
-export class Reading {
+export interface Reading {
     // The input's user-visible name
-    name!: string;
+    name: string;
 
     // The input's variable name for use in the output formulas
-    variableName!: string;
+    variableName: string;
 
-    // An ID that uniquely identifies this input
-    objectId!: string;
+    // Most of these will be ReadingType.number
+    type: ReadingType;
 
-    // For Realm purposes
-    static schema = {
-        name: 'Reading',
-        primaryKey: 'objectId',
-        properties: {
-            name: 'string',
-            variableName: 'string',
-            objectId: 'string',
-        },
-    };
+    // The units.
+    units: string | null;
 
-    static make(
-        name: string,
-        variableName: string,
-        _objectId: string,
-    ): Reading {
-        let reading = new Reading();
-        reading.name = name;
-        reading.variableName = variableName;
-        return reading;
-    }
+    // The default value:
+    defaultValue: number;
+
+    // To enable the slider:
+    sliderMin: number;
+    sliderMax: number;
+    decimalPlaces: number;
+
+    // This enables data-collection across recipes. For instance, if you want to plot your pool's free chlorine on a graph,
+    // but you switched what recipe you used last week, you'll still be able to see all of the readings on 1 graph if the
+    // reference id for the free chlorine reading is set correctly on both recipes.
+    referenceId: string;
 }
+
+export type ReadingType = 'number';

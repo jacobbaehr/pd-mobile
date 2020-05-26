@@ -19,4 +19,7 @@ export class Haptic {
     static heavy = () => {
         ReactNativeHapticFeedback.trigger("impactHeavy", Haptic.options);
     }
+    static bumpyGlide = () => {
+        ReactNativeHapticFeedback.trigger("textHandleMove", Haptic.options);
+    }
 }
