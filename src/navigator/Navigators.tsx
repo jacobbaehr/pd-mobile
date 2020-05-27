@@ -6,7 +6,6 @@ import { ConfirmPurchaseScreen } from '~/screens/confirmPurchase/ConfirmPurchase
 import { PoolScreen } from '~/screens/pool/PoolScreen';
 import { PoolHistoryScreen } from '~/screens/poolHistory/PoolHistoryScreen';
 import { PoolListScreen } from '~/screens/poolList/PoolListScreen';
-import { ReadingDetailsScreen } from '~/screens/readings/ReadingDetailsScreen';
 import { ReadingListScreen } from '~/screens/readings/ReadingListScreen';
 import { RecipeListScreen } from '~/screens/recipes/RecipeListScreen';
 import { ResultsScreen } from '~/screens/results/ResultsScreen';
@@ -40,7 +39,6 @@ const MainStack = (): JSX.Element => {
             <Stack.Screen name="PoolScreen" component={ PoolScreen } />
             <Stack.Screen name="EditPool" component={ EditPoolScreen } />
             <Stack.Screen name="ReadingList" component={ ReadingListScreen } />
-            <Stack.Screen name="ReadingDetails" component={ ReadingDetailsScreen } />
             <Stack.Screen name="Results" component={ ResultsScreen } />
             <Stack.Screen name="Settings" component={ CalculationSettingsScreen } />
             <Stack.Screen name="RecipeList" component={ RecipeListScreen } />
@@ -73,7 +71,6 @@ export type PDNavStackParamList = {
     PoolScreen: undefined;
     EditPool: undefined;
     ReadingList: undefined;
-    ReadingDetails: { reading: Reading, readingEntry?: ReadingEntry };
     Results: undefined;
     Settings: undefined;
     RecipeList: { poolName: string };

@@ -6,43 +6,56 @@ import { PDText } from '~/components/PDText';
 import { BackButton } from '~/components/buttons/BackButton';
 import { Pool } from '~/models/Pool';
 import { PDProgressBar } from '~/components/PDProgressBar';
+import { DeviceSettings } from '~/models/DeviceSettings';
+import { AppState } from '~/redux/AppState';
+import { connect } from 'react-redux';
+import { Util } from '~/services/Util';
+import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 
-interface ReadingListHeaderProps {
-    // isEmpty: boolean,
+interface ReadingListHeaderViewInternalProps {
+    deviceSettings: DeviceSettings;
+}
+interface ReadingListHeaderViewExternalProps {
     handleBackPress: () => void
     pool: Pool
-    // from 0 to 1
     percentComplete: number
 }
+type ReadingListHeaderProps = ReadingListHeaderViewInternalProps & ReadingListHeaderViewExternalProps;
 
-export class ReadingListHeader extends React.Component<ReadingListHeaderProps, {}> {
+const mapStateToProps = (state: AppState, ownProps: ReadingListHeaderViewExternalProps): ReadingListHeaderProps => {
+    return {
+        ...ownProps,
+        deviceSettings: state.deviceSettings
+    };
+};
 
-    render() {
-        // const percentText = `${(this.props.percentComplete * 100).toFixed(0)}% Complete`;
-        // const volumeDisplay = Util.getDisplayVolume(props.pool.gallons, props.deviceSettings);
-        // const detailsText = `${getDisplayForWaterType(props.pool.waterType)} | ${volumeDisplay}`;
-        const detailsText = '<pool info here>';
+const ReadingListHeaderComponent: React.FunctionComponent<ReadingListHeaderProps> = (props) => {
 
-        return (
-            <View style={ styles.container }>
-                <BackButton
-                    title={ this.props.pool.name }
-                    onPress={ this.props.handleBackPress }
-                    color={ 'readingsBlue' } />
-                <PDText style={ styles.gradientText } >
-                    Readings
+    // const percentText = `${(this.props.percentComplete * 100).toFixed(0)}% Complete`;
+    const volumeDisplay = Util.getDisplayVolume(props.pool.gallons, props.deviceSettings);
+    const detailsText = `${getDisplayForWaterType(props.pool.waterType)} | ${volumeDisplay}`;
+
+    return (
+        <View style={ styles.container }>
+            <BackButton
+                title={ props.pool.name }
+                onPress={ props.handleBackPress }
+                color={ 'readingsBlue' } />
+            <PDText style={ styles.gradientText } >
+                Readings
                 </PDText>
-                <PDProgressBar
-                    progress={ this.props.percentComplete }
-                    foregroundColors={ gradientColors }
-                    style={ styles.progressBar } />
-                <PDText style={ styles.detailsText }>
-                    { detailsText }
-                </PDText>
-            </View>
-        );
-    }
+            <PDProgressBar
+                progress={ props.percentComplete }
+                foregroundColors={ gradientColors }
+                style={ styles.progressBar } />
+            <PDText style={ styles.detailsText }>
+                { detailsText }
+            </PDText>
+        </View>
+    );
 }
+
+export const ReadingListHeader = connect(mapStateToProps)(ReadingListHeaderComponent);
 
 const gradientColors: Color[] = ['#07A5FF', '#FF0073'];
 

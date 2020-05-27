@@ -54,7 +54,7 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
                             onTextChanged={ (s) => props.updateName(s) }
                             titleTextStyles={ styles.poolNameLabel }
                             inputStyles={ styles.textInput }
-                            autoCapitalize='sentences'
+                            autoCapitalize='words'
                             autoCorrect={ false }
                             keyboardType='default'
                             value={ props.name }

@@ -1,14 +1,12 @@
 import * as React from 'react';
-import { View, StyleSheet, SectionList, SectionListData, SafeAreaView, LayoutAnimation, InputAccessoryView, Keyboard } from 'react-native';
+import { View, StyleSheet, SectionListData, SafeAreaView, LayoutAnimation, InputAccessoryView, Keyboard } from 'react-native';
+import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 
 import { PDNavStackParamList } from '~/navigator/Navigators';
-import { Button } from '~/components/buttons/Button';
 import { AppState } from '~/redux/AppState';
-import { Reading } from '~/models/recipe/Reading';
 import { Recipe } from '~/models/recipe/Recipe';
-import { ReadingEntry } from '~/models/logs/ReadingEntry';
 import { RecipeRepo } from '~/repository/RecipeRepo';
 import { Pool } from '~/models/Pool';
 
@@ -19,6 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Haptic } from '~/services/HapticService';
 import { Util } from '~/services/Util';
 import { BoringButton } from '~/components/buttons/BoringButton';
+import { ReadingListFooter } from './ReadingListFooter';
 
 interface ReadingListScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'ReadingList'>;
@@ -184,7 +183,7 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
         <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } }>
             <View style={ styles.container }>
                 <ReadingListHeader handleBackPress={ handleBackPressed } pool={ props.pool } percentComplete={ progress } />
-                <SectionList
+                <KeyboardAwareSectionList
                     style={ styles.sectionList }
                     scrollEnabled={ !isSliding }
                     keyboardDismissMode={ 'interactive' }
@@ -203,6 +202,7 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
                     contentInsetAdjustmentBehavior={ 'always' }
                     stickySectionHeadersEnabled={ false }
                     canCancelContentTouches={ true }
+                    renderSectionFooter={ () => <ReadingListFooter recipe={ recipe || null } /> }
                 />
                 <BoringButton
                     containerStyles={ styles.button }
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     sectionList: {
         flex: 1,
         backgroundColor: '#F8F8F8',
-        paddingTop: 12
+        paddingTop: 12,
     },
     button: {
         alignSelf: 'stretch',
