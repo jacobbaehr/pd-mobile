@@ -42,19 +42,19 @@ export const big3: Recipe = {
     ],
     treatments: [
         {
-            objectId: 'calc_hypo_67',
+            referenceId: 'calc_hypo_67',
             name: '67% Calcium Hypochlorite',
             variableName: 'chlorine',
-            formula: 'if (fc > 3.0) return 0; return (3.0 - fc) * volume * .06;'
+            formula: 'if (r.fc > 3.0) return 0; return (3.0 - r.fc) * p.gallons * .06;'
         },
         {
-            objectId: 'sodium_bicarb',
+            referenceId: 'sodium_bicarb',
             name: 'Sodium Bicarbonate',
             variableName: 'baking_soda',
             formula: 'return 6;'
         },
         {
-            objectId: 'sodium_carb',
+            referenceId: 'sodium_carb',
             name: 'Sodium Carbonate',
             variableName: 'soda_ash',
             formula: 'return 0;'

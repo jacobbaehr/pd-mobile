@@ -6,7 +6,7 @@ import TouchableScale from 'react-native-touchable-scale';
 import { images } from '~/assets/images';
 import { PDText } from '~/components/PDText';
 
-type BackButtonColor = 'blue' | 'readingsBlue';
+type BackButtonColor = 'blue' | 'readingsBlue' | 'treatmentsPurple';
 
 interface BackButtonProps {
     title?: string;
@@ -29,6 +29,8 @@ export class BackButton extends React.Component<BackButtonProps, {}> {
             imageSource = images.backBlue;
         } else if (this.props.color === 'readingsBlue') {
             imageSource = images.backReadingsBlue;
+        } else if (this.props.color === 'treatmentsPurple') {
+            imageSource = images.backTreatmentsPurple;
         }
         return (
             <View style={ styles.backButtonOuterContainer }>

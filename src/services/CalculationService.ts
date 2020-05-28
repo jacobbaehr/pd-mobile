@@ -4,9 +4,59 @@ import { Treatment } from '../models/recipe/Treatment';
 import { Reading } from '../models/recipe/Reading';
 import { Recipe } from '../models/recipe/Recipe';
 import { Pool } from '../models/Pool';
-import { Database } from '../repository/Database';
+
+export interface CalculationResult {
+    value: number | null;
+    variable: string;
+}
 
 export class CalculationService {
+    /// Hermes is the thing that runs the formulas, obviously.
+    static getHtmlStringForLocalHermes = (recipe: Recipe, pool: Pool, inputs: ReadingEntry[]): string => {
+        const calc = `
+        const calc = (event) => {
+            // Load up the recipe
+            const recipe = event.recipe;
+            const outputs = {};
+            const inputsAsArgs = \`const r = {\${event.readings.map(r => \`\${r.variableName}: \${r.value}\`).join(',')}};\`;
+            const poolAsArgs = \`const p = {gallons: \${event.pool.gallons}};\`;
+            for (let i = 0; i < recipe.treatments.length; i++) {
+                const t = recipe.treatments[ i ];
+                const prevTreatVals = [];
+                Object.entries(outputs).forEach(([ variable, value ]) => { prevTreatVals.push(\`\${variable}:\${value}\`) });
+                const previousTreatmentsAsArgs = \`const t = {\${prevTreatVals.join(',') || ''}};\`;
+                const f = \`
+                    \${inputsAsArgs}
+                    \${poolAsArgs}
+                    \${previousTreatmentsAsArgs}
+                    \${t.formula}
+                \`;
+
+                // Fire away (for each formula)!
+                let result = null;
+                try {
+                    result = new Function(f)();
+                } catch (e) {
+                    console.error(e);
+                }
+                outputs[ t.variableName ] = result;
+            }
+
+            const keys = Object.keys(outputs);
+            const treatments = keys.map(k => ({ variable: k, value: outputs[ k ] }));
+
+            return treatments;
+        };`;
+        const event = {
+            recipe,
+            pool,
+            readings: inputs
+        };
+        const jsCall = calc + `const results = calc(${JSON.stringify(event)});document.getElementById("hello").innerHTML = JSON.stringify(results);window.ReactNativeWebView.postMessage(JSON.stringify(results));`;
+
+        return `<body><h1 id="hello">hello</h1><script>${jsCall}</script></body>`;
+    }
+
     static calculateTreatments = (recipe: Recipe, pool: Pool, recordedInputs: ReadingEntry[]): TreatmentEntry[] => {
 
         // const freeChlorineReading = readings.filter(r => r.identifier === 'free_chlorine');
@@ -23,7 +73,7 @@ export class CalculationService {
 
         /// Ensure these are in the correct order
         let inputValues = recipe.readings.map(reading => {
-            let record = recordedInputs.find(ri => ri.readingId === reading.variableName)
+            let record = recordedInputs.find(ri => ri.variableName === reading.variableName)
             if ((record === null) || (record === undefined)) {
                 return null;  // TODO: handle case where some inputs are empty?
             }
@@ -56,7 +106,7 @@ const calculateValueForOutput = (
     const formula = treatment.formula;
     // TODO: finish this, my brain === mush
     const params = inputs.map(r => {
-        if (inputEntries.filter(e => e.readingId === r.variableName).length > 0) {
+        if (inputEntries.filter(e => e.variableName === r.variableName).length > 0) {
             return ''
         }
     });

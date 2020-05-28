@@ -52,9 +52,9 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
     let sliderValue = (rs.value) ? parseFloat(rs.value) : 0;
     sliderValue = Math.max(Math.min(sliderValue, r.sliderMax), r.sliderMin);
 
-    let readingNameText = r.name;
+    let readingUnitsText = '';
     if (r.units) {
-        readingNameText = `${r.name} (${r.units})`;
+        readingUnitsText = ` (${r.units})`;
     }
 
     const textInputStyles: TextStyle[] = [styles.textInput];
@@ -100,7 +100,12 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
                             width={ 28 }
                             height={ 28 } />
                     </TouchableScale>
-                    <PDText style={ styles.readingName }>{ readingNameText }</PDText>
+                    <PDText style={ styles.readingName }>
+                        { r.name }
+                        <PDText style={ styles.readingUnits }>
+                            { readingUnitsText }
+                        </PDText>
+                    </PDText>
                     <TextInput
                         style={ textInputStyles }
                         onFocus={ onTextBeginEditing }
@@ -167,6 +172,15 @@ const styles = StyleSheet.create({
     },
     readingName: {
         color: 'black',
+        fontSize: 18,
+        fontWeight: '600',
+        flex: 1,
+        textAlignVertical: 'center',
+        marginTop: 3
+    },
+    readingUnits: {
+        color: 'black',
+        opacity: 0.4,
         fontSize: 18,
         fontWeight: '600',
         flex: 1,

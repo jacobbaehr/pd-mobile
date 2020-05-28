@@ -3,6 +3,7 @@ export const images = {
     back: require('./images/back.png'),
     backBlue: require('./images/back_blue.png'),
     backReadingsBlue: require('./images/back_readings_blue.png'),
+    backTreatmentsPurple: require('./images/back_treatments_purple.png'),
     backTrans: require('./images/back_trans.png'),
     closeDark: require('./images/close_dark.png'),
     history: require('./images/history.png'),

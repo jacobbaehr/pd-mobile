@@ -77,18 +77,24 @@ class PoolHistoryComponent extends React.PureComponent<PoolHistoryProps, PoolHis
         // get all different readings & treatments
         let idsToGraph: Graphable[] = [];
         entries.forEach(entry => {
-            entry.readingEntries.forEach(reading => {
-                const graphable: Graphable = { title: reading.readingName, id: reading.readingId };
-                if (idsToGraph.filter(g => { return g.title == graphable.title && g.id == graphable.id }).length == 0) {
-                    idsToGraph.push(graphable);
-                }
-            });
-            entry.treatmentEntries.forEach(treatment => {
-                const graphable: Graphable = { title: treatment.treatmentName, id: treatment.treatmentId };
-                if (idsToGraph.filter(g => { return g.title == graphable.title && g.id == graphable.id }).length == 0) {
-                    idsToGraph.push(graphable);
-                }
-            });
+            entry.readingEntries
+                .forEach(reading => {
+                    if (reading.referenceId) {
+                        const graphable: Graphable = { title: reading.readingName, id: reading.referenceId };
+                        if (idsToGraph.filter(g => { return g.title == graphable.title && g.id == graphable.id }).length == 0) {
+                            idsToGraph.push(graphable);
+                        }
+                    }
+                });
+            entry.treatmentEntries
+                .forEach(treatment => {
+                    if (treatment.referenceId) {
+                        const graphable: Graphable = { title: treatment.treatmentName, id: treatment.referenceId };
+                        if (idsToGraph.filter(g => { return g.title == graphable.title && g.id == graphable.id }).length == 0) {
+                            idsToGraph.push(graphable);
+                        }
+                    }
+                });
         });
 
         // get a chartcardviewmodel for each
@@ -97,13 +103,13 @@ class PoolHistoryComponent extends React.PureComponent<PoolHistoryProps, PoolHis
             let values: number[] = [];
             entries.forEach(entry => {
                 entry.readingEntries.forEach(reading => {
-                    if (reading.readingId === graphable.id) {
+                    if (reading.referenceId === graphable.id && reading.value) {
                         dates.push(entry.ts);
                         values.push(reading.value);
                     }
                 });
                 entry.treatmentEntries.forEach(treatment => {
-                    if (treatment.treatmentId === graphable.id) {
+                    if (treatment.referenceId === graphable.id && treatment.amount) {
                         dates.push(entry.ts);
                         values.push(treatment.amount);
                     }

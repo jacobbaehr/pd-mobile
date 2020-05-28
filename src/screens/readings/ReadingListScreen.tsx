@@ -5,7 +5,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 
 import { PDNavStackParamList } from '~/navigator/Navigators';
-import { AppState } from '~/redux/AppState';
+import { AppState, dispatch } from '~/redux/AppState';
 import { Recipe } from '~/models/recipe/Recipe';
 import { RecipeRepo } from '~/repository/RecipeRepo';
 import { Pool } from '~/models/Pool';
@@ -18,6 +18,8 @@ import { Haptic } from '~/services/HapticService';
 import { Util } from '~/services/Util';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { ReadingListFooter } from './ReadingListFooter';
+import { ReadingEntry } from '~/models/logs/ReadingEntry';
+import { recordInput, clearReadings } from '~/redux/readingEntries/Actions';
 
 interface ReadingListScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'ReadingList'>;
@@ -54,7 +56,6 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
                     value: r.defaultValue.toFixed(r.decimalPlaces),
                     isOn: false
                 }));
-                console.log('2');
                 setRecipe(recipe);
                 setReadingStates(initialReadingStates);
             }
@@ -65,6 +66,12 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
     }, []);
 
     const handleCalculatePressed = (): void => {
+        dispatch(clearReadings());
+        readingStates.forEach(rs => {
+            if (rs.isOn && rs.value && parseFloat(rs.value)) {
+                dispatch(recordInput(rs.reading, parseFloat(rs.value)));
+            }
+        });
         navigate('Results');
     };
 

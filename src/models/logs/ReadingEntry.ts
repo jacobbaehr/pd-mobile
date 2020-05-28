@@ -5,27 +5,32 @@ import { Reading } from '~/models/recipe/Reading';
  */
 export class ReadingEntry {
     // The value of the input
-    value!: number;
+    value?: number;
+
+    // Variable name (defined by the recipe)
+    variableName!: string;
 
     // human-friendly name of the reading
     readingName!: string;
 
-    // master-id of the reading (for now, is objectId)
-    readingId!: string;
+    // master-id of the reading.
+    referenceId?: string;
 
     // For Realm purposes
     static schema = {
         name: 'ReadingEntry',
         properties: {
             readingName: 'string',
-            readingId: 'string',
-            value: 'double',
+            referenceId: 'string?',
+            variableName: 'string',
+            value: 'double?',
         },
     };
 
-    static make(reading: Reading, value: number): ReadingEntry {
+    static make(reading: Reading, value?: number): ReadingEntry {
         let readingEntry = new ReadingEntry();
-        readingEntry.readingId = reading.variableName;
+        readingEntry.variableName = reading.variableName;
+        readingEntry.referenceId = reading.referenceId;
         readingEntry.readingName = reading.name;
         readingEntry.value = value;
         return readingEntry;

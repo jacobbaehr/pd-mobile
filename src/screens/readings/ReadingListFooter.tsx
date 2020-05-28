@@ -20,8 +20,13 @@ export const ReadingListFooter: React.FunctionComponent<ReadingListFooterProps> 
 
     return (
         <View style={ styles.container }>
+            <PDText style={ styles.recipeNameIntroText }>
+                Current recipe: <PDText style={ styles.recipeNameText } >
+                    { props.recipe.name }
+                </PDText>
+            </PDText>
             <View style={ styles.topRow }>
-                <PDText style={ styles.changeRecipeIntro }> Want different readings? </PDText>
+                <PDText style={ styles.changeRecipeIntro }>Want different readings? </PDText>
                 <TouchableHighlight
                     underlayColor={ 'transparent' }
                     onPressIn={ () => setIsChangeButtonPressed(true) }
@@ -35,14 +40,9 @@ export const ReadingListFooter: React.FunctionComponent<ReadingListFooterProps> 
                     </PDText>
                 </TouchableHighlight>
             </View>
-            <PDText style={ styles.recipeNameIntroText }>
-                Current recipe: <PDText style={ styles.recipeNameText } >
-                    { props.recipe.name }
-                </PDText>
-            </PDText>
-            <PDText style={ styles.recipeDescriptionText }>
+            {/* <PDText style={ styles.recipeDescriptionText }>
                 { props.recipe.description }
-            </PDText>
+            </PDText> */}
 
         </View>
     );
@@ -50,7 +50,7 @@ export const ReadingListFooter: React.FunctionComponent<ReadingListFooterProps> 
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 24,
+        marginTop: 20,
         marginHorizontal: 16,
         marginBottom: 40,
         backgroundColor: 'transparent'
@@ -76,8 +76,7 @@ const styles = StyleSheet.create({
     },
     recipeNameIntroText: {
         color: 'rgba(0,0,0,.6)',
-        fontSize: 18,
-        marginTop: 24
+        fontSize: 18
     },
     recipeNameText: {
         color: 'rgba(0,0,0,.6)',

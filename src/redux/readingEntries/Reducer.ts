@@ -2,7 +2,7 @@ import { AnyAction } from 'redux';
 
 import { ReadingEntry } from '~/models/logs/ReadingEntry';
 
-import { RecordReadingAction, RECORD_INPUT } from './Actions';
+import { RecordReadingAction, RECORD_INPUT, CLEAR_READINGS } from './Actions';
 
 export const readingEntriesReducer = (
     previousState: ReadingEntry[] = [],
@@ -11,31 +11,23 @@ export const readingEntriesReducer = (
     switch (action.type) {
         case RECORD_INPUT:
             const recordReadingAction = action as RecordReadingAction;
-            const newInputs: ReadingEntry[] = [];
-
-            let inputAlreadyRecorded = false;
-            previousState.forEach((r) => {
-                if (r.readingId === recordReadingAction.inputID) {
-                    newInputs.push(
-                        ReadingEntry.make(
-                            recordReadingAction.reading,
-                            recordReadingAction.value,
-                        ),
-                    );
-                    inputAlreadyRecorded = true;
-                } else {
-                    newInputs.push(r);
+            const entries = previousState;
+            let readingIsNew = true;
+            entries.forEach(r => {
+                if (r.variableName === recordReadingAction.reading.variableName) {
+                    r.value = recordReadingAction.value;
+                    readingIsNew = false;
                 }
             });
-            if (!inputAlreadyRecorded) {
-                newInputs.push(
-                    ReadingEntry.make(
-                        recordReadingAction.reading,
-                        recordReadingAction.value,
-                    ),
-                );
+            if (readingIsNew) {
+                entries.push(ReadingEntry.make(
+                    recordReadingAction.reading,
+                    recordReadingAction.value,
+                ));
             }
-            return newInputs;
+            return entries;
+        case CLEAR_READINGS:
+            return [];
         default:
             return previousState;
     }

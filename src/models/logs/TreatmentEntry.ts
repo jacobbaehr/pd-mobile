@@ -4,15 +4,20 @@ import { Treatment } from '../recipe/Treatment';
  * Represents the amount or state of a treatment or task
  */
 export class TreatmentEntry {
-    // The corresponding treatment:
-    treatmentId!: string;
+    // The calculated value
+    recommended?: number;
+
+    // The actual used value
+    amount?: number;
+
+    // Variable name (defined by the recipe)
+    variableName!: string;
+
+    // human-friendly name of the reading
     treatmentName!: string;
 
-    // For chemical treatments, amount in ounces.
-    // For tasks, 0 === incomplete, 1 === complete
-    amount!: number;
-    // If a different amount was used (vs suggested), the amount suggested is defined here
-    amountRecommended?: number;
+    // master-id of the treatment.
+    referenceId?: string;
 
     // For Realm purposes
     static schema = {
@@ -20,16 +25,16 @@ export class TreatmentEntry {
         properties: {
             treatmentName: 'string',
             treatmentId: 'string',
-            amount: 'double',
+            amount: 'double?',
             amountRecommended: 'double?'
         }
     };
-    
-    static make(treatment: Treatment, value: number): TreatmentEntry {
+
+    static make(treatment: Treatment, amount?: number): TreatmentEntry {
         let entry = new TreatmentEntry();
-        entry.treatmentId = treatment.objectId;
+        entry.referenceId = treatment.referenceId;
         entry.treatmentName = treatment.name;
-        entry.amount = value;
+        entry.amount = amount;
         return entry;
     }
 }
