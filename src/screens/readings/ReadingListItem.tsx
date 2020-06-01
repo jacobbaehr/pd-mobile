@@ -88,49 +88,51 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
 
     return (
         <View style={ styles.container }>
-            <View style={ styles.content }>
-                <View style={ styles.topRow }>
-                    <TouchableScale
-                        onPress={ () => props.handleIconPressed(r.variableName) }
-                        activeScale={ 1.2 }
-                        hitSlop={ { left: 25, right: 25, top: 25, bottom: 25 } }>
+            <TouchableScale
+                onPress={ () => props.handleIconPressed(r.variableName) }
+                activeScale={ 0.98 }
+                hitSlop={ { left: 25, right: 25, top: 25, bottom: 25 } }>
+                <View style={ styles.content }>
+                    <View style={ styles.topRow }>
+
                         <Image
                             style={ styles.circleImage }
                             source={ leftImageSource }
                             width={ 28 }
                             height={ 28 } />
-                    </TouchableScale>
-                    <PDText style={ styles.readingName }>
-                        { r.name }
-                        <PDText style={ styles.readingUnits }>
-                            { readingUnitsText }
+
+                        <PDText style={ styles.readingName }>
+                            { r.name }
+                            <PDText style={ styles.readingUnits }>
+                                { readingUnitsText }
+                            </PDText>
                         </PDText>
-                    </PDText>
-                    <TextInput
-                        style={ textInputStyles }
-                        onFocus={ onTextBeginEditing }
-                        onChangeText={ onTextChange }
-                        onEndEditing={ onTextEndEditing }
-                        keyboardType={ 'decimal-pad' }
-                        inputAccessoryViewID={ props.inputAccessoryId }>
-                        { rs.value }
-                    </TextInput>
+                        <TextInput
+                            style={ textInputStyles }
+                            onFocus={ onTextBeginEditing }
+                            onChangeText={ onTextChange }
+                            onEndEditing={ onTextEndEditing }
+                            keyboardType={ 'decimal-pad' }
+                            inputAccessoryViewID={ props.inputAccessoryId }>
+                            { rs.value }
+                        </TextInput>
+                    </View>
+                    <Slider
+                        style={ styles.slider }
+                        minimumValue={ r.sliderMin }
+                        maximumValue={ r.sliderMax }
+                        minimumTrackTintColor="#E3E3E3"
+                        maximumTrackTintColor="#E3E3E3"
+                        thumbImage={ images.sliderThumb }
+                        onSlidingStart={ onSliderStart }
+                        onSlidingComplete={ onSliderEnd }
+                        onValueChange={ (value: number) => props.onSliderUpdatedValue(r.variableName, value) }
+                        value={ sliderValue }
+                        step={ sliderStep }
+                        thumbTouchSize={ { width: 75, height: 55 } }
+                    />
                 </View>
-                <Slider
-                    style={ styles.slider }
-                    minimumValue={ r.sliderMin }
-                    maximumValue={ r.sliderMax }
-                    minimumTrackTintColor="#E3E3E3"
-                    maximumTrackTintColor="#E3E3E3"
-                    thumbImage={ images.sliderThumb }
-                    onSlidingStart={ onSliderStart }
-                    onSlidingComplete={ onSliderEnd }
-                    onValueChange={ (value: number) => props.onSliderUpdatedValue(r.variableName, value) }
-                    value={ sliderValue }
-                    step={ sliderStep }
-                    thumbTouchSize={ { width: 75, height: 55 } }
-                />
-            </View>
+            </TouchableScale>
         </View>
     );
 }
@@ -145,11 +147,9 @@ const styles = StyleSheet.create({
     content: {
         backgroundColor: 'white',
         flex: 1,
-        borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.11,
-        shadowRadius: 5,
+        borderRadius: 24,
+        borderColor: '#F0F0F0',
+        borderWidth: 2,
         elevation: 2,
         marginBottom: 12,
         marginHorizontal: 16

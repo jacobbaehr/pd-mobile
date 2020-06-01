@@ -5,7 +5,7 @@ import { StyleSheet, View, StyleProp, ViewStyle } from 'react-native';
 interface PDProgressBarProps {
     /// From 0 to 1
     progress: number;
-    foregroundColors: Color[];
+    foregroundColor: Color;
     style: StyleProp<ViewStyle>;
 }
 
@@ -26,7 +26,7 @@ export const PDProgressBar: React.FunctionComponent<PDProgressBarProps> = (props
     return (
         <View style={ containerStyle }>
             <View
-                style={ { flex: foregroundFlex, backgroundColor: '#3910E8', borderRadius: 8 } }>
+                style={ { flex: foregroundFlex, backgroundColor: props.foregroundColor, borderRadius: 8 } }>
             </View>
             <View style={ backgroundStyle } />
         </View>

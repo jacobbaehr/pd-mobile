@@ -6,7 +6,7 @@ import TouchableScale from 'react-native-touchable-scale';
 import { PDText } from '~/components/PDText';
 import { Haptic } from '~/services/HapticService';
 
-interface ChoosyButtonProps {
+interface CycleButtonProps {
     title: string;
     onPress: () => void;
     styles?: any;
@@ -14,7 +14,7 @@ interface ChoosyButtonProps {
     disabled?: boolean;
 }
 
-export const CycleButton: React.FunctionComponent<ChoosyButtonProps> = (props: ChoosyButtonProps) => {
+export const CycleButton: React.FunctionComponent<CycleButtonProps> = (props: CycleButtonProps) => {
 
     const handleButtonPress = () => {
         Haptic.selection();
@@ -39,12 +39,13 @@ const styles = StyleSheet.create({
         borderRadius: 17,
         borderWidth: 2,
         borderColor: '#F0F0F0',
-        paddingTop: 4,
-        paddingHorizontal: 7
+        paddingHorizontal: 7,
+        paddingVertical: 3
     },
     text: {
         color: '#1E6BFF',
         textAlign: 'center',
+        textAlignVertical: 'center',
         margin: '.5%',
         fontSize: 18,
         fontWeight: '600'

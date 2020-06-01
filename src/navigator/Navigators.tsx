@@ -8,7 +8,7 @@ import { PoolHistoryScreen } from '~/screens/poolHistory/PoolHistoryScreen';
 import { PoolListScreen } from '~/screens/poolList/PoolListScreen';
 import { ReadingListScreen } from '~/screens/readings/ReadingListScreen';
 import { RecipeListScreen } from '~/screens/recipes/RecipeListScreen';
-import { ResultsScreen } from '~/screens/results/ResultsScreen';
+import { TreatmentListScreen } from '~/screens/treatments/TreatmentListScreen';
 import { AuthenticationScreen } from '~/screens/AuthenticationScreen';
 import { CalculationSettingsScreen } from '~/screens/CalculationSettingsScreen';
 import { EditPoolScreen } from '~/screens/editPool/EditPoolScreen';
@@ -39,7 +39,7 @@ const MainStack = (): JSX.Element => {
             <Stack.Screen name="PoolScreen" component={ PoolScreen } />
             <Stack.Screen name="EditPool" component={ EditPoolScreen } />
             <Stack.Screen name="ReadingList" component={ ReadingListScreen } />
-            <Stack.Screen name="Results" component={ ResultsScreen } />
+            <Stack.Screen name="TreatmentList" component={ TreatmentListScreen } />
             <Stack.Screen name="Settings" component={ CalculationSettingsScreen } />
             <Stack.Screen name="RecipeList" component={ RecipeListScreen } />
             <Stack.Screen name="PoolHistory" component={ PoolHistoryScreen } />
@@ -71,7 +71,7 @@ export type PDNavStackParamList = {
     PoolScreen: undefined;
     EditPool: undefined;
     ReadingList: undefined;
-    Results: undefined;
+    TreatmentList: undefined;
     Settings: undefined;
     RecipeList: { poolName: string };
     PoolHistory: undefined;

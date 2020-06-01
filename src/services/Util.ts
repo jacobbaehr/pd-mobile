@@ -41,4 +41,23 @@ export class Util {
 
         return target;
     };
+
+    static notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+        return value !== null && value !== undefined;
+    }
+
+    static removeSuffixIfPresent = (suffix: string, original: string): string => {
+        if (original.length < suffix.length) {
+            console.log('1');
+            return original;
+        }
+        const candidate = original.substr(original.length - (suffix.length))
+        console.log("Candidate: ", candidate);
+        if (candidate == suffix) {
+            console.log('2');
+            return original.substr(0, original.length - suffix.length);
+        }
+        console.log('3');
+        return original;
+    }
 }

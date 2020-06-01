@@ -68,11 +68,11 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
     const handleCalculatePressed = (): void => {
         dispatch(clearReadings());
         readingStates.forEach(rs => {
-            if (rs.isOn && rs.value && parseFloat(rs.value)) {
+            if (rs.isOn && (rs.value !== undefined)) {
                 dispatch(recordInput(rs.reading, parseFloat(rs.value)));
             }
         });
-        navigate('Results');
+        navigate('TreatmentList');
     };
 
     const handleBackPressed = (): void => {
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     },
     sectionList: {
         flex: 1,
-        backgroundColor: '#F8F8F8',
+        backgroundColor: '#F5F3FF',
         paddingTop: 12,
     },
     button: {
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
         padding: 12,
     },
     keyboardAccessoryButton: {
-        backgroundColor: '#3910E8',
+        backgroundColor: 'rgba(57, 16, 232, 0.6)',
         marginHorizontal: 24
     },
     keyboardAccessoryButtonText: {

@@ -46,7 +46,7 @@ const ReadingListHeaderComponent: React.FunctionComponent<ReadingListHeaderProps
                 </PDText>
             <PDProgressBar
                 progress={ props.percentComplete }
-                foregroundColors={ gradientColors }
+                foregroundColor={ '#3910E8' }
                 style={ styles.progressBar } />
             <PDText style={ styles.detailsText }>
                 { detailsText }
@@ -56,8 +56,6 @@ const ReadingListHeaderComponent: React.FunctionComponent<ReadingListHeaderProps
 }
 
 export const ReadingListHeader = connect(mapStateToProps)(ReadingListHeaderComponent);
-
-const gradientColors: Color[] = ['#07A5FF', '#FF0073'];
 
 const styles = StyleSheet.create({
     container: {

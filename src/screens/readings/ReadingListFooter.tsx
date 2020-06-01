@@ -40,10 +40,6 @@ export const ReadingListFooter: React.FunctionComponent<ReadingListFooterProps> 
                     </PDText>
                 </TouchableHighlight>
             </View>
-            {/* <PDText style={ styles.recipeDescriptionText }>
-                { props.recipe.description }
-            </PDText> */}
-
         </View>
     );
 }
@@ -80,7 +76,7 @@ const styles = StyleSheet.create({
     },
     recipeNameText: {
         color: 'rgba(0,0,0,.6)',
-        fontWeight: '600',
+        fontWeight: '700',
         fontSize: 18
     },
     recipeDescriptionText: {

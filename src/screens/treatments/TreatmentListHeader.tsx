@@ -12,24 +12,24 @@ import { connect } from 'react-redux';
 import { Util } from '~/services/Util';
 import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 
-interface ResultsHeaderViewInternalProps {
+interface TreatmentListHeaderViewInternalProps {
     deviceSettings: DeviceSettings;
 }
-interface ResultsHeaderViewExternalProps {
+interface TreatmentListHeaderViewExternalProps {
     handleBackPress: () => void
     pool: Pool
     percentComplete: number
 }
-type ResultsHeaderProps = ResultsHeaderViewInternalProps & ResultsHeaderViewExternalProps;
+type TreatmentListHeaderProps = TreatmentListHeaderViewInternalProps & TreatmentListHeaderViewExternalProps;
 
-const mapStateToProps = (state: AppState, ownProps: ResultsHeaderViewExternalProps): ResultsHeaderProps => {
+const mapStateToProps = (state: AppState, ownProps: TreatmentListHeaderViewExternalProps): TreatmentListHeaderProps => {
     return {
         ...ownProps,
         deviceSettings: state.deviceSettings
     };
 };
 
-const ResultsHeaderComponent: React.FunctionComponent<ResultsHeaderProps> = (props) => {
+const TreatmentListHeaderComponent: React.FunctionComponent<TreatmentListHeaderProps> = (props) => {
 
     // const percentText = `${(this.props.percentComplete * 100).toFixed(0)}% Complete`;
     const volumeDisplay = Util.getDisplayVolume(props.pool.gallons, props.deviceSettings);
@@ -46,7 +46,7 @@ const ResultsHeaderComponent: React.FunctionComponent<ResultsHeaderProps> = (pro
                 </PDText>
             <PDProgressBar
                 progress={ props.percentComplete }
-                foregroundColors={ gradientColors }
+                foregroundColor={ '#B21FF1' }
                 style={ styles.progressBar } />
             <PDText style={ styles.detailsText }>
                 { detailsText }
@@ -55,7 +55,7 @@ const ResultsHeaderComponent: React.FunctionComponent<ResultsHeaderProps> = (pro
     );
 }
 
-export const ResultsHeader = connect(mapStateToProps)(ResultsHeaderComponent);
+export const TreatmentListHeader = connect(mapStateToProps)(TreatmentListHeaderComponent);
 
 const gradientColors: Color[] = ['#07A5FF', '#FF0073'];
 
