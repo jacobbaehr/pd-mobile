@@ -158,6 +158,50 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
         setTreatmentStates(tss);
     }
 
+    const handleTextUpdated = (varName: string, newText: string) => {
+        console.log('kaboooooooooooo');
+        const tss = Util.deepCopy(treatmentStates);
+        let didChange = false;
+        tss.forEach((ts) => {
+            if (ts.treatment.variableName === varName) {
+                let newOunces = 0;
+                if (newText.length > 0) {
+                    let newValue = parseFloat(newText);
+                    if (isNaN(newValue)) {
+                        newValue = 0;
+                    }
+                    newOunces = Converter.dry(newValue, ts.units, 'ounces');
+                }
+                if (ts.ounces !== newOunces) {
+                    console.log('CHANGING!!!!!');
+                    ts.ounces = newOunces;
+                    didChange = true;
+                }
+            }
+        });
+        if (didChange) {
+            setTreatmentStates(tss);
+        }
+    }
+
+    const handleTextFinishedEditing = (varName: string, newText: string) => {
+        const tss = Util.deepCopy(treatmentStates);
+        tss.forEach((ts) => {
+            if (ts.treatment.variableName === varName) {
+                let newOunces = 0;
+                if (newText.length > 0) {
+                    let newValue = parseFloat(newText);
+                    if (isNaN(newValue)) {
+                        newValue = 0;
+                    }
+                    newOunces = Converter.dry(newValue, ts.units, 'ounces');
+                }
+                ts.value = Converter.dry(newOunces, 'ounces', ts.units).toFixed(1);
+            }
+        });
+        setTreatmentStates(tss);
+    }
+
     const handleBackPress = () => {
         goBack();
     }
@@ -182,8 +226,8 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                     keyboardShouldPersistTaps={ 'handled' }
                     renderItem={ ({ item }) => <TreatmentListItem
                         treatmentState={ item }
-                        onTextboxUpdated={ () => { } }
-                        onTextboxFinished={ () => { } }
+                        onTextboxUpdated={ handleTextUpdated }
+                        onTextboxFinished={ handleTextFinishedEditing }
                         handleUnitsButtonPressed={ handleUnitsButtonPressed }
                         handleIconPressed={ handleIconPressed }
                         inputAccessoryId={ keyboardAccessoryViewId } /> }

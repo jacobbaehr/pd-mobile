@@ -5,6 +5,7 @@ import { PDText } from '../../components/PDText';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
 
+import pluralize from 'pluralize';
 import { images } from '~/assets/images';
 import { TextInput } from 'react-native-gesture-handler';
 import { Treatment } from '~/models/recipe/Treatment';
@@ -55,7 +56,6 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
         treatmentNameTextStyles.push(styles.textDone);
     }
 
-
     let valueText = Util.removeSuffixIfPresent('.0', ts.value || '');
 
     const onTextBeginEditing = () => {
@@ -101,13 +101,12 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
                             inputAccessoryViewID={ props.inputAccessoryId }>
                             { valueText }
                         </TextInput>
-                        <CycleButton title={ ts.units } onPress={ onPressedUnitsButton } textStyles={ unitsTextStyles } styles={ styles.unitsButton } />
+                        <CycleButton title={ pluralize(ts.units, parseFloat(valueText)) } onPress={ onPressedUnitsButton } textStyles={ unitsTextStyles } styles={ styles.unitsButton } />
                         <PDText style={ styles.ofLabel }>
                             of
                     </PDText>
                         <ChoosyButton title={ t.name } onPress={ () => { } } textStyles={ treatmentNameTextStyles } styles={ styles.treatmentNameButton } />
                     </View>
-
                 </View>
             </TouchableScale>
         </View>
