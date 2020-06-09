@@ -3,4 +3,4 @@ export interface PickerState {
     value: string | null;
 }
 
-export type PickerKey = 'water_type';
+export type PickerKey = 'water_type' | 'chem_concentration';

@@ -8,56 +8,53 @@ export const big3: Recipe = {
     readings: [
         {
             name: 'Free Chlorine',
-            variableName: 'fc',
+            var: 'fc',
             type: 'number',
             units: 'ppm',
             defaultValue: 3,
             sliderMax: 6,
             sliderMin: 0,
-            decimalPlaces: 1,
-            referenceId: 'fc'
+            decimalPlaces: 1
         },
         {
             name: 'pH',
-            variableName: 'ph',
+            var: 'ph',
             type: 'number',
             units: null,
             defaultValue: 7.2,
             sliderMax: 9,
             sliderMin: 5,
-            decimalPlaces: 1,
-            referenceId: 'ph'
+            decimalPlaces: 1
         },
         {
             name: 'Total Alkalinity',
-            variableName: 'ta',
+            var: 'ta',
             type: 'number',
             units: 'ppm',
             defaultValue: 100,
             sliderMax: 150,
             sliderMin: 50,
-            decimalPlaces: 0,
-            referenceId: 'ta'
+            decimalPlaces: 0
         }
     ],
     treatments: [
         {
-            referenceId: 'calc_hypo_67',
-            name: '67% Calcium Hypochlorite',
-            variableName: 'chlorine',
-            formula: 'if (r.fc > 3.0) return 0; return (3.0 - r.fc) * p.gallons * .06;'
+            name: 'Calcium Hypochlorite',
+            var: 'chlorine',
+            formula: 'if (r.fc > 3.0) return 0; return (3.0 - r.fc) * p.gallons * .06;',
+            concentration: 67
         },
         {
-            referenceId: 'sodium_bicarb',
             name: 'Sodium Bicarbonate',
-            variableName: 'baking_soda',
-            formula: 'return 6;'
+            var: 'baking_soda',
+            formula: 'return 6;',
+            concentration: 100
         },
         {
-            referenceId: 'sodium_carb',
             name: 'Sodium Carbonate',
-            variableName: 'soda_ash',
-            formula: 'return 0;'
+            var: 'soda_ash',
+            formula: 'return 0;',
+            concentration: 100
         }
     ]
 };

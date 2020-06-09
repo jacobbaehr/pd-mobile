@@ -17,7 +17,7 @@ export interface TextInputWithTitleProps {
     secureTextEntry?: boolean;
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
     autoCorrect?: boolean;
-    keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad';
+    keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad' | 'number-pad';
     returnKeyType?: ReturnKeyType;
     onSubmitEditing?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
     autoFocus?: boolean;

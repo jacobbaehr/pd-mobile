@@ -8,7 +8,10 @@ export class DeviceSettingsService {
     static getDefaultSettings = (): DeviceSettings => {
         return {
             units: 'us',
-            night_mode: 'system'
+            night_mode: 'system',
+            treatments: {
+                concentrations: {}
+            }
         };
     }
 

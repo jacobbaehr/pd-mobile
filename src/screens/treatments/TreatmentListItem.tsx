@@ -20,6 +20,8 @@ export interface TreatmentState {
     ounces: number;
     isOn: boolean;
     units: DryChemicalUnits;
+    decimalPlaces: number;
+    concentration: number;
 }
 
 interface TreatmentListItemProps {
@@ -28,6 +30,7 @@ interface TreatmentListItemProps {
     onTextboxFinished: (varName: string, text: string) => void;
     handleIconPressed: (varName: string) => void;
     handleUnitsButtonPressed: (varName: string) => void;
+    handleTreatmentNameButtonPressed: (varName: string) => void;
     inputAccessoryId?: string;
 }
 
@@ -56,32 +59,39 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
         treatmentNameTextStyles.push(styles.textDone);
     }
 
-    let valueText = Util.removeSuffixIfPresent('.0', ts.value || '');
+    let treatmentName = t.name;
+    if (ts.concentration && ts.concentration < 100) {
+        treatmentName = `${ts.concentration.toFixed(0)}% ${t.name}`;
+    }
+    const valueText = Util.removeSuffixIfPresent('.0', ts.value || '');
 
     const onTextBeginEditing = () => {
         setTextIsEditing(true);
     };
 
     const onTextChange = (newText: string) => {
-        props.onTextboxUpdated(t.variableName, newText);
+        props.onTextboxUpdated(t.var, newText);
     };
 
     const onTextEndEditing = (event: NativeSyntheticEvent<TextInputEndEditingEventData>) => {
         setTextIsEditing(false);
         const finalText = event.nativeEvent.text;
-        props.onTextboxFinished(t.variableName, finalText);
+        props.onTextboxFinished(t.var, finalText);
     };
 
     const onPressedUnitsButton = () => {
-        props.handleUnitsButtonPressed(t.variableName);
+        props.handleUnitsButtonPressed(t.var);
+    }
+
+    const onPressedTreatmentNameButton = () => {
+        props.handleTreatmentNameButtonPressed(t.var);
     }
 
     return (
         <View style={ styles.container }>
             <TouchableScale
-                onPress={ () => props.handleIconPressed(t.variableName) }
-                activeScale={ 0.98 }
-                hitSlop={ { left: 25, right: 25, top: 25, bottom: 25 } }>
+                onPress={ () => props.handleIconPressed(t.var) }
+                activeScale={ 0.98 } >
                 <View style={ styles.content }>
                     <View style={ styles.topRow }>
                         <Image
@@ -105,7 +115,7 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
                         <PDText style={ styles.ofLabel }>
                             of
                     </PDText>
-                        <ChoosyButton title={ t.name } onPress={ () => { } } textStyles={ treatmentNameTextStyles } styles={ styles.treatmentNameButton } />
+                        <ChoosyButton title={ treatmentName } onPress={ onPressedTreatmentNameButton } textStyles={ treatmentNameTextStyles } styles={ styles.treatmentNameButton } />
                     </View>
                 </View>
             </TouchableScale>
@@ -180,7 +190,8 @@ const styles = StyleSheet.create({
         fontWeight: '600'
     },
     textInput: {
-        width: 80,
+        minWidth: 60,
+        paddingHorizontal: 12,
         borderWidth: 2,
         borderColor: '#F8F8F8',
         borderRadius: 6,

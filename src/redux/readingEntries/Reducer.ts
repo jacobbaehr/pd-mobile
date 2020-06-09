@@ -14,7 +14,7 @@ export const readingEntriesReducer = (
             const entries = previousState;
             let readingIsNew = true;
             entries.forEach(r => {
-                if (r.variableName === recordReadingAction.reading.variableName) {
+                if (r.var === recordReadingAction.reading.var) {
                     r.value = recordReadingAction.value;
                     readingIsNew = false;
                 }

@@ -84,7 +84,7 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
         let isChanged = false;
         const rs = Util.deepCopy(readingStates);
         rs.forEach((r) => {
-            if (r.reading.variableName === varName && !r.isOn) {
+            if (r.reading.var === varName && !r.isOn) {
                 isChanged = true;
                 r.isOn = true;
             }
@@ -114,7 +114,7 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
         const rs = Util.deepCopy(readingStates);
         let isChanged = false;
         rs.forEach((r) => {
-            if (r.reading.variableName === varName) {
+            if (r.reading.var === varName) {
                 const newValue = value.toFixed(r.reading.decimalPlaces);
                 if (newValue !== r.value) {
                     isChanged = true;
@@ -131,7 +131,7 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
     const handleTextboxUpdated = (varName: string, text: string) => {
         const rs = Util.deepCopy(readingStates);
         rs.forEach((r) => {
-            if (r.reading.variableName === varName) {
+            if (r.reading.var === varName) {
                 r.value = text;
             }
         });
@@ -141,7 +141,7 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
     const handleTextboxDismissed = (varName: string, text: string) => {
         const rs = Util.deepCopy(readingStates);
         rs.forEach((r) => {
-            if (r.reading.variableName === varName) {
+            if (r.reading.var === varName) {
                 r.value = text;
                 r.isOn = text.length > 0;
             }
@@ -153,7 +153,7 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
         Haptic.light();
         const rs = Util.deepCopy(readingStates);
         rs.forEach((r) => {
-            if (r.reading.variableName === varName) {
+            if (r.reading.var === varName) {
                 r.isOn = !r.isOn;
                 if (r.isOn && !r.value) {
                     r.value = r.reading.defaultValue.toFixed(r.reading.decimalPlaces);
@@ -205,7 +205,7 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
                         handleIconPressed={ handleIconPressed }
                         inputAccessoryId={ keyboardAccessoryViewId } /> }
                     sections={ sections }
-                    keyExtractor={ (item) => item.reading.variableName }
+                    keyExtractor={ (item) => item.reading.var }
                     contentInsetAdjustmentBehavior={ 'always' }
                     stickySectionHeadersEnabled={ false }
                     canCancelContentTouches={ true }

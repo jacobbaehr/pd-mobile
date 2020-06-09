@@ -67,13 +67,13 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
     };
 
     const onTextChange = (newText: string) => {
-        props.onTextboxUpdated(r.variableName, newText);
+        props.onTextboxUpdated(r.var, newText);
     };
 
     const onTextEndEditing = (event: NativeSyntheticEvent<TextInputEndEditingEventData>) => {
         setTextIsEditing(false);
         const finalText = event.nativeEvent.text;
-        props.onTextboxFinished(r.variableName, finalText);
+        props.onTextboxFinished(r.var, finalText);
     };
 
     const onSliderStart = () => {
@@ -83,15 +83,14 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
 
     const onSliderEnd = () => {
         setIsSliding(false);
-        props.onSlidingComplete(r.variableName);
+        props.onSlidingComplete(r.var);
     };
 
     return (
         <View style={ styles.container }>
             <TouchableScale
-                onPress={ () => props.handleIconPressed(r.variableName) }
-                activeScale={ 0.98 }
-                hitSlop={ { left: 25, right: 25, top: 25, bottom: 25 } }>
+                onPress={ () => props.handleIconPressed(r.var) }
+                activeScale={ 0.98 } >
                 <View style={ styles.content }>
                     <View style={ styles.topRow }>
 
@@ -126,10 +125,10 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
                         thumbImage={ images.sliderThumb }
                         onSlidingStart={ onSliderStart }
                         onSlidingComplete={ onSliderEnd }
-                        onValueChange={ (value: number) => props.onSliderUpdatedValue(r.variableName, value) }
+                        onValueChange={ (value: number) => props.onSliderUpdatedValue(r.var, value) }
                         value={ sliderValue }
                         step={ sliderStep }
-                        thumbTouchSize={ { width: 75, height: 55 } }
+                        thumbTouchSize={ { width: 55, height: 55 } }
                     />
                 </View>
             </TouchableScale>

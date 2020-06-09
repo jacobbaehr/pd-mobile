@@ -8,11 +8,11 @@ export interface Treatment {
     name: string;
 
     // The treatment's variable name, for use in subsequent treatment formulas in the same recipe
-    variableName: string;
-
-    // An ID that uniquely identifies this input
-    referenceId?: string;
+    var: string;
 
     // The javascript formula that determines how much (if any) of the treatment is necessary
     formula: string;
+
+    // The % active ingredient of the chemical product recommended [0,100]
+    concentration?: number;
 }

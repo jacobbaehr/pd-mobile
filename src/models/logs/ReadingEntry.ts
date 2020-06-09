@@ -8,29 +8,24 @@ export class ReadingEntry {
     value?: number;
 
     // Variable name (defined by the recipe)
-    variableName!: string;
+    var!: string;
 
     // human-friendly name of the reading
     readingName!: string;
-
-    // master-id of the reading.
-    referenceId?: string;
 
     // For Realm purposes
     static schema = {
         name: 'ReadingEntry',
         properties: {
             readingName: 'string',
-            referenceId: 'string?',
-            variableName: 'string',
+            var: 'string',
             value: 'double?',
         },
     };
 
     static make(reading: Reading, value?: number): ReadingEntry {
         let readingEntry = new ReadingEntry();
-        readingEntry.variableName = reading.variableName;
-        readingEntry.referenceId = reading.referenceId;
+        readingEntry.var = reading.var;
         readingEntry.readingName = reading.name;
         readingEntry.value = value;
         return readingEntry;

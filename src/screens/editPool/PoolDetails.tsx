@@ -72,7 +72,7 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
                             inputStyles={ styles.textInput }
                             autoCapitalize='sentences'
                             autoCorrect={ false }
-                            keyboardType='numeric'
+                            keyboardType='number-pad'
                             value={ props.volumeText }
                             containerStyles={ styles.volumeTextContainer }
                             ref={ volumeRef }
