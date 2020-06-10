@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { ConfirmPurchaseScreen } from '~/screens/confirmPurchase/ConfirmPurchaseScreen';
 import { PoolScreen } from '~/screens/pool/PoolScreen';
-import { PoolHistoryScreen } from '~/screens/poolHistory/PoolHistoryScreen';
+import { PoolHistoryScreen } from '~/screens/trends/PoolHistoryScreen';
 import { PoolListScreen } from '~/screens/poolList/PoolListScreen';
 import { ReadingListScreen } from '~/screens/readings/ReadingListScreen';
 import { RecipeListScreen } from '~/screens/recipes/RecipeListScreen';

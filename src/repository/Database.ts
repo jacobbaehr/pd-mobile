@@ -61,6 +61,7 @@ export class Database {
                     name: pool.name,
                     waterType: pool.waterType,
                     objectId: pool.objectId,
+                    recipeKey: pool.recipeKey
                 });
             });
         } catch (e) {
@@ -91,9 +92,9 @@ export class Database {
         }
     };
 
-    static loadLogEntriesForPool = (poolId: string): Realm.Results<LogEntry> => {
+    static loadLogEntriesForPool = (poolId: string): Realm.Collection<LogEntry> => {
         const realm = Database.realm;
-        return realm.objects<LogEntry>(LogEntry).filtered(`poolId = "${poolId}"`);
+        return realm.objects<LogEntry>(LogEntry.schema.name).filtered(`poolId = "${poolId}"`);
     };
 
     static deletePool = (pool: Pool) => {
@@ -112,6 +113,7 @@ export class Database {
         }
     };
 
+    // Why does this work?
     static updatePool = (updatedPool: Pool) => {
         const realm = Database.realm;
         try {
@@ -120,9 +122,10 @@ export class Database {
                     Pool.schema.name,
                     {
                         objectId: updatedPool.objectId,
-                        volume: updatedPool.gallons,
+                        gallons: updatedPool.gallons,
                         name: updatedPool.name,
                         waterType: updatedPool.waterType,
+                        recipeKey: updatedPool.recipeKey
                     },
                     true,
                 );

@@ -15,7 +15,7 @@ export class PoolV0 {
     objectId!: string;
 
     // The recipe id + the ts it was last updated
-    // recipeKey?: RecipeKey;
+    recipeKey?: RecipeKey;
 
     // The pool water type
     waterType!: WaterTypeValue;
@@ -33,13 +33,14 @@ export class PoolV0 {
         }
     };
 
-    static make(name: string, gallons: number, waterType: WaterTypeValue, objectId?: string): PoolV0 {
+    static make(name: string, gallons: number, waterType: WaterTypeValue, objectId?: string, recipeKey?: RecipeKey): PoolV0 {
         const pool = new PoolV0();
         pool.name = name;
         pool.gallons = gallons;
         pool.waterType = waterType;
-        // yuck:
-        // pool.recipeKey = recipeKey;
+        pool.recipeKey = recipeKey;
+
+        // what the heck is this??? is the edit logic busted?
         if (objectId) {
             pool.objectId = objectId;
         }

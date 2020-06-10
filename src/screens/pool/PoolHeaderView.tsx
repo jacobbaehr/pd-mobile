@@ -66,7 +66,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         display: 'flex',
         flexDirection: 'column',
-        paddingHorizontal: 16
+        paddingHorizontal: 16,
+        borderBottomColor: '#F0F0F0',
+        borderBottomWidth: 2
     },
     navRow: {
         display: 'flex',

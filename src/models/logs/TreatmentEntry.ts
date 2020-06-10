@@ -4,13 +4,16 @@ import { Treatment } from '../recipe/Treatment';
  * Represents the amount or state of a treatment or task
  */
 export class TreatmentEntry {
-    // The calculated value, converted to the actual used concentration.
-    recommended?: number;
+    // The number of ounces used (for graphing, not displaying)
+    ounces!: number;
 
-    // The actual used value
-    amount?: number;
+    // The actual used value (for displaying, not graphing)
+    displayAmount!: string;
 
-    // The actual concentration used
+    // The units selected by the user
+    displayUnits?: string;
+
+    // The actual concentration used, [1,100]
     concentration?: number;
 
     // Variable name (defined by the recipe)
@@ -25,18 +28,22 @@ export class TreatmentEntry {
         properties: {
             treatmentName: 'string',
             var: 'string',
-            amount: 'double?',
-            amountRecommended: 'double?',
-            concentation: 'double?'
+            displayAmount: 'string',
+            displayUnits: 'string',
+            concentration: 'double?',
+            ounces: 'double'
         }
     };
 
-    static make(treatment: Treatment, amount?: number, concentration?: number): TreatmentEntry {
+    static make(treatment: Treatment, ounces: number, displayAmount: string, displayUnits?: string, concentration?: number): TreatmentEntry {
         let entry = new TreatmentEntry();
+
         entry.treatmentName = treatment.name;
         entry.var = treatment.var;
-        entry.amount = amount;
+        entry.displayAmount = displayAmount;
+        entry.displayUnits = displayUnits;
         entry.concentration = concentration || treatment.concentration;
+        entry.ounces = ounces;
         return entry;
     }
 }

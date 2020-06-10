@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { Alert, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View, SectionList, SectionListData, LayoutAnimation, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
+// @ts-ignore
+import TouchableScale from 'react-native-touchable-scale';
 
 import { PDNavStackParamList } from '~/navigator/Navigators';
 import { images } from '~/assets/images';
@@ -17,8 +19,13 @@ import { PoolHeaderView } from './PoolHeaderView';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { ChoosyButton } from '~/components/buttons/ChoosyButton';
 import { useNavigation } from '@react-navigation/native';
+import { useRealmPoolHistoryHook, useRecipeHook } from '../poolList/hooks/RealmPoolHook';
+import { PoolHistoryListItem } from './PoolHistoryListItem';
+import { Haptic } from '~/services/HapticService';
+import { Util } from '~/services/Util';
+import { RecipeService } from '~/services/RecipeService';
 
-interface PoolListScreenProps {
+interface PoolScreenProps {
     // The id of the selected pool, if any
     selectedPool: Pool | null;
 
@@ -32,7 +39,7 @@ interface PoolListScreenProps {
     hasValidSubscription: boolean;
 }
 
-const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolListScreenProps => {
+const mapStateToProps = (state: AppState, ownProps: PoolScreenProps): PoolScreenProps => {
     return {
         selectedPool: state.selectedPool,
         poolsLastUpdated: state.poolsLastUpdated,
@@ -41,9 +48,16 @@ const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolLi
     };
 };
 
-const PoolScreenComponent: React.FunctionComponent<PoolListScreenProps> = (props) => {
+const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) => {
 
     const { navigate, goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'PoolScreen'>>();
+    const history = useRealmPoolHistoryHook(props.selectedPool?.objectId || '');
+    const [selectedHistoryCellIds, setSelectedHistoryCellIds] = React.useState<string[]>([]);
+    const recipe = useRecipeHook(props.selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
+
+    if (!props.selectedPool) {
+        return <></>;
+    }
 
     const handleBackPressed = () => {
         goBack();
@@ -61,19 +75,30 @@ const PoolScreenComponent: React.FunctionComponent<PoolListScreenProps> = (props
         navigate('RecipeList');
     };
 
-    const handleGetProPressed = () => {
-        if (props.hasValidSubscription) {
-            // Alert subscription already active
-            Alert.alert('Subscription already active!');
-            return;
+    const handleHistoryCellPressed = (logEntryId: string) => {
+        Haptic.light();
+        const wasPreviouslyActive = selectedHistoryCellIds.includes(logEntryId);
+        let newActiveIds = Util.deepCopy(selectedHistoryCellIds);
+        if (wasPreviouslyActive) {
+            newActiveIds = newActiveIds.filter(x => x !== logEntryId);
+        } else {
+            newActiveIds.push(logEntryId);
         }
 
-        if (!props.user) {
-            navigate('PurchasePro', { screenType: 'Register' });
-        } else {
-            navigate('ConfirmPurchase', { user: props.user });
-        }
-    };
+        // Animate the progress bar change here:
+        const springAnimationProperties = {
+            type: LayoutAnimation.Types.easeInEaseOut,
+            property: LayoutAnimation.Properties.scaleXY,
+        };
+        const animationConfig = {
+            duration: 50, // how long the animation will take	
+            create: undefined,
+            update: springAnimationProperties,
+            delete: undefined
+        };
+        LayoutAnimation.configureNext(animationConfig);
+        setSelectedHistoryCellIds(newActiveIds);
+    }
 
     // const dateRanges = ['24H', '7D', '1M', '3M', '1Y', 'ALL'];
     const timestamps = [4, 5, 6]; // TODO: remove
@@ -86,6 +111,59 @@ const PoolScreenComponent: React.FunctionComponent<PoolListScreenProps> = (props
         interactive: false
     };
 
+    const sections: SectionListData<any>[] = [
+        {
+            title: 'Recipe',
+            data: [{}],
+            key: 'recipe_section',
+        }, {
+            title: 'Trends',
+            data: [{}],
+            key: 'trends_section',
+        }, {
+            title: 'History',
+            data: history,     // TODO: put the log entries here.
+            key: 'history_section',
+        }
+    ];
+
+    const renderItem = (section: SectionListData<any>, item: any): JSX.Element => {
+        let titleElement = <PDText style={ styles.sectionTitle }>{ section.title }</PDText>;
+        let contentBody = <></>;
+        if (section.key === 'recipe_section') {
+            if (!recipe) { return <View></View>; }
+            const recipeNameSlop = 7;
+            contentBody =
+                <View style={ styles.recipeSection } key={ `poolList|${section.data.indexOf(item)}|${sections.indexOf(section)}` }>
+                    <View style={ { flexDirection: 'row' } }>
+                        <TouchableScale
+                            onPress={ handleChangeRecipeButtonPressed }
+                            activeScale={ 0.98 }
+                            hitSlop={ { top: recipeNameSlop, left: recipeNameSlop, bottom: recipeNameSlop, right: recipeNameSlop } }
+                            style={ styles.recipeButton } >
+
+                            <PDText style={ styles.recipeName }>{ recipe.name }</PDText>
+                            <Image source={ images.rightArrow } height={ 21 } width={ 22 } style={ styles.arrowImage } />
+                        </TouchableScale>
+                    </View>
+                    <BoringButton onPress={ handleStartServicePressed } title={ 'Start Service' } containerStyles={ styles.startButton } />
+                    <PDText style={ styles.lastServiceLabel }>Last Serviced: 20 days ago</PDText>
+                </View>;
+        } else if (section.key === 'trends_section') {
+            contentBody = <ChartCard viewModel={ vm } containerStyles={ styles.chartCard } />;
+        } else if (section.key === 'history_section') {
+            if (history.indexOf(item) !== 0) {
+                titleElement = <></>;
+            }
+            contentBody = <PoolHistoryListItem logEntry={ item } handleCellSelected={ handleHistoryCellPressed } isExpanded={ selectedHistoryCellIds.includes(item.objectId) } />;
+        }
+
+        return (<View style={ { marginBottom: 14 } }>
+            { titleElement }
+            { contentBody }
+        </View>);
+    }
+
     return (
         <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } } forceInset={ { bottom: 'never' } } >
             <PoolHeaderView
@@ -93,43 +171,13 @@ const PoolScreenComponent: React.FunctionComponent<PoolListScreenProps> = (props
                 handlePressedEdit={ handleEditButtonPressed }
                 handlePressedBack={ handleBackPressed }
             />
-            <ScrollView style={ styles.scrollView }>
-                <View style={ styles.container }>
-                    <PDText style={ [styles.sectionTitle, styles.topSectionTitle] }>Recipe</PDText>
-                    <View style={ styles.recipeSection }>
-                        <View style={ { flexDirection: 'row' } }>
-                            <ChoosyButton
-                                title={ 'Pool Doctor' }
-                                onPress={ handleChangeRecipeButtonPressed }
-                                styles={ styles.recipeButton }
-                                textStyles={ styles.recipeButtonText }
-                            />
-                        </View>
-                        <BoringButton onPress={ handleStartServicePressed } title={ 'Start Service' } containerStyles={ styles.startButton } />
-                        <PDText style={ styles.lastServiceLabel }>Last Serviced: 20 days ago</PDText>
-                    </View>
-                    <View style={ { flex: 1 } }>
-                        <PDText style={ styles.sectionTitle }>Trends</PDText>
-                        <ChartCard viewModel={ vm } containerStyles={ styles.chartCard } />
-                    </View>
-                    <View style={ { flex: 1 } }>
-                        <PDText style={ styles.sectionTitle }>Want More?</PDText>
-                        <View style={ styles.plusContainer }>
-                            <Image style={ styles.pdProImageStyles } source={ images.logoGreenPlus } />
-                            <Text style={ styles.onlineBackupText }>
-                                <>- Support the development of this app</>
-                                <>- Unlock a few more features.</>
-                            </Text>
-                            <BoringButton
-                                title={ 'Get PoolDash Plus' }
-                                onPress={ handleGetProPressed }
-                                containerStyles={ styles.plusButton }
-                                textStyles={ styles.plusButtonText }
-                            />
-                        </View>
-                    </View>
-                </View>
-            </ScrollView>
+            <SectionList
+                sections={ sections }
+                style={ styles.sectionList }
+                renderItem={ ({ section, item }) => renderItem(section, item) }
+                contentInset={ { bottom: 34 } }
+                stickySectionHeadersEnabled={ true }
+            />
         </SafeAreaView>
     );
 }
@@ -137,41 +185,45 @@ const PoolScreenComponent: React.FunctionComponent<PoolListScreenProps> = (props
 export const PoolScreen = connect(mapStateToProps)(PoolScreenComponent);
 
 const styles = StyleSheet.create({
-    container: {
+    sectionList: {
         flex: 1,
         backgroundColor: '#F8F8F8',
         paddingHorizontal: 20,
-        paddingBottom: 200,
-        marginBottom: -180,
-    },
-    scrollView: {
-        backgroundColor: '#F8F8F8',
+        paddingBottom: 20,
     },
     sectionTitle: {
         fontWeight: '700',
         fontSize: 28,
-        marginTop: 20,
+        marginTop: 6,
         marginBottom: 4,
     },
-    topSectionTitle: {
-        marginTop: 14,
+    recipeName: {
+        fontSize: 28,
+        fontWeight: '700',
+        color: '#1E6BFF',
+        alignSelf: 'center'
+    },
+    arrowImage: {
+        alignSelf: 'center',
+        marginLeft: 8
     },
     startButton: {
         backgroundColor: '#1E6BFF',
         marginTop: 12,
-        marginBottom: 5
+        marginBottom: 5,
+        marginHorizontal: 12
     },
     lastServiceLabel: {
         color: '#737373',
         fontWeight: '600',
-        fontSize: 16
+        fontSize: 16,
+        marginTop: 6
     },
     recipeSection: {
-        marginHorizontal: 12,
         marginBottom: 12
     },
     recipeButton: {
-        backgroundColor: 'white'
+        flexDirection: 'row'
     },
     recipeButtonText: {
         fontSize: 22,

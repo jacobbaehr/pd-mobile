@@ -34,7 +34,7 @@ export class LogEntry {
             readingEntries: 'ReadingEntry[]',
             treatmentEntries: 'TreatmentEntry[]',
             ts: 'int',
-            recipeId: 'string',
+            recipeKey: 'string',
         },
     };
 

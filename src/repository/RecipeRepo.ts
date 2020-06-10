@@ -7,6 +7,7 @@ const recipeFolderName = 'recipes';
 const defaultRecipes: Recipe[] = [big3];
 
 export class RecipeRepo {
+
     /// Attempts to load the recipes from the Recipe folder
     static loadLocalRecipeWithKey = async (recipeKey: RecipeKey): Promise<Recipe> => {
         const filePath = RecipeRepo.getFilepathForRecipeKey(recipeKey);

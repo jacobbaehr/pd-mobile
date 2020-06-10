@@ -5,7 +5,7 @@ import { Reading } from '~/models/recipe/Reading';
  */
 export class ReadingEntry {
     // The value of the input
-    value?: number;
+    value!: number;
 
     // Variable name (defined by the recipe)
     var!: string;
@@ -13,21 +13,26 @@ export class ReadingEntry {
     // human-friendly name of the reading
     readingName!: string;
 
+    // for convenience, store the reading units here as well
+    units?: string;
+
     // For Realm purposes
     static schema = {
         name: 'ReadingEntry',
         properties: {
             readingName: 'string',
             var: 'string',
-            value: 'double?',
+            value: 'double',
+            units: 'string?'
         },
     };
 
-    static make(reading: Reading, value?: number): ReadingEntry {
+    static make(reading: Reading, value: number): ReadingEntry {
         let readingEntry = new ReadingEntry();
         readingEntry.var = reading.var;
         readingEntry.readingName = reading.name;
         readingEntry.value = value;
+        readingEntry.units = reading.units || undefined;
         return readingEntry;
     }
 }

@@ -18,6 +18,7 @@ export const images = {
     plusButton: require('./images/plus.png'),
     accountButton: require('./images/account_button.png'),
     logoGreenPlus: require('./images/logo_plus_green.png'),
+    rightArrow: require('./images/right_arrow.png'),
     sliderThumb: require('./images/thumb.png'),
     sliderThumbBlue: require('./images/thumb_blue.png'),
     greenCheck: require('./images/green_check.png'),

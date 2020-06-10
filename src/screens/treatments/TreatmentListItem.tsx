@@ -8,21 +8,10 @@ import TouchableScale from 'react-native-touchable-scale';
 import pluralize from 'pluralize';
 import { images } from '~/assets/images';
 import { TextInput } from 'react-native-gesture-handler';
-import { Treatment } from '~/models/recipe/Treatment';
 import { ChoosyButton } from '~/components/buttons/ChoosyButton';
 import { CycleButton } from '~/components/buttons/CycleButton';
 import { Util } from '~/services/Util';
-import { DryChemicalUnits } from './TreatmentUnits';
-
-export interface TreatmentState {
-    treatment: Treatment;
-    value?: string;
-    ounces: number;
-    isOn: boolean;
-    units: DryChemicalUnits;
-    decimalPlaces: number;
-    concentration: number;
-}
+import { TreatmentState } from './TreatmentListHelpers';
 
 interface TreatmentListItemProps {
     treatmentState: TreatmentState;

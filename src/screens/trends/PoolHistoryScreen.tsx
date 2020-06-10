@@ -99,15 +99,15 @@ class PoolHistoryComponent extends React.PureComponent<PoolHistoryProps, PoolHis
             let values: number[] = [];
             entries.forEach(entry => {
                 entry.readingEntries.forEach(reading => {
-                    if (reading.var === graphable.id && reading.value) {
+                    if (reading.var === graphable.id) {
                         dates.push(entry.ts);
                         values.push(reading.value);
                     }
                 });
                 entry.treatmentEntries.forEach(treatment => {
-                    if (treatment.var === graphable.id && treatment.amount) {
+                    if (treatment.var === graphable.id) {
                         dates.push(entry.ts);
-                        values.push(treatment.amount);
+                        values.push(treatment.ounces);
                     }
                 });
             });

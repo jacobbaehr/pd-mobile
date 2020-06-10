@@ -6,8 +6,6 @@ import { connect } from 'react-redux';
 
 import { PDNavStackParamList } from '~/navigator/Navigators';
 import { AppState, dispatch } from '~/redux/AppState';
-import { Recipe } from '~/models/recipe/Recipe';
-import { RecipeRepo } from '~/repository/RecipeRepo';
 import { Pool } from '~/models/Pool';
 
 import { ReadingListItem, ReadingState } from './ReadingListItem';
@@ -20,6 +18,7 @@ import { BoringButton } from '~/components/buttons/BoringButton';
 import { ReadingListFooter } from './ReadingListFooter';
 import { ReadingEntry } from '~/models/logs/ReadingEntry';
 import { recordInput, clearReadings } from '~/redux/readingEntries/Actions';
+import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
 
 interface ReadingListScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'ReadingList'>;
@@ -37,33 +36,25 @@ const mapStateToProps = (state: AppState, ownProps: ReadingListScreenProps): Rea
 
 const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps> = (props) => {
 
-    const [recipe, setRecipe] = React.useState<Recipe | undefined>();
     const [isSliding, setIsSliding] = React.useState(false);
     const [readingStates, setReadingStates] = React.useState<ReadingState[]>([]);
+    const recipe = useRecipeHook(props.recipeKey);
 
     const { setOptions, navigate, goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'ReadingList'>>();
     const keyboardAccessoryViewId = 'wowThisIsSomeReallyUniqueTextReadingListKeyboard';
 
     React.useEffect(() => {
         setOptions({ gestureEnabled: false });
-        try {
-            const loadRecipe = async () => {
-                const recipe = await RecipeRepo.loadLocalRecipeWithKey(props.recipeKey);
-                console.log('Recipe:');
-                console.log(JSON.stringify(recipe));
-                const initialReadingStates = recipe.readings.map(r => ({
-                    reading: r,
-                    value: r.defaultValue.toFixed(r.decimalPlaces),
-                    isOn: false
-                }));
-                setRecipe(recipe);
-                setReadingStates(initialReadingStates);
-            }
-            loadRecipe();
-        } catch (e) {
-            console.error(e);
+        if (recipe) {
+            const initialReadingStates = recipe.readings.map(r => ({
+                reading: r,
+                value: r.defaultValue.toFixed(r.decimalPlaces),
+                isOn: false
+            }));
+
+            setReadingStates(initialReadingStates);
         }
-    }, []);
+    }, [recipe]);
 
     const handleCalculatePressed = (): void => {
         dispatch(clearReadings());

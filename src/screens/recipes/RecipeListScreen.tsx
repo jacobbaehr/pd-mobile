@@ -63,7 +63,7 @@ class RecipeListScreenComponent extends React.Component<RecipeListScreenProps, R
         if (this.props.pool !== null && this.props.pool !== undefined) {
             this.props.navigation.setParams({ poolName: this.props.pool.name });
         }
-        this.recipes = await this.recipeService.fetchRecipeList();
+        this.recipes = await RecipeService.fetchRecipeList();
 
         this.setState({ initialLoadFinished: true });
     }

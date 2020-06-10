@@ -9,13 +9,11 @@ interface RecipesResponse {
 }
 
 export class RecipeService {
-    recipeApiManager: RecipesApiManager;
+    static recipeApiManager = new RecipesApiManager('https://api.pooldash.com/v1/recipes');
 
-    constructor() {
-        this.recipeApiManager = new RecipesApiManager('https://api.pooldash.com/v1/recipes');
-    }
+    static defaultRecipeKey = '002_initial_big3|1234';
 
-    resolveRecipeWithKey = async (recipeKey: RecipeKey): Promise<Recipe> => {
+    static resolveRecipeWithKey = async (recipeKey: RecipeKey): Promise<Recipe> => {
         console.log(`loading recipe ${recipeKey}`);
         try {
             const localRecipe = await RecipeRepo.loadLocalRecipeWithKey(recipeKey);
@@ -26,7 +24,7 @@ export class RecipeService {
         }
 
         try {
-            const recipe = await this.fetchRecipeRemotely(recipeKey);
+            const recipe = await RecipeService.fetchRecipeRemotely(recipeKey);
             return recipe;
         } catch (e) {
             console.log('Could not fetch recipe remotely!');
@@ -34,8 +32,8 @@ export class RecipeService {
         }
     }
 
-    fetchRecipeList = async (): Promise<RecipeMeta[]> => {
-        const getRecipesResponse = await this.recipeApiManager.getDefaultRecipes();
+    static fetchRecipeList = async (): Promise<RecipeMeta[]> => {
+        const getRecipesResponse = await RecipeService.recipeApiManager.getDefaultRecipes();
         if (getRecipesResponse.error || !getRecipesResponse.response) {
             console.log(getRecipesResponse.error);
             return [];
@@ -46,7 +44,7 @@ export class RecipeService {
         }
     }
 
-    private fetchRecipeRemotely = async (recipeId: string): Promise<Recipe> => {
+    private static fetchRecipeRemotely = async (recipeId: string): Promise<Recipe> => {
         // TODO: implement this
         return Promise.reject('not yet implemented!');
     }

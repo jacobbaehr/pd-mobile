@@ -1,9 +1,11 @@
 import { ReadingEntry } from '../models/logs/ReadingEntry';
-import { TreatmentEntry } from '../models/logs/TreatmentEntry';
+import { TreatmentEntry } from '~/models/logs/TreatmentEntry';
 import { Treatment } from '../models/recipe/Treatment';
 import { Reading } from '../models/recipe/Reading';
 import { Recipe } from '../models/recipe/Recipe';
 import { Pool } from '../models/Pool';
+import { WebViewMessageEvent } from 'react-native-webview';
+import { TreatmentState } from '~/screens/treatments/TreatmentListHelpers';
 
 export interface CalculationResult {
     value: number | null;
@@ -55,5 +57,44 @@ export class CalculationService {
         const jsCall = calc + `const results = calc(${JSON.stringify(event)});document.getElementById("hello").innerHTML = JSON.stringify(results);window.ReactNativeWebView.postMessage(JSON.stringify(results));`;
 
         return `<body><h1 id="hello">hello</h1><script>${jsCall}</script></body>`;
+    }
+
+    static getTreatmentEntriesFromWebviewMessage = (event: WebViewMessageEvent, recipe: Recipe): TreatmentEntry[] => {
+        console.log(event.nativeEvent.data);
+        const results = JSON.parse(event.nativeEvent.data) as CalculationResult[];
+        const tes: TreatmentEntry[] = [];
+        results
+            .filter(tv => tv.value)
+            .forEach(tv => {
+                const correspondingTreatments = recipe.treatments.filter(t => t.var === tv.var);
+                if (correspondingTreatments.length > 0) {
+                    const correspondingTreatment = correspondingTreatments[0];
+                    if (tv.value) {
+                        tes.push({
+                            var: tv.var,
+                            displayAmount: tv.value.toFixed(1),
+                            treatmentName: correspondingTreatment.name,
+                            ounces: tv.value,
+                            displayUnits: 'ounces',
+                            concentration: correspondingTreatment.concentration
+                        });
+                    }
+                }
+            });
+        return tes;
+    }
+
+    static mapTreatmentStatesToTreatmentEntries = (tss: TreatmentState[]): TreatmentEntry[] => {
+        return tss
+            .filter(ts => ts.isOn)
+            .map(ts => {
+                return TreatmentEntry.make(
+                    ts.treatment,
+                    ts.ounces,
+                    ts.value || '0',
+                    ts.units,
+                    ts.concentration
+                );
+            });
     }
 }
