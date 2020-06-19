@@ -64,7 +64,6 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: 12,
-        marginVertical: 6,
         backgroundColor: 'white',
         borderRadius: 24,
         borderWidth: 2,

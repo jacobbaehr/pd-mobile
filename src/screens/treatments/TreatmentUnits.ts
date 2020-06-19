@@ -36,6 +36,25 @@ export class Converter {
         return Converter.dryOunces(valueInOunces, toUnits);
     }
 
+    static wet = (prevValue: number, fromUnits: WetChemicalUnits, toUnits: WetChemicalUnits): number => {
+        let prevToOunces = 1;
+        switch (fromUnits) {
+            case 'ounces':
+                prevToOunces = 1;
+                break;
+            case 'gallons':
+                prevToOunces = 128;
+                break;
+            case 'mL':
+                prevToOunces = 0.033814;
+                break;
+            case 'liters':
+                prevToOunces = 33.814;
+        }
+        const valueInOunces = prevValue * prevToOunces;
+        return Converter.wetOunces(valueInOunces, toUnits);
+    }
+
     static dryOunces = (ounces: number, toUnits: DryChemicalUnits): number => {
         let multiplier = 1;
         switch (toUnits) {
@@ -58,7 +77,7 @@ export class Converter {
         return ounces * multiplier;
     }
 
-    static wet = (ounces: number, toUnits: WetChemicalUnits): number => {
+    static wetOunces = (ounces: number, toUnits: WetChemicalUnits): number => {
         let multiplier = 1;
         switch (toUnits) {
             case 'ounces':

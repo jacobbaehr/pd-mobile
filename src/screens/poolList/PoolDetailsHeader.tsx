@@ -41,7 +41,9 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         paddingBottom: 20,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        borderBottomColor: '#F0F0F0',
+        borderBottomWidth: 2
     },
     options: {
         display: 'flex',

@@ -42,19 +42,22 @@ export const big3: Recipe = {
             name: 'Calcium Hypochlorite',
             var: 'chlorine',
             formula: 'if (r.fc > 3.0) return 0; return (3.0 - r.fc) * p.gallons * .06;',
-            concentration: 67
+            concentration: 67,
+            type: 'dry_chem'
         },
         {
             name: 'Sodium Bicarbonate',
             var: 'baking_soda',
             formula: 'return 6;',
-            concentration: 100
+            concentration: 100,
+            type: 'dry_chem'
         },
         {
             name: 'Sodium Carbonate',
             var: 'soda_ash',
             formula: 'return 0;',
-            concentration: 100
+            concentration: 100,
+            type: 'dry_chem'
         }
     ]
 };

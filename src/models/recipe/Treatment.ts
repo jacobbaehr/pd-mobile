@@ -15,4 +15,9 @@ export interface Treatment {
 
     // The % active ingredient of the chemical product recommended [1,100]
     concentration?: number;
+
+    // If this is a task, dry chem, wet chem, or other...
+    type: TreatmentType;
 }
+
+export type TreatmentType = 'dry_chem' | 'wet_chem' | 'task' | 'calc';

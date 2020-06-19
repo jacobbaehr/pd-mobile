@@ -76,7 +76,7 @@ const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (p
                         onPress={ handleAddPoolPressed }>
                         <Image
                             style={ styles.accountButtonImage }
-                            source={ images.accountButton }
+                            source={ images.gearLightButton }
                             width={ 38 }
                             height={ 38 } />
                     </TouchableScale>
@@ -126,7 +126,9 @@ const styles = StyleSheet.create({
     header: {
         display: 'flex',
         flexDirection: 'row',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        borderBottomColor: '#F0F0F0',
+        borderBottomWidth: 2
     },
     headerLeft: {
         display: 'flex',

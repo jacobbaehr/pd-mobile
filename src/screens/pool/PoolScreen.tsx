@@ -150,6 +150,9 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
                     <PDText style={ styles.lastServiceLabel }>Last Serviced: 20 days ago</PDText>
                 </View>;
         } else if (section.key === 'trends_section') {
+            if (history.length < 2) {
+                return <></>;
+            }
             contentBody = <ChartCard viewModel={ vm } containerStyles={ styles.chartCard } />;
         } else if (section.key === 'history_section') {
             if (history.indexOf(item) !== 0) {
