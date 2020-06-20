@@ -4,6 +4,7 @@ export const images = {
     backBlue: require('./images/back_blue.png'),
     backReadingsBlue: require('./images/back_readings_blue.png'),
     backTreatmentsPurple: require('./images/back_treatments_purple.png'),
+    backRecipesGreen: require('./images/back_recipes_green.png'),
     backTrans: require('./images/back_trans.png'),
     closeDark: require('./images/close_dark.png'),
     history: require('./images/history.png'),

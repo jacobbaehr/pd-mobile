@@ -41,7 +41,7 @@ export class RecipeRepo {
     }
 
     /// Saves recipe, will overwrite existing file if it already exists.
-    private static saveRecipe = async (recipe: Recipe): Promise<Boolean> => {
+    static saveRecipe = async (recipe: Recipe): Promise<Boolean> => {
         const key = getRecipeKey(recipe);
         const filePath = RecipeRepo.getFilepathForRecipeKey(key);
         const fileData = JSON.stringify(recipe);

@@ -61,8 +61,10 @@ const gradientColors: Color[] = ['#07A5FF', '#FF0073'];
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 16,
-        backgroundColor: 'white'
+        paddingHorizontal: 16,
+        backgroundColor: 'white',
+        borderBottomColor: '#F0F0F0',
+        borderBottomWidth: 2
     },
     gradientText: {
         color: '#B21FF1',

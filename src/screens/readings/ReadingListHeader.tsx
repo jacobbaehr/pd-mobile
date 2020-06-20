@@ -59,8 +59,10 @@ export const ReadingListHeader = connect(mapStateToProps)(ReadingListHeaderCompo
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 16,
-        backgroundColor: 'white'
+        paddingHorizontal: 16,
+        backgroundColor: 'white',
+        borderBottomColor: '#F0F0F0',
+        borderBottomWidth: 2
     },
     gradientText: {
         color: '#3910E8',

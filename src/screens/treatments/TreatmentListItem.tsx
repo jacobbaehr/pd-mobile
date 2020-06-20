@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         textAlignVertical: 'center',
         marginLeft: 10,
+        marginRight: 10,
         marginBottom: 16
     },
     treatmentNameButton: {

@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Button, SectionList, TouchableHighlight } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { View, StyleSheet } from 'react-native';
+// @ts-ignore
+import TouchableScale from 'react-native-touchable-scale';
 
-import { Recipe } from '../../models/recipe/Recipe';
+import { PDText } from '~/components/PDText';
+import { RecipeMeta } from '~/models/recipe/RecipeMeta';
 
 interface RecipeListItemProps {
-    recipe: Recipe;
-
-    onRecipeSelected: (recipe: Recipe) => void;
+    recipe: RecipeMeta;
+    onRecipeSelected: (recipe: RecipeMeta) => void;
 }
 
 export class RecipeListItem extends React.Component<RecipeListItemProps, {}> {
@@ -18,53 +19,44 @@ export class RecipeListItem extends React.Component<RecipeListItemProps, {}> {
 
     render() {
         const recipe = this.props.recipe;
-
         return (
-            <View style={ styles.container }>
-                <TouchableHighlight
-                    style={ styles.content }
-                    onPress={ this.handleButtonPressed }>
-                    <View style={ { flex: 1 } }>
-                        <Text style={ styles.recipeNameText }>{ recipe.name }</Text>
-                        <Text style={ styles.recipeDescriptionText }>{ recipe.description } </Text>
-                        <Icon name="chevron-right" style={ styles.iconStyle }></Icon>
-                    </View>
-                </TouchableHighlight>
-            </View>
+            <TouchableScale
+                style={ styles.content }
+                onPress={ this.handleButtonPressed }
+                activeScale={ 0.98 }>
+                <View style={ { flex: 1 } }>
+                    <PDText style={ styles.recipeNameText }>{ recipe.name } <PDText style={ styles.recipeIdText }>({ recipe.id })</PDText></PDText>
+                    <PDText style={ styles.recipeDescriptionText }>{ recipe.desc } </PDText>
+                </View>
+            </TouchableScale>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'transparent',
-        height: 70,
-    },
     content: {
         flex: 1,
-        backgroundColor: '#0B1520',
-        margin: 2,
-        borderRadius: 3,
-        borderWidth: .1,
-        borderColor: '#BCBCC2',
-        padding: 2
+        backgroundColor: 'white',
+        marginHorizontal: 24,
+        borderRadius: 24,
+        borderWidth: 2,
+        borderColor: '#F0F0F0',
+        paddingVertical: 12,
+        paddingHorizontal: 16
     },
     recipeNameText: {
-        color: 'white',
-        fontSize: 17,
+        color: '#009384',
+        fontSize: 20,
+        fontWeight: '700'
+    },
+    recipeIdText: {
+        color: '#666666',
+        fontSize: 16,
+        fontWeight: '600'
     },
     recipeDescriptionText: {
-        color: 'white',
-        fontSize: 10,
-        justifyContent: 'flex-end',
-        marginTop: 10
-    },
-    iconStyle: {
-        color: '#B3B3B3',
-        alignSelf: 'flex-end',
-        position: 'absolute',
-        top: 25,
-        fontSize: 15
+        color: '#4C4C4C',
+        fontSize: 16,
+        fontWeight: '600'
     }
 });

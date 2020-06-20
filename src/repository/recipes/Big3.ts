@@ -14,7 +14,9 @@ export const big3: Recipe = {
             defaultValue: 3,
             sliderMax: 6,
             sliderMin: 0,
-            decimalPlaces: 1
+            decimalPlaces: 1,
+            idealMin: 3,
+            idealMax: 4
         },
         {
             name: 'pH',
@@ -24,7 +26,9 @@ export const big3: Recipe = {
             defaultValue: 7.2,
             sliderMax: 9,
             sliderMin: 5,
-            decimalPlaces: 1
+            decimalPlaces: 1,
+            idealMin: 6.8,
+            idealMax: 7.2
         },
         {
             name: 'Total Alkalinity',
@@ -34,7 +38,9 @@ export const big3: Recipe = {
             defaultValue: 100,
             sliderMax: 150,
             sliderMin: 50,
-            decimalPlaces: 0
+            decimalPlaces: 0,
+            idealMax: 190,
+            idealMin: 220
         }
     ],
     treatments: [

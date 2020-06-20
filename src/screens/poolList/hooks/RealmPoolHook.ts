@@ -6,6 +6,9 @@ import { LogEntry } from "~/models/logs/LogEntry";
 import { RecipeKey } from "~/models/recipe/RecipeKey";
 import { Recipe } from "~/models/recipe/Recipe";
 import { RecipeService } from "~/services/RecipeService";
+import { useApolloClient } from "@apollo/react-hooks";
+import { NormalizedCacheObject } from "apollo-cache-inmemory";
+import ApolloClient from "apollo-client";
 
 
 export const useRealmPoolsHook = (): Realm.Collection<Pool> => {
@@ -45,7 +48,7 @@ export const useRealmPoolHistoryHook = (poolId: string): Realm.Collection<LogEnt
     useEffect(() => {
         const handleChange = (newData: Realm.Collection<LogEntry>) => {
             setData({
-                data: newData,
+                data: newData.sorted('ts', true),
                 // The date is here to trigger a rerender on each change (the list is shallow-compared)
                 a: Date.now()
             });
@@ -64,11 +67,12 @@ export const useRealmPoolHistoryHook = (poolId: string): Realm.Collection<LogEnt
 
 export const useRecipeHook = (recipeKey: RecipeKey): Recipe | null => {
     const [recipe, setRecipe] = useState<Recipe | null>(null);
+    const client = useApolloClient() as ApolloClient<NormalizedCacheObject>;    // TODO: type-casting? ugh.
 
     useEffect(() => {
         try {
             const loadRecipe = async () => {
-                const recipe = await RecipeService.resolveRecipeWithKey(recipeKey);
+                const recipe = await RecipeService.resolveRecipeWithKey(recipeKey, client);
                 setRecipe(recipe);
             }
             loadRecipe();

@@ -21,6 +21,10 @@ export interface Reading {
     sliderMin: number;
     sliderMax: number;
     decimalPlaces: number;
+
+    // The ideal values
+    idealMax: number | null;
+    idealMin: number | null;
 }
 
 export type ReadingType = 'number';

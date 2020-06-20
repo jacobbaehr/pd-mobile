@@ -3,6 +3,9 @@ import { Recipe } from '~/models/recipe/Recipe';
 import { RecipeMeta } from '~/models/recipe/RecipeMeta';
 import { RecipeRepo } from '~/repository/RecipeRepo';
 import { RecipeKey } from '~/models/recipe/RecipeKey';
+import { RecipeAPI } from './gql/RecipeAPI';
+import ApolloClient from 'apollo-client';
+import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 
 interface RecipesResponse {
     list: RecipeMeta[];
@@ -13,7 +16,7 @@ export class RecipeService {
 
     static defaultRecipeKey = '002_initial_big3|1234';
 
-    static resolveRecipeWithKey = async (recipeKey: RecipeKey): Promise<Recipe> => {
+    static resolveRecipeWithKey = async (recipeKey: RecipeKey, client: ApolloClient<NormalizedCacheObject>): Promise<Recipe> => {
         console.log(`loading recipe ${recipeKey}`);
         try {
             const localRecipe = await RecipeRepo.loadLocalRecipeWithKey(recipeKey);
@@ -24,7 +27,11 @@ export class RecipeService {
         }
 
         try {
-            const recipe = await RecipeService.fetchRecipeRemotely(recipeKey);
+            console.log('fetching...')
+            const recipe = await RecipeAPI.fetchRecipe(recipeKey, client);
+            console.log('saving...')
+            const saveResult = await RecipeRepo.saveRecipe(recipe);
+            console.log('saved?: ', saveResult);
             return recipe;
         } catch (e) {
             console.log('Could not fetch recipe remotely!');
@@ -42,10 +49,5 @@ export class RecipeService {
             console.log(getRecipesResponse.response);
             return getRecipesResponse.response.data.list;
         }
-    }
-
-    private static fetchRecipeRemotely = async (recipeId: string): Promise<Recipe> => {
-        // TODO: implement this
-        return Promise.reject('not yet implemented!');
     }
 }

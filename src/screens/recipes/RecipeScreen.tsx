@@ -19,7 +19,6 @@ import { PDText } from '~/components/PDText';
 import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
 import { RecipeRepo } from '~/repository/RecipeRepo';
 import { RecipeService } from '~/services/RecipeService';
-import { getRecipeKey } from '~/models/recipe/RecipeKey';
 
 interface RecipeListScreenProps {
     // The selected pool
