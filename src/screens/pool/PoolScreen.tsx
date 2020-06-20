@@ -130,6 +130,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
     const renderItem = (section: SectionListData<any>, item: any): JSX.Element => {
         let titleElement = <PDText style={ styles.sectionTitle }>{ section.title }</PDText>;
         let contentBody = <></>;
+        let marginBottom = 14;
         if (section.key === 'recipe_section') {
             if (!recipe) { return <View></View>; }
             const recipeNameSlop = 7;
@@ -155,13 +156,14 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
             }
             contentBody = <ChartCard viewModel={ vm } containerStyles={ styles.chartCard } />;
         } else if (section.key === 'history_section') {
+            marginBottom = 6;
             if (history.indexOf(item) !== 0) {
                 titleElement = <></>;
             }
             contentBody = <PoolHistoryListItem logEntry={ item } handleCellSelected={ handleHistoryCellPressed } isExpanded={ selectedHistoryCellIds.includes(item.objectId) } />;
         }
 
-        return (<View style={ { marginBottom: 14 } }>
+        return (<View style={ { marginBottom } }>
             { titleElement }
             { contentBody }
         </View>);
