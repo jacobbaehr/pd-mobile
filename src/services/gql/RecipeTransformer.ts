@@ -1,10 +1,10 @@
-import { Recipe_latestRecipe, Recipe_latestRecipe_readings, Recipe_latestRecipe_treatments } from "./generated/Recipe";
+import { Recipe_recipeVersion, Recipe_recipeVersion_readings, Recipe_recipeVersion_treatments } from "./generated/Recipe";
 import { Recipe } from "~/models/recipe/Recipe";
 import { Reading, ReadingType } from "~/models/recipe/Reading";
 import { Treatment, TreatmentType } from "~/models/recipe/Treatment";
 
 export class RecipeTransformer {
-    static fromAPI = (apiRec: Recipe_latestRecipe): Recipe => {
+    static fromAPI = (apiRec: Recipe_recipeVersion): Recipe => {
         return {
             ...apiRec,
             readings: apiRec.readings.map(ar => RecipeTransformer.readingFromAPI(ar)),
@@ -12,7 +12,7 @@ export class RecipeTransformer {
         }
     }
 
-    static readingFromAPI = (apiReading: Recipe_latestRecipe_readings): Reading => {
+    static readingFromAPI = (apiReading: Recipe_recipeVersion_readings): Reading => {
         return {
             ...apiReading,
             type: apiReading.type as ReadingType,
@@ -24,7 +24,7 @@ export class RecipeTransformer {
         }
     }
 
-    static treatmentFromAPI = (apiTreatment: Recipe_latestRecipe_treatments): Treatment => {
+    static treatmentFromAPI = (apiTreatment: Recipe_recipeVersion_treatments): Treatment => {
         return {
             ...apiTreatment,
             type: apiTreatment.type as TreatmentType

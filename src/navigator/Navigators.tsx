@@ -14,9 +14,9 @@ import { CalculationSettingsScreen } from '~/screens/CalculationSettingsScreen';
 import { EditPoolScreen } from '~/screens/editPool/EditPoolScreen';
 import { RegistrationVerificationScreen } from '~/screens/RegistrationVerificationScreen';
 import { User } from '~/models/User';
-import { ReadingEntry } from '~/models/logs/ReadingEntry';
-import { Reading } from '~/models/recipe/Reading';
 import { PickerScreen, PDPickerRouteProps } from '~/screens/picker/PickerScreen';
+import { RecipeScreen } from '~/screens/recipes/RecipeScreen';
+import { RecipeKey } from '~/models/recipe/RecipeKey';
 
 export const navigationRef: React.RefObject<NavigationContainerRef> = React.createRef();
 const Stack = createStackNavigator<PDNavStackParamList>();
@@ -42,6 +42,7 @@ const MainStack = (): JSX.Element => {
             <Stack.Screen name="TreatmentList" component={ TreatmentListScreen } />
             <Stack.Screen name="Settings" component={ CalculationSettingsScreen } />
             <Stack.Screen name="RecipeList" component={ RecipeListScreen } />
+            <Stack.Screen name="RecipeDetails" component={ RecipeScreen } />
             <Stack.Screen name="PoolHistory" component={ PoolHistoryScreen } />
             <Stack.Screen name="PurchasePro" component={ PurchaseProStack } />
         </Stack.Navigator>
@@ -74,6 +75,7 @@ export type PDNavStackParamList = {
     TreatmentList: undefined;
     Settings: undefined;
     RecipeList: { poolName: string };
+    RecipeDetails: { recipeKey: RecipeKey };
     PoolHistory: undefined;
     PurchasePro: { screenType: 'Login' | 'Register' };
     // purchase pro stack

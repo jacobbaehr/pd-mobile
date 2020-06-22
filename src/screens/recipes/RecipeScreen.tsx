@@ -1,105 +1,183 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, SectionList } from 'react-native';
+import { View, StyleSheet, SafeAreaView, ScrollView, TouchableHighlight, Linking } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { PDNavStackParamList } from '~/navigator/Navigators';
 import { connect } from 'react-redux';
-import SafeAreaView from 'react-native-safe-area-view';
 
-import { RecipeMeta } from '~/models/recipe/RecipeMeta';
+import { PDNavStackParamList } from '~/navigator/Navigators';
+import { AppState, dispatch } from '~/redux/AppState';
 import { Pool } from '~/models/Pool';
-import { selectRecipe } from '~/redux/recipeKey/Actions';
-import { dispatch, AppState } from '~/redux/AppState';
-import { Database } from '~/repository/Database';
-import { RecipeAPI } from '~/services/gql/RecipeAPI';
 
-import { useNavigation } from '@react-navigation/native';
-import { RecipeListHeader } from './RecipeListHeader';
-import { RecipeListItem } from './RecipeListItem';
-import { PDText } from '~/components/PDText';
+import { RecipeScreenHeader } from './RecipeScreenHeader';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { BoringButton } from '~/components/buttons/BoringButton';
 import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
-import { RecipeRepo } from '~/repository/RecipeRepo';
-import { RecipeService } from '~/services/RecipeService';
+import { RS } from '~/services/RecipeService';
+import { PDText } from '~/components/PDText';
+import { Config } from '~/services/Config';
+import { PoolScreen } from '../pool/PoolScreen';
+import { Database } from '~/repository/Database';
+import { updatePool } from '~/redux/selectedPool/Actions';
 
-interface RecipeListScreenProps {
-    // The selected pool
-    pool: Pool | null;
+interface RecipeScreenProps {
+    pool: Pool;
 }
 
-const mapStateToProps = (state: AppState, ownProps: RecipeListScreenProps): RecipeListScreenProps => {
+const mapStateToProps = (state: AppState, ownProps: RecipeScreenProps): RecipeScreenProps => {
     return {
-        pool: state.selectedPool
+        ...ownProps,
+        pool: state.selectedPool!
     };
 };
 
-const RecipeListScreenComponent: React.FunctionComponent<RecipeListScreenProps> = (props) => {
+const RecipeScreenComponent: React.FunctionComponent<RecipeScreenProps> = (props) => {
 
-    const { data, loading, error } = RecipeAPI.useRecipeList();
-    const { navigate, goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'RecipeList'>>();
-    const currentRecipe = useRecipeHook(props.pool?.recipeKey || RecipeService.defaultRecipeKey);
+    const { navigate, goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'RecipeDetails'>>();
+    const { params } = useRoute<RouteProp<PDNavStackParamList, 'RecipeDetails'>>();
+    const recipe = useRecipeHook(params.recipeKey);
+    const [isWebButtonPressed, setIsWebButtonPressed] = React.useState(false);
 
-    const handleRecipeSelected = (recipe: RecipeMeta): void => {
-        Database.commitUpdates(() => {
-            if (props.pool === null) {
-                return;
-            }
-            // this.props.pool.recipeKey = getRecipeKey(recipe);
-        });
-        // dispatch(selectRecipe(recipe));
-        navigate('ReadingList');
-    }
-
-    const currentMeta: RecipeMeta = {
-        name: currentRecipe?.name || 'loading...',
-        ts: currentRecipe?.ts || 0,
-        id: currentRecipe?.id || '',
-        desc: currentRecipe?.description || ''
-    }
-
-    const handleBackPressed = () => {
-        goBack();
-    }
-
-    if (props.pool === null) {
+    if (!recipe) {
         return <></>;
     }
 
-    const sections = [
-        {
-            title: 'Current',
-            data: [currentMeta]
-        }, {
-            title: 'Community Recipes',
-            data: data?.listRecipes || []
-        }
-    ];
+    const meta = RS.toMeta(recipe);
+
+    const handleBackPressed = (): void => {
+        goBack();
+    };
+
+    const handleSelectRecipePressed = () => {
+        const pool: Pool = {
+            ...props.pool,
+            recipeKey: RS.getKey(recipe)
+        };
+        // This saves it persistently & updates redux everywhere
+        dispatch(updatePool(pool));
+        navigate('PoolScreen');
+    }
+
+    const handleViewDetailsPressed = () => {
+        console.log('aaahhh');
+        Linking.openURL(`${Config.web_url}/recipe/${meta.id}/edit`);
+    }
+
+    const webButtonStyles = isWebButtonPressed
+        ? styles.recipeLinkPressed
+        : styles.recipeLinkNormal;
+
+    const readingList = recipe.readings.map(r => <PDText style={ styles.textBody }>• { r.name }</PDText>);
+    const treatmentList = recipe.treatments.map(t => <PDText style={ styles.textBody }>• { t.name }</PDText>);
 
     return (
-        <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } } forceInset={ { bottom: 'never' } }>
-            <RecipeListHeader handleBackPress={ handleBackPressed } pool={ props.pool } />
-            <SectionList
-                style={ styles.scrollView }
-                sections={ sections }
-                renderItem={ ({ item }) => <RecipeListItem recipe={ item } onRecipeSelected={ handleRecipeSelected } key={ item.id } /> }
-                renderSectionHeader={ ({ section: { title } }) => <PDText style={ styles.sectionTitle }>{ title }</PDText> }
-                contentInset={ { bottom: 34 } }
-                stickySectionHeadersEnabled={ false }
-            />
+        <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } }>
+            <View style={ styles.container }>
+                <RecipeScreenHeader handleBackPress={ handleBackPressed } meta={ meta } />
+                <ScrollView style={ styles.scrollView }>
+                    <PDText style={ styles.textBodyTop }>{ recipe.description }</PDText>
+                    <PDText style={ styles.textTitle }>Readings</PDText>
+                    { readingList }
+                    <PDText style={ styles.textTitle }>Treatments</PDText>
+                    { treatmentList }
+                    <PDText style={ styles.recipeNameIntroText }>
+                        Want to see the formulas?
+                    </PDText>
+                    <View style={ styles.topRow }>
+                        <TouchableHighlight
+                            underlayColor={ 'transparent' }
+                            onPressIn={ () => setIsWebButtonPressed(true) }
+                            onPressOut={ () => setIsWebButtonPressed(false) }
+                            onPress={ handleViewDetailsPressed }>
+
+                            <PDText style={ webButtonStyles }>
+                                Open in your browser
+                            </PDText>
+                        </TouchableHighlight>
+                    </View>
+                </ScrollView>
+                <BoringButton
+                    containerStyles={ styles.button }
+                    onPress={ handleSelectRecipePressed }
+                    title="Use this recipe"
+                />
+            </View>
         </SafeAreaView>
     );
 }
 
-export const RecipeListScreen = connect(mapStateToProps)(RecipeListScreenComponent);
+export const RecipeScreen = connect(mapStateToProps)(RecipeScreenComponent);
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        backgroundColor: 'white',
+    },
     scrollView: {
         flex: 1,
-        backgroundColor: '#F2F9F9'
+        backgroundColor: '#F2F9F9',
+        paddingTop: 12,
+        borderBottomColor: '#F0F0F0',
+        borderBottomWidth: 2
     },
-    sectionTitle: {
-        marginTop: 12,
-        marginLeft: 16,
-        fontSize: 28,
+    button: {
+        alignSelf: 'stretch',
+        backgroundColor: '#009384',
+        margin: 12,
+        marginBottom: 24
+    },
+    textBody: {
+        fontSize: 18,
+        fontWeight: '600',
+        marginLeft: 24,
+        marginRight: 16,
+        marginBottom: 3
+    },
+    textBodyTop: {
+        fontSize: 18,
+        fontWeight: '600',
+        marginLeft: 24,
+        marginTop: 16,
+        marginRight: 16
+    },
+    textTitle: {
+        fontSize: 22,
         fontWeight: '700',
-        color: 'black'
+        margin: 16
+    },
+    topRow: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginLeft: 24
+    },
+    changeRecipeIntro: {
+        color: 'rgba(0,0,0,.6)',
+        fontSize: 18
+    },
+    recipeLinkPressed: {
+        backgroundColor: 'transparent',
+        color: '#3910E8',
+        fontSize: 18
+    },
+    recipeLinkNormal: {
+        backgroundColor: 'transparent',
+        color: '#3910E8',
+        fontSize: 18,
+        textDecorationLine: 'underline'
+    },
+    recipeNameIntroText: {
+        marginTop: 16,
+        color: 'rgba(0,0,0,.6)',
+        fontSize: 18,
+        marginLeft: 24
+    },
+    recipeNameText: {
+        color: 'rgba(0,0,0,.6)',
+        fontWeight: '700',
+        fontSize: 18
+    },
+    recipeDescriptionText: {
+        color: 'rgba(0,0,0,.6)',
+        fontSize: 18,
+        marginTop: 12
     }
 });

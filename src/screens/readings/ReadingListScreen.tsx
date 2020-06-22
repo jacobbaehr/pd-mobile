@@ -16,7 +16,6 @@ import { Haptic } from '~/services/HapticService';
 import { Util } from '~/services/Util';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { ReadingListFooter } from './ReadingListFooter';
-import { ReadingEntry } from '~/models/logs/ReadingEntry';
 import { recordInput, clearReadings } from '~/redux/readingEntries/Actions';
 import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
 
@@ -29,8 +28,8 @@ interface ReadingListScreenProps {
 const mapStateToProps = (state: AppState, ownProps: ReadingListScreenProps): ReadingListScreenProps => {
     return {
         navigation: ownProps.navigation,
-        recipeKey: state.recipeKey!,
-        pool: state.selectedPool!
+        pool: state.selectedPool!,
+        recipeKey: state.selectedPool!.recipeKey!
     };
 };
 

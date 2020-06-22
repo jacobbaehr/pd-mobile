@@ -4,10 +4,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: Recipe
+// GraphQL query operation: FetchRecipe
 // ====================================================
 
-export interface Recipe_recipeVersion_readings {
+export interface FetchRecipe_recipeVersion_readings {
   __typename: "Reading";
   name: string;
   var: string;
@@ -21,7 +21,7 @@ export interface Recipe_recipeVersion_readings {
   defaultValue: number;
 }
 
-export interface Recipe_recipeVersion_treatments {
+export interface FetchRecipe_recipeVersion_treatments {
   __typename: "Treatment";
   name: string;
   var: string;
@@ -30,7 +30,7 @@ export interface Recipe_recipeVersion_treatments {
   concentration: number;
 }
 
-export interface Recipe_recipeVersion {
+export interface FetchRecipe_recipeVersion {
   __typename: "Recipe";
   id: string;
   author_id: string;
@@ -38,15 +38,15 @@ export interface Recipe_recipeVersion {
   name: string;
   description: string;
   ts: number;
-  readings: Recipe_recipeVersion_readings[];
-  treatments: Recipe_recipeVersion_treatments[];
+  readings: FetchRecipe_recipeVersion_readings[];
+  treatments: FetchRecipe_recipeVersion_treatments[];
 }
 
-export interface Recipe {
-  recipeVersion: Recipe_recipeVersion;
+export interface FetchRecipe {
+  recipeVersion: FetchRecipe_recipeVersion;
 }
 
-export interface RecipeVariables {
+export interface FetchRecipeVariables {
   id: string;
   ts: number;
 }

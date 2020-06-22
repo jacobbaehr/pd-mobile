@@ -7,7 +7,6 @@ import SafeAreaView from 'react-native-safe-area-view';
 
 import { RecipeMeta } from '~/models/recipe/RecipeMeta';
 import { Pool } from '~/models/Pool';
-import { selectRecipe } from '~/redux/recipeKey/Actions';
 import { dispatch, AppState } from '~/redux/AppState';
 import { Database } from '~/repository/Database';
 import { RecipeAPI } from '~/services/gql/RecipeAPI';
@@ -18,7 +17,7 @@ import { RecipeListItem } from './RecipeListItem';
 import { PDText } from '~/components/PDText';
 import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
 import { RecipeRepo } from '~/repository/RecipeRepo';
-import { RecipeService } from '~/services/RecipeService';
+import { RecipeService, RS } from '~/services/RecipeService';
 import { getRecipeKey } from '~/models/recipe/RecipeKey';
 
 interface RecipeListScreenProps {
@@ -43,10 +42,9 @@ const RecipeListScreenComponent: React.FunctionComponent<RecipeListScreenProps> 
             if (props.pool === null) {
                 return;
             }
-            // this.props.pool.recipeKey = getRecipeKey(recipe);
         });
-        // dispatch(selectRecipe(recipe));
-        navigate('ReadingList');
+        const key = RS.getKey(recipe);
+        navigate('RecipeDetails', { recipeKey: key });
     }
 
     const currentMeta: RecipeMeta = {

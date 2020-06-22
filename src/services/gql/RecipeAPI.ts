@@ -6,8 +6,10 @@ import { RecipeKey } from '~/models/recipe/RecipeKey';
 import { Recipe } from '~/models/recipe/Recipe';
 import ApolloClient from 'apollo-client';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
-import { Recipe_latestRecipe } from './generated/Recipe';
+import { RecipeVariables } from './generated/Recipe';
 import { RecipeTransformer } from './RecipeTransformer';
+import { RS } from '../RecipeService';
+import { FetchRecipe } from './generated/FetchRecipe';
 
 export class RecipeAPI {
     static useRecipeList = (): QueryResult<ListRecipes> => {
@@ -24,10 +26,10 @@ export class RecipeAPI {
         return useQuery<ListRecipes>(query, { fetchPolicy: 'network-only' });
     };
 
-    static fetchRecipe = async (id: string, client: ApolloClient<NormalizedCacheObject>): Promise<Recipe> => {
+    static fetchRecipe = async (key: RecipeKey, client: ApolloClient<NormalizedCacheObject>): Promise<Recipe> => {
         const query = gql`
-            query Recipe($id: String!) { 
-                latestRecipe(id: $id) {
+            query FetchRecipe($id: String!, $ts: Float!) { 
+                recipeVersion(id: $id, ts: $ts) {
                 id
                 author_id
                 author_username
@@ -56,12 +58,14 @@ export class RecipeAPI {
                 }
             }
         `;
-        const result = await client.query<Recipe_latestRecipe>({
+        const variables = RS.reverseKey(key);
+        console.log('Variable: ', JSON.stringify(variables));
+        const result = await client.query<FetchRecipe, RecipeVariables>({
             query,
-            variables: { id }
+            variables
         });
         if (result.data) {
-            return RecipeTransformer.fromAPI(result.data);
+            return RecipeTransformer.fromAPI(result.data.recipeVersion);
         }
         return Promise.reject('');
     }

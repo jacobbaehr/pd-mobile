@@ -11,14 +11,12 @@ import { hasValidSubscriptionReducer } from './hasValidSubscription/Reducer';
 import { outputsReducer } from './outputs/Reducer';
 import { poolsLastUpdatedReducer } from './poolsLastUpdated/Reducer';
 import { readingEntriesReducer } from './readingEntries/Reducer';
-import { recipeKeyReducer } from './recipeKey/Reducer';
 import { selectedPoolReducer } from './selectedPool/Reducer';
 import { pickerStateReducer } from './picker/Reducer';
 import { userReducer } from './user/Reducer';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 import { deviceSettingsReducer } from './deviceSettings/Reducer';
-import { RecipeKey } from '~/models/recipe/RecipeKey';
 
 // Describes the shape of the application redux state.
 export interface AppState {
@@ -30,9 +28,6 @@ export interface AppState {
 
     // The currently selected swimming pool, if any
     selectedPool: Pool | null;
-
-    // The currently selected recipe, if any
-    recipeKey: RecipeKey;
 
     // This increments whenever we update the list of pools
     poolsLastUpdated: number;
@@ -54,7 +49,6 @@ const initialAppState: AppState = {
     readingEntries: [],
     outputs: [],
     selectedPool: null,
-    recipeKey: '002_initial_big3|1234',
     poolsLastUpdated: 0,
     user: null,
     hasValidSubscription: false,
@@ -66,7 +60,6 @@ const reducer = combineReducers({
     readingEntries: readingEntriesReducer,
     outputs: outputsReducer,
     selectedPool: selectedPoolReducer,
-    recipeKey: recipeKeyReducer,
     poolsLastUpdated: poolsLastUpdatedReducer,
     user: userReducer,
     hasValidSubscription: hasValidSubscriptionReducer,

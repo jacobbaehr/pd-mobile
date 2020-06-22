@@ -4,6 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
+import { formatDistanceStrict } from 'date-fns'
 
 import { PDNavStackParamList } from '~/navigator/Navigators';
 import { images } from '~/assets/images';
@@ -134,6 +135,12 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
         if (section.key === 'recipe_section') {
             if (!recipe) { return <View></View>; }
             const recipeNameSlop = 7;
+
+            let lastServiceString = '';
+            if (history.length > 0) {
+                lastServiceString = formatDistanceStrict(history[0].ts, Date.now());
+            }
+
             contentBody =
                 <View style={ styles.recipeSection } key={ `poolList|${section.data.indexOf(item)}|${sections.indexOf(section)}` }>
                     <View style={ { flexDirection: 'row' } }>
@@ -148,7 +155,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
                         </TouchableScale>
                     </View>
                     <BoringButton onPress={ handleStartServicePressed } title={ 'Start Service' } containerStyles={ styles.startButton } />
-                    <PDText style={ styles.lastServiceLabel }>Last Serviced: 20 days ago</PDText>
+                    <PDText style={ styles.lastServiceLabel }>Last Serviced: { lastServiceString } ago</PDText>
                 </View>;
         } else if (section.key === 'trends_section') {
             if (history.length < 2) {

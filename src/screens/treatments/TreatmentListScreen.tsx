@@ -41,8 +41,8 @@ const mapStateToProps = (state: AppState, ownProps: TreatmentListScreenProps): T
     return {
         navigation: ownProps.navigation,
         readings: state.readingEntries,
-        recipeKey: state.recipeKey!,
         pool: state.selectedPool!,
+        recipeKey: state.selectedPool!.recipeKey!,
         pickerState: state.pickerState
     };
 };
