@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 
-import { SAVE_POOL } from '~/redux/selectedPool/Actions';
+import { SAVE_POOL, SELECT_POOL, UPDATE_POOL } from '~/redux/selectedPool/Actions';
 
 export const poolsLastUpdatedReducer = (
     previousState: number = 0,
@@ -8,7 +8,8 @@ export const poolsLastUpdatedReducer = (
 ): number => {
     switch (action.type) {
         case SAVE_POOL:
-            // const _savePoolAction = action as SavePoolAction;
+        case SELECT_POOL:
+        case UPDATE_POOL:
             return previousState + 1;
         default:
             return previousState;

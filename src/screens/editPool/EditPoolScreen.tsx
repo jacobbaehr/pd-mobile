@@ -78,12 +78,11 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
             gallons = Util.litersToGallons(volume);
         }
         if (pool) {
-            const updatedPool = { ...pool };
-            // TODO: worry about gallons vs liters
-            updatedPool.gallons = gallons;
-            updatedPool.name = name;
-            updatedPool.waterType = type;
-            dispatch(updatePool(updatedPool));
+            dispatch(updatePool(pool, (p) => {
+                p.gallons = gallons;
+                p.name = name;
+                p.waterType = type;
+            }));
         }
         else {
             const newPool = new Pool();

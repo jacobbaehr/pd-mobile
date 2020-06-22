@@ -28,11 +28,11 @@ import { updatePickerState } from '~/redux/picker/Actions';
 import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
 import { TreatmentListHelpers, TreatmentState } from './TreatmentListHelpers';
 import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
+import { RecipeService } from '~/services/RecipeService';
 
 interface TreatmentListScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'TreatmentList'>;
     readings: ReadingEntry[];
-    recipeKey: RecipeKey;
     pool: Pool;
     pickerState: PickerState | null;
 }
@@ -42,18 +42,18 @@ const mapStateToProps = (state: AppState, ownProps: TreatmentListScreenProps): T
         navigation: ownProps.navigation,
         readings: state.readingEntries,
         pool: state.selectedPool!,
-        recipeKey: state.selectedPool!.recipeKey!,
         pickerState: state.pickerState
     };
 };
 
 const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenProps> = (props) => {
+    const recipeKey = props.pool.recipeKey || RecipeService.defaultRecipeKey;
     const [treatmentStates, setTreatmentStates] = React.useState<TreatmentState[]>([]);
     const [deviceSettings, setDeviceSettings] = React.useState<DeviceSettings | null>(null);
     const { popToTop, goBack, navigate } = useNavigation<StackNavigationProp<PDNavStackParamList>>();
     // I hate this... it's dirty. We should move this into the picker screen maybe?
     const [concentrationTreatmentVar, updateConcentrationTreatment] = React.useState<string | null>(null);
-    const recipe = useRecipeHook(props.recipeKey);
+    const recipe = useRecipeHook(recipeKey);
 
     const keyboardAccessoryViewId = 'dedgumThisIsSomeReallyUniqueTextTreatmentListKeyboard';
 
@@ -108,7 +108,7 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
         const tes = CalculationService.mapTreatmentStatesToTreatmentEntries(treatmentStates);
         console.log('treatments: ', JSON.stringify(tes));
 
-        const logEntry = LogEntry.make(id, props.pool.objectId, ts, props.readings, tes, props.recipeKey);
+        const logEntry = LogEntry.make(id, props.pool.objectId, ts, props.readings, tes, recipeKey);
 
         await Database.saveNewLogEntry(logEntry);
         popToTop();

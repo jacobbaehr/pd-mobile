@@ -113,27 +113,27 @@ export class Database {
         }
     };
 
-    // Why does this work?
-    static updatePool = (updatedPool: Pool) => {
-        const realm = Database.realm;
-        try {
-            realm.write(() => {
-                realm.create(
-                    Pool.schema.name,
-                    {
-                        objectId: updatedPool.objectId,
-                        gallons: updatedPool.gallons,
-                        name: updatedPool.name,
-                        waterType: updatedPool.waterType,
-                        recipeKey: updatedPool.recipeKey
-                    },
-                    true,
-                );
-            });
-        } catch (e) {
-            console.log(e);
-        }
-    };
+    // WHAT THE HELL WAS THIS METHOD?!?!?!?!? TOXIC BAD EXAMPLE NONSENSE?????
+    // static updatePool = (updatedPool: Pool) => {
+    //     const realm = Database.realm;
+    //     try {
+    //         realm.write(() => {
+    //             realm.create(
+    //                 Pool.schema.name,
+    //                 {
+    //                     objectId: updatedPool.objectId,
+    //                     gallons: updatedPool.gallons,
+    //                     name: updatedPool.name,
+    //                     waterType: updatedPool.waterType,
+    //                     recipeKey: updatedPool.recipeKey
+    //                 },
+    //                 true,
+    //             );
+    //         });
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // };
 
     // Very unsafely commits the provided changes to the Realm store. This is the pattern Realm makes us use,
     // it's unfortunately not async.

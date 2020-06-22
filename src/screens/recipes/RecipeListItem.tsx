@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
         marginHorizontal: 24,
+        marginVertical: 6,
         borderRadius: 24,
         borderWidth: 2,
         borderColor: '#F0F0F0',

@@ -65,6 +65,7 @@ export const useRealmPoolHistoryHook = (poolId: string): Realm.Collection<LogEnt
     return data.data;           // this hook will return only the data from realm
 }
 
+// WARNING: this is susceptible to race-conditions (if you request a remote recipe, and then a local one, the remote one might finish last & stomp the second call).
 export const useRecipeHook = (recipeKey: RecipeKey): Recipe | null => {
     const [recipe, setRecipe] = useState<Recipe | null>(null);
     const client = useApolloClient() as ApolloClient<NormalizedCacheObject>;    // TODO: type-casting? ugh.
@@ -73,6 +74,7 @@ export const useRecipeHook = (recipeKey: RecipeKey): Recipe | null => {
         try {
             const loadRecipe = async () => {
                 const recipe = await RecipeService.resolveRecipeWithKey(recipeKey, client);
+                // TODO: check async state here for subsequent requests
                 setRecipe(recipe);
             }
             loadRecipe();

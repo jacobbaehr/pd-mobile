@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ScrollView, StyleSheet, View, SectionList, SectionListData, LayoutAnimation, Image } from 'react-native';
+import { StyleSheet, View, SectionList, SectionListData, LayoutAnimation, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 // @ts-ignore
@@ -18,7 +18,6 @@ import SafeAreaView from 'react-native-safe-area-view';
 
 import { PoolHeaderView } from './PoolHeaderView';
 import { BoringButton } from '~/components/buttons/BoringButton';
-import { ChoosyButton } from '~/components/buttons/ChoosyButton';
 import { useNavigation } from '@react-navigation/native';
 import { useRealmPoolHistoryHook, useRecipeHook } from '../poolList/hooks/RealmPoolHook';
 import { PoolHistoryListItem } from './PoolHistoryListItem';
@@ -56,7 +55,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
     const [selectedHistoryCellIds, setSelectedHistoryCellIds] = React.useState<string[]>([]);
     const recipe = useRecipeHook(props.selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
 
-    if (!props.selectedPool) {
+    if (!props.selectedPool || !recipe) {
         return <></>;
     }
 
@@ -138,7 +137,8 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
 
             let lastServiceString = '';
             if (history.length > 0) {
-                lastServiceString = formatDistanceStrict(history[0].ts, Date.now());
+                const lsTime = formatDistanceStrict(history[0].ts, Date.now());
+                lastServiceString = `Last Serviced: ${lsTime} ago`;
             }
 
             contentBody =
@@ -155,7 +155,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
                         </TouchableScale>
                     </View>
                     <BoringButton onPress={ handleStartServicePressed } title={ 'Start Service' } containerStyles={ styles.startButton } />
-                    <PDText style={ styles.lastServiceLabel }>Last Serviced: { lastServiceString } ago</PDText>
+                    <PDText style={ styles.lastServiceLabel }>{ lastServiceString }</PDText>
                 </View>;
         } else if (section.key === 'trends_section') {
             if (history.length < 2) {

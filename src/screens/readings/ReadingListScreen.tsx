@@ -18,18 +18,17 @@ import { BoringButton } from '~/components/buttons/BoringButton';
 import { ReadingListFooter } from './ReadingListFooter';
 import { recordInput, clearReadings } from '~/redux/readingEntries/Actions';
 import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
+import { RecipeService } from '~/services/RecipeService';
 
 interface ReadingListScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'ReadingList'>;
-    recipeKey: RecipeKey;
     pool: Pool;
 }
 
 const mapStateToProps = (state: AppState, ownProps: ReadingListScreenProps): ReadingListScreenProps => {
     return {
         navigation: ownProps.navigation,
-        pool: state.selectedPool!,
-        recipeKey: state.selectedPool!.recipeKey!
+        pool: state.selectedPool!
     };
 };
 
@@ -37,7 +36,7 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
 
     const [isSliding, setIsSliding] = React.useState(false);
     const [readingStates, setReadingStates] = React.useState<ReadingState[]>([]);
-    const recipe = useRecipeHook(props.recipeKey);
+    const recipe = useRecipeHook(props.pool.recipeKey || RecipeService.defaultRecipeKey);
 
     const { setOptions, navigate, goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'ReadingList'>>();
     const keyboardAccessoryViewId = 'wowThisIsSomeReallyUniqueTextReadingListKeyboard';

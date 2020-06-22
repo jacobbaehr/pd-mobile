@@ -17,6 +17,7 @@ import { Config } from '~/services/Config';
 import { PoolScreen } from '../pool/PoolScreen';
 import { Database } from '~/repository/Database';
 import { updatePool } from '~/redux/selectedPool/Actions';
+import { format } from 'date-fns';
 
 interface RecipeScreenProps {
     pool: Pool;
@@ -47,12 +48,9 @@ const RecipeScreenComponent: React.FunctionComponent<RecipeScreenProps> = (props
     };
 
     const handleSelectRecipePressed = () => {
-        const pool: Pool = {
-            ...props.pool,
-            recipeKey: RS.getKey(recipe)
-        };
-        // This saves it persistently & updates redux everywhere
-        dispatch(updatePool(pool));
+        dispatch(updatePool(props.pool, p => {
+            p.recipeKey = RS.getKey(recipe);
+        }));
         navigate('PoolScreen');
     }
 
@@ -67,17 +65,21 @@ const RecipeScreenComponent: React.FunctionComponent<RecipeScreenProps> = (props
 
     const readingList = recipe.readings.map(r => <PDText style={ styles.textBody }>• { r.name }</PDText>);
     const treatmentList = recipe.treatments.map(t => <PDText style={ styles.textBody }>• { t.name }</PDText>);
+    const updatedText = format(recipe.ts, '• MMM d, y') + format(recipe.ts, '  //  h:mma').toLowerCase();
 
     return (
         <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } }>
             <View style={ styles.container }>
                 <RecipeScreenHeader handleBackPress={ handleBackPressed } meta={ meta } />
                 <ScrollView style={ styles.scrollView }>
-                    <PDText style={ styles.textBodyTop }>{ recipe.description }</PDText>
+                    <PDText style={ styles.textTitle }>Description</PDText>
+                    <PDText style={ styles.textBody }>{ recipe.description }</PDText>
                     <PDText style={ styles.textTitle }>Readings</PDText>
                     { readingList }
                     <PDText style={ styles.textTitle }>Treatments</PDText>
                     { treatmentList }
+                    <PDText style={ styles.textTitle }>Last Updated</PDText>
+                    <PDText style={ styles.textBody }>{ updatedText }</PDText>
                     <PDText style={ styles.recipeNameIntroText }>
                         Want to see the formulas?
                     </PDText>

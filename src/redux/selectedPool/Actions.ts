@@ -24,11 +24,13 @@ export interface UpdatePoolAction extends AnyAction {
     pool: Pool;
 }
 
-export const updatePool = (updatedPool: Pool): UpdatePoolAction => {
-    Database.updatePool(updatedPool);
+export const updatePool = (pool: Pool, updates: (p: Pool) => void): UpdatePoolAction => {
+    Database.commitUpdates(() => {
+        updates(pool);
+    });
     return {
         type: UPDATE_POOL,
-        pool: updatedPool,
+        pool: pool,
     };
 };
 
