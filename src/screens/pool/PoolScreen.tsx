@@ -72,7 +72,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
     };
 
     const handleChangeRecipeButtonPressed = () => {
-        navigate('RecipeList');
+        navigate('RecipeList', { prevScreen: 'PoolScreen' });
     };
 
     const handleHistoryCellPressed = (logEntryId: string) => {

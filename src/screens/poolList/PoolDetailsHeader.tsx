@@ -36,7 +36,7 @@ export class EditListHeader extends React.Component<EditListHeaderProps, {}> {
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 15,
+        paddingHorizontal: 15,
         paddingTop: 10,
         display: 'flex',
         flexDirection: 'row',

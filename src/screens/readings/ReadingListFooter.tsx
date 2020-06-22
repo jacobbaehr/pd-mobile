@@ -6,6 +6,7 @@ import { Recipe } from '~/models/recipe/Recipe';
 
 interface ReadingListFooterProps {
     recipe: Recipe | null;
+    pressedChangeRecipe: () => void;
 }
 
 export const ReadingListFooter: React.FunctionComponent<ReadingListFooterProps> = (props) => {
@@ -31,7 +32,7 @@ export const ReadingListFooter: React.FunctionComponent<ReadingListFooterProps> 
                     underlayColor={ 'transparent' }
                     onPressIn={ () => setIsChangeButtonPressed(true) }
                     onPressOut={ () => setIsChangeButtonPressed(false) }
-                    onPress={ () => console.log('yo') }>
+                    onPress={ props.pressedChangeRecipe }>
 
                     <PDText
                         style={ changeButtonStyles }>

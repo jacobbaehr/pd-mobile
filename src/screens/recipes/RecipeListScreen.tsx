@@ -11,7 +11,7 @@ import { dispatch, AppState } from '~/redux/AppState';
 import { Database } from '~/repository/Database';
 import { RecipeAPI } from '~/services/gql/RecipeAPI';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { RecipeListHeader } from './RecipeListHeader';
 import { RecipeListItem } from './RecipeListItem';
 import { PDText } from '~/components/PDText';
@@ -36,6 +36,7 @@ const RecipeListScreenComponent: React.FunctionComponent<RecipeListScreenProps> 
     const { data, loading, error } = RecipeAPI.useRecipeList();
     const { navigate, goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'RecipeList'>>();
     const currentRecipe = useRecipeHook(props.pool?.recipeKey || RecipeService.defaultRecipeKey);
+    const { params } = useRoute<RouteProp<PDNavStackParamList, 'RecipeList'>>();
 
     const handleRecipeSelected = (recipe: RecipeMeta): void => {
         Database.commitUpdates(() => {
@@ -44,7 +45,7 @@ const RecipeListScreenComponent: React.FunctionComponent<RecipeListScreenProps> 
             }
         });
         const key = RS.getKey(recipe);
-        navigate('RecipeDetails', { recipeKey: key });
+        navigate('RecipeDetails', { recipeKey: key, prevScreen: params.prevScreen });
     }
 
     const currentMeta: RecipeMeta = {

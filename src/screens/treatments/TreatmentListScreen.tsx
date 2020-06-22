@@ -50,7 +50,7 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
     const recipeKey = props.pool.recipeKey || RecipeService.defaultRecipeKey;
     const [treatmentStates, setTreatmentStates] = React.useState<TreatmentState[]>([]);
     const [deviceSettings, setDeviceSettings] = React.useState<DeviceSettings | null>(null);
-    const { popToTop, goBack, navigate } = useNavigation<StackNavigationProp<PDNavStackParamList>>();
+    const { goBack, navigate } = useNavigation<StackNavigationProp<PDNavStackParamList>>();
     // I hate this... it's dirty. We should move this into the picker screen maybe?
     const [concentrationTreatmentVar, updateConcentrationTreatment] = React.useState<string | null>(null);
     const recipe = useRecipeHook(recipeKey);
@@ -111,7 +111,7 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
         const logEntry = LogEntry.make(id, props.pool.objectId, ts, props.readings, tes, recipeKey);
 
         await Database.saveNewLogEntry(logEntry);
-        popToTop();
+        navigate('PoolScreen');
     }
 
     const onMessage = (event: WebViewMessageEvent) => {

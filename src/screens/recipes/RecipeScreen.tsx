@@ -14,8 +14,6 @@ import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
 import { RS } from '~/services/RecipeService';
 import { PDText } from '~/components/PDText';
 import { Config } from '~/services/Config';
-import { PoolScreen } from '../pool/PoolScreen';
-import { Database } from '~/repository/Database';
 import { updatePool } from '~/redux/selectedPool/Actions';
 import { format } from 'date-fns';
 
@@ -51,7 +49,7 @@ const RecipeScreenComponent: React.FunctionComponent<RecipeScreenProps> = (props
         dispatch(updatePool(props.pool, p => {
             p.recipeKey = RS.getKey(recipe);
         }));
-        navigate('PoolScreen');
+        navigate(params.prevScreen);
     }
 
     const handleViewDetailsPressed = () => {

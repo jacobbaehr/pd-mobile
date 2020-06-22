@@ -10,7 +10,6 @@ import { Pool } from '~/models/Pool';
 
 import { ReadingListItem, ReadingState } from './ReadingListItem';
 import { ReadingListHeader } from './ReadingListHeader';
-import { RecipeKey } from '~/models/recipe/RecipeKey';
 import { useNavigation } from '@react-navigation/native';
 import { Haptic } from '~/services/HapticService';
 import { Util } from '~/services/Util';
@@ -23,12 +22,14 @@ import { RecipeService } from '~/services/RecipeService';
 interface ReadingListScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'ReadingList'>;
     pool: Pool;
+    updated: number;
 }
 
 const mapStateToProps = (state: AppState, ownProps: ReadingListScreenProps): ReadingListScreenProps => {
     return {
         navigation: ownProps.navigation,
-        pool: state.selectedPool!
+        pool: state.selectedPool!,
+        updated: state.poolsLastUpdated
     };
 };
 
@@ -50,9 +51,19 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
                 isOn: false
             }));
 
+            // Just incase we had some old reading entries laying around:
+            readingStates.forEach(rs => {
+                initialReadingStates.forEach(is => {
+                    if (is.reading.var === rs.reading.var) {
+                        is.value = rs.value || is.reading.defaultValue.toFixed(is.reading.decimalPlaces);
+                        is.isOn = rs.isOn;
+                    }
+                });
+            });
+
             setReadingStates(initialReadingStates);
         }
-    }, [recipe]);
+    }, [recipe?.id, recipe?.ts, props.updated]);
 
     const handleCalculatePressed = (): void => {
         dispatch(clearReadings());
@@ -164,6 +175,10 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
         setReadingStates(rs);
     }
 
+    const handleChangeRecipePressed = () => {
+        navigate('RecipeList', { prevScreen: 'ReadingList' });
+    }
+
     // Really, we shouldn't be using a sectionlist, because there's only 1 section
     let sections: SectionListData<ReadingState>[] = [{ data: readingStates }];
 
@@ -198,7 +213,7 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
                     contentInsetAdjustmentBehavior={ 'always' }
                     stickySectionHeadersEnabled={ false }
                     canCancelContentTouches={ true }
-                    renderSectionFooter={ () => <ReadingListFooter recipe={ recipe || null } /> }
+                    renderSectionFooter={ () => <ReadingListFooter recipe={ recipe || null } pressedChangeRecipe={ handleChangeRecipePressed } /> }
                 />
                 <BoringButton
                     containerStyles={ styles.button }

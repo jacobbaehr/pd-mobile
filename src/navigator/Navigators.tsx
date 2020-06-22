@@ -74,8 +74,8 @@ export type PDNavStackParamList = {
     ReadingList: undefined;
     TreatmentList: undefined;
     Settings: undefined;
-    RecipeList: { poolName: string };
-    RecipeDetails: { recipeKey: RecipeKey };
+    RecipeList: { prevScreen: 'ReadingList' | 'PoolScreen' };
+    RecipeDetails: { recipeKey: RecipeKey, prevScreen: 'ReadingList' | 'PoolScreen' };
     PoolHistory: undefined;
     PurchasePro: { screenType: 'Login' | 'Register' };
     // purchase pro stack
