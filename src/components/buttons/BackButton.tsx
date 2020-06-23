@@ -5,6 +5,8 @@ import TouchableScale from 'react-native-touchable-scale';
 
 import { images } from '~/assets/images';
 import { PDText } from '~/components/PDText';
+import { PlatformSpecific } from '../PlatformSpecific';
+import { Config } from '~/services/Config';
 
 type BackButtonColor = 'blue' | 'readingsBlue' | 'treatmentsPurple' | 'recipesGreen' | 'moneyGreen';
 
@@ -44,12 +46,16 @@ export class BackButton extends React.Component<BackButtonProps, {}> {
                     underlayColor={ '#F8F8F8' }
                     activeScale={ 0.97 }
                     onPress={ this.props.onPress }
-                    hitSlop={ { top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop } }>
-                    <Image
-                        style={ styles.backButtonImage }
-                        source={ imageSource }
-                        width={ 32 }
-                        height={ 32 } />
+                    hitSlop={ { top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop } }
+                    disabled={ Config.isAndroid }>
+
+                    <PlatformSpecific exclude={ ['android'] }>
+                        <Image
+                            style={ styles.backButtonImage }
+                            source={ imageSource }
+                            width={ 32 }
+                            height={ 32 } />
+                    </PlatformSpecific>
                     { this.getText() }
                 </TouchableScale>
             </View>
