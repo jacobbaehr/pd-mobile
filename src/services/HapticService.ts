@@ -3,7 +3,7 @@ import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 export class Haptic {
 
     private static options = {
-        enableVibrateFallback: true,
+        enableVibrateFallback: false,
         ignoreAndroidSystemSettings: false
     };
 

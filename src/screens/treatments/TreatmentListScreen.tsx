@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, SafeAreaView, InputAccessoryView, Keyboard, LayoutAnimation } from 'react-native';
+import { StyleSheet, View, SafeAreaView, InputAccessoryView, Keyboard, LayoutAnimation, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 
@@ -29,6 +29,8 @@ import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
 import { TreatmentListHelpers, TreatmentState } from './TreatmentListHelpers';
 import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
 import { RecipeService } from '~/services/RecipeService';
+import { PlatformSpecific } from '~/components/PlatformSpecific';
+import { Config } from '~/services/Config';
 
 interface TreatmentListScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'TreatmentList'>;
@@ -151,7 +153,7 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
 
         // Animate the progress bar change here:
         const springAnimationProperties = {
-            type: LayoutAnimation.Types.keyboard,
+            type: Config.isIos ? LayoutAnimation.Types.keyboard : LayoutAnimation.Types.easeOut,
             property: LayoutAnimation.Properties.scaleXY,
         };
         const animationConfig = {
@@ -292,16 +294,18 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                     title="Save"
                 />
             </View>
-            <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
-                <View style={ styles.keyboardAccessoryContainer }>
-                    <BoringButton
-                        containerStyles={ styles.keyboardAccessoryButton }
-                        textStyles={ styles.keyboardAccessoryButtonText }
-                        onPress={ () => { Keyboard.dismiss(); Haptic.light(); } }
-                        title="Done Typing"
-                    />
-                </View>
-            </InputAccessoryView>
+            <PlatformSpecific include={ ["ios"] }>
+                <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
+                    <View style={ styles.keyboardAccessoryContainer }>
+                        <BoringButton
+                            containerStyles={ styles.keyboardAccessoryButton }
+                            textStyles={ styles.keyboardAccessoryButtonText }
+                            onPress={ () => { Keyboard.dismiss(); Haptic.light(); } }
+                            title="Done Typing"
+                        />
+                    </View>
+                </InputAccessoryView>
+            </PlatformSpecific>
         </SafeAreaView>
     );
 }

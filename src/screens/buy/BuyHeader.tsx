@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     },
     backButtonContainer: {
         paddingBottom: 18,
+        paddingTop: 12,
         paddingLeft: 16,
     },
     pdProImageStyles: {

@@ -20,7 +20,11 @@ export class PoolListFooter extends React.Component<PoolListFooterProps, {}> {
     render() {
         const imageWidth = Dimensions.get('window').width - 10;
         const imageHeight = imageWidth * 0.792;
-        const imageStyles = [styles.image];
+        const imageStyles = {
+            ...styles.image,
+            height: imageHeight,
+            width: imageWidth
+        };
         if (!this.props.isEmpty) {
             return null;
         }

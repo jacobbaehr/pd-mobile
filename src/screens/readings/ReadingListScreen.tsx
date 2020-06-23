@@ -18,6 +18,8 @@ import { ReadingListFooter } from './ReadingListFooter';
 import { recordInput, clearReadings } from '~/redux/readingEntries/Actions';
 import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
 import { RecipeService } from '~/services/RecipeService';
+import { Config } from '~/services/Config';
+import { PlatformSpecific } from '~/components/PlatformSpecific';
 
 interface ReadingListScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'ReadingList'>;
@@ -92,7 +94,7 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
         if (isChanged) {
             // Animate the progress bar change here:
             const springAnimationProperties = {
-                type: LayoutAnimation.Types.keyboard,
+                type: Config.isIos ? LayoutAnimation.Types.keyboard : LayoutAnimation.Types.easeOut,
                 property: LayoutAnimation.Properties.scaleXY,
             };
             const animationConfig = {
@@ -162,7 +164,7 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
         });
         // Animate the progress bar change here:
         const springAnimationProperties = {
-            type: LayoutAnimation.Types.keyboard,
+            type: Config.isIos ? LayoutAnimation.Types.keyboard : LayoutAnimation.Types.easeOut,
             property: LayoutAnimation.Properties.scaleXY,
         };
         const animationConfig = {
@@ -189,7 +191,6 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
             ? 1
             : (completed.length / readingStates.length);
     }
-
     return (
         <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } }>
             <View style={ styles.container }>
@@ -221,16 +222,18 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
                     title="Calculate"
                 />
             </View>
-            <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
-                <View style={ styles.keyboardAccessoryContainer }>
-                    <BoringButton
-                        containerStyles={ styles.keyboardAccessoryButton }
-                        textStyles={ styles.keyboardAccessoryButtonText }
-                        onPress={ () => { Keyboard.dismiss(); Haptic.light(); } }
-                        title="Done Typing"
-                    />
-                </View>
-            </InputAccessoryView>
+            <PlatformSpecific include={ ["ios"] }>
+                <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
+                    <View style={ styles.keyboardAccessoryContainer }>
+                        <BoringButton
+                            containerStyles={ styles.keyboardAccessoryButton }
+                            textStyles={ styles.keyboardAccessoryButtonText }
+                            onPress={ () => { Keyboard.dismiss(); Haptic.light(); } }
+                            title="Done Typing"
+                        />
+                    </View>
+                </InputAccessoryView>
+            </PlatformSpecific>
         </SafeAreaView>
     );
 }
