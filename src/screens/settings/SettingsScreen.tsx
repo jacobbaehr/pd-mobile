@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { StyleSheet, View, Linking } from 'react-native';
+import { StyleSheet, View, Linking, ViewStyle } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { PDNavStackParamList } from '~/navigator/Navigators';
+import { PDNavStackParamList, navigationRef } from '~/navigator/Navigators';
 import { connect } from 'react-redux';
-import SafeAreaView from 'react-native-safe-area-view';
+import SafeAreaView, { useSafeArea } from 'react-native-safe-area-view';
 
 import { dispatch, AppState } from '~/redux/AppState';
 
@@ -32,7 +32,8 @@ const mapStateToProps = (state: AppState, ownProps: SettingsProps): SettingsProp
 
 const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
 
-    const { goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'Settings'>>();
+    const { goBack, navigate } = useNavigation<StackNavigationProp<PDNavStackParamList, 'Settings'>>();
+    const insets = useSafeArea();
     const ds = props.deviceSettings;
 
     const handleGoBack = () => {
@@ -49,13 +50,16 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
     const unitsText = (ds.units === 'metric') ? 'Metric' : 'US';
 
     const handleUpgradePressed = () => {
-        console.log('money');
+        navigate('Buy');
     }
 
     const handleForumPressed = () => {
         Linking.openURL(Config.forum_url);
     }
 
+    const dynamicInsets: ViewStyle = {
+        paddingBottom: insets.bottom
+    };
     return <SafeAreaView forceInset={ { bottom: 'never' } } style={ styles.safeAreaContainer }>
         <SettingsHeader goBack={ handleGoBack } />
         <ScrollView style={ styles.scrollView }>
@@ -77,6 +81,7 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
                 onPress={ handleForumPressed }
                 title="Open in Browser"
             />
+            <View style={ dynamicInsets } />
         </ScrollView>
     </SafeAreaView >;
 }

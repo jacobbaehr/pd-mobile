@@ -8,7 +8,9 @@ import { App } from '~/App';
 
 
 const PoolDash: React.FunctionComponent<{}> = () => {
-    StatusBar.setBarStyle('dark-content');
+    React.useEffect(() => {
+        StatusBar.setBarStyle('dark-content');
+    }, []);
     return (
         <Provider store={ store }>
             <SafeAreaProvider>

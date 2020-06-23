@@ -13,6 +13,7 @@ import { PickerScreen, PDPickerRouteProps } from '~/screens/picker/PickerScreen'
 import { RecipeScreen } from '~/screens/recipes/RecipeScreen';
 import { RecipeKey } from '~/models/recipe/RecipeKey';
 import { SettingsScreen } from '~/screens/settings/SettingsScreen';
+import { BuyScreen } from '~/screens/buy/BuyScreen';
 
 export const navigationRef: React.RefObject<NavigationContainerRef> = React.createRef();
 const Stack = createStackNavigator<PDNavStackParamList>();
@@ -30,6 +31,7 @@ const MainStack = (): JSX.Element => {
             <Stack.Screen name="RecipeDetails" component={ RecipeScreen } />
             <Stack.Screen name="PoolHistory" component={ PoolHistoryScreen } />
             <Stack.Screen name="Settings" component={ SettingsScreen } />
+            <Stack.Screen name="Buy" component={ BuyScreen } />
 
             {/* <Stack.Screen name="PurchasePro" component={ PurchaseProStack } /> */ }
         </Stack.Navigator>
@@ -64,9 +66,7 @@ export type PDNavStackParamList = {
     RecipeList: { prevScreen: 'ReadingList' | 'PoolScreen' };
     RecipeDetails: { recipeKey: RecipeKey, prevScreen: 'ReadingList' | 'PoolScreen' };
     PoolHistory: undefined;
-
-    // purchase pro stack
-
+    Buy: undefined;
     PickerScreen: PDPickerRouteProps;
     Main: undefined;
 };

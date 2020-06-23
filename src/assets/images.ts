@@ -5,6 +5,7 @@ export const images = {
     backReadingsBlue: require('./images/back_readings_blue.png'),
     backTreatmentsPurple: require('./images/back_treatments_purple.png'),
     backRecipesGreen: require('./images/back_recipes_green.png'),
+    backMoneyGreen: require('./images/money_back.png'),
     backTrans: require('./images/back_trans.png'),
     closeDark: require('./images/close_dark.png'),
     history: require('./images/history.png'),
@@ -20,9 +21,12 @@ export const images = {
     gearButton: require('./images/gear.png'),
     gearLightButton: require('./images/gear_light.png'),
     logoGreenPlus: require('./images/logo_plus_green.png'),
+    logoGreenPlusWhite: require('./images/money_logo.png'),
     rightArrow: require('./images/right_arrow.png'),
     sliderThumb: require('./images/thumb.png'),
     sliderThumbBlue: require('./images/thumb_blue.png'),
     greenCheck: require('./images/green_check.png'),
-    incomplete: require('./images/incomplete.png')
+    incomplete: require('./images/incomplete.png'),
+    trends: require('./images/trends.png'),
+    pools3: require('./images/pools_3.png')
 };
