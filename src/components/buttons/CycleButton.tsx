@@ -27,7 +27,7 @@ export const CycleButton: React.FunctionComponent<CycleButtonProps> = (props: Cy
             activeScale={ 1.05 }
             onPress={ handleButtonPress }
             disabled={ props.disabled } >
-            <PDText style={ props.textStyles || styles.text }>
+            <PDText style={ [styles.text, props.textStyles] }>
                 { props.title }
             </PDText>
         </TouchableScale>

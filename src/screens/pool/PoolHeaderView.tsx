@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Avenir Next',
         fontSize: 16,
         fontWeight: '700',
-        paddingHorizontal: 15
+        paddingHorizontal: 15,
+        paddingVertical: 3
     }
 });

@@ -114,11 +114,11 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
     const sections: SectionListData<any>[] = [
         {
             title: 'Recipe',
-            data: [{}],
+            data: [{ key: 'bogus_recipe' }],
             key: 'recipe_section',
         }, {
             title: 'Trends',
-            data: [{}],
+            data: [{ key: 'bogus_trends' }],
             key: 'trends_section',
         }, {
             title: 'History',

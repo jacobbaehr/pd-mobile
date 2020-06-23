@@ -47,7 +47,7 @@ interface PoolListScreenState {
 const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (props) => {
 
     const pools = useRealmPoolsHook();
-    const { navigate } = useNavigation();
+    const { navigate } = useNavigation<StackNavigationProp<PDNavStackParamList, 'PoolList'>>();
     const insets = useSafeArea();
 
     const handlePoolSelected = async (pool: Pool): Promise<void> => {
@@ -59,6 +59,10 @@ const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (p
     const handleAddPoolPressed = async () => {
         dispatch(selectPool(null));
         navigate('CreatePool');
+    }
+
+    const handleSettingsPressed = () => {
+        navigate('Settings');
     }
 
     const isEmpty = pools.length === 0;
@@ -73,7 +77,7 @@ const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (p
                         style={ styles.accountButton }
                         underlayColor={ 'transparent' }
                         activeScale={ 0.97 }
-                        onPress={ handleAddPoolPressed }>
+                        onPress={ handleSettingsPressed }>
                         <Image
                             style={ styles.accountButtonImage }
                             source={ images.gearLightButton }

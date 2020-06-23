@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Keyboard } from 'react-native';
+import { Keyboard, Alert } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 
@@ -60,6 +60,29 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
         if (pool === undefined || pool === null) {
             return;
         }
+        Alert.alert(
+            "Delete Pool?",
+            "This will delete the pool & all of its log entries. This CANNOT be undone.",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                {
+                    text: "DELETE",
+                    onPress: handleDeleteConfirmed,
+                    style: "destructive"
+                }
+            ],
+            { cancelable: true }
+        );
+    }
+
+    const handleDeleteConfirmed = async () => {
+        if (pool === undefined || pool === null) {
+            return;
+        }
         Database.deletePool(pool);
         dispatch(selectPool(null));
         navigate('PoolList');
@@ -96,7 +119,6 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
     }
 
     const handlePressedTypeButton = () => {
-
         Keyboard.dismiss();
         const pickerProps: PDPickerRouteProps = {
             title: 'Water Type',

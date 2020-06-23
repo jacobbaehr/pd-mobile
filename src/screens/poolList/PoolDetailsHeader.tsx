@@ -15,7 +15,13 @@ interface EditListHeaderProps {
 export class EditListHeader extends React.Component<EditListHeaderProps, {}> {
     render() {
         const rightButton = (this.props.rightButtonAction != undefined)
-            ? <Button title={ 'Delete' } onPress={ () => this.props.rightButtonAction && this.props.rightButtonAction() } styles={ styles.button } textStyles={ styles.buttonText } />
+            ? <View>
+                <Button
+                    title={ 'Delete' }
+                    onPress={ () => this.props.rightButtonAction && this.props.rightButtonAction() }
+                    styles={ styles.deleteButton }
+                    textStyles={ styles.deleteButtonText } />
+            </View>
             : null;
         return (
             <View style={ styles.container }>
@@ -57,20 +63,19 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         marginTop: 3
     },
-    button: {
-        backgroundColor: 'rgba(0,0,0,1)',
-        borderRadius: 10.4,
-        alignSelf: 'flex-end',
-        top: -10,
-        height: 21,
-        width: 52
+    deleteButton: {
+        backgroundColor: 'rgba(30,107,255,.1)',
+        borderRadius: 15,
+        marginTop: 5
     },
-    buttonText: {
-        color: '#ffffff',
+    deleteButtonText: {
+        color: '#2D5FFF',
         textAlign: 'center',
         marginTop: '2%',
         fontFamily: 'Avenir Next',
-        fontSize: 13.2,
-        fontWeight: '600',
+        fontSize: 16,
+        fontWeight: '700',
+        paddingHorizontal: 15,
+        paddingVertical: 3
     }
 });

@@ -2,34 +2,20 @@ import * as React from 'react';
 import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { ConfirmPurchaseScreen } from '~/screens/confirmPurchase/ConfirmPurchaseScreen';
 import { PoolScreen } from '~/screens/pool/PoolScreen';
 import { PoolHistoryScreen } from '~/screens/trends/PoolHistoryScreen';
 import { PoolListScreen } from '~/screens/poolList/PoolListScreen';
 import { ReadingListScreen } from '~/screens/readings/ReadingListScreen';
 import { RecipeListScreen } from '~/screens/recipes/RecipeListScreen';
 import { TreatmentListScreen } from '~/screens/treatments/TreatmentListScreen';
-import { AuthenticationScreen } from '~/screens/AuthenticationScreen';
-import { CalculationSettingsScreen } from '~/screens/CalculationSettingsScreen';
 import { EditPoolScreen } from '~/screens/editPool/EditPoolScreen';
-import { RegistrationVerificationScreen } from '~/screens/RegistrationVerificationScreen';
-import { User } from '~/models/User';
 import { PickerScreen, PDPickerRouteProps } from '~/screens/picker/PickerScreen';
 import { RecipeScreen } from '~/screens/recipes/RecipeScreen';
 import { RecipeKey } from '~/models/recipe/RecipeKey';
+import { SettingsScreen } from '~/screens/settings/SettingsScreen';
 
 export const navigationRef: React.RefObject<NavigationContainerRef> = React.createRef();
 const Stack = createStackNavigator<PDNavStackParamList>();
-
-const PurchaseProStack = (): JSX.Element => {
-    return (
-        <Stack.Navigator mode={ 'card' }>
-            <Stack.Screen name="Authentication" component={ AuthenticationScreen } />
-            <Stack.Screen name="RegistrationVerification" component={ RegistrationVerificationScreen } />
-            <Stack.Screen name="ConfirmPurchase" component={ ConfirmPurchaseScreen } />
-        </Stack.Navigator>
-    );
-};
 
 const MainStack = (): JSX.Element => {
     return (
@@ -40,11 +26,12 @@ const MainStack = (): JSX.Element => {
             <Stack.Screen name="EditPool" component={ EditPoolScreen } />
             <Stack.Screen name="ReadingList" component={ ReadingListScreen } />
             <Stack.Screen name="TreatmentList" component={ TreatmentListScreen } />
-            <Stack.Screen name="Settings" component={ CalculationSettingsScreen } />
             <Stack.Screen name="RecipeList" component={ RecipeListScreen } />
             <Stack.Screen name="RecipeDetails" component={ RecipeScreen } />
             <Stack.Screen name="PoolHistory" component={ PoolHistoryScreen } />
-            <Stack.Screen name="PurchasePro" component={ PurchaseProStack } />
+            <Stack.Screen name="Settings" component={ SettingsScreen } />
+
+            {/* <Stack.Screen name="PurchasePro" component={ PurchaseProStack } /> */ }
         </Stack.Navigator>
     );
 }
@@ -77,11 +64,9 @@ export type PDNavStackParamList = {
     RecipeList: { prevScreen: 'ReadingList' | 'PoolScreen' };
     RecipeDetails: { recipeKey: RecipeKey, prevScreen: 'ReadingList' | 'PoolScreen' };
     PoolHistory: undefined;
-    PurchasePro: { screenType: 'Login' | 'Register' };
+
     // purchase pro stack
-    Authentication: { screenType: 'Login' | 'Register' };
-    RegistrationVerification: { email: string, password: string };
-    ConfirmPurchase: { user: User };
+
     PickerScreen: PDPickerRouteProps;
     Main: undefined;
 };
