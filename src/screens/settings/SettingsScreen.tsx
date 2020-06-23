@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View, Linking, ViewStyle } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { PDNavStackParamList, navigationRef } from '~/navigator/Navigators';
+import { PDNavStackParamList } from '~/navigator/Navigators';
 import { connect } from 'react-redux';
 import SafeAreaView, { useSafeArea } from 'react-native-safe-area-view';
 
@@ -17,6 +17,7 @@ import { CycleButton } from '~/components/buttons/CycleButton';
 import { Config } from '~/services/Config';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { Upgrade } from '~/components/Upgrade';
+import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 
 
 interface SettingsProps {
@@ -42,10 +43,12 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
 
     const handlePressedUnits = () => {
         const newUnits = (ds.units === 'metric') ? 'us' : 'metric';
-        dispatch(updateDeviceSettings({
+        const newSettings: DeviceSettings = {
             ...ds,
             units: newUnits
-        }));
+        };
+        dispatch(updateDeviceSettings(newSettings));
+        DeviceSettingsService.saveSettings(newSettings);
     }
     const unitsText = (ds.units === 'metric') ? 'Metric' : 'US';
 
