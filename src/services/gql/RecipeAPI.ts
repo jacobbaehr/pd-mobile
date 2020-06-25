@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { ListRecipes, ListRecipes_listRecipes } from './generated/ListRecipes';
+import { ListRecipes } from './generated/ListRecipes';
 import { useQuery } from "@apollo/react-hooks";
 import { QueryResult } from '@apollo/react-common';
 import { RecipeKey } from '~/models/recipe/RecipeKey';
@@ -8,7 +8,7 @@ import ApolloClient from 'apollo-client';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { RecipeVariables } from './generated/Recipe';
 import { RecipeTransformer } from './RecipeTransformer';
-import { RS } from '../RecipeService';
+import { RS } from '../RecipeUtil';
 import { FetchRecipe } from './generated/FetchRecipe';
 
 export class RecipeAPI {

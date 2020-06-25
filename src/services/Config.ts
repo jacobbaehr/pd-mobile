@@ -10,4 +10,6 @@ export class Config {
     static isAndroid = Platform.OS === 'android';
     static isIos = Platform.OS === 'ios';
     static platformOS = Platform.OS;
+
+    static revenueCatPublicKey = 'wciuClkgweIivYNTlQfmRfvRRoptoHGZ';
 }

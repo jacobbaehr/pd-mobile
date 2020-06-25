@@ -1,1 +1,1 @@
-../../../Purchases/Purchases/RCCrossPlatformSupport.h
+../../../Purchases/Purchases/Misc/RCCrossPlatformSupport.h

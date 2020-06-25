@@ -20,6 +20,9 @@ import { Upgrade } from '~/components/Upgrade';
 import { BuyHeader } from './BuyHeader';
 import { images } from '~/assets/images';
 import { lifeStory } from './LifeStory';
+import { IAP, PurchaseStatus } from '~/services/IAP';
+import { DeviceSettingsService } from '~/services/DeviceSettingsService';
+import { DS } from '~/services/DSUtil';
 
 
 interface BuyScreenProps {
@@ -37,31 +40,70 @@ const BuyComponent: React.FunctionComponent<BuyScreenProps> = (props) => {
 
     const { goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'Buy'>>();
     const insets = useSafeArea();
-
-    const ds = props.deviceSettings;
+    const [isLoading, setIsLoading] = React.useState(false);
+    const isPurchased = DS.isSubscriptionValid(props.deviceSettings, Date.now());
 
     const handleGoBack = () => {
         goBack();
     }
 
-    const handlePressedUnits = () => {
-        const newUnits = (ds.units === 'metric') ? 'us' : 'metric';
-        dispatch(updateDeviceSettings({
-            ...ds,
-            units: newUnits
-        }));
-    }
-    const unitsText = (ds.units === 'metric') ? 'Metric' : 'US';
+    const handleUpgradePressed = async () => {
+        setIsLoading(true);
 
-    const handleUpgradePressed = () => {
-        console.log('money');
+        const purchaseResult = await IAP.purchaseUnlock();
+        handlePurchaseResult(purchaseResult);
     }
-    const handleRestorePressed = () => {
-        console.log('restoring money');
+    const handleRestorePressed = async () => {
+        setIsLoading(true);
+
+        const purchaseResult = await IAP.checkExpiration();
+        handlePurchaseResult(purchaseResult);
+    }
+    const handleManageSubPressed = async () => {
+        const url = await IAP.getManagementURL();
+        if (url) {
+            Linking.openURL(url);
+        } else {
+            Linking.openSettings();
+        }
+    }
+    const handlePurchaseResult = (ps: PurchaseStatus) => {
+        if (ps instanceof Date) {
+            const now = new Date();
+            if (ps > now) {
+                // update device settings to indicate the date of the expiration.
+                const ds = {
+                    ...props.deviceSettings,
+                    sub_exp: ps.getTime()
+                };
+                DeviceSettingsService.saveSettings(ds);
+                dispatch(updateDeviceSettings(ds));
+            }
+        }
+        // TODO: alert the user of the different states? Maybe.
+        setIsLoading(false);
     }
 
-    const handleForumPressed = () => {
-        Linking.openURL(Config.forum_url);
+    const getButtons = () => {
+        if (isPurchased) {
+            return <BoringButton
+                onPress={ handleManageSubPressed }
+                title={ 'Manage Subscription' }
+                containerStyles={ styles.purchaseButtonContainer }
+                textStyles={ styles.purchaseButtonText } />;
+        }
+        return <>
+            <BoringButton
+                onPress={ handleUpgradePressed }
+                title={ 'Purchase' }
+                containerStyles={ styles.purchaseButtonContainer }
+                textStyles={ styles.purchaseButtonText } />
+            <BoringButton
+                onPress={ handleRestorePressed }
+                title={ 'Restore' }
+                containerStyles={ styles.restoreButtonContainer }
+                textStyles={ styles.restoreButtonText } />
+        </>;
     }
 
     const dynamicInsets: ViewStyle = {
@@ -86,16 +128,11 @@ const BuyComponent: React.FunctionComponent<BuyScreenProps> = (props) => {
                 <Image style={ styles.reasonIcon } source={ images.pools3 } width={ 37 } height={ 27 } />
                 <PDText style={ styles.reasonText }>Unlimited Pools</PDText>
             </View>
-            <BoringButton
-                onPress={ handleUpgradePressed }
-                title={ 'Purchase' }
-                containerStyles={ styles.purchaseButtonContainer }
-                textStyles={ styles.purchaseButtonText } />
-            <BoringButton
-                onPress={ handleRestorePressed }
-                title={ 'Restore' }
-                containerStyles={ styles.restoreButtonContainer }
-                textStyles={ styles.restoreButtonText } />
+            <View
+                pointerEvents={ isLoading ? 'none' : 'auto' }
+                style={ { opacity: isLoading ? 0.6 : 1 } }>
+                { getButtons() }
+            </View>
             <PDText style={ styles.lifeStory }>{ lifeStory }</PDText>
             <View style={ dynamicInsets } />
         </ScrollView>

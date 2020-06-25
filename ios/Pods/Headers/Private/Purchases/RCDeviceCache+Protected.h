@@ -1,1 +1,1 @@
-../../../Purchases/Purchases/Caching/RCDeviceCache+Protected.h
+../../../Purchases/Purchases/ProtectedExtensions/RCDeviceCache+Protected.h

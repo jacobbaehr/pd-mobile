@@ -11,7 +11,8 @@ export class DeviceSettingsService {
             night_mode: 'system',
             treatments: {
                 concentrations: {}
-            }
+            },
+            sub_exp: null
         };
     }
 

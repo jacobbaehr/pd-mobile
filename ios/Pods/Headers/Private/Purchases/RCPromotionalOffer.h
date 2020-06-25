@@ -1,1 +1,1 @@
-../../../Purchases/Purchases/RCPromotionalOffer.h
+../../../Purchases/Purchases/Purchasing/RCPromotionalOffer.h

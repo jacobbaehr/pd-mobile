@@ -1,1 +1,1 @@
-../../../Purchases/Purchases/Caching/RCInMemoryCachedObject+Protected.h
+../../../Purchases/Purchases/ProtectedExtensions/RCInMemoryCachedObject+Protected.h

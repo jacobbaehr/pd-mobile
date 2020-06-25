@@ -1,7 +1,7 @@
 {
   "name": "RNPurchases",
   "summary": "Cross-platform subscriptions framework for ReactNative",
-  "version": "3.2.0",
+  "version": "3.3.1",
   "authors": {
     "name": "RevenueCat, Inc."
   },
@@ -19,8 +19,8 @@
     "React": [
 
     ],
-    "Purchases": [
-      "~> 3.2.1"
+    "PurchasesHybridCommon": [
+      "1.2.0"
     ]
   }
 }

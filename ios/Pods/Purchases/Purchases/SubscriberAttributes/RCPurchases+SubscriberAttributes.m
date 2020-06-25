@@ -7,7 +7,7 @@
 #import "RCPurchases+SubscriberAttributes.h"
 #import "RCSubscriberAttributesManager.h"
 #import "RCCrossPlatformSupport.h"
-#import "RCUtils.h"
+#import "RCLogUtils.h"
 #import "NSError+RCExtensions.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -86,15 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)syncSubscriberAttributesIfNeeded {
-    [self.subscriberAttributesManager syncIfNeededWithAppUserID:self.appUserID completion:^(NSError *error) {
-        if (error != nil) {
-            RCErrorLog(@"error when syncing subscriber attributes. Details: %@\n UserInfo:%@",
-                       error.localizedDescription,
-                       error.userInfo);
-        } else {
-            RCLog(@"Subscriber attributes synced successfully");
-        }
-    }];
+    [self.subscriberAttributesManager syncAttributesForAllUsersWithCurrentAppUserID:self.appUserID];
 }
 
 @end

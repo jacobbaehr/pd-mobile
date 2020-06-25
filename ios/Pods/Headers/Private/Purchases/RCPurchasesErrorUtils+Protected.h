@@ -1,1 +1,1 @@
-../../../Purchases/Purchases/RCPurchasesErrorUtils+Protected.h
+../../../Purchases/Purchases/ProtectedExtensions/RCPurchasesErrorUtils+Protected.h

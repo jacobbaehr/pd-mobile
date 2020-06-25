@@ -10,6 +10,8 @@ import { DeviceSettings } from './models/DeviceSettings';
 import { dispatch } from './redux/AppState';
 import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
 import { getApolloClient } from './services/gql/Client';
+import Purchases from 'react-native-purchases';
+import { IAP } from './services/IAP';
 
 
 interface AppProps extends DispatchProp<any> { }
@@ -36,6 +38,10 @@ export const AppComponent: React.FunctionComponent<AppProps> = () => {
             dispatch(updateDeviceSettings(settings));
             setAreDeviceSettingsLoaded(true);
         });
+    }, []);
+    // We don't need to block on this one:
+    React.useEffect(() => {
+        IAP.configureOnLaunch();
     }, []);
 
     const isAppReady = isDatabaseLoaded && areRecipesPreloaded && areDeviceSettingsLoaded;

@@ -1,1 +1,1 @@
-../../../Purchases/Purchases/NSData+RCExtensions.h
+../../../Purchases/Purchases/FoundationExtensions/NSData+RCExtensions.h

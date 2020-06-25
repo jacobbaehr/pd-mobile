@@ -4,4 +4,5 @@ export interface DeviceSettings {
     treatments: {
         concentrations: { [varName: string]: number }
     };
+    sub_exp: number | null;
 }

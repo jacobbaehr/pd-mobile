@@ -1,1 +1,1 @@
-../../../Purchases/Purchases/RCOfferingsFactory.h
+../../../Purchases/Purchases/Purchasing/RCOfferingsFactory.h

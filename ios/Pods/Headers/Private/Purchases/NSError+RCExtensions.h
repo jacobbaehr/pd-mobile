@@ -1,1 +1,1 @@
-../../../Purchases/Purchases/NSError+RCExtensions.h
+../../../Purchases/Purchases/FoundationExtensions/NSError+RCExtensions.h

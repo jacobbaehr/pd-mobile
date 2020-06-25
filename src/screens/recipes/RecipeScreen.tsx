@@ -11,7 +11,7 @@ import { RecipeScreenHeader } from './RecipeScreenHeader';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
-import { RS } from '~/services/RecipeService';
+import { RS } from '~/services/RecipeUtil';
 import { PDText } from '~/components/PDText';
 import { Config } from '~/services/Config';
 import { updatePool } from '~/redux/selectedPool/Actions';

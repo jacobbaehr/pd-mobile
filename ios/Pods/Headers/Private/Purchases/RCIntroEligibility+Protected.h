@@ -1,1 +1,1 @@
-../../../Purchases/Purchases/RCIntroEligibility+Protected.h
+../../../Purchases/Purchases/ProtectedExtensions/RCIntroEligibility+Protected.h

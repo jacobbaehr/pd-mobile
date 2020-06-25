@@ -1,1 +1,1 @@
-../../../Purchases/Purchases/NSLocale+RCExtensions.h
+../../../Purchases/Purchases/FoundationExtensions/NSLocale+RCExtensions.h

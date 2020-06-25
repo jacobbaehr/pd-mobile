@@ -1,1 +1,1 @@
-../../../Purchases/Purchases/RCOffering+Protected.h
+../../../Purchases/Purchases/ProtectedExtensions/RCOffering+Protected.h

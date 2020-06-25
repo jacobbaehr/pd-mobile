@@ -1,1 +1,1 @@
-../../../Purchases/Purchases/SubscriberAttributes/RCSubscriberAttribute+Protected.h
+../../../Purchases/Purchases/ProtectedExtensions/RCSubscriberAttribute+Protected.h
