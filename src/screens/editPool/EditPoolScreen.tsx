@@ -62,7 +62,7 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
         }
         Alert.alert(
             "Delete Pool?",
-            "This will delete the pool & all of its log entries. This CANNOT be undone.",
+            "This will delete the pool & all of its history. This CANNOT be undone.",
             [
                 {
                     text: "Cancel",

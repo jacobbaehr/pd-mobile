@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, SectionList, StyleSheet, View, ViewStyle } from 'react-native';
+import { Image, SectionList, StyleSheet, View, ViewStyle, Alert } from 'react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
@@ -17,6 +17,8 @@ import { PoolListFooter } from './PoolListFooter';
 import { PoolListItem } from './PoolListItem';
 import { useRealmPoolsHook } from './hooks/RealmPoolHook';
 import { useNavigation } from '@react-navigation/native';
+import { DeviceSettings } from '~/models/DeviceSettings';
+import { DS } from '~/services/DSUtil';
 
 interface PoolListScreenProps {
     // The id of the selected pool, if any
@@ -24,12 +26,15 @@ interface PoolListScreenProps {
 
     // This is a flag that just changes whenever we save a new pool.
     poolsLastUpdated: number;
+
+    deviceSettings: DeviceSettings;
 }
 
 const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolListScreenProps => {
     return {
         selectedPool: state.selectedPool,
-        poolsLastUpdated: state.poolsLastUpdated
+        poolsLastUpdated: state.poolsLastUpdated,
+        deviceSettings: state.deviceSettings
     };
 };
 
@@ -49,10 +54,34 @@ const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (p
         navigate('PoolScreen');
     }
 
-    const handleAddPoolPressed = async () => {
+    const promptUpgrade = () => {
+        Alert.alert(
+            "Sorry, but...",
+            "You must unlock the app to add multiple pools.",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                {
+                    text: "Unlock",
+                    onPress: handleUpgradePressed,
+                    style: "default"
+                }
+            ],
+            { cancelable: true }
+        );
+    }
 
-        dispatch(selectPool(null));
-        navigate('CreatePool');
+    const handleAddPoolPressed = async () => {
+        const hasUpgraded = DS.isSubscriptionValid(props.deviceSettings, Date.now());
+        if (hasUpgraded || pools.length == 0) {
+            dispatch(selectPool(null));
+            navigate('CreatePool');
+        } else {
+            promptUpgrade();
+        }
     }
 
     const handleSettingsPressed = () => {

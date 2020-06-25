@@ -1,14 +1,9 @@
 import { Recipe } from '~/models/recipe/Recipe';
-import { RecipeMeta } from '~/models/recipe/RecipeMeta';
 import { RecipeRepo } from '~/repository/RecipeRepo';
 import { RecipeKey } from '~/models/recipe/RecipeKey';
 import { RecipeAPI } from './gql/RecipeAPI';
 import ApolloClient from 'apollo-client';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
-
-interface RecipesResponse {
-    list: RecipeMeta[];
-}
 
 export class RecipeService {
     static defaultRecipeKey = '002_initial_big3|1234';
