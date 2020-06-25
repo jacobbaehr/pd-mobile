@@ -5,47 +5,35 @@ import { SelectableTextButton } from '~/components/buttons/SelectableTextButton'
 
 interface DateRangeSelectorProps {
     /** Callback invoked when the range is updated by the user with the new range */
-    onRangeUpdated: (currentDateRange: string) => void;
+    onRangeUpdated: (currentDateRange: DateRange) => void;
     /** Array of date ranges to render in component */
-    dateRange: string[];
+    dateRange: DateRange[];
+    currentDateRange: DateRange;
 }
 
-interface DateRangeSelectorState {
-    currentDateRange: string;
-}
+export type DateRange = '24H' | '7D' | '1M' | '3M' | '1Y' | 'ALL';
 
-export class DateRangeSelector extends React.PureComponent<DateRangeSelectorProps, DateRangeSelectorState> {
-    constructor(props: DateRangeSelectorProps) {
-        super(props);
+export const DateRangeSelector: React.FunctionComponent<DateRangeSelectorProps> = (props) => {
 
-        this.state = {
-            currentDateRange: ''
-        };
+    const handleDateRangeChanged = (selectedDateRange: DateRange) => {
+        props.onRangeUpdated(selectedDateRange);
     }
 
-    handleDateRangeChanged = (selectedDateRange: string) => {
-        this.setState({ currentDateRange: selectedDateRange });
-        this.props.onRangeUpdated(selectedDateRange);
-    }
-
-    private getButtons = () => {
+    const getButtons = () => {
         let count = 0;
-        return this.props.dateRange.map((range: string) =>
+        return props.dateRange.map((range: DateRange) =>
             <SelectableTextButton
                 key={ count++ }
                 buttonText={ range }
-                onPress={ this.handleDateRangeChanged }
-                isSelected={ range === this.state.currentDateRange } />
+                onPress={ () => handleDateRangeChanged(range) }
+                isSelected={ range === props.currentDateRange } />
         );
     }
-
-    render() {
-        return (
-            <View style={ styles.container }>
-                { this.getButtons() }
-            </View>
-        );
-    }
+    return (
+        <View style={ styles.container }>
+            { getButtons() }
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({

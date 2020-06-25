@@ -79,6 +79,24 @@
                 }
             });
 
+            const annotations = [
+                {
+                    type: "line",
+                    yScaleID: "y-axis-1",
+                    mode: "vertical"
+                }
+            ];
+            if (idealMin && idealMax) {
+                annotations.push({
+                    type: "box",
+                    yScaleID: "y-axis-1",
+                    yMin: idealMin,
+                    yMax: idealMax,
+                    borderWidth: 1,
+                    backgroundColor: gradientBackground,
+                    borderColor: "#fff"
+                });
+            }
 
             var chart = new Chart(ctx, {
                 // The type of chart we want to create
@@ -192,20 +210,7 @@
                     // Annotations
                     annotation: {
                         drawTime: "beforeDatasetsDraw",
-                        annotations: [ {
-                            type: "box",
-                            yScaleID: "y-axis-1",
-                            yMin: idealMin,
-                            yMax: idealMax,
-                            borderWidth: 1,
-                            backgroundColor: gradientBackground,
-                            borderColor: "#fff"
-                        }, {
-                            type: "line",
-                            yScaleID: "y-axis-1",
-                            mode: "vertical",
-
-                        } ]
+                        annotations: annotations
                     },
                 },
             });

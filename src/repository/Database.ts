@@ -92,9 +92,13 @@ export class Database {
         }
     };
 
-    static loadLogEntriesForPool = (poolId: string): Realm.Collection<LogEntry> => {
+    static loadLogEntriesForPool = (poolId: string, since_ts: number | null): Realm.Collection<LogEntry> => {
         const realm = Database.realm;
-        return realm.objects<LogEntry>(LogEntry.schema.name).filtered(`poolId = "${poolId}"`);
+        let query = `poolId = "${poolId}"`;
+        if (since_ts) {
+            query += `AND ts > ${since_ts}`;
+        }
+        return realm.objects<LogEntry>(LogEntry.schema.name).filtered(query);
     };
 
     static deletePool = (pool: Pool) => {

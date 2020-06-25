@@ -16,6 +16,9 @@ export class ReadingEntry {
     // for convenience, store the reading units here as well
     units?: string;
 
+    idealMin?: number;
+    idealMax?: number;
+
     // For Realm purposes
     static schema = {
         name: 'ReadingEntry',
@@ -23,7 +26,9 @@ export class ReadingEntry {
             readingName: 'string',
             var: 'string',
             value: 'double',
-            units: 'string?'
+            units: 'string?',
+            idealMin: 'double?',
+            idealMax: 'double?',
         },
     };
 
@@ -33,6 +38,8 @@ export class ReadingEntry {
         readingEntry.readingName = reading.name;
         readingEntry.value = value;
         readingEntry.units = reading.units || undefined;
+        readingEntry.idealMin = reading.idealMin || undefined;
+        readingEntry.idealMax = reading.idealMax || undefined;
         return readingEntry;
     }
 }

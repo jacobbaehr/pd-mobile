@@ -1,82 +1,85 @@
 import { Color } from 'csstype';
 import * as React from 'react';
-import { ScrollView, StyleSheet, View, SafeAreaView } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
+import SafeAreaView, { useSafeArea } from 'react-native-safe-area-view';
 
 import { Database } from '~/repository/Database';
 import { PDNavStackParamList } from '~/navigator/Navigators';
 import { BackButton } from '~/components/buttons/BackButton';
 import { ChartCard } from '~/components/charts/ChartCard';
-import { DateRangeSelector } from '~/components/DateRangeSelector';
+import { DateRangeSelector, DateRange } from '~/components/DateRangeSelector';
 import { PDGradientText } from '~/components/PDGradientText';
 import { Pool } from '~/models/Pool';
 import { AppState } from '~/redux/AppState';
 import { ChartCardViewModel } from '~/components/charts/ChartCardViewModel';
 import { Reading } from '~/models/recipe/Reading';
 import { Treatment } from '~/models/recipe/Treatment';
+import { DeviceSettings } from '~/models/DeviceSettings';
+import { stat } from 'react-native-fs';
+import { useNavigation } from '@react-navigation/native';
+import { DS } from '~/services/DSUtil';
 
 interface PoolHistoryProps {
     /**  */
-    navigation: StackNavigationProp<PDNavStackParamList, 'PoolHistory'>;
-    /**  */
     selectedPool: Pool;
-}
-
-interface PoolHistoryState {
-    currentDateRange: string;
+    deviceSettings: DeviceSettings;
 }
 
 const mapStateToProps = (state: AppState, ownProps: PoolHistoryProps): PoolHistoryProps => {
     return {
-        navigation: ownProps.navigation,
+        deviceSettings: state.deviceSettings,
         selectedPool: state.selectedPool!,
     };
 };
 
-class PoolHistoryComponent extends React.PureComponent<PoolHistoryProps, PoolHistoryState> {
+const PoolHistoryComponent: React.FunctionComponent<PoolHistoryProps> = (props) => {
+    const [dateRange, setDateRange] = React.useState<DateRange>('1M');
+    const [chartData, setChartData] = React.useState<ChartCardViewModel[]>([]);
+    const { goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'PoolHistory'>>();
+    const insets = useSafeArea();
 
-    private chartData: ChartCardViewModel[];
+    const { selectedPool, deviceSettings } = props;
+    const isUnlocked = DS.isSubscriptionValid(deviceSettings, Date.now());
 
-    constructor(ownProps: PoolHistoryProps) {
-        super(ownProps);
+    React.useEffect(() => {
+        setChartData(loadChartData());
+    }, [selectedPool.objectId, dateRange]);
 
-        this.state = {
-            currentDateRange: ''
-        };
-
-        this.chartData = this.loadChartData();
+    const handleBackPress = () => {
+        goBack();
     }
 
-    handleBackPress = () => {
-        this.props.navigation.goBack();
+    const onRangeChanged = (selectedRange: DateRange) => {
+        setDateRange(selectedRange);
     }
 
-    onRangeChanged = (selectedRange: string) => {
-        this.setState({ currentDateRange: selectedRange });
-    }
-
-    private loadChartData = (): ChartCardViewModel[] => {
-        const data = Database.loadLogEntriesForPool(this.props.selectedPool.objectId);
+    const loadChartData = (): ChartCardViewModel[] => {
+        const msInRange = msInDateRange(dateRange);
+        const since_ts = msInRange ? Date.now() - msInRange : null;
+        const data = Database.loadLogEntriesForPool(selectedPool.objectId, since_ts);
         const entries = (data === undefined) ? [] : data.map(le => le);
 
         interface Graphable {
             title: string;
             id: string;
+            idealMin: number | null;
+            idealMax: number | null;
         }
         // get all different readings & treatments
         let idsToGraph: Graphable[] = [];
         entries.forEach(entry => {
             entry.readingEntries
                 .forEach(reading => {
-                    const graphable: Graphable = { title: reading.readingName, id: reading.var };
+                    const graphable: Graphable = { title: reading.readingName, id: reading.var, idealMin: reading.idealMin || null, idealMax: reading.idealMax || null };
                     if (idsToGraph.filter(g => { return g.title == graphable.title && g.id == graphable.id }).length == 0) {
                         idsToGraph.push(graphable);
                     }
                 });
             entry.treatmentEntries
                 .forEach(treatment => {
-                    const graphable: Graphable = { title: treatment.treatmentName, id: treatment.var };
+                    const graphable: Graphable = { title: treatment.treatmentName, id: treatment.var, idealMin: null, idealMax: null };
                     if (idsToGraph.filter(g => { return g.title == graphable.title && g.id == graphable.id }).length == 0) {
                         idsToGraph.push(graphable);
                     }
@@ -106,40 +109,38 @@ class PoolHistoryComponent extends React.PureComponent<PoolHistoryProps, PoolHis
                 masterId: graphable.id,
                 values: values,
                 timestamps: dates,
-                interactive: true
+                interactive: true,
+                isUnlocked,
+                idealMin: graphable.idealMin,
+                idealMax: graphable.idealMax
             };
         });
     }
+    const dateRanges: DateRange[] = ['24H', '7D', '1M', '3M', '1Y', 'ALL'];
+    const poolTitle = selectedPool ? selectedPool.name : '';
 
-    render() {
-        const dateRanges = ['24H', '7D', '1M', '3M', '1Y', 'ALL'];
-        const labels = ['Jan', 'Feb', 'March'];
-        const values = [1000, 4000, 5000];
+    const charts = chartData.map(vm => {
+        return <ChartCard key={ vm.masterId + dateRange } viewModel={ vm } containerStyles={ styles.chartCard } />
+    });
 
-        const { selectedPool } = this.props;
-        const poolTitle = selectedPool ? selectedPool.name : '';
-
-        const charts = this.chartData.map(vm => {
-            return <ChartCard key={ vm.masterId } viewModel={ vm } containerStyles={ styles.chartCard } />
-        })
-
-        return (
-            <SafeAreaView style={ { backgroundColor: '#F8F8F8', flex: 1 } }>
-                <ScrollView style={ styles.container }>
-                    <BackButton
-                        title={ poolTitle }
-                        onPress={ this.handleBackPress } />
-                    <PDGradientText style={ styles.gradientText } colors={ titleGradientColors }>
-                        History
+    return (
+        <SafeAreaView style={ { backgroundColor: 'white', flex: 1 } } forceInset={ { bottom: 'never' } }>
+            <View style={ styles.header }>
+                <BackButton
+                    title={ poolTitle }
+                    onPress={ handleBackPress } />
+                <PDGradientText style={ styles.gradientText } colors={ titleGradientColors }>
+                    History
                     </PDGradientText>
-                    <DateRangeSelector onRangeUpdated={ this.onRangeChanged } dateRange={ dateRanges } />
-                    <View style={ styles.chartContainer }>
-                        { charts }
-                    </View>
-                </ScrollView>
-            </SafeAreaView >
-        );
-    }
+                <DateRangeSelector onRangeUpdated={ onRangeChanged } dateRange={ dateRanges } currentDateRange={ dateRange } />
+            </View>
+            <ScrollView style={ styles.scrollView } contentInset={ { bottom: insets.bottom } }>
+                <View style={ styles.chartContainer }>
+                    { charts }
+                </View>
+            </ScrollView>
+        </SafeAreaView >
+    );
 }
 
 export const PoolHistoryScreen = connect(mapStateToProps)(PoolHistoryComponent);
@@ -147,15 +148,23 @@ export const PoolHistoryScreen = connect(mapStateToProps)(PoolHistoryComponent);
 const titleGradientColors: Color[] = ['#00C6FF', '#0072FF'];
 
 const styles = StyleSheet.create({
-    container: {
-        marginHorizontal: 15,
-        height: '100%',
-        flex: 1
+    scrollView: {
+        paddingHorizontal: 15,
+        flex: 1,
+        backgroundColor: '#F8F8F8'
+    },
+    header: {
+        paddingHorizontal: 16,
+        backgroundColor: 'white',
+        paddingBottom: 12,
+        borderBottomColor: '#F0F0F0',
+        borderBottomWidth: 2
     },
     gradientText: {
         fontSize: 28,
         fontWeight: '700',
-        marginBottom: 20
+        marginBottom: 12,
+        marginTop: 6
     },
     chartContainer: {
         marginTop: 20,
@@ -165,3 +174,20 @@ const styles = StyleSheet.create({
         marginBottom: 20
     }
 });
+
+const msInDateRange = (dr: DateRange): number | null => {
+    switch (dr) {
+        case '24H':
+            return 24 * 60 * 60 * 1000;
+        case '7D':
+            return 7 * 24 * 60 * 60 * 1000;
+        case '1M':
+            return 31 * 24 * 60 * 60 * 1000;
+        case '3M':
+            return 92 * 24 * 60 * 60 * 1000;
+        case '1Y':
+            return 365 * 24 * 60 * 60 * 1000;
+        case 'ALL':
+            return null;
+    }
+}

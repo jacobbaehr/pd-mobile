@@ -111,7 +111,7 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
         console.log('treatments: ', JSON.stringify(tes));
 
         const logEntry = LogEntry.make(id, props.pool.objectId, ts, props.readings, tes, recipeKey);
-
+        console.log('Log: ', JSON.stringify(logEntry));
         await Database.saveNewLogEntry(logEntry);
         navigate('PoolScreen');
     }

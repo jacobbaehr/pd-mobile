@@ -48,11 +48,13 @@ export class ChartCard extends React.PureComponent<ChartCardProps> {
             const graphData = {
                 points: this.props.viewModel.values,
                 dates: labels,
-                idealMin: 2000,
-                idealMax: 3500
+                idealMin: this.props.viewModel.idealMin,
+                idealMax: this.props.viewModel.idealMax
             };
+            const graphString = JSON.stringify(graphData);
+            console.log('Graphing: ', graphString);
             this.webView.injectJavaScript(`setTimeout(() => {
-                window.graphData(${JSON.stringify(graphData)});
+                window.graphData(${graphString});
             }, 100);`);
         }
     }
@@ -99,8 +101,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         fontSize: 18,
         fontWeight: '600',
-        marginBottom: -20,
-        zIndex: 999,
         fontFamily: 'Avenir Next',
         color: '#676767'
     },

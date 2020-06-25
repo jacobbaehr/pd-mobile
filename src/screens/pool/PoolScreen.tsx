@@ -24,6 +24,7 @@ import { Haptic } from '~/services/HapticService';
 import { Util } from '~/services/Util';
 import { RecipeService } from '~/services/RecipeService';
 import { DeviceSettings } from '~/models/DeviceSettings';
+import { DS } from '~/services/DSUtil';
 
 interface PoolScreenProps {
     // The id of the selected pool, if any
@@ -50,6 +51,8 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
     const [selectedHistoryCellIds, setSelectedHistoryCellIds] = React.useState<string[]>([]);
     const recipe = useRecipeHook(props.selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
 
+    const isUnlocked = DS.isSubscriptionValid(props.deviceSettings, Date.now());
+
     if (!props.selectedPool || !recipe) {
         return <></>;
     }
@@ -69,6 +72,15 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
     const handleChangeRecipeButtonPressed = () => {
         navigate('RecipeList', { prevScreen: 'PoolScreen' });
     };
+
+    const handleChartsPressed = () => {
+        // TODO: revert
+        if (isUnlocked) {
+            navigate('Buy');
+        } else {
+            navigate('PoolHistory');
+        }
+    }
 
     const handleHistoryCellPressed = (logEntryId: string) => {
         Haptic.light();
@@ -97,13 +109,16 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
 
     // const dateRanges = ['24H', '7D', '1M', '3M', '1Y', 'ALL'];
     const timestamps = [4, 5, 6]; // TODO: remove
-    const values = [1000, 4000, 5000];
+    const values = [3, 5, 4];
     const vm: ChartCardViewModel = {
         timestamps,
         values,
         title: 'Chlorine',
         masterId: 'a9sd8f093',
-        interactive: false
+        interactive: false,
+        isUnlocked,
+        idealMin: 3,
+        idealMax: 4
     };
 
     const sections: SectionListData<any>[] = [
@@ -128,7 +143,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
         let marginBottom = 14;
         if (section.key === 'recipe_section') {
             if (!recipe) { return <View></View>; }
-            const recipeNameSlop = 7;
+            const hitSlop = 7;
 
             let lastServiceString = '';
             if (history.length > 0) {
@@ -142,7 +157,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
                         <TouchableScale
                             onPress={ handleChangeRecipeButtonPressed }
                             activeScale={ 0.98 }
-                            hitSlop={ { top: recipeNameSlop, left: recipeNameSlop, bottom: recipeNameSlop, right: recipeNameSlop } }
+                            hitSlop={ { top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop } }
                             style={ styles.recipeButton } >
 
                             <PDText style={ styles.recipeName }>{ recipe.name }</PDText>
@@ -156,7 +171,15 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
             if (history.length < 2) {
                 return <></>;
             }
-            contentBody = <ChartCard viewModel={ vm } containerStyles={ styles.chartCard } />;
+            contentBody = <TouchableScale
+                onPress={ handleChartsPressed }
+                activeScale={ 0.98 }
+                style={ styles.recipeButton } >
+
+                <ChartCard
+                    viewModel={ vm }
+                    containerStyles={ styles.chartCard } />
+            </TouchableScale>;
         } else if (section.key === 'history_section') {
             marginBottom = 6;
             if (history.indexOf(item) !== 0) {
