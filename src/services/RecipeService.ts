@@ -1,4 +1,3 @@
-import { RecipesApiManager } from '~/api/recipes/RecipesApiManager';
 import { Recipe } from '~/models/recipe/Recipe';
 import { RecipeMeta } from '~/models/recipe/RecipeMeta';
 import { RecipeRepo } from '~/repository/RecipeRepo';
@@ -12,8 +11,6 @@ interface RecipesResponse {
 }
 
 export class RecipeService {
-    static recipeApiManager = new RecipesApiManager('https://api.pooldash.com/v1/recipes');
-
     static defaultRecipeKey = '002_initial_big3|1234';
 
     static resolveRecipeWithKey = async (recipeKey: RecipeKey, client: ApolloClient<NormalizedCacheObject>): Promise<Recipe> => {
@@ -36,18 +33,6 @@ export class RecipeService {
         } catch (e) {
             console.log('Could not fetch recipe remotely!');
             return Promise.reject(e);
-        }
-    }
-
-    static fetchRecipeList = async (): Promise<RecipeMeta[]> => {
-        const getRecipesResponse = await RecipeService.recipeApiManager.getDefaultRecipes();
-        if (getRecipesResponse.error || !getRecipesResponse.response) {
-            console.log(getRecipesResponse.error);
-            return [];
-        } else {
-            console.log('response: ');
-            console.log(getRecipesResponse.response);
-            return getRecipesResponse.response.data.list;
         }
     }
 }

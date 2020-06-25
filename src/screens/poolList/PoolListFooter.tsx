@@ -1,46 +1,38 @@
 import * as React from 'react';
 import { StyleSheet, View, Image, Dimensions } from 'react-native';
-// @ts-ignore
-import TouchableScale from 'react-native-touchable-scale';
 
 import { PDText } from '~/components/PDText';
 import { images } from '~/assets/images';
+import { PoolListFooterNonEmpty } from './PoolListFooterNonEmpty';
 
 interface PoolListFooterProps {
     isEmpty: boolean,
-    handlePress: () => void
+    handlePressedUpgrade: () => void
 }
 
-export class PoolListFooter extends React.Component<PoolListFooterProps, {}> {
-
-    handlePress = () => {
-        this.props.handlePress();
+export const PoolListFooter: React.FunctionComponent<PoolListFooterProps> = (props) => {
+    const imageWidth = Dimensions.get('window').width - 10;
+    const imageHeight = imageWidth * 0.792;
+    const imageStyles = {
+        ...styles.image,
+        height: imageHeight,
+        width: imageWidth
+    };
+    if (!props.isEmpty) {
+        return <PoolListFooterNonEmpty pressedUpgrade={ props.handlePressedUpgrade } />;
     }
-
-    render() {
-        const imageWidth = Dimensions.get('window').width - 10;
-        const imageHeight = imageWidth * 0.792;
-        const imageStyles = {
-            ...styles.image,
-            height: imageHeight,
-            width: imageWidth
-        };
-        if (!this.props.isEmpty) {
-            return null;
-        }
-        return (
-            <View>
-                <PDText style={ styles.bottomText }>
-                    Tap the + icon above to get started.
+    return (
+        <View>
+            <PDText style={ styles.bottomText }>
+                Tap the + icon above to get started.
                 </PDText>
-                <Image
-                    style={ imageStyles }
-                    source={ images.poolListEmpty }
-                    width={ imageWidth }
-                    height={ imageHeight } />
-            </View>
-        );
-    }
+            <Image
+                style={ imageStyles }
+                source={ images.poolListEmpty }
+                width={ imageWidth }
+                height={ imageHeight } />
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({

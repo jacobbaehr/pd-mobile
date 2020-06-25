@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { images } from '~/assets/images';
 import { PDText } from '~/components/PDText';
 import { Pool } from '~/models/Pool';
-import { User } from '~/models/User';
 import { selectPool } from '~/redux/selectedPool/Actions';
 import { dispatch, AppState } from '~/redux/AppState';
 
@@ -20,23 +19,17 @@ import { useRealmPoolsHook } from './hooks/RealmPoolHook';
 import { useNavigation } from '@react-navigation/native';
 
 interface PoolListScreenProps {
-    navigation: StackNavigationProp<PDNavStackParamList, 'PoolList'>;
-
     // The id of the selected pool, if any
     selectedPool: Pool | null;
 
     // This is a flag that just changes whenever we save a new pool.
     poolsLastUpdated: number;
-
-    user: User | null;
 }
 
 const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolListScreenProps => {
     return {
-        navigation: ownProps.navigation,
         selectedPool: state.selectedPool,
-        poolsLastUpdated: state.poolsLastUpdated,
-        user: state.user
+        poolsLastUpdated: state.poolsLastUpdated
     };
 };
 
@@ -57,12 +50,16 @@ const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (p
     }
 
     const handleAddPoolPressed = async () => {
+
         dispatch(selectPool(null));
         navigate('CreatePool');
     }
 
     const handleSettingsPressed = () => {
         navigate('Settings');
+    }
+    const handleUpgradePressed = () => {
+        navigate('Buy');
     }
 
     const isEmpty = pools.length === 0;
@@ -111,7 +108,7 @@ const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (p
                 ] }
                 renderSectionFooter={ () => <PoolListFooter
                     isEmpty={ isEmpty }
-                    handlePress={ handleAddPoolPressed } /> }
+                    handlePressedUpgrade={ handleUpgradePressed } /> }
                 keyExtractor={ item => (item as Pool).objectId }
                 overScrollMode={ 'always' }
                 contentInset={ { bottom: 50 } } />

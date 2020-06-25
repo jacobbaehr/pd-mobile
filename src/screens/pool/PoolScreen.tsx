@@ -12,7 +12,6 @@ import { ChartCard } from '~/components/charts/ChartCard';
 import { ChartCardViewModel } from '~/components/charts/ChartCardViewModel';
 import { PDText } from '~/components/PDText';
 import { Pool } from '~/models/Pool';
-import { User } from '~/models/User';
 import { AppState } from '~/redux/AppState';
 import SafeAreaView from 'react-native-safe-area-view';
 
@@ -24,6 +23,7 @@ import { PoolHistoryListItem } from './PoolHistoryListItem';
 import { Haptic } from '~/services/HapticService';
 import { Util } from '~/services/Util';
 import { RecipeService } from '~/services/RecipeService';
+import { DeviceSettings } from '~/models/DeviceSettings';
 
 interface PoolScreenProps {
     // The id of the selected pool, if any
@@ -32,19 +32,14 @@ interface PoolScreenProps {
     // This is a flag that just changes whenever we save a new pool.
     poolsLastUpdated: number;
 
-    //
-    user: User | null;
-
-    //
-    hasValidSubscription: boolean;
+    deviceSettings: DeviceSettings;
 }
 
 const mapStateToProps = (state: AppState, ownProps: PoolScreenProps): PoolScreenProps => {
     return {
         selectedPool: state.selectedPool,
         poolsLastUpdated: state.poolsLastUpdated,
-        user: state.user,
-        hasValidSubscription: state.hasValidSubscription,
+        deviceSettings: state.deviceSettings
     };
 };
 

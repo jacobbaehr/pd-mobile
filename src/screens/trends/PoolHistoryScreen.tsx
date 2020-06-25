@@ -15,15 +15,12 @@ import { AppState } from '~/redux/AppState';
 import { ChartCardViewModel } from '~/components/charts/ChartCardViewModel';
 import { Reading } from '~/models/recipe/Reading';
 import { Treatment } from '~/models/recipe/Treatment';
-import { LogEntryApiManager } from '~/api/logEntry/LogEntryApiManager';
-import { User } from '~/models/User';
 
 interface PoolHistoryProps {
     /**  */
     navigation: StackNavigationProp<PDNavStackParamList, 'PoolHistory'>;
     /**  */
     selectedPool: Pool;
-    user: User | null;
 }
 
 interface PoolHistoryState {
@@ -34,7 +31,6 @@ const mapStateToProps = (state: AppState, ownProps: PoolHistoryProps): PoolHisto
     return {
         navigation: ownProps.navigation,
         selectedPool: state.selectedPool!,
-        user: state.user
     };
 };
 
@@ -58,12 +54,6 @@ class PoolHistoryComponent extends React.PureComponent<PoolHistoryProps, PoolHis
 
     onRangeChanged = (selectedRange: string) => {
         this.setState({ currentDateRange: selectedRange });
-
-        // const manager = new LogEntryApiManager('/v1', () => { return })
-        if (this.props.user) {
-            const manager = new LogEntryApiManager('/eid', () => { return ''; }, this.props.user);
-            manager.getLogEntriesForPool(this.props.selectedPool.objectId);
-        }
     }
 
     private loadChartData = (): ChartCardViewModel[] => {

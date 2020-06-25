@@ -13,10 +13,7 @@ import { DeviceSettings } from '~/models/DeviceSettings';
 
 import { ScrollView } from 'react-native-gesture-handler';
 import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
-import { CycleButton } from '~/components/buttons/CycleButton';
-import { Config } from '~/services/Config';
 import { BoringButton } from '~/components/buttons/BoringButton';
-import { Upgrade } from '~/components/Upgrade';
 import { BuyHeader } from './BuyHeader';
 import { images } from '~/assets/images';
 import { lifeStory } from './LifeStory';

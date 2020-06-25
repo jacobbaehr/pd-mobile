@@ -4,7 +4,6 @@ import ReduxThunk from 'redux-thunk';
 import { ReadingEntry } from '~/models/logs/ReadingEntry';
 import { TreatmentEntry } from '~/models/logs/TreatmentEntry';
 import { Pool } from '~/models/Pool';
-import { User } from '~/models/User';
 import { PickerState } from './picker/PickerState';
 
 import { hasValidSubscriptionReducer } from './hasValidSubscription/Reducer';
@@ -13,7 +12,6 @@ import { poolsLastUpdatedReducer } from './poolsLastUpdated/Reducer';
 import { readingEntriesReducer } from './readingEntries/Reducer';
 import { selectedPoolReducer } from './selectedPool/Reducer';
 import { pickerStateReducer } from './picker/Reducer';
-import { userReducer } from './user/Reducer';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 import { deviceSettingsReducer } from './deviceSettings/Reducer';
@@ -32,9 +30,6 @@ export interface AppState {
     // This increments whenever we update the list of pools
     poolsLastUpdated: number;
 
-    // User object including cognito user returned after user signs in
-    user: User | null;
-
     // Whether or not the user has a valid subscription
     hasValidSubscription: boolean;
 
@@ -50,7 +45,6 @@ const initialAppState: AppState = {
     outputs: [],
     selectedPool: null,
     poolsLastUpdated: 0,
-    user: null,
     hasValidSubscription: false,
     pickerState: null,
     deviceSettings: DeviceSettingsService.getDefaultSettings()
@@ -61,7 +55,6 @@ const reducer = combineReducers({
     outputs: outputsReducer,
     selectedPool: selectedPoolReducer,
     poolsLastUpdated: poolsLastUpdatedReducer,
-    user: userReducer,
     hasValidSubscription: hasValidSubscriptionReducer,
     pickerState: pickerStateReducer,
     deviceSettings: deviceSettingsReducer
