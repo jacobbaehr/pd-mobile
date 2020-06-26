@@ -10,9 +10,8 @@ interface UpgradeProps {
 }
 
 export const Upgrade: React.FunctionComponent<UpgradeProps> = (props) => {
-    return <View style={ props.style }>
-        <PDText style={ styles.sectionTitle }>Unlock</PDText>
-        <View style={ styles.plusContainer }>
+    return (
+        <View style={ [styles.plusContainer, props.style] }>
             <View style={ { flexDirection: 'row', display: 'flex' } }>
                 <View style={ { flex: 1 } }></View>
                 <Image style={ styles.pdProImageStyles } source={ images.logoGreenPlus } width={ 3000 } resizeMode={ 'contain' } />
@@ -29,16 +28,10 @@ export const Upgrade: React.FunctionComponent<UpgradeProps> = (props) => {
                 containerStyles={ styles.plusButton }
                 textStyles={ styles.plusButtonText }
             />
-        </View>
-    </View>;
+        </View>);
 }
 
 const styles = StyleSheet.create({
-    sectionTitle: {
-        fontWeight: '700',
-        fontSize: 28,
-        marginBottom: 4,
-    },
     plusContainer: {
         backgroundColor: 'white',
         shadowOffset: { width: 0, height: 2 },
@@ -50,8 +43,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#00C89F',
         padding: 15,
-        alignItems: 'center',
-        marginHorizontal: 12
+        alignItems: 'center'
     },
     pdProImageStyles: {
         margin: 10,

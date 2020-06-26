@@ -1,21 +1,43 @@
 import moment from 'moment';
 import * as React from 'react';
-import { Platform, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { Animated, Platform, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 import { ChartCardViewModel } from './ChartCardViewModel';
+import { Upgrade } from '../Upgrade';
 
 interface ChartCardProps {
     viewModel: ChartCardViewModel;
     containerStyles?: StyleProp<ViewStyle>;
 }
 
-export class ChartCard extends React.PureComponent<ChartCardProps> {
+interface ChartCardState {
+    overlayOpacity: Animated.Value;
+}
+
+export class ChartCard extends React.PureComponent<ChartCardProps, ChartCardState> {
     private webView: WebView | null;
 
     constructor(props: ChartCardProps) {
         super(props);
         this.webView = null;
+        this.state = { overlayOpacity: new Animated.Value(0) };
+    }
+
+    componentDidMount() {
+        // If unlocked, then hide the overlay
+        if (this.props.viewModel.isUnlocked) {
+            this.setState({
+                overlayOpacity: new Animated.Value(0)
+            });
+        } else {
+            Animated.timing(this.state.overlayOpacity, {
+                delay: 800,
+                toValue: 1,
+                duration: 500,
+                useNativeDriver: true
+            }).start();
+        }
     }
 
     private getDateLabels = () => {
@@ -80,6 +102,9 @@ export class ChartCard extends React.PureComponent<ChartCardProps> {
                     </View>
                 </View>
                 { this.props.children }
+                <Animated.View style={ [styles.overlay, { opacity: this.state.overlayOpacity }] } pointerEvents={ 'none' }>
+                    <Upgrade style={ styles.upgradeContainer } onPress={ () => { } } />
+                </Animated.View>
             </View>
         );
     }
@@ -95,8 +120,8 @@ const styles = StyleSheet.create({
         flex: 1,
         borderRadius: 8,
         paddingBottom: 10,
-        minHeight: 175,
-        maxWidth: 405
+        minHeight: 225,
+        maxWidth: 405,
     },
     title: {
         paddingHorizontal: 20,
@@ -117,7 +142,7 @@ const styles = StyleSheet.create({
     },
     chartWebViewContainer: {
         flex: 1,
-        height: 175,
+        height: 225,
         width: '100%',
         marginHorizontal: 15,
         overflow: 'hidden'
@@ -132,5 +157,20 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         fontFamily: 'Avenir Next',
         color: '#676767'
+    },
+    overlay: {
+        position: 'absolute',
+        display: 'flex',
+        left: 0,
+        top: 0,
+        bottom: 0,
+        right: 0,
+        backgroundColor: 'white',
+        borderRadius: 24
+    },
+    upgradeContainer: {
+        position: 'relative',
+        display: 'flex',
+        flex: 1
     }
 });

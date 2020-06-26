@@ -53,7 +53,7 @@ const BuyComponent: React.FunctionComponent<BuyScreenProps> = (props) => {
     const handleRestorePressed = async () => {
         setIsLoading(true);
 
-        const purchaseResult = await IAP.checkExpiration();
+        const purchaseResult = await IAP.restoreUnlock();
         handlePurchaseResult(purchaseResult);
     }
     const handleManageSubPressed = async () => {
@@ -65,9 +65,12 @@ const BuyComponent: React.FunctionComponent<BuyScreenProps> = (props) => {
         }
     }
     const handlePurchaseResult = (ps: PurchaseStatus) => {
+        console.log('PS', JSON.stringify(ps));
         if (ps instanceof Date) {
+            console.log('1');
             const now = new Date();
             if (ps > now) {
+                console.log('2');
                 // update device settings to indicate the date of the expiration.
                 const ds = {
                     ...props.deviceSettings,
@@ -75,6 +78,7 @@ const BuyComponent: React.FunctionComponent<BuyScreenProps> = (props) => {
                 };
                 DeviceSettingsService.saveSettings(ds);
                 dispatch(updateDeviceSettings(ds));
+                console.log('3');
             }
         }
         // TODO: alert the user of the different states? Maybe.

@@ -75,6 +75,7 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
                     textStyles={ styles.unitsButtonText }
                     onPress={ handlePressedUnits } />
             </View>
+            <PDText style={ styles.sectionTitle }>Unlock</PDText>
             <Upgrade style={ styles.upgradeContainer } onPress={ handleUpgradePressed } />
             <PDText style={ styles.sectionTitle }>Feedback?</PDText>
             <PDText style={ styles.forumDetails }>I'd love to hear it in in the forum!</PDText>
@@ -136,7 +137,8 @@ const styles = StyleSheet.create({
         paddingVertical: 4
     },
     upgradeContainer: {
-        margin: 16
+        marginVertical: 16,
+        marginHorizontal: 28
     },
     sectionTitle: {
         marginTop: 12,

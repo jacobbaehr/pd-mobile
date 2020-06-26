@@ -25,6 +25,7 @@ import { Util } from '~/services/Util';
 import { RecipeService } from '~/services/RecipeService';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { DS } from '~/services/DSUtil';
+import { selectedPoolReducer } from '~/redux/selectedPool/Reducer';
 
 interface PoolScreenProps {
     // The id of the selected pool, if any
@@ -74,11 +75,10 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
     };
 
     const handleChartsPressed = () => {
-        // TODO: revert
         if (isUnlocked) {
-            navigate('Buy');
-        } else {
             navigate('PoolHistory');
+        } else {
+            navigate('Buy');
         }
     }
 
@@ -142,7 +142,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
         let contentBody = <></>;
         let marginBottom = 14;
         if (section.key === 'recipe_section') {
-            if (!recipe) { return <View></View>; }
+            if (!recipe) { return <View ></View>; }
             const hitSlop = 7;
 
             let lastServiceString = '';
@@ -152,7 +152,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
             }
 
             contentBody =
-                <View style={ styles.recipeSection } key={ `poolList|${section.data.indexOf(item)}|${sections.indexOf(section)}` }>
+                <View style={ styles.recipeSection }>
                     <View style={ { flexDirection: 'row' } }>
                         <TouchableScale
                             onPress={ handleChangeRecipeButtonPressed }
@@ -174,7 +174,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
             contentBody = <TouchableScale
                 onPress={ handleChartsPressed }
                 activeScale={ 0.98 }
-                style={ styles.recipeButton } >
+                style={ styles.recipeButton }>
 
                 <ChartCard
                     viewModel={ vm }
@@ -188,10 +188,13 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
             contentBody = <PoolHistoryListItem logEntry={ item } handleCellSelected={ handleHistoryCellPressed } isExpanded={ selectedHistoryCellIds.includes(item.objectId) } />;
         }
 
-        return (<View style={ { marginBottom } }>
-            { titleElement }
-            { contentBody }
-        </View>);
+        // We need the key here to change after a purchase to cause a re-render:
+        return (
+            <View style={ { marginBottom } }>
+                { titleElement }
+                { contentBody }
+            </View >
+        );
     }
 
     return (
@@ -207,6 +210,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
                 renderItem={ ({ section, item }) => renderItem(section, item) }
                 contentInset={ { bottom: 34 } }
                 stickySectionHeadersEnabled={ true }
+                keyExtractor={ (section, item) => `${section.key}|${item}|${isUnlocked ? 'unlocked' : 'locked'}` }
             />
         </SafeAreaView>
     );
@@ -255,64 +259,9 @@ const styles = StyleSheet.create({
     recipeButton: {
         flexDirection: 'row'
     },
-    recipeButtonText: {
-        fontSize: 22,
-        fontWeight: '600',
-    },
     chartCard: {
         borderRadius: 24,
         marginHorizontal: 12,
         marginBottom: 12
-    },
-    historyButton: {
-        backgroundColor: 'black',
-        flex: 1,
-        marginHorizontal: 20,
-        justifyContent: 'center',
-        alignContent: 'center',
-        borderRadius: 8,
-        marginBottom: 10,
-        marginTop: 15,
-    },
-    viewMoreHistoryText: {
-        color: 'white',
-        fontSize: 24,
-        fontWeight: '700',
-        paddingVertical: 10,
-        textAlign: 'center',
-        fontFamily: 'Avenir Next',
-    },
-    plusContainer: {
-        backgroundColor: 'white',
-        shadowOffset: { width: 0, height: 2 },
-        shadowColor: 'grey',
-        shadowOpacity: 0.3,
-        paddingVertical: 10,
-        flex: 1,
-        borderRadius: 24,
-        borderWidth: 2,
-        borderColor: '#00C89F',
-        padding: 15,
-        alignItems: 'center',
-        marginHorizontal: 12
-    },
-    pdProImageStyles: {
-        margin: 10,
-    },
-    plusButton: {
-        backgroundColor: '#E6FAF5',
-        borderRadius: 25,
-        shadowColor: 'transparent',
-        paddingHorizontal: 12,
-        marginVertical: 12
-    },
-    plusButtonText: {
-        color: '#009B7C'
-    },
-    onlineBackupText: {
-        color: '#9b9b9b',
-        fontWeight: '400',
-        fontSize: 20,
-        textAlign: 'center',
     },
 });

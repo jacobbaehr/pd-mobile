@@ -26,7 +26,9 @@ export class IAP {
 
     static restoreUnlock = async (): Promise<PurchaseStatus> => {
         try {
+            console.log('baaaaaa');
             const purchaserInfo = await Purchases.restoreTransactions();
+            console.log('boooooo');
             return IAP.getStatus(purchaserInfo);
         } catch (e) {
             if (!!e.userCancelled) {
@@ -69,6 +71,8 @@ export class IAP {
         try {
             const purchaseMade = await Purchases.purchasePackage(p);
             const result = IAP.getStatus(purchaseMade.purchaserInfo);
+            console.log('buying...');
+            console.log(JSON.stringify(result));
             if (result === 'not_bought') {
                 return 'error';
             }
@@ -83,13 +87,18 @@ export class IAP {
     }
 
     private static getStatus = (purchaserInfo: PurchaserInfo): PurchaseStatus => {
+        console.log('pi: ', JSON.stringify(purchaserInfo));
         if (typeof purchaserInfo.entitlements.active.unlock_20 !== "undefined") {
+            console.log('a');
             const entitlement = purchaserInfo.entitlements.active.unlock_20;
             if (entitlement.expirationDate === null) {
+                console.log('b');
                 return new Date('2120-01-01');  // I'll be dead by then, so this is someone else's problem.
             }
+            console.log('c');
             return new Date(entitlement.expirationDate);
         }
+        console.log('d');
         return 'not_bought';
     }
 }
