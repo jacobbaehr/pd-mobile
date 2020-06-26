@@ -27,7 +27,7 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
 
         const treatments = props.logEntry.treatmentEntries.map(te => {
             let name = te.treatmentName;
-            if (te.concentration) {
+            if (te.concentration && te.concentration !== 100) {
                 name = `${te.concentration.toFixed(0)}% ${name}`;
             }
             return <PDText style={ styles.lineItem } key={ te.var + props.logEntry.objectId }>• { name }: { Util.removeSuffixIfPresent('.0', te.displayAmount) } { te.displayUnits }</PDText>

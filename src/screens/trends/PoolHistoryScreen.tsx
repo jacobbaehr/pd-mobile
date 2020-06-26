@@ -58,7 +58,7 @@ const PoolHistoryComponent: React.FunctionComponent<PoolHistoryProps> = (props) 
     const loadChartData = (): ChartCardViewModel[] => {
         const msInRange = msInDateRange(dateRange);
         const since_ts = msInRange ? Date.now() - msInRange : null;
-        const data = Database.loadLogEntriesForPool(selectedPool.objectId, since_ts);
+        const data = Database.loadLogEntriesForPool(selectedPool.objectId, since_ts, false);
         const entries = (data === undefined) ? [] : data.map(le => le);
 
         interface Graphable {
@@ -75,6 +75,11 @@ const PoolHistoryComponent: React.FunctionComponent<PoolHistoryProps> = (props) 
                     const graphable: Graphable = { title: reading.readingName, id: reading.var, idealMin: reading.idealMin || null, idealMax: reading.idealMax || null };
                     if (idsToGraph.filter(g => { return g.title == graphable.title && g.id == graphable.id }).length == 0) {
                         idsToGraph.push(graphable);
+                    } else {
+                        // update the ideal range:
+                        const i = idsToGraph.findIndex(g => { return g.title == graphable.title && g.id == graphable.id });
+                        idsToGraph[i].idealMin = reading.idealMin || null;
+                        idsToGraph[i].idealMax = reading.idealMax || null;
                     }
                 });
             entry.treatmentEntries

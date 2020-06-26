@@ -40,7 +40,7 @@ export const useRealmPoolsHook = (): Realm.Collection<Pool> => {
 
 export const useRealmPoolHistoryHook = (poolId: string): Realm.Collection<LogEntry> => {
     const [data, setData] = useState({
-        data: Database.loadLogEntriesForPool(poolId, null),
+        data: Database.loadLogEntriesForPool(poolId, null, true),
         a: Date.now()
     });
 
@@ -48,12 +48,12 @@ export const useRealmPoolHistoryHook = (poolId: string): Realm.Collection<LogEnt
     useEffect(() => {
         const handleChange = (newData: Realm.Collection<LogEntry>) => {
             setData({
-                data: newData.sorted('ts', true),
+                data: newData,
                 // The date is here to trigger a rerender on each change (the list is shallow-compared)
                 a: Date.now()
             });
         }
-        const dataQuery = Database.loadLogEntriesForPool(poolId, null);
+        const dataQuery = Database.loadLogEntriesForPool(poolId, null, true);
         dataQuery.addListener(handleChange);
 
         // This will run sort-of like componentWillUnmount or whatever that lifecycle method was called

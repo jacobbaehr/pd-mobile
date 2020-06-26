@@ -92,12 +92,18 @@ export class Database {
         }
     };
 
-    static loadLogEntriesForPool = (poolId: string, since_ts: number | null): Realm.Collection<LogEntry> => {
+    static loadLogEntriesForPool = (poolId: string, since_ts: number | null, recentFirst: boolean): Realm.Collection<LogEntry> => {
         const realm = Database.realm;
         let query = `poolId = "${poolId}"`;
         if (since_ts) {
             query += `AND ts > ${since_ts}`;
         }
+        if (recentFirst) {
+            query += ' SORT(ts DESC)';
+        } else {
+            query += ' SORT(ts ASC)';
+        }
+
         return realm.objects<LogEntry>(LogEntry.schema.name).filtered(query);
     };
 
