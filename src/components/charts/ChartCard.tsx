@@ -95,7 +95,8 @@ const styles = StyleSheet.create({
         flex: 1,
         borderRadius: 8,
         paddingBottom: 10,
-        minHeight: 175
+        minHeight: 175,
+        maxWidth: 405
     },
     title: {
         paddingHorizontal: 20,
