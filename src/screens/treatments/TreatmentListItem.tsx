@@ -12,6 +12,7 @@ import { ChoosyButton } from '~/components/buttons/ChoosyButton';
 import { CycleButton } from '~/components/buttons/CycleButton';
 import { Util } from '~/services/Util';
 import { TreatmentState } from './TreatmentListHelpers';
+import { Conditional } from '~/components/Conditional';
 
 interface TreatmentListItemProps {
     treatmentState: TreatmentState;
@@ -88,23 +89,31 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
                             source={ leftImageSource }
                             width={ 28 }
                             height={ 28 } />
-                        <PDText style={ styles.addLabel }>
-                            Add
-                    </PDText>
-                        <TextInput
-                            style={ textInputStyles }
-                            onFocus={ onTextBeginEditing }
-                            onChangeText={ onTextChange }
-                            onEndEditing={ onTextEndEditing }
-                            keyboardType={ 'decimal-pad' }
-                            inputAccessoryViewID={ props.inputAccessoryId }>
-                            { valueText }
-                        </TextInput>
-                        <CycleButton title={ pluralize(ts.units, parseFloat(valueText)) } onPress={ onPressedUnitsButton } textStyles={ unitsTextStyles } styles={ styles.unitsButton } />
-                        <PDText style={ styles.ofLabel }>
-                            of
-                    </PDText>
-                        <ChoosyButton title={ treatmentName } onPress={ onPressedTreatmentNameButton } textStyles={ treatmentNameTextStyles } styles={ styles.treatmentNameButton } />
+
+                        <Conditional condition={ t.type !== 'task' }>
+                            <PDText style={ styles.addLabel }>
+                                Add
+                            </PDText>
+                            <TextInput
+                                style={ textInputStyles }
+                                onFocus={ onTextBeginEditing }
+                                onChangeText={ onTextChange }
+                                onEndEditing={ onTextEndEditing }
+                                keyboardType={ 'decimal-pad' }
+                                inputAccessoryViewID={ props.inputAccessoryId }>
+                                { valueText }
+                            </TextInput>
+                            <CycleButton title={ pluralize(ts.units, parseFloat(valueText)) } onPress={ onPressedUnitsButton } textStyles={ unitsTextStyles } styles={ styles.unitsButton } />
+                            <PDText style={ styles.ofLabel }>
+                                of
+                            </PDText>
+                            <ChoosyButton title={ treatmentName } onPress={ onPressedTreatmentNameButton } textStyles={ treatmentNameTextStyles } styles={ styles.treatmentNameButton } />
+                        </Conditional>
+                        <Conditional condition={ t.type === 'task' }>
+                            <PDText style={ treatmentNameTextStyles }>
+                                { t.name }
+                            </PDText>
+                        </Conditional>
                     </View>
                 </View>
             </TouchableScale>

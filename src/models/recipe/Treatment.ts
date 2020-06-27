@@ -20,4 +20,4 @@ export interface Treatment {
     type: TreatmentType;
 }
 
-export type TreatmentType = 'dry_chem' | 'wet_chem' | 'task' | 'calc';
+export type TreatmentType = 'dryChemical' | 'liquidChemical' | 'task' | 'calculation';

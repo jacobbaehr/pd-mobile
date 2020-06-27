@@ -3,14 +3,14 @@ import { Treatment } from "~/models/recipe/Treatment";
 import { DeviceSettings } from "~/models/DeviceSettings";
 import { DeviceSettingsService } from "~/services/DeviceSettingsService";
 import { Util } from "~/services/Util";
-import { DryChemicalUnits } from "./TreatmentUnits";
+import { Units } from "./TreatmentUnits";
 
 export interface TreatmentState {
     treatment: Treatment;
     value?: string;
     ounces: number;
     isOn: boolean;
-    units: DryChemicalUnits;
+    units: Units;
     decimalPlaces: number;
     concentration: number;
 }

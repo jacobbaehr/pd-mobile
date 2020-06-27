@@ -49,21 +49,21 @@ export const big3: Recipe = {
             var: 'chlorine',
             formula: 'if (r.fc > 3.0) return 0; return (3.0 - r.fc) * p.gallons * .06;',
             concentration: 67,
-            type: 'dry_chem'
+            type: 'dryChemical'
         },
         {
             name: 'Sodium Bicarbonate',
             var: 'baking_soda',
             formula: 'return 6;',
             concentration: 100,
-            type: 'dry_chem'
+            type: 'dryChemical'
         },
         {
             name: 'Sodium Carbonate',
             var: 'soda_ash',
             formula: 'return 0;',
             concentration: 100,
-            type: 'dry_chem'
+            type: 'dryChemical'
         }
     ]
 };

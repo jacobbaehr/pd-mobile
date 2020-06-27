@@ -1,5 +1,5 @@
 import React from 'react';
-import { PlatformOSType, View } from 'react-native';
+import { PlatformOSType } from 'react-native';
 import { Config } from '~/services/Config';
 
 interface PlatformSpecificProps {
@@ -20,7 +20,5 @@ export const PlatformSpecific: React.FunctionComponent<PlatformSpecificProps> = 
     if (shouldRenderChildren) {
         children = props.children;
     }
-    return <View>
-        { children }
-    </View>;
+    return <>{ children }</>;
 }

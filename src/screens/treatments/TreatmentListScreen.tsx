@@ -19,7 +19,7 @@ import { BoringButton } from '~/components/buttons/BoringButton';
 import { Haptic } from '~/services/HapticService';
 import { TreatmentListItem } from './TreatmentListItem';
 import { Util } from '~/services/Util';
-import { DryChemicalUnits, Converter } from './TreatmentUnits';
+import { DryChemicalUnits, Converter, Units, WetChemicalUnits } from './TreatmentUnits';
 import { PDPickerRouteProps } from '../picker/PickerScreen';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { DeviceSettingsService } from '~/services/DeviceSettingsService';
@@ -75,7 +75,13 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
 
             const treatmentModification = (ts: TreatmentState) => {
                 const newOunces = ts.ounces * ts.concentration / newConcentration;
-                const newValue = Converter.dryOunces(newOunces, ts.units);
+                let newValue = newOunces;
+                if (ts.treatment.type === 'dryChemical') {
+                    newValue = Converter.dryOunces(newOunces, ts.units as DryChemicalUnits);
+                } else if (ts.treatment.type === 'liquidChemical') {
+                    newValue = Converter.wetOunces(newOunces, ts.units as WetChemicalUnits);
+                }
+
                 ts.ounces = newOunces;
                 ts.value = newValue.toFixed(ts.decimalPlaces);
                 ts.concentration = newConcentration;
@@ -138,7 +144,7 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                 treatment: t,
                 isOn: false,
                 value: ounces.toFixed(defaultDecimalPlaces),
-                units: 'ounces' as DryChemicalUnits,
+                units: 'ounces' as Units,
                 ounces,
                 decimalPlaces: defaultDecimalPlaces,
                 concentration: concentrationOverride || baseConcentration
@@ -179,8 +185,18 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
         Haptic.light();
 
         const modification = (ts: TreatmentState) => {
-            const newUnits = Converter.nextDry(ts.units);
-            const newValue = Converter.dryOunces(ts.ounces, newUnits);
+            let newValue = ts.ounces;
+            let newUnits = ts.units;
+
+            if (ts.treatment.type === 'dryChemical') {
+                newUnits = Converter.nextDry(ts.units as DryChemicalUnits);
+                newValue = Converter.dryOunces(ts.ounces, newUnits);
+            } else if (ts.treatment.type === 'liquidChemical') {
+                newUnits = Converter.nextWet(ts.units as WetChemicalUnits);
+                newValue = Converter.wetOunces(ts.ounces, newUnits);
+            }
+
+
 
             ts.units = newUnits;
             ts.value = newValue.toFixed(ts.decimalPlaces);
@@ -197,7 +213,12 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                 if (isNaN(newValue)) {
                     newValue = 0;
                 }
-                newOunces = Converter.dry(newValue, ts.units, 'ounces');
+                if (ts.treatment.type === 'dryChemical') {
+                    newOunces = Converter.dry(newValue, ts.units as DryChemicalUnits, 'ounces');
+                } else if (ts.treatment.type === 'liquidChemical') {
+                    newOunces = Converter.wet(newValue, ts.units as WetChemicalUnits, 'ounces');
+                }
+
             }
             if (ts.ounces !== newOunces) {
                 ts.ounces = newOunces;
@@ -216,7 +237,11 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                 if (isNaN(newValue)) {
                     newValue = 0;
                 }
-                newOunces = Converter.dry(newValue, ts.units, 'ounces');
+                if (ts.treatment.type === 'dryChemical') {
+                    newOunces = Converter.dry(newValue, ts.units as DryChemicalUnits, 'ounces');
+                } else if (ts.treatment.type === 'liquidChemical') {
+                    newOunces = Converter.wet(newValue, ts.units as WetChemicalUnits, 'ounces');
+                }
             }
 
             const decimalHalves = newText.split('.');
@@ -225,7 +250,11 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                 newDecimalPlaces = Math.max(decimalHalves[1].length, 1);
             }
             ts.decimalPlaces = newDecimalPlaces;
-            ts.value = Converter.dry(newOunces, 'ounces', ts.units).toFixed(newDecimalPlaces);
+            if (ts.treatment.type === 'dryChemical') {
+                ts.value = Converter.dry(newOunces, 'ounces', ts.units as DryChemicalUnits).toFixed(newDecimalPlaces);
+            } else if (ts.treatment.type === 'liquidChemical') {
+                ts.value = Converter.wet(newOunces, 'ounces', ts.units as WetChemicalUnits).toFixed(newDecimalPlaces);
+            }
             return true;
         };
         TreatmentListHelpers.updateTreatmentState(varName, modification, treatmentStates, setTreatmentStates);

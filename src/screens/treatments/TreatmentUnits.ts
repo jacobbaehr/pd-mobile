@@ -1,5 +1,6 @@
 export type DryChemicalUnits = 'ounces' | 'pounds' | 'grams' | 'kilograms';
-export type WetChemicalUnits = 'ounces' | 'gallons' | 'mL' | 'liters';
+export type WetChemicalUnits = 'ounces' | 'gallons' | 'milliliters' | 'liters';
+export type Units = DryChemicalUnits | WetChemicalUnits;
 
 export class Converter {
 
@@ -11,10 +12,10 @@ export class Converter {
     }
 
     // Helper function for cycling through all wet chemical options
-    static nextWet = (prevUnits: DryChemicalUnits): DryChemicalUnits => {
-        let index = Converter.allDryUnits.indexOf(prevUnits);
-        index = (index + 1) % Converter.allDryUnits.length;
-        return Converter.allDryUnits[index];
+    static nextWet = (prevUnits: WetChemicalUnits): WetChemicalUnits => {
+        let index = Converter.allWetUnits.indexOf(prevUnits);
+        index = (index + 1) % Converter.allWetUnits.length;
+        return Converter.allWetUnits[index];
     }
 
     static dry = (prevValue: number, fromUnits: DryChemicalUnits, toUnits: DryChemicalUnits): number => {
@@ -45,7 +46,7 @@ export class Converter {
             case 'gallons':
                 prevToOunces = 128;
                 break;
-            case 'mL':
+            case 'milliliters':
                 prevToOunces = 0.033814;
                 break;
             case 'liters':
@@ -86,7 +87,7 @@ export class Converter {
             case 'gallons':
                 multiplier = 0.0078125;
                 break;
-            case 'mL':
+            case 'milliliters':
                 multiplier = 29.5735;
                 break;
             case 'liters':
@@ -109,7 +110,7 @@ export class Converter {
     private static allWetUnits: WetChemicalUnits[] = [
         'ounces',
         'gallons',
-        'mL',
+        'milliliters',
         'liters'
     ];
 }

@@ -61,15 +61,15 @@ const RecipeScreenComponent: React.FunctionComponent<RecipeScreenProps> = (props
         ? styles.recipeLinkPressed
         : styles.recipeLinkNormal;
 
-    const readingList = recipe.readings.map(r => <PDText style={ styles.textBody }>• { r.name }</PDText>);
-    const treatmentList = recipe.treatments.map(t => <PDText style={ styles.textBody }>• { t.name }</PDText>);
+    const readingList = recipe.readings.map(r => <PDText style={ styles.textBody } key={ `r:${recipe.readings.indexOf(r)}` }>• { r.name }</PDText>);
+    const treatmentList = recipe.treatments.map(t => <PDText style={ styles.textBody } key={ `t:${recipe.treatments.indexOf(t)}` }>• { t.name }</PDText>);
     const updatedText = format(recipe.ts, '• MMM d, y') + format(recipe.ts, '  //  h:mma').toLowerCase();
 
     return (
         <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } }>
             <View style={ styles.container }>
                 <RecipeScreenHeader handleBackPress={ handleBackPressed } meta={ meta } />
-                <ScrollView style={ styles.scrollView }>
+                <ScrollView style={ styles.scrollView } contentInset={ { top: 12, bottom: 12 } }>
                     <PDText style={ styles.textTitle }>Description</PDText>
                     <PDText style={ styles.textBody }>{ recipe.description }</PDText>
                     <PDText style={ styles.textTitle }>Readings</PDText>
@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
     scrollView: {
         flex: 1,
         backgroundColor: '#F2F9F9',
-        paddingTop: 12,
         borderBottomColor: '#F0F0F0',
         borderBottomWidth: 2
     },
