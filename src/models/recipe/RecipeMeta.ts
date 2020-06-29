@@ -3,4 +3,5 @@ export interface RecipeMeta {
     name: string;
     desc: string;
     ts: number;
+    appVersion: string;
 }

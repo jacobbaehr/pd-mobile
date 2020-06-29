@@ -1,6 +1,6 @@
 {
     "name": "pooldash",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "private": true,
     "scripts": {
         "android": "npx react-native run-android",
@@ -25,6 +25,7 @@
         "apollo-client": "^2.6.10",
         "apollo-link-http": "^1.5.17",
         "axios": "^0.19.2",
+        "compare-versions": "^3.6.0",
         "date-fns": "^2.14.0",
         "graphql": "^14.6.0",
         "graphql-tag": "^2.10.3",

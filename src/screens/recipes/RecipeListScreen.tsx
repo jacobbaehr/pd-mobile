@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, SectionList } from 'react-native';
+import { StyleSheet, SectionList, Alert, Linking } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { PDNavStackParamList } from '~/navigator/Navigators';
 import { connect } from 'react-redux';
@@ -7,8 +7,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 
 import { RecipeMeta } from '~/models/recipe/RecipeMeta';
 import { Pool } from '~/models/Pool';
-import { dispatch, AppState } from '~/redux/AppState';
-import { Database } from '~/repository/Database';
+import { AppState } from '~/redux/AppState';
 import { RecipeAPI } from '~/services/gql/RecipeAPI';
 
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
@@ -16,10 +15,9 @@ import { RecipeListHeader } from './RecipeListHeader';
 import { RecipeListItem } from './RecipeListItem';
 import { PDText } from '~/components/PDText';
 import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
-import { RecipeRepo } from '~/repository/RecipeRepo';
 import { RecipeService } from '~/services/RecipeService';
-import { getRecipeKey } from '~/models/recipe/RecipeKey';
 import { RS } from '~/services/RecipeUtil';
+import { Config } from '~/services/Config';
 
 interface RecipeListScreenProps {
     // The selected pool
@@ -39,21 +37,45 @@ const RecipeListScreenComponent: React.FunctionComponent<RecipeListScreenProps> 
     const currentRecipe = useRecipeHook(props.pool?.recipeKey || RecipeService.defaultRecipeKey);
     const { params } = useRoute<RouteProp<PDNavStackParamList, 'RecipeList'>>();
 
+    const handleUpdatePressed = () => {
+        Linking.openURL(Config.appStoreListing);
+    }
+
+    const promptUpdate = () => {
+        Alert.alert(
+            "Update Required",
+            "This recipe requires a newer app version. Update now?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                {
+                    text: "Update",
+                    onPress: handleUpdatePressed,
+                    style: "default"
+                }
+            ],
+            { cancelable: true }
+        );
+    }
+
     const handleRecipeSelected = (recipe: RecipeMeta): void => {
-        Database.commitUpdates(() => {
-            if (props.pool === null) {
-                return;
-            }
-        });
-        const key = RS.getKey(recipe);
-        navigate('RecipeDetails', { recipeKey: key, prevScreen: params.prevScreen });
+        if (RS.needUpdateToUseRecipe(recipe, Config.version)) {
+            promptUpdate();
+        } else {
+            const key = RS.getKey(recipe);
+            navigate('RecipeDetails', { recipeKey: key, prevScreen: params.prevScreen });
+        }
     }
 
     const currentMeta: RecipeMeta = {
         name: currentRecipe?.name || 'loading...',
         ts: currentRecipe?.ts || 0,
         id: currentRecipe?.id || '',
-        desc: currentRecipe?.description || ''
+        desc: currentRecipe?.description || '',
+        appVersion: currentRecipe?.appVersion || '1.0.0'
     }
 
     const handleBackPressed = () => {

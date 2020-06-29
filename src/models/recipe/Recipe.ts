@@ -22,4 +22,7 @@ export interface Recipe {
 
     // All the outputs to this recipe
     treatments: Treatment[];
+
+    // The minimum app version required to run the recipe successfully:
+    appVersion: string;
 }

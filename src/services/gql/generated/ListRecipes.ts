@@ -13,6 +13,7 @@ export interface ListRecipes_listRecipes {
   name: string;
   desc: string;
   ts: number;
+  appVersion: string;
 }
 
 export interface ListRecipes {

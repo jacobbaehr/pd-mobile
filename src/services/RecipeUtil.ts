@@ -2,13 +2,16 @@ import { Recipe } from "~/models/recipe/Recipe";
 import { RecipeMeta } from "~/models/recipe/RecipeMeta";
 import { RecipeKey } from "~/models/recipe/RecipeKey";
 
+import compareVersions from 'compare-versions';
+
 export class RS {
     static toMeta = (recipe: Recipe): RecipeMeta => {
         return {
             id: recipe.id,
             name: recipe.name,
             desc: recipe.description,
-            ts: recipe.ts
+            ts: recipe.ts,
+            appVersion: recipe.appVersion
         };
     }
 
@@ -22,5 +25,11 @@ export class RS {
             id: parts[0],
             ts: parseFloat(parts[1])
         };
+    }
+
+    static needUpdateToUseRecipe = (recipeOrMeta: { appVersion: string }, appVersion: string): boolean => {
+        console.log('Recipe version: ', recipeOrMeta.appVersion);
+        console.log('Device version: ', appVersion);
+        return compareVersions.compare(recipeOrMeta.appVersion, appVersion, '>');
     }
 }

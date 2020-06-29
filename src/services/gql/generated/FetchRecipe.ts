@@ -38,6 +38,7 @@ export interface FetchRecipe_recipeVersion {
   name: string;
   description: string;
   ts: number;
+  appVersion: string;
   readings: FetchRecipe_recipeVersion_readings[];
   treatments: FetchRecipe_recipeVersion_treatments[];
 }

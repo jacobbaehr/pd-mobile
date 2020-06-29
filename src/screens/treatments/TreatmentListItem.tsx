@@ -79,20 +79,16 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
 
     return (
         <View style={ styles.container }>
+
             <TouchableScale
                 onPress={ () => props.handleIconPressed(t.var) }
-                activeScale={ 0.98 } >
+                activeScale={ 0.98 }
+                disabled={ t.type === 'calculation' } >
                 <View style={ styles.content }>
                     <View style={ styles.topRow }>
-                        <Image
-                            style={ styles.circleImage }
-                            source={ leftImageSource }
-                            width={ 28 }
-                            height={ 28 } />
-
-                        <Conditional condition={ t.type !== 'task' }>
-                            <PDText style={ styles.addLabel }>
-                                Add
+                        <Conditional condition={ t.type === 'calculation' }>
+                            <PDText style={ styles.ofLabel }>
+                                { t.name }
                             </PDText>
                             <TextInput
                                 style={ textInputStyles }
@@ -103,20 +99,44 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
                                 inputAccessoryViewID={ props.inputAccessoryId }>
                                 { valueText }
                             </TextInput>
-                            <CycleButton title={ pluralize(ts.units, parseFloat(valueText)) } onPress={ onPressedUnitsButton } textStyles={ unitsTextStyles } styles={ styles.unitsButton } />
-                            <PDText style={ styles.ofLabel }>
-                                of
-                            </PDText>
-                            <ChoosyButton title={ treatmentName } onPress={ onPressedTreatmentNameButton } textStyles={ treatmentNameTextStyles } styles={ styles.treatmentNameButton } />
                         </Conditional>
-                        <Conditional condition={ t.type === 'task' }>
-                            <PDText style={ treatmentNameTextStyles }>
-                                { t.name }
-                            </PDText>
+                        <Conditional condition={ t.type !== 'calculation' }>
+                            <Image
+                                style={ styles.circleImage }
+                                source={ leftImageSource }
+                                width={ 28 }
+                                height={ 28 } />
+
+                            <Conditional condition={ ['dryChemical', 'liquidChemical'].some(x => t.type === x) }>
+                                <PDText style={ styles.addLabel }>
+                                    Add
+                                </PDText>
+                                <TextInput
+                                    style={ textInputStyles }
+                                    onFocus={ onTextBeginEditing }
+                                    onChangeText={ onTextChange }
+                                    onEndEditing={ onTextEndEditing }
+                                    keyboardType={ 'decimal-pad' }
+                                    inputAccessoryViewID={ props.inputAccessoryId }>
+                                    { valueText }
+                                </TextInput>
+                                <CycleButton title={ pluralize(ts.units, parseFloat(valueText)) } onPress={ onPressedUnitsButton } textStyles={ unitsTextStyles } styles={ styles.unitsButton } />
+                                <PDText style={ styles.ofLabel }>
+                                    of
+                                </PDText>
+                                <ChoosyButton title={ treatmentName } onPress={ onPressedTreatmentNameButton } textStyles={ treatmentNameTextStyles } styles={ styles.treatmentNameButton } />
+                            </Conditional>
+
+                            <Conditional condition={ t.type === 'task' }>
+                                <PDText style={ treatmentNameTextStyles }>
+                                    { t.name }
+                                </PDText>
+                            </Conditional>
                         </Conditional>
                     </View>
                 </View>
             </TouchableScale>
+
         </View>
     );
 }

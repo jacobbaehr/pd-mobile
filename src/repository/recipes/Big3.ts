@@ -4,6 +4,7 @@ export const big3: Recipe = {
     name: 'Big 3',
     id: '002_initial_big3',
     ts: 1234,
+    appVersion: '1.0.0',
     description: 'This lazy recipe just measures your Free Chlorine, pH, and Total Alkalinity.',
     readings: [
         {

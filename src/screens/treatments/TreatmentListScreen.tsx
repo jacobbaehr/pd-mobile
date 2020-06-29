@@ -142,7 +142,7 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
 
             return {
                 treatment: t,
-                isOn: false,
+                isOn: (t.type === 'calculation'),
                 value: ounces.toFixed(defaultDecimalPlaces),
                 units: 'ounces' as Units,
                 ounces,
@@ -217,8 +217,9 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                     newOunces = Converter.dry(newValue, ts.units as DryChemicalUnits, 'ounces');
                 } else if (ts.treatment.type === 'liquidChemical') {
                     newOunces = Converter.wet(newValue, ts.units as WetChemicalUnits, 'ounces');
+                } else if (ts.treatment.type === 'calculation') {
+                    newOunces = newValue;
                 }
-
             }
             if (ts.ounces !== newOunces) {
                 ts.ounces = newOunces;
@@ -241,6 +242,8 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                     newOunces = Converter.dry(newValue, ts.units as DryChemicalUnits, 'ounces');
                 } else if (ts.treatment.type === 'liquidChemical') {
                     newOunces = Converter.wet(newValue, ts.units as WetChemicalUnits, 'ounces');
+                } else if (ts.treatment.type === 'calculation') {
+                    newOunces = newValue;
                 }
             }
 
@@ -254,6 +257,8 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                 ts.value = Converter.dry(newOunces, 'ounces', ts.units as DryChemicalUnits).toFixed(newDecimalPlaces);
             } else if (ts.treatment.type === 'liquidChemical') {
                 ts.value = Converter.wet(newOunces, 'ounces', ts.units as WetChemicalUnits).toFixed(newDecimalPlaces);
+            } else if (ts.treatment.type === 'calculation') {
+                ts.value = newText;
             }
             return true;
         };
@@ -283,10 +288,11 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
     const sections = [{ title: 'booga', data: treatmentStates }];
     let progress = 0;
     if (recipe) {
-        const completed = treatmentStates.filter(ts => ts.isOn);
-        progress = (treatmentStates.length == 0)
+        const countedTreatmentStates = treatmentStates.filter(ts => ts.treatment.type !== 'calculation');
+        const completed = countedTreatmentStates.filter(ts => ts.isOn);
+        progress = (countedTreatmentStates.length == 0)
             ? 0
-            : (completed.length / treatmentStates.length);
+            : (completed.length / countedTreatmentStates.length);
     }
 
     return (

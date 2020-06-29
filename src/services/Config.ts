@@ -12,4 +12,7 @@ export class Config {
     static platformOS = Platform.OS;
 
     static revenueCatPublicKey = 'wciuClkgweIivYNTlQfmRfvRRoptoHGZ';
+
+    static version = '1.0.0';       // TODO: don't forget to update this.
+    static appStoreListing = Config.isIos ? 'https://itunes.apple.com/app/id1505607801' : '';
 }

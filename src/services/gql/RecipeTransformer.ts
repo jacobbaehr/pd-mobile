@@ -1,18 +1,18 @@
-import { Recipe_recipeVersion, Recipe_recipeVersion_readings, Recipe_recipeVersion_treatments } from "./generated/Recipe";
+import { FetchRecipe_recipeVersion, FetchRecipe_recipeVersion_readings, FetchRecipe_recipeVersion_treatments } from "./generated/FetchRecipe";
 import { Recipe } from "~/models/recipe/Recipe";
 import { Reading, ReadingType } from "~/models/recipe/Reading";
 import { Treatment, TreatmentType } from "~/models/recipe/Treatment";
 
 export class RecipeTransformer {
-    static fromAPI = (apiRec: Recipe_recipeVersion): Recipe => {
+    static fromAPI = (apiRec: FetchRecipe_recipeVersion): Recipe => {
         return {
             ...apiRec,
             readings: apiRec.readings.map(ar => RecipeTransformer.readingFromAPI(ar)),
-            treatments: apiRec.treatments.map(at => RecipeTransformer.treatmentFromAPI(at))
+            treatments: apiRec.treatments.map(at => RecipeTransformer.treatmentFromAPI(at)),
         }
     }
 
-    static readingFromAPI = (apiReading: Recipe_recipeVersion_readings): Reading => {
+    static readingFromAPI = (apiReading: FetchRecipe_recipeVersion_readings): Reading => {
         return {
             ...apiReading,
             type: apiReading.type as ReadingType,
@@ -24,7 +24,7 @@ export class RecipeTransformer {
         }
     }
 
-    static treatmentFromAPI = (apiTreatment: Recipe_recipeVersion_treatments): Treatment => {
+    static treatmentFromAPI = (apiTreatment: FetchRecipe_recipeVersion_treatments): Treatment => {
         return {
             ...apiTreatment,
             type: apiTreatment.type as TreatmentType

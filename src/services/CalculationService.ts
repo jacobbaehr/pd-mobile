@@ -88,11 +88,15 @@ export class CalculationService {
         return tss
             .filter(ts => ts.isOn)
             .map(ts => {
+                let displayUnits: string = ts.units;
+                if (['calculation', 'task'].some(x => ts.treatment.type === x)) {
+                    displayUnits = '';
+                }
                 return TreatmentEntry.make(
                     ts.treatment,
                     ts.ounces,
                     ts.value || '0',
-                    ts.units,
+                    displayUnits,
                     ts.concentration
                 );
             });
