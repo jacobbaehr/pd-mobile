@@ -61,7 +61,8 @@ export class Database {
                     name: pool.name,
                     waterType: pool.waterType,
                     objectId: pool.objectId,
-                    recipeKey: pool.recipeKey
+                    recipeKey: pool.recipeKey,
+                    wallType: pool.wallType
                 });
             });
         } catch (e) {

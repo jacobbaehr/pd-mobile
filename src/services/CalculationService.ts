@@ -21,7 +21,7 @@ export class CalculationService {
             const recipe = event.recipe;
             const outputs = {};
             const inputsAsArgs = \`const r = {\${event.readings.map(r => \`\${r.var}: \${r.value}\`).join(',')}};\`;
-            const poolAsArgs = \`const p = {gallons: \${event.pool.gallons}};\`;
+            const poolAsArgs = \`const p = {gallons: \${event.pool.gallons}, liters: \${event.pool.liters}, wall_type: '\${event.pool.wallType}', water_type: '\${event.pool.waterType}'};\`;
             for (let i = 0; i < recipe.treatments.length; i++) {
                 const t = recipe.treatments[ i ];
                 const prevTreatVals = [];

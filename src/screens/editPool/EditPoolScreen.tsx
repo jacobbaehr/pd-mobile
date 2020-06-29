@@ -19,6 +19,7 @@ import { DeviceSettings } from '~/models/DeviceSettings';
 import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
 import { Util } from '~/services/Util';
+import { WallTypeValue, wallTypeOptions } from '~/models/Pool/WallType';
 
 interface EditPoolScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'EditPool'>;
@@ -41,7 +42,8 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
     const pool = props.selectedPool;
     const originalSelectedPoolName = pool?.name;
     const [name, updateName] = React.useState(pool?.name || '');
-    const [type, updateType] = React.useState(pool?.waterType || 'salt_water');
+    const [waterType, updateWaterType] = React.useState(pool?.waterType || 'salt_water');
+    const [wallType, updateWallType] = React.useState(pool?.wallType || 'vinyl');
     const [volumeText, updateVolumeText] = React.useState(`${pool?.gallons || ''}`);
 
     // This happens on every render... whatever.
@@ -49,7 +51,11 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
         const { pickerState } = props;
         if (pickerState && pickerState.key === 'water_type' && pickerState.value !== null) {
             const selectedType = pickerState.value as WaterTypeValue;
-            updateType(selectedType);
+            updateWaterType(selectedType);
+            dispatch(updatePickerState(null));
+        } else if (pickerState && pickerState.key === 'wall_type' && pickerState.value !== null) {
+            const selectedType = pickerState.value as WallTypeValue;
+            updateWallType(selectedType);
             dispatch(updatePickerState(null));
         }
     });
@@ -104,28 +110,38 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
             dispatch(updatePool(pool, (p) => {
                 p.gallons = gallons;
                 p.name = name;
-                p.waterType = type;
+                p.waterType = waterType;
+                p.wallType = wallType;
             }));
         }
         else {
-            const newPool = new Pool();
-            newPool.gallons = gallons;
-            newPool.name = name;
-            newPool.waterType = type;
+            const newPool = Pool.make(name, gallons, waterType, wallType);
             dispatch(saveNewPool(newPool));
         }
 
         goBack();
     }
 
-    const handlePressedTypeButton = () => {
+    const handlePressedWaterTypeButton = () => {
         Keyboard.dismiss();
         const pickerProps: PDPickerRouteProps = {
             title: 'Water Type',
             subtitle: '',
             items: waterTypeOptions.map((wt) => ({ name: wt.display, value: wt.value })),
             pickerKey: 'water_type',
-            prevSelection: type
+            prevSelection: waterType
+        };
+        navigate('PickerScreen', pickerProps);
+    }
+
+    const handlePressedWallTypeButton = () => {
+        Keyboard.dismiss();
+        const pickerProps: PDPickerRouteProps = {
+            title: 'Wall Type',
+            subtitle: '',
+            items: wallTypeOptions.map((wt) => ({ name: wt.display, value: wt.value })),
+            pickerKey: 'wall_type',
+            prevSelection: wallType
         };
         navigate('PickerScreen', pickerProps);
     }
@@ -157,11 +173,13 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
             name={ name }
             volumeText={ volumeText }
             volumeUnits={ volumeUnits }
-            type={ type }
+            waterType={ waterType }
+            wallType={ wallType }
             goBack={ goBack }
             updateVolume={ updateVolumeText }
             updateName={ updateName }
-            pressedTypeButton={ handlePressedTypeButton }
+            pressedWaterTypeButton={ handlePressedWaterTypeButton }
+            pressedWallTypeButton={ handlePressedWallTypeButton }
             pressedUnitsButton={ handlePressedUnitsButton }
             rightButtonAction={ deleteButtonAction }
             handleSavePoolPressed={ handleSaveButtonPressed } />

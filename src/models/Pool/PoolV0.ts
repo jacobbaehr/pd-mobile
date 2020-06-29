@@ -1,5 +1,6 @@
 import { WaterTypeValue } from "./WaterType";
 import { RecipeKey } from "../recipe/RecipeKey";
+import { WallTypeValue } from "./WallType";
 
 /**
  * Represents a swimming pool (duh).
@@ -20,6 +21,9 @@ export class PoolV0 {
     // The pool water type
     waterType!: WaterTypeValue;
 
+    // The pool wall type
+    wallType!: WallTypeValue;
+
     // For Realm purposes
     static schema = {
         name: 'Pool',
@@ -29,16 +33,18 @@ export class PoolV0 {
             name: 'string',
             objectId: 'string',
             recipeKey: 'string?',
-            waterType: 'string'
+            waterType: 'string',
+            wallType: 'string'
         }
     };
 
-    static make(name: string, gallons: number, waterType: WaterTypeValue, objectId?: string, recipeKey?: RecipeKey): PoolV0 {
+    static make(name: string, gallons: number, waterType: WaterTypeValue, wallType: WallTypeValue, objectId?: string, recipeKey?: RecipeKey): PoolV0 {
         const pool = new PoolV0();
         pool.name = name;
         pool.gallons = gallons;
         pool.waterType = waterType;
         pool.recipeKey = recipeKey;
+        pool.wallType = wallType;
 
         // what the heck is this??? is the edit logic busted?
         if (objectId) {

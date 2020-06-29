@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, SafeAreaView } from 'react-native';
+import { StyleSheet, View, InputAccessoryView, Keyboard } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { BoringButton } from '~/components/buttons/BoringButton';
@@ -11,16 +11,22 @@ import { ChoosyButton } from '~/components/buttons/ChoosyButton';
 import { WaterTypeValue, getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { CycleButton } from '~/components/buttons/CycleButton';
 import { getDisplayForVolumeValue, VolumeUnits } from '~/models/Pool/VolumeUnits';
+import { WallTypeValue, getDisplayForWallType } from '~/models/Pool/WallType';
+import { PlatformSpecific } from '~/components/PlatformSpecific';
+import { Haptic } from '~/services/HapticService';
+import SafeAreaView, { useSafeArea } from 'react-native-safe-area-view';
 
 interface PoolDetailProps {
     name: string;
-    type: WaterTypeValue;
+    waterType: WaterTypeValue;
+    wallType: WallTypeValue;
     volumeUnits: VolumeUnits;
     volumeText: string;
     originalPoolName: string;
     updateVolume: (text: string) => void;
     updateName: (text: string) => void;
-    pressedTypeButton: () => void;
+    pressedWaterTypeButton: () => void;
+    pressedWallTypeButton: () => void;
     pressedUnitsButton: () => void;
     goBack(): void;
     rightButtonAction: (() => Promise<void>) | null;
@@ -30,23 +36,27 @@ interface PoolDetailProps {
 export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => {
 
     const { originalPoolName, goBack, rightButtonAction } = props;
-    const waterTypeDisplay = getDisplayForWaterType(props.type);
+    const waterTypeDisplay = getDisplayForWaterType(props.waterType);
+    const wallTypeDisplay = getDisplayForWallType(props.wallType);
     const volumeUnitsDisplay = getDisplayForVolumeValue(props.volumeUnits);
+    const insets = useSafeArea();
 
     const nameRef = React.useRef<Focusable>(null);
     const volumeRef = React.useRef<Focusable>(null);
+
+    const keyboardAccessoryViewId = 'keyboardaccessoryidpooleditscreen'
 
     const onNameFieldSubmit = () => {
         volumeRef.current?.focus();
     }
 
     return (
-        <SafeAreaView style={ styles.safeArea }>
+        <SafeAreaView style={ styles.safeArea } forceInset={ { bottom: 'never' } }>
             <EditListHeader
                 handleBackPress={ () => goBack() }
                 buttonText={ originalPoolName }
                 rightButtonAction={ rightButtonAction } />
-            <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" style={ styles.scrollView }>
+            <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" style={ styles.scrollView } contentInset={ { bottom: insets.bottom } }>
                 <View>
                     <View style={ styles.listContainer }>
                         <TextInputWithTitle
@@ -61,6 +71,7 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
                             autoFocus={ true }
                             ref={ nameRef }
                             onSubmitEditing={ onNameFieldSubmit }
+                            accessoryViewId={ keyboardAccessoryViewId }
                         />
                     </View>
                     <View style={ [styles.listContainer, styles.volumeContainer] }>
@@ -76,6 +87,7 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
                             value={ props.volumeText }
                             containerStyles={ styles.volumeTextContainer }
                             ref={ volumeRef }
+                            accessoryViewId={ keyboardAccessoryViewId }
                         />
                         <View style={ styles.volumeUnitsButtonWrapper }>
                             <CycleButton
@@ -90,7 +102,16 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
                         <PDText style={ styles.waterTypeLabel }>Water Type</PDText>
                         <ChoosyButton
                             title={ waterTypeDisplay || '' }
-                            onPress={ props.pressedTypeButton }
+                            onPress={ props.pressedWaterTypeButton }
+                            styles={ styles.typeButton }
+                            textStyles={ styles.typeButtonText }
+                        />
+                    </View>
+                    <View style={ [styles.listContainer, styles.typeContainer] }>
+                        <PDText style={ styles.waterTypeLabel }>Wall Type</PDText>
+                        <ChoosyButton
+                            title={ wallTypeDisplay || '' }
+                            onPress={ props.pressedWallTypeButton }
                             styles={ styles.typeButton }
                             textStyles={ styles.typeButtonText }
                         />
@@ -101,6 +122,18 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
                         containerStyles={ styles.saveButton } />
                 </View>
             </KeyboardAwareScrollView>
+            <PlatformSpecific include={ ["ios"] }>
+                <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
+                    <View style={ styles.keyboardAccessoryContainer }>
+                        <BoringButton
+                            containerStyles={ styles.keyboardAccessoryButton }
+                            textStyles={ styles.keyboardAccessoryButtonText }
+                            onPress={ () => { Keyboard.dismiss(); Haptic.light(); } }
+                            title="Done Typing"
+                        />
+                    </View>
+                </InputAccessoryView>
+            </PlatformSpecific>
         </SafeAreaView>
     );
 }
@@ -196,5 +229,17 @@ const styles = StyleSheet.create({
         color: '#1E6BFF',
         fontSize: 22,
         fontWeight: '600'
+    },
+    keyboardAccessoryContainer: {
+        backgroundColor: '#F8F8F8',
+        padding: 12,
+    },
+    keyboardAccessoryButton: {
+        backgroundColor: 'rgba(57, 16, 232, 0.6)',
+        marginHorizontal: 24
+    },
+    keyboardAccessoryButtonText: {
+        color: 'white',
+        fontSize: 18
     }
 });

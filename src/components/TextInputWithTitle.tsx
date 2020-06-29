@@ -22,6 +22,7 @@ export interface TextInputWithTitleProps {
     onSubmitEditing?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
     autoFocus?: boolean;
     value?: string;
+    accessoryViewId?: string;
 }
 
 /** */
@@ -53,6 +54,7 @@ const TextInputWithTitleComponent = (props: TextInputWithTitleProps, ref: React.
                 ref={ inputRef }
                 autoFocus={ props.autoFocus }
                 value={ props.value }
+                inputAccessoryViewID={ props.accessoryViewId }
             />
         </View>
     );
