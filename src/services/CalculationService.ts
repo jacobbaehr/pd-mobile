@@ -20,7 +20,16 @@ export class CalculationService {
             // Load up the recipe
             const recipe = event.recipe;
             const outputs = {};
-            const inputsAsArgs = \`const r = {\${event.readings.map(r => \`\${r.var}: \${r.value}\`).join(',')}};\`;
+            const readings = {};
+            recipe.readings.forEach(r => {
+                const entry = event.readings.find(x => x.var === r.var);
+                if (entry) {
+                    readings[r.var] = entry.value;
+                } else {
+                    readings[r.var] = r.defaultValue;
+                }
+            });
+            const inputsAsArgs = \`const r = {\${ recipe.readings.map(r => \`\${r.var}: \${readings[r.var]}\`).join(',') }};\`;
             const poolAsArgs = \`const p = {gallons: \${event.pool.gallons}, liters: \${event.pool.liters}, wall_type: '\${event.pool.wallType}', water_type: '\${event.pool.waterType}'};\`;
             for (let i = 0; i < recipe.treatments.length; i++) {
                 const t = recipe.treatments[ i ];
@@ -76,7 +85,8 @@ export class CalculationService {
                             treatmentName: correspondingTreatment.name,
                             ounces: tv.value,
                             displayUnits: 'ounces',
-                            concentration: correspondingTreatment.concentration
+                            concentration: correspondingTreatment.concentration,
+                            type: correspondingTreatment.type
                         });
                     }
                 }

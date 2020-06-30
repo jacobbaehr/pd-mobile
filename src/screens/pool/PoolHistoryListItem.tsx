@@ -30,7 +30,24 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
             if (te.concentration && te.concentration !== 100) {
                 name = `${te.concentration.toFixed(0)}% ${name}`;
             }
-            return <PDText style={ styles.lineItem } key={ te.var + props.logEntry.objectId }>• { name }: { Util.removeSuffixIfPresent('.0', te.displayAmount) } { te.displayUnits }</PDText>
+            let content = '';
+            switch (te.type) {
+                case 'dryChemical':
+                case 'liquidChemical':
+                case 'calculation':
+                    content = `• ${name}: ${Util.removeSuffixIfPresent('.0', te.displayAmount)} ${te.displayUnits}`;
+                    break;
+                case 'task':
+                    content = `• ${name}`;
+                    break;
+            }
+
+            return <PDText
+                style={ styles.lineItem }
+                key={ te.var + props.logEntry.objectId }>
+
+                { content }
+            </PDText>
         });
 
         expandedContent = [

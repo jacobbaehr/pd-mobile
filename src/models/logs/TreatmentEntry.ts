@@ -1,4 +1,4 @@
-import { Treatment } from '../recipe/Treatment';
+import { Treatment, TreatmentType } from '../recipe/Treatment';
 
 /**
  * Represents the amount or state of a treatment or task
@@ -22,6 +22,8 @@ export class TreatmentEntry {
     // human-friendly name of the reading
     treatmentName!: string;
 
+    type!: TreatmentType;
+
     // For Realm purposes
     static schema = {
         name: 'TreatmentEntry',
@@ -31,7 +33,8 @@ export class TreatmentEntry {
             displayAmount: 'string',
             displayUnits: 'string',
             concentration: 'double?',
-            ounces: 'double'
+            ounces: 'double',
+            type: 'string'
         }
     };
 
@@ -44,6 +47,7 @@ export class TreatmentEntry {
         entry.displayUnits = displayUnits;
         entry.concentration = concentration || treatment.concentration;
         entry.ounces = ounces;
+        entry.type = treatment.type;
         return entry;
     }
 }
