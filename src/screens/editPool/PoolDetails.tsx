@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
         padding: 12,
     },
     keyboardAccessoryButton: {
-        backgroundColor: 'rgba(57, 16, 232, 0.6)',
+        backgroundColor: '#2c5fff',
         marginHorizontal: 24
     },
     keyboardAccessoryButtonText: {

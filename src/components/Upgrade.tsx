@@ -18,8 +18,8 @@ export const Upgrade: React.FunctionComponent<UpgradeProps> = (props) => {
                 <View style={ { flex: 1 } }></View>
             </View>
             <View style={ styles.textContainer }>
+                <Text style={ styles.onlineBackupText }>• Charts</Text>
                 <Text style={ styles.onlineBackupText }>• Unlimited Pools</Text>
-                <Text style={ styles.onlineBackupText }>• Charts and Trends</Text>
                 <Text style={ styles.onlineBackupText }>• Less than $2 / month</Text>
             </View>
             <BoringButton

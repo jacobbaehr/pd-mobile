@@ -26,6 +26,7 @@ import { RecipeService } from '~/services/RecipeService';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { DS } from '~/services/DSUtil';
 import { selectedPoolReducer } from '~/redux/selectedPool/Reducer';
+import { ChartService } from '~/services/ChartService';
 
 interface PoolScreenProps {
     // The id of the selected pool, if any
@@ -47,12 +48,30 @@ const mapStateToProps = (state: AppState, ownProps: PoolScreenProps): PoolScreen
 
 const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) => {
 
+    const isUnlocked = DS.isSubscriptionValid(props.deviceSettings, Date.now());
+
     const { navigate, goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'PoolScreen'>>();
     const history = useRealmPoolHistoryHook(props.selectedPool?.objectId || '');
     const [selectedHistoryCellIds, setSelectedHistoryCellIds] = React.useState<string[]>([]);
     const recipe = useRecipeHook(props.selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
+    const [chartData, setChartData] = React.useState(ChartService.loadFakeData(isUnlocked));
 
-    const isUnlocked = DS.isSubscriptionValid(props.deviceSettings, Date.now());
+    React.useEffect(() => {
+        if (!props.selectedPool) { return; }
+        let chosen = ChartService.loadFakeData(isUnlocked);
+
+        if (history.length > 1) {
+            const allData = ChartService.loadChartData('1M', props.selectedPool, isUnlocked);
+            const filtered = allData.filter(x => x.values.length >= 2);
+            if (filtered.length > 0) {
+                chosen = {
+                    ...filtered[0],
+                    interactive: false
+                };
+            }
+        }
+        setChartData(chosen);
+    }, [isUnlocked, props.poolsLastUpdated]);
 
     if (!props.selectedPool || !recipe) {
         return <></>;
@@ -106,20 +125,6 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
         LayoutAnimation.configureNext(animationConfig);
         setSelectedHistoryCellIds(newActiveIds);
     }
-
-    // const dateRanges = ['24H', '7D', '1M', '3M', '1Y', 'ALL'];
-    const timestamps = [4, 5, 6]; // TODO: remove
-    const values = [3, 5, 4];
-    const vm: ChartCardViewModel = {
-        timestamps,
-        values,
-        title: 'Chlorine',
-        masterId: 'a9sd8f093',
-        interactive: false,
-        isUnlocked,
-        idealMin: 3,
-        idealMax: 4
-    };
 
     const sections: SectionListData<any>[] = [
         {
@@ -177,7 +182,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
                 style={ styles.recipeButton }>
 
                 <ChartCard
-                    viewModel={ vm }
+                    viewModel={ chartData }
                     containerStyles={ styles.chartCard } />
             </TouchableScale>;
         } else if (section.key === 'history_section') {
