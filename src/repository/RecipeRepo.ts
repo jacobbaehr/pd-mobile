@@ -1,10 +1,10 @@
 import * as RNFS from 'react-native-fs';
 import { Recipe } from '~/models/recipe/Recipe';
-import { big3 } from '~/repository/recipes/Big3';
+import { defaultRecipe } from '~/repository/recipes/Default';
 import { RecipeKey, getRecipeKey } from '~/models/recipe/RecipeKey';
 
 const recipeFolderName = 'recipes';
-const defaultRecipes: Recipe[] = [big3];
+const defaultRecipes: Recipe[] = [defaultRecipe];
 
 export class RecipeRepo {
 

@@ -216,11 +216,13 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
                     canCancelContentTouches={ true }
                     renderSectionFooter={ () => <ReadingListFooter recipe={ recipe || null } pressedChangeRecipe={ handleChangeRecipePressed } /> }
                 />
-                <BoringButton
-                    containerStyles={ styles.button }
-                    onPress={ handleCalculatePressed }
-                    title="Calculate"
-                />
+                <View style={ styles.bottomButtonContainer }>
+                    <BoringButton
+                        containerStyles={ styles.button }
+                        onPress={ handleCalculatePressed }
+                        title="Calculate"
+                    />
+                </View>
             </View>
             <PlatformSpecific include={ ["ios"] }>
                 <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
@@ -250,6 +252,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#F5F3FF',
         paddingTop: 12,
+    },
+    bottomButtonContainer: {
+        backgroundColor: 'white',
+        borderTopColor: '#F0F0F0',
+        borderTopWidth: 2
     },
     button: {
         alignSelf: 'stretch',

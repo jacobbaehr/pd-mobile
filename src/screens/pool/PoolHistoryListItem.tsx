@@ -24,7 +24,7 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
     let expandedContent: JSX.Element[] = [];
     if (props.isExpanded) {
         const readings = props.logEntry.readingEntries.map(re => (
-            <PDText style={ styles.lineItem } key={ re.var + props.logEntry.objectId }>• { re.readingName }: {re.value } { re.units }</PDText>
+            <PDText style={ styles.lineItem } key={ 'r' + re.var + props.logEntry.objectId }>• { re.readingName }: {re.value } { re.units }</PDText>
         ));
 
         const treatments = props.logEntry.treatmentEntries.map(te => {
@@ -46,7 +46,7 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
 
             return <PDText
                 style={ styles.lineItem }
-                key={ te.var + props.logEntry.objectId }>
+                key={ 't' + te.var + props.logEntry.objectId }>
 
                 { content }
             </PDText>

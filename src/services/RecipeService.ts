@@ -6,7 +6,7 @@ import ApolloClient from 'apollo-client';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 
 export class RecipeService {
-    static defaultRecipeKey = '002_initial_big3|1234';
+    static defaultRecipeKey = 'vast_argument_756|1593550871334';
 
     static resolveRecipeWithKey = async (recipeKey: RecipeKey, client: ApolloClient<NormalizedCacheObject>): Promise<Recipe> => {
         console.log(`loading recipe ${recipeKey}`);
