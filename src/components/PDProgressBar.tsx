@@ -36,6 +36,7 @@ export const PDProgressBar: React.FunctionComponent<PDProgressBarProps> = (props
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        borderRadius: 8
+        borderRadius: 8,
+        overflow: 'hidden'
     }
 });

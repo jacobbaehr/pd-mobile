@@ -31,6 +31,8 @@ import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
 import { RecipeService } from '~/services/RecipeService';
 import { PlatformSpecific } from '~/components/PlatformSpecific';
 import { Config } from '~/services/Config';
+import { TreatmentListFooter } from './TreatmentListFooter';
+import { PDText } from '~/components/PDText';
 
 interface TreatmentListScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'TreatmentList'>;
@@ -51,6 +53,7 @@ const mapStateToProps = (state: AppState, ownProps: TreatmentListScreenProps): T
 const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenProps> = (props) => {
     const recipeKey = props.pool.recipeKey || RecipeService.defaultRecipeKey;
     const [treatmentStates, setTreatmentStates] = React.useState<TreatmentState[]>([]);
+    const [notes, setNotes] = React.useState('');
     const [deviceSettings, setDeviceSettings] = React.useState<DeviceSettings | null>(null);
     const { goBack, navigate } = useNavigation<StackNavigationProp<PDNavStackParamList>>();
     // I hate this... it's dirty. We should move this into the picker screen maybe?
@@ -115,8 +118,9 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
 
         const tes = CalculationService.mapTreatmentStatesToTreatmentEntries(treatmentStates);
         console.log('treatments: ', JSON.stringify(tes));
+        console.log('notes: ', notes);
 
-        const logEntry = LogEntry.make(id, props.pool.objectId, ts, props.readings, tes, recipeKey);
+        const logEntry = LogEntry.make(id, props.pool.objectId, ts, props.readings, tes, recipeKey, notes);
         console.log('Log: ', JSON.stringify(logEntry));
         await Database.saveNewLogEntry(logEntry);
         navigate('PoolScreen');
@@ -195,8 +199,6 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                 newUnits = Converter.nextWet(ts.units as WetChemicalUnits);
                 newValue = Converter.wetOunces(ts.ounces, newUnits);
             }
-
-
 
             ts.units = newUnits;
             ts.value = newValue.toFixed(ts.decimalPlaces);
@@ -316,6 +318,8 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                     contentInsetAdjustmentBehavior={ 'always' }
                     stickySectionHeadersEnabled={ false }
                     canCancelContentTouches={ true }
+                    renderSectionFooter={ () => <TreatmentListFooter text={ notes } updatedText={ setNotes } /> }
+                // renderSectionHeader={ () => <PDText style={ styles.sectionTitle }>Treatments</PDText> }
                 // renderSectionFooter={ () => <TreatmentListFooter recipe={ recipe || null } /> }
                 />
                 <WebView
@@ -323,11 +327,13 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                     onMessage={ onMessage }
                     source={ { html: htmlString } }
                 />
-                <BoringButton
-                    containerStyles={ styles.button }
-                    onPress={ save }
-                    title="Save"
-                />
+                <View style={ styles.bottomButtonContainer }>
+                    <BoringButton
+                        containerStyles={ styles.button }
+                        onPress={ save }
+                        title="Save"
+                    />
+                </View>
             </View>
             <PlatformSpecific include={ ["ios"] }>
                 <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
@@ -353,7 +359,7 @@ const styles = StyleSheet.create({
     sectionList: {
         flex: 1,
         backgroundColor: '#F5F3FF',
-        paddingTop: 12,
+        paddingTop: 12
     },
     webview: {
         backgroundColor: 'red',
@@ -365,11 +371,23 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         color: 'black'
     },
+    bottomButtonContainer: {
+        backgroundColor: 'white',
+        borderTopColor: '#F0F0F0',
+        borderTopWidth: 2
+    },
     button: {
         alignSelf: 'stretch',
         backgroundColor: '#B700F8',
         margin: 12,
         marginBottom: 24
+    },
+    sectionTitle: {
+        fontWeight: '700',
+        fontSize: 28,
+        marginTop: 6,
+        marginBottom: 4,
+        marginLeft: 16
     },
     keyboardAccessoryContainer: {
         backgroundColor: '#F8F8F8',

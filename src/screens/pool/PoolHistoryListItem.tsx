@@ -52,11 +52,20 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
             </PDText>
         });
 
+        let notes = [<></>];
+        if (props.logEntry.notes) {
+            notes = [
+                <PDText style={ styles.header } key={ '9o8as8766++' + props.logEntry.objectId }>Notes</PDText>,
+                <PDText style={ styles.lineItem } key={ '9o8as8766++++' + props.logEntry.objectId }>{ props.logEntry.notes }</PDText>
+            ];
+        }
+
         expandedContent = [
             <PDText style={ styles.header } key={ '9o8asd89' + props.logEntry.objectId }>Readings</PDText>,
             ...readings,
             <PDText style={ styles.header } key={ '9o8asd88' + props.logEntry.objectId }>Treatments</PDText>,
             ...treatments,
+            ...notes,
             <PDText style={ styles.header } key={ '9o8asd87' + props.logEntry.objectId }>Recipe|Version</PDText>,
             <PDText style={ styles.lineItem } key={ recipeName + props.logEntry.objectId }>• { recipeName }</PDText>,
             <View style={ styles.buttonRow } key={ recipeName + props.logEntry.objectId + 'afsd98' }>

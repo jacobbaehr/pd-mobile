@@ -75,6 +75,7 @@ export class Database {
                     treatmentEntries: entry.treatmentEntries,
                     ts: entry.ts,
                     recipeKey: entry.recipeKey,
+                    notes: entry.notes
                 });
                 return Promise.resolve();
             });

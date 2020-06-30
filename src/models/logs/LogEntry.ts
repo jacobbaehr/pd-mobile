@@ -24,6 +24,9 @@ export class LogEntry {
     // The unique id of the recipe
     recipeKey!: RecipeKey;
 
+    // Any special thoughts the user had about this log entry.
+    notes?: string;
+
     // For Realm purposes
     static schema = {
         name: 'LogEntry',
@@ -35,6 +38,7 @@ export class LogEntry {
             treatmentEntries: 'TreatmentEntry[]',
             ts: 'int',
             recipeKey: 'string',
+            notes: 'string?'
         },
     };
 
@@ -45,6 +49,7 @@ export class LogEntry {
         readingEntries: ReadingEntry[],
         treatmentEntries: TreatmentEntry[],
         recipeKey: RecipeKey,
+        notes: string | null
     ): LogEntry {
         let logEntry = new LogEntry();
         logEntry.objectId = objectId;
@@ -53,6 +58,9 @@ export class LogEntry {
         logEntry.readingEntries = readingEntries;
         logEntry.treatmentEntries = treatmentEntries;
         logEntry.recipeKey = recipeKey;
+        if (notes && notes.length > 0) {
+            logEntry.notes = notes;
+        }
         return logEntry;
     }
 }
