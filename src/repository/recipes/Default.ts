@@ -29,7 +29,7 @@ export const defaultRecipe: Recipe = {
             "type": "number",
             "decimalPlaces": 1,
             "units": "ppm",
-            "defaultValue": 3
+            "defaultValue": 0
         },
         {
             "name": "pH",
