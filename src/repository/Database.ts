@@ -43,14 +43,6 @@ export class Database {
         return results;
     };
 
-    // TODO: try/catch in case pool doesn't exist.
-    static loadPool = (object: Pool): Pool => {
-        if (Database.realm === undefined) {
-            console.error('loadPool called before realm loaded');
-        }
-        return Database.realm.objects<Pool>(Pool).filtered('objectId = $0', object.objectId)[0];
-    };
-
     static saveNewPool = (pool: Pool) => {
         const realm = Database.realm;
         pool.objectId = getObjectId();
@@ -117,6 +109,22 @@ export class Database {
                 return Promise.resolve();
             });
             // realm.removeListener('change',Database.loadPools)
+        } catch (e) {
+            console.log(e);
+            console.error('couldnt delete it');
+            return Promise.reject(e);
+        }
+    };
+
+    static deleteLogEntry = (id: string) => {
+        const realm = Database.realm;
+        try {
+            // We have to delete the actual realm object
+            realm.write(() => {
+                const logEntry = Database.realm.objects<LogEntry>(LogEntry.schema.name).filtered('objectId = $0', id)[0];
+                realm.delete(logEntry);
+                return Promise.resolve();
+            });
         } catch (e) {
             console.log(e);
             console.error('couldnt delete it');

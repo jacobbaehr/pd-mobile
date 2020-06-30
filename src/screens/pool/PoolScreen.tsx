@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, SectionList, SectionListData, LayoutAnimation, Image } from 'react-native';
+import { StyleSheet, View, SectionList, SectionListData, LayoutAnimation, Image, Alert } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 // @ts-ignore
@@ -27,6 +27,7 @@ import { DeviceSettings } from '~/models/DeviceSettings';
 import { DS } from '~/services/DSUtil';
 import { selectedPoolReducer } from '~/redux/selectedPool/Reducer';
 import { ChartService } from '~/services/ChartService';
+import { Database } from '~/repository/Database';
 
 interface PoolScreenProps {
     // The id of the selected pool, if any
@@ -126,6 +127,31 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
         setSelectedHistoryCellIds(newActiveIds);
     }
 
+    const handleHistoryCellDeletePressed = (logEntryId: string) => {
+        Alert.alert(
+            "Delete Log Entry?",
+            "This cannot be undone.",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                {
+                    text: "DELETE",
+                    onPress: () => deleteLogEntryConfirmed(logEntryId),
+                    style: "destructive"
+                }
+            ],
+            { cancelable: true }
+        );
+    }
+
+    const deleteLogEntryConfirmed = (logEntryId: string) => {
+        setSelectedHistoryCellIds(selectedHistoryCellIds.filter(x => x !== logEntryId));
+        Database.deleteLogEntry(logEntryId);
+    }
+
     const sections: SectionListData<any>[] = [
         {
             title: 'Recipe',
@@ -190,7 +216,11 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
             if (history.indexOf(item) !== 0) {
                 titleElement = <></>;
             }
-            contentBody = <PoolHistoryListItem logEntry={ item } handleCellSelected={ handleHistoryCellPressed } isExpanded={ selectedHistoryCellIds.includes(item.objectId) } />;
+            contentBody = <PoolHistoryListItem
+                logEntry={ item }
+                handleCellSelected={ handleHistoryCellPressed }
+                handleDeletePressed={ handleHistoryCellDeletePressed }
+                isExpanded={ selectedHistoryCellIds.includes(item.objectId) } />;
         }
 
         // We need the key here to change after a purchase to cause a re-render:

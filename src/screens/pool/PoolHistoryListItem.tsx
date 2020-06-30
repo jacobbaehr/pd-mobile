@@ -7,11 +7,13 @@ import TouchableScale from 'react-native-touchable-scale';
 import { LogEntry } from '~/models/logs/LogEntry';
 import { PDText } from '~/components/PDText';
 import { Util } from '~/services/Util';
+import { BoringButton } from '~/components/buttons/BoringButton';
 
 interface PoolHistoryListItemProps {
     logEntry: LogEntry;
     isExpanded: boolean;
     handleCellSelected: (id: string) => void;
+    handleDeletePressed: (id: string) => void;
 }
 
 export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemProps> = (props) => {
@@ -56,7 +58,19 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
             <PDText style={ styles.header } key={ '9o8asd88' + props.logEntry.objectId }>Treatments</PDText>,
             ...treatments,
             <PDText style={ styles.header } key={ '9o8asd87' + props.logEntry.objectId }>Recipe|Version</PDText>,
-            <PDText style={ styles.lineItem } key={ recipeName + props.logEntry.objectId }>• { recipeName }</PDText>
+            <PDText style={ styles.lineItem } key={ recipeName + props.logEntry.objectId }>• { recipeName }</PDText>,
+            <View style={ styles.buttonRow } key={ recipeName + props.logEntry.objectId + 'afsd98' }>
+                <View style={ styles.buttonRowColumn } >
+                    <BoringButton
+                        containerStyles={ styles.deleteButtonContainer }
+                        textStyles={ styles.deleteButtonText }
+                        title="Delete"
+                        onPress={ () => props.handleDeletePressed(props.logEntry.objectId) } />
+                </View>
+                <View style={ styles.buttonRowColumn } >
+
+                </View>
+            </View>
         ];
     }
     console.log('Reading Entries: ', JSON.stringify(props.logEntry.readingEntries));
@@ -106,5 +120,21 @@ const styles = StyleSheet.create({
     lineItem: {
         fontSize: 18,
         fontWeight: '600'
+    },
+    buttonRow: {
+        flexDirection: 'row'
+    },
+    buttonRowColumn: {
+        flex: 1
+    },
+    deleteButtonContainer: {
+        backgroundColor: '#FFF4F3',
+        marginVertical: 12,
+        shadowColor: 'transparent',
+        height: 40
+    },
+    deleteButtonText: {
+        color: '#FB2315',
+        padding: 0
     }
-})
+});
