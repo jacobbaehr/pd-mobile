@@ -2,7 +2,6 @@ import * as React from 'react';
 import { StyleSheet, View, Image, StatusBar } from 'react-native';
 import { BackButton } from '~/components/buttons/BackButton';
 import { images } from '~/assets/images';
-import { Conditional } from '~/components/Conditional';
 import { PlatformSpecific } from '~/components/PlatformSpecific';
 
 interface BuyHeaderProps {
