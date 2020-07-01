@@ -122,7 +122,7 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
                         maximumValue={ r.sliderMax }
                         minimumTrackTintColor="#E3E3E3"
                         maximumTrackTintColor="#E3E3E3"
-                        thumbImage={ images.sliderThumb }
+                        thumbImage={ images.sliderThumbSmall }
                         onSlidingStart={ onSliderStart }
                         onSlidingComplete={ onSliderEnd }
                         onValueChange={ (value: number) => props.onSliderUpdatedValue(r.var, value) }

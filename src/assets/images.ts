@@ -24,6 +24,7 @@ export const images = {
     logoGreenPlusWhite: require('./images/money_logo.png'),
     rightArrow: require('./images/right_arrow.png'),
     sliderThumb: require('./images/thumb.png'),
+    sliderThumbSmall: require('./images/thumb_small.png'),
     sliderThumbBlue: require('./images/thumb_blue.png'),
     greenCheck: require('./images/green_check.png'),
     incomplete: require('./images/incomplete.png'),

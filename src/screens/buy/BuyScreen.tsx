@@ -122,11 +122,11 @@ const BuyComponent: React.FunctionComponent<BuyScreenProps> = (props) => {
                 <PDText style={ styles.annually }>annually</PDText>
             </View>
             <View style={ [styles.flexRow, styles.reasonTop] }>
-                <Image style={ styles.reasonIcon } source={ images.trends } width={ 37 } height={ 27 } />
+                <Image style={ styles.reasonIcon } source={ images.trends } width={ 37 } height={ 27 } resizeMode={ 'contain' } />
                 <PDText style={ styles.reasonText }>Charts</PDText>
             </View>
             <View style={ [styles.flexRow, styles.reasonTop] }>
-                <Image style={ styles.reasonIcon } source={ images.pools3 } width={ 37 } height={ 27 } />
+                <Image style={ styles.reasonIcon } source={ images.pools3 } width={ 37 } height={ 27 } resizeMode={ 'contain' } />
                 <PDText style={ styles.reasonText }>Unlimited Pools</PDText>
             </View>
             <View

@@ -2,6 +2,8 @@ import * as React from 'react';
 import { StyleSheet, View, Image, StatusBar } from 'react-native';
 import { BackButton } from '~/components/buttons/BackButton';
 import { images } from '~/assets/images';
+import { Conditional } from '~/components/Conditional';
+import { PlatformSpecific } from '~/components/PlatformSpecific';
 
 interface BuyHeaderProps {
     goBack: () => void;
@@ -18,6 +20,9 @@ export const BuyHeader: React.FunctionComponent<BuyHeaderProps> = (props) => {
 
     return (
         <View style={ styles.container }>
+            <PlatformSpecific include={ ['android'] } >
+                <View style={ styles.androidSpacer } />
+            </PlatformSpecific>
             <View style={ styles.backButtonContainer }>
                 <BackButton
                     onPress={ props.goBack }
@@ -39,6 +44,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         display: 'flex',
         flexDirection: 'column'
+    },
+    androidSpacer: {
+        backgroundColor: 'transparent',
+        height: 12
     },
     backButtonContainer: {
         paddingBottom: 18,
