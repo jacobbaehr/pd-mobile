@@ -9,6 +9,7 @@ import { images } from '~/assets/images';
 import { TextInput } from 'react-native-gesture-handler';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { Haptic } from '~/services/HapticService';
+import { PlatformSpecific } from '~/components/PlatformSpecific';
 
 export interface PickerSliderState {
     value?: string;
@@ -99,16 +100,18 @@ export const PickerSlider: React.FunctionComponent<PickerSliderProps> = (props) 
                     thumbTouchSize={ { width: 55, height: 55 } }
                 />
             </View>
-            <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
-                <View style={ styles.keyboardAccessoryContainer }>
-                    <BoringButton
-                        containerStyles={ styles.keyboardAccessoryButton }
-                        textStyles={ styles.keyboardAccessoryButtonText }
-                        onPress={ () => { Keyboard.dismiss(); Haptic.light(); } }
-                        title="Save"
-                    />
-                </View>
-            </InputAccessoryView>
+            <PlatformSpecific include={ ['ios'] }>
+                <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
+                    <View style={ styles.keyboardAccessoryContainer }>
+                        <BoringButton
+                            containerStyles={ styles.keyboardAccessoryButton }
+                            textStyles={ styles.keyboardAccessoryButtonText }
+                            onPress={ () => { Keyboard.dismiss(); Haptic.light(); } }
+                            title="Save"
+                        />
+                    </View>
+                </InputAccessoryView>
+            </PlatformSpecific>
         </View>
     );
 }
