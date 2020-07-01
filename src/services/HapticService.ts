@@ -1,4 +1,5 @@
-import ReactNativeHapticFeedback from "react-native-haptic-feedback";
+import ReactNativeHapticFeedback, { HapticFeedbackTypes } from "react-native-haptic-feedback";
+import { Config } from "./Config";
 
 export class Haptic {
 
@@ -8,18 +9,25 @@ export class Haptic {
     };
 
     static selection = () => {
-        ReactNativeHapticFeedback.trigger("selection", Haptic.options);
+        Haptic.skipAndroid("selection");
     }
     static light = () => {
-        ReactNativeHapticFeedback.trigger("impactLight", Haptic.options);
+        Haptic.skipAndroid("impactLight");
     }
     static medium = () => {
-        ReactNativeHapticFeedback.trigger("impactMedium", Haptic.options);
+        Haptic.skipAndroid("impactMedium");
     }
     static heavy = () => {
-        ReactNativeHapticFeedback.trigger("impactHeavy", Haptic.options);
+        Haptic.skipAndroid("impactHeavy");
     }
     static bumpyGlide = () => {
-        ReactNativeHapticFeedback.trigger("textHandleMove", Haptic.options);
+        Haptic.skipAndroid("textHandleMove");
+    }
+
+    private static skipAndroid = (type: HapticFeedbackTypes) => {
+        if (Config.isAndroid) {
+            return;
+        }
+        ReactNativeHapticFeedback.trigger(type, Haptic.options);
     }
 }
