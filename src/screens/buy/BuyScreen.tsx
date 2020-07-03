@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, Linking, Image, ViewStyle } from 'react-native';
+import { StyleSheet, View, Linking, Image, ViewStyle, Alert } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { PDNavStackParamList } from '~/navigator/Navigators';
 import { connect } from 'react-redux';
@@ -46,15 +46,25 @@ const BuyComponent: React.FunctionComponent<BuyScreenProps> = (props) => {
 
     const handleUpgradePressed = async () => {
         setIsLoading(true);
-
-        const purchaseResult = await IAP.purchaseUnlock();
-        handlePurchaseResult(purchaseResult);
+        try {
+            const purchaseResult = await IAP.purchaseUnlock();
+            handlePurchaseResult(purchaseResult);
+        } catch (e) {
+            console.error(e);
+            // TODO: show error here (selectively)
+        }
+        setIsLoading(false);
     }
     const handleRestorePressed = async () => {
         setIsLoading(true);
-
-        const purchaseResult = await IAP.restoreUnlock();
-        handlePurchaseResult(purchaseResult);
+        try {
+            const purchaseResult = await IAP.restoreUnlock();
+            handlePurchaseResult(purchaseResult);
+        } catch (e) {
+            console.error(e);
+            // TODO: show error here (selectively)
+        }
+        setIsLoading(false);
     }
     const handleManageSubPressed = async () => {
         const url = await IAP.getManagementURL();
@@ -82,7 +92,6 @@ const BuyComponent: React.FunctionComponent<BuyScreenProps> = (props) => {
             }
         }
         // TODO: alert the user of the different states? Maybe.
-        setIsLoading(false);
     }
 
     const getButtons = () => {
@@ -140,7 +149,6 @@ const BuyComponent: React.FunctionComponent<BuyScreenProps> = (props) => {
     </SafeAreaView >;
 }
 export const BuyScreen = connect(mapStateToProps)(BuyComponent);
-
 
 const styles = StyleSheet.create({
     safeAreaContainer: {
