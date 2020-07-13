@@ -3,7 +3,7 @@ import { Recipe } from "~/models/recipe/Recipe";
 export const defaultRecipe: Recipe = {
     "id": "vast_argument_756",
     "name": "Default",
-    "description": "Targeted at salt & chlorine pools, this plan takes 6 readings & uses calcium hypochlorite as the stabilizer.",
+    "description": "Targeted at salt & chlorine pools, this plan takes 6 readings & uses calcium hypochlorite as the sanitizer.",
     "ts": 1593550871334,
     "appVersion": "1.0.0",
     "readings": [
