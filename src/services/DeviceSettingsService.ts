@@ -10,10 +10,8 @@ export class DeviceSettingsService {
             units: 'us',
             night_mode: 'system',
             treatments: {
-                concentrations: {},
-                units: {}
+                concentrations: {}
             },
-            scoops: [],
             sub_exp: null
         };
     }
