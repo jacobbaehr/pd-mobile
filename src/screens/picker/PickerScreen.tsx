@@ -14,6 +14,7 @@ import { PickerSlider } from './PickerSlider';
 import { Haptic } from '~/services/HapticService';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { CloseButton } from '~/components/buttons/CloseButton';
 
 export interface PDPickerRouteProps {
     title: string,
@@ -49,6 +50,13 @@ export const PickerScreen: React.FunctionComponent<PickerScreenProps> = (props: 
         dispatch(updatePickerState(pickerState));
         goBack();
     };
+
+    const handleClosePressed = () => {
+        Haptic.light();
+        // clear the picker state:
+        dispatch(updatePickerState({ key: 'nothing', value: null }));
+        goBack();
+    }
 
     const getContent = (): JSX.Element => {
         /// If items are provided, show a listview
@@ -128,6 +136,7 @@ export const PickerScreen: React.FunctionComponent<PickerScreenProps> = (props: 
                         <PDText style={ [styles.title, styles.titleTop] }>{ title }</PDText>
                         <PDText style={ [styles.title, styles.titleBottom] }>{ subtitle }</PDText>
                     </View>
+                    <CloseButton onPress={ handleClosePressed } containerStyle={ styles.closeButton } />
                 </View>
                 { getContent() }
             </View>
@@ -163,6 +172,10 @@ const styles = StyleSheet.create({
     titleTop: {
         color: '#000',
         marginBottom: -3
+    },
+    closeButton: {
+        marginLeft: 'auto',
+        marginRight: 16
     },
     saveButton: {
         alignSelf: 'stretch',

@@ -56,4 +56,12 @@ export class Util {
         }
         return original;
     }
+
+    static getDisplayNameForTreatment = (t: { name: string, concentration?: number }): string => {
+        if (t.concentration && t.concentration < 100) {
+            return `${t.concentration.toFixed(0)}% ${t.name}`;
+        } else {
+            return t.name;
+        }
+    }
 }

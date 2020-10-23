@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-community/async-storage";
-import { DeviceSettings } from "~/models/DeviceSettings";
+import { DeviceSettings, RawDeviceSettings } from "~/models/DeviceSettings";
 
 const DEVICE_SETTINGS_KEY = 'pd_device_settings_0';
 
@@ -10,8 +10,10 @@ export class DeviceSettingsService {
             units: 'us',
             night_mode: 'system',
             treatments: {
-                concentrations: {}
+                concentrations: {},
+                units: {}
             },
+            scoops: [],
             sub_exp: null
         };
     }
@@ -21,12 +23,27 @@ export class DeviceSettingsService {
         if (!asString) {
             return DeviceSettingsService.getDefaultSettings();
         }
-        const ds = JSON.parse(asString) as DeviceSettings;
+        const rs = JSON.parse(asString) as RawDeviceSettings;
+
+        // fill it in (if necessary)
+        const ds = DeviceSettingsService.rawDeviceSettingsToDeviceSettings(rs);
         return ds;
     }
 
     static saveSettings = async (settings: DeviceSettings): Promise<void> => {
         const asString = JSON.stringify(settings);
         await AsyncStorage.setItem(DEVICE_SETTINGS_KEY, asString);
+    }
+
+    private static rawDeviceSettingsToDeviceSettings = (raw: RawDeviceSettings): DeviceSettings => {
+        // Just... be careful here.
+        return {
+            ...raw,
+            scoops: raw.scoops || [],
+            treatments: {
+                concentrations: raw.treatments.concentrations,
+                units: raw.treatments.units || {}
+            }
+        };
     }
 }

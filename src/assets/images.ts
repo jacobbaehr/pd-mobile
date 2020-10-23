@@ -2,6 +2,7 @@
 export const images = {
     back: require('./images/back.png'),
     backBlue: require('./images/back_blue.png'),
+    closeBlue: require('./images/close_blue.png'),
     backReadingsBlue: require('./images/back_readings_blue.png'),
     backTreatmentsPurple: require('./images/back_treatments_purple.png'),
     backRecipesGreen: require('./images/back_recipes_green.png'),

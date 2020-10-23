@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { StyleSheet, View, Linking, ViewStyle } from 'react-native';
+import { StyleSheet, View, Linking, ViewStyle, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { PDNavStackParamList } from '~/navigator/Navigators';
 import { connect } from 'react-redux';
 import SafeAreaView, { useSafeArea } from 'react-native-safe-area-view';
+// @ts-ignore
+import TouchableScale from 'react-native-touchable-scale';
 
 import { dispatch, AppState } from '~/redux/AppState';
 
@@ -18,6 +20,10 @@ import { Config } from '~/services/Config';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { Upgrade } from '~/components/Upgrade';
 import { DeviceSettingsService } from '~/services/DeviceSettingsService';
+import { images } from '~/assets/images';
+import { Haptic } from '~/services/HapticService';
+import { ScoopListItem } from './scoops/ScoopListItem';
+import { Scoop } from '~/models/Scoop';
 
 
 interface SettingsProps {
@@ -60,14 +66,29 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
         Linking.openURL(Config.forum_url);
     }
 
+    const handleAddScoopPressed = () => {
+        Haptic.medium();
+        navigate('ScoopDetails', { prevScoop: null });
+    }
+
+    const handlePressedScoop = (scoop: Scoop) => {
+        navigate('ScoopDetails', { prevScoop: scoop });
+    }
+
+    const getScoops = () => {
+        return props.deviceSettings.scoops.map(scoop => <ScoopListItem scoop={ scoop } handlePressedScoop={ handlePressedScoop } key={ scoop.guid } />);
+    }
+
     const dynamicInsets: ViewStyle = {
         paddingBottom: insets.bottom
     };
+
+    const hitSlop = 5;
     return <SafeAreaView forceInset={ { bottom: 'never' } } style={ styles.safeAreaContainer }>
         <SettingsHeader goBack={ handleGoBack } />
         <ScrollView style={ styles.scrollView }>
             <PDText style={ styles.sectionTitle }>Units</PDText>
-            <View style={ styles.listContainer }>
+            <View style={ styles.listItemContainer }>
                 <PDText style={ styles.unitsTitle }>Pool Volume</PDText>
                 <CycleButton
                     styles={ styles.unitsButton }
@@ -75,6 +96,24 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
                     textStyles={ styles.unitsButtonText }
                     onPress={ handlePressedUnits } />
             </View>
+            <View style={ styles.addScoopSectionHeader }>
+                <PDText style={ styles.sectionTitle }>Scoops</PDText>
+                <TouchableScale
+                    style={ styles.addScoopButtonContainer }
+                    underlayColor={ '#F8F8F8' }
+                    activeScale={ 0.97 }
+                    onPress={ handleAddScoopPressed }
+                    hitSlop={ { top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop } }
+                    disabled={ Config.isAndroid }>
+                    <Image
+                        style={ styles.addScoopButtonImage }
+                        source={ images.plusButton }
+                        width={ 32 }
+                        height={ 32 } />
+                </TouchableScale>
+            </View>
+            { getScoops() }
+
             <PDText style={ styles.sectionTitle }>Unlock</PDText>
             <Upgrade style={ styles.upgradeContainer } onPress={ handleUpgradePressed } />
             <PDText style={ styles.sectionTitle }>Feedback?</PDText>
@@ -109,7 +148,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5F5F5',
         paddingTop: 12
     },
-    listContainer: {
+    listItemContainer: {
         flexDirection: 'row',
         marginTop: 10,
         marginHorizontal: 20,
@@ -135,6 +174,18 @@ const styles = StyleSheet.create({
         fontSize: 22,
         paddingHorizontal: 7,
         paddingVertical: 4
+    },
+    addScoopSectionHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 6
+    },
+    addScoopButtonContainer: {
+        marginRight: 28,
+        marginTop: 'auto'
+    },
+    addScoopButtonImage: {
+
     },
     upgradeContainer: {
         marginVertical: 16,

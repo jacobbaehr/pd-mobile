@@ -45,7 +45,7 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
     const keyboardAccessoryViewId = 'wowThisIsSomeReallyUniqueTextReadingListKeyboard';
 
     React.useEffect(() => {
-        setOptions({ gestureEnabled: false });
+        setOptions({ gestureResponseDistance: { horizontal: 5 } });
         if (recipe) {
             const initialReadingStates = recipe.readings.map(r => ({
                 reading: r,

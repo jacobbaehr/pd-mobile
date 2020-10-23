@@ -10,6 +10,7 @@ import { FetchRecipeVariables } from './generated/FetchRecipe';
 import { RecipeTransformer } from './RecipeTransformer';
 import { RS } from '../RecipeUtil';
 import { FetchRecipe } from './generated/FetchRecipe';
+import { FetchLatestRecipeMeta, FetchLatestRecipeMetaVariables } from './generated/FetchLatestRecipeMeta';
 
 export class RecipeAPI {
     static useRecipeList = (): QueryResult<ListRecipes> => {
@@ -71,5 +72,30 @@ export class RecipeAPI {
             return RecipeTransformer.fromAPI(result.data.recipeVersion);
         }
         return Promise.reject('');
+    }
+
+    /// Runs a cheap query to fetch the metadata of the most recent version for a particular recipe, and returns the latest key.
+    static fetchLatestKeyForRecipe = async (key: RecipeKey, client: ApolloClient<NormalizedCacheObject>): Promise<RecipeKey> => {
+        const query = gql`
+            query FetchLatestRecipeMeta($id: String!) { 
+                latestPublishedMeta(id: $id) {
+                    ts
+                }
+            }
+        `;
+        const variables = {
+            id: RS.reverseKey(key).id
+        };
+        const result = await client.query<FetchLatestRecipeMeta, FetchLatestRecipeMetaVariables>({
+            query,
+            variables,
+            fetchPolicy: 'no-cache'
+        });
+        if (!result.data) {
+            return Promise.reject('Recipe meta not found on server');
+        }
+        console.log('fetching latest for key: ' + key);
+        console.log('result: ' + result.data.latestPublishedMeta.ts);
+        return RS.getKey({ id: variables.id, ts: result.data.latestPublishedMeta.ts });
     }
 }

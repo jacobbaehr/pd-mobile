@@ -10,7 +10,6 @@ import { AppState, dispatch } from '~/redux/AppState';
 import { Database } from '~/repository/Database';
 import { CalculationService } from '~/services/CalculationService';
 import { LogEntry } from '~/models/logs/LogEntry';
-import { RecipeKey } from '~/models/recipe/RecipeKey';
 import { useNavigation } from '@react-navigation/native';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import { TreatmentListHeader } from './TreatmentListHeader';
@@ -19,7 +18,7 @@ import { BoringButton } from '~/components/buttons/BoringButton';
 import { Haptic } from '~/services/HapticService';
 import { TreatmentListItem } from './TreatmentListItem';
 import { Util } from '~/services/Util';
-import { DryChemicalUnits, Converter, Units, WetChemicalUnits } from './TreatmentUnits';
+import { Converter } from '../../services/TreatmentUnitsService';
 import { PDPickerRouteProps } from '../picker/PickerScreen';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { DeviceSettingsService } from '~/services/DeviceSettingsService';
@@ -32,13 +31,14 @@ import { RecipeService } from '~/services/RecipeService';
 import { PlatformSpecific } from '~/components/PlatformSpecific';
 import { Config } from '~/services/Config';
 import { TreatmentListFooter } from './TreatmentListFooter';
-import { PDText } from '~/components/PDText';
+import { DryChemicalUnits, WetChemicalUnits, Units } from '~/models/TreatmentUnits';
 
 interface TreatmentListScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'TreatmentList'>;
     readings: ReadingEntry[];
     pool: Pool;
     pickerState: PickerState | null;
+    deviceSettings: DeviceSettings;
 }
 
 const mapStateToProps = (state: AppState, ownProps: TreatmentListScreenProps): TreatmentListScreenProps => {
@@ -46,7 +46,8 @@ const mapStateToProps = (state: AppState, ownProps: TreatmentListScreenProps): T
         navigation: ownProps.navigation,
         readings: state.readingEntries,
         pool: state.selectedPool!,
-        pickerState: state.pickerState
+        pickerState: state.pickerState,
+        deviceSettings: state.deviceSettings
     };
 };
 
@@ -54,21 +55,15 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
     const recipeKey = props.pool.recipeKey || RecipeService.defaultRecipeKey;
     const [treatmentStates, setTreatmentStates] = React.useState<TreatmentState[]>([]);
     const [notes, setNotes] = React.useState('');
-    const [deviceSettings, setDeviceSettings] = React.useState<DeviceSettings | null>(null);
     const { goBack, navigate } = useNavigation<StackNavigationProp<PDNavStackParamList>>();
     // I hate this... it's dirty. We should move this into the picker screen maybe?
     const [concentrationTreatmentVar, updateConcentrationTreatment] = React.useState<string | null>(null);
     const recipe = useRecipeHook(recipeKey);
 
-    const keyboardAccessoryViewId = 'dedgumThisIsSomeReallyUniqueTextTreatmentListKeyboard';
+    const deviceSettings = props.deviceSettings;
+    const allScoops = deviceSettings.scoops;
 
-    React.useEffect(() => {
-        const loadSettings = async () => {
-            const ds = await DeviceSettingsService.getSettings();
-            setDeviceSettings(ds);
-        };
-        loadSettings();
-    }, []);
+    const keyboardAccessoryViewId = 'dedgumThisIsSomeReallyUniqueTextTreatmentListKeyboard';
 
     // This happens on every render... whatever.
     React.useEffect(() => {
@@ -79,10 +74,11 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
             const treatmentModification = (ts: TreatmentState) => {
                 const newOunces = ts.ounces * ts.concentration / newConcentration;
                 let newValue = newOunces;
+                const scoop = TreatmentListHelpers.getScoopForTreatment(ts.treatment.var, allScoops);
                 if (ts.treatment.type === 'dryChemical') {
-                    newValue = Converter.dryOunces(newOunces, ts.units as DryChemicalUnits);
+                    newValue = Converter.dryOunces(newOunces, ts.units as DryChemicalUnits, scoop);
                 } else if (ts.treatment.type === 'liquidChemical') {
-                    newValue = Converter.wetOunces(newOunces, ts.units as WetChemicalUnits);
+                    newValue = Converter.wetOunces(newOunces, ts.units as WetChemicalUnits, scoop);
                 }
 
                 ts.ounces = newOunces;
@@ -95,13 +91,13 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
             dispatch(updatePickerState(null));
             updateConcentrationTreatment(null);
 
-            if (didChange && deviceSettings) {
+            if (didChange) {
                 const ds = Util.deepCopy(deviceSettings);
                 ds.treatments.concentrations[concentrationTreatmentVar] = newConcentration;
-                // Surely I'm over-complicating this:
-                setDeviceSettings(ds);
-                TreatmentListHelpers.persistDeviceSettingsAsync(ds);
-                dispatch((updateDeviceSettings(ds)));
+                // Don't await it, be bold:
+                DeviceSettingsService.saveSettings(ds);
+
+                dispatch(updateDeviceSettings(ds));
             }
         }
     });
@@ -123,12 +119,20 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
         const logEntry = LogEntry.make(id, props.pool.objectId, ts, props.readings, tes, recipeKey, notes);
         console.log('Log: ', JSON.stringify(logEntry));
         await Database.saveNewLogEntry(logEntry);
+
+        // Save the last-used units:
+        const newDeviceSettings = Util.deepCopy(deviceSettings);
+        newDeviceSettings.treatments.units = TreatmentListHelpers.getUpdatedLastUsedUnits(newDeviceSettings.treatments.units, treatmentStates);
+        dispatch(updateDeviceSettings(newDeviceSettings));
+        await DeviceSettingsService.saveSettings(newDeviceSettings);
+
         navigate('PoolScreen');
     }
 
     const onMessage = (event: WebViewMessageEvent) => {
         const tes = CalculationService.getTreatmentEntriesFromWebviewMessage(event, recipe);
 
+        const lastUnits = deviceSettings.treatments.units;
         const tss: TreatmentState[] = tes.map(te => {
             const t = TreatmentListHelpers.getTreatmentFromRecipe(te.var, recipe);
             if (t === null) {
@@ -144,11 +148,42 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                 ounces = ounces * baseConcentration / concentrationOverride;
             }
 
+            let units: Units = 'ounces';
+            let value = ounces;
+            const scoop = TreatmentListHelpers.getScoopForTreatment(t.var, allScoops);
+            console.log('a');
+
+            if (!!scoop) {
+                console.log('b');
+                // If we have a saved scoop, start with that:
+                units = 'scoops';
+                if (t.type === 'dryChemical') {
+                    console.log('c');
+                    value = Converter.dry(value, 'ounces', 'scoops', scoop);
+                    console.log('value: ' + value);
+                    console.log(JSON.stringify(scoop));
+                } else if (t.type === 'liquidChemical') {
+                    value = Converter.wet(value, 'ounces', 'scoops', scoop);
+                }
+            } else if (!!lastUnits[t.var]) {
+                // Otherwise, try to start w/ the same units as last time
+                units = lastUnits[t.var] as Units;
+                if (units === 'scoops' && !scoop) {
+                    /// If the scoop has been deleted
+                    units = 'ounces';
+                }
+                if (t.type === 'dryChemical') {
+                    value = Converter.dry(value, 'ounces', units as DryChemicalUnits, scoop);
+                } else if (t.type === 'liquidChemical') {
+                    value = Converter.wet(value, 'ounces', units as WetChemicalUnits, scoop);
+                }
+            }
+
             return {
                 treatment: t,
                 isOn: (t.type === 'calculation'),
-                value: ounces.toFixed(defaultDecimalPlaces),
-                units: 'ounces' as Units,
+                value: value.toFixed(defaultDecimalPlaces),
+                units: units as Units,
                 ounces,
                 decimalPlaces: defaultDecimalPlaces,
                 concentration: concentrationOverride || baseConcentration
@@ -185,19 +220,19 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
     }
 
     const handleUnitsButtonPressed = (varName: string) => {
-        console.log('kaboom');
         Haptic.light();
 
         const modification = (ts: TreatmentState) => {
             let newValue = ts.ounces;
             let newUnits = ts.units;
+            const scoop = TreatmentListHelpers.getScoopForTreatment(ts.treatment.var, allScoops);
 
             if (ts.treatment.type === 'dryChemical') {
-                newUnits = Converter.nextDry(ts.units as DryChemicalUnits);
-                newValue = Converter.dryOunces(ts.ounces, newUnits);
+                newUnits = Converter.nextDry(ts.units as DryChemicalUnits, scoop);
+                newValue = Converter.dryOunces(ts.ounces, newUnits, scoop);
             } else if (ts.treatment.type === 'liquidChemical') {
-                newUnits = Converter.nextWet(ts.units as WetChemicalUnits);
-                newValue = Converter.wetOunces(ts.ounces, newUnits);
+                newUnits = Converter.nextWet(ts.units as WetChemicalUnits, scoop);
+                newValue = Converter.wetOunces(ts.ounces, newUnits, scoop);
             }
 
             ts.units = newUnits;
@@ -215,10 +250,12 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                 if (isNaN(newValue)) {
                     newValue = 0;
                 }
+                const scoop = TreatmentListHelpers.getScoopForTreatment(ts.treatment.var, allScoops);
+
                 if (ts.treatment.type === 'dryChemical') {
-                    newOunces = Converter.dry(newValue, ts.units as DryChemicalUnits, 'ounces');
+                    newOunces = Converter.dry(newValue, ts.units as DryChemicalUnits, 'ounces', scoop);
                 } else if (ts.treatment.type === 'liquidChemical') {
-                    newOunces = Converter.wet(newValue, ts.units as WetChemicalUnits, 'ounces');
+                    newOunces = Converter.wet(newValue, ts.units as WetChemicalUnits, 'ounces', scoop);
                 } else if (ts.treatment.type === 'calculation') {
                     newOunces = newValue;
                 }
@@ -240,10 +277,12 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                 if (isNaN(newValue)) {
                     newValue = 0;
                 }
+                const scoop = TreatmentListHelpers.getScoopForTreatment(ts.treatment.var, allScoops);
+
                 if (ts.treatment.type === 'dryChemical') {
-                    newOunces = Converter.dry(newValue, ts.units as DryChemicalUnits, 'ounces');
+                    newOunces = Converter.dry(newValue, ts.units as DryChemicalUnits, 'ounces', scoop);
                 } else if (ts.treatment.type === 'liquidChemical') {
-                    newOunces = Converter.wet(newValue, ts.units as WetChemicalUnits, 'ounces');
+                    newOunces = Converter.wet(newValue, ts.units as WetChemicalUnits, 'ounces', scoop);
                 } else if (ts.treatment.type === 'calculation') {
                     newOunces = newValue;
                 }
@@ -255,10 +294,12 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                 newDecimalPlaces = Math.max(decimalHalves[1].length, 1);
             }
             ts.decimalPlaces = newDecimalPlaces;
+            const scoop = TreatmentListHelpers.getScoopForTreatment(ts.treatment.var, allScoops);
+
             if (ts.treatment.type === 'dryChemical') {
-                ts.value = Converter.dry(newOunces, 'ounces', ts.units as DryChemicalUnits).toFixed(newDecimalPlaces);
+                ts.value = Converter.dry(newOunces, 'ounces', ts.units as DryChemicalUnits, scoop).toFixed(newDecimalPlaces);
             } else if (ts.treatment.type === 'liquidChemical') {
-                ts.value = Converter.wet(newOunces, 'ounces', ts.units as WetChemicalUnits).toFixed(newDecimalPlaces);
+                ts.value = Converter.wet(newOunces, 'ounces', ts.units as WetChemicalUnits, scoop).toFixed(newDecimalPlaces);
             } else if (ts.treatment.type === 'calculation') {
                 ts.value = newText;
             }
@@ -319,8 +360,6 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                     stickySectionHeadersEnabled={ false }
                     canCancelContentTouches={ true }
                     renderSectionFooter={ () => <TreatmentListFooter text={ notes } updatedText={ setNotes } /> }
-                // renderSectionHeader={ () => <PDText style={ styles.sectionTitle }>Treatments</PDText> }
-                // renderSectionFooter={ () => <TreatmentListFooter recipe={ recipe || null } /> }
                 />
                 <WebView
                     containerStyle={ styles.webview }

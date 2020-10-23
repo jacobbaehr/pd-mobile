@@ -14,6 +14,8 @@ import { RecipeScreen } from '~/screens/recipes/RecipeScreen';
 import { RecipeKey } from '~/models/recipe/RecipeKey';
 import { SettingsScreen } from '~/screens/settings/SettingsScreen';
 import { BuyScreen } from '~/screens/buy/BuyScreen';
+import { Scoop } from '~/models/Scoop';
+import { ScoopDetailsScreen, ScoopDetailsRouteProps } from '~/screens/settings/scoops/ScoopDetailsScreen';
 
 export const navigationRef: React.RefObject<NavigationContainerRef> = React.createRef();
 const Stack = createStackNavigator<PDNavStackParamList>();
@@ -43,6 +45,7 @@ const ModalScreens = (): JSX.Element => {
         <Stack.Navigator headerMode={ 'none' } mode={ 'modal' }>
             <Stack.Screen name="Main" component={ MainStack } />
             <Stack.Screen name="PickerScreen" component={ PickerScreen } />
+            <Stack.Screen name="ScoopDetails" component={ ScoopDetailsScreen } />
         </Stack.Navigator>
     );
 }
@@ -69,4 +72,5 @@ export type PDNavStackParamList = {
     Buy: undefined;
     PickerScreen: PDPickerRouteProps;
     Main: undefined;
+    ScoopDetails: ScoopDetailsRouteProps;
 };

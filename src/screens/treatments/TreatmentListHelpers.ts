@@ -3,7 +3,9 @@ import { Treatment } from "~/models/recipe/Treatment";
 import { DeviceSettings } from "~/models/DeviceSettings";
 import { DeviceSettingsService } from "~/services/DeviceSettingsService";
 import { Util } from "~/services/Util";
-import { Units } from "./TreatmentUnits";
+import { Units } from "~/models/TreatmentUnits";
+import { Scoop } from "~/models/Scoop";
+import { TreatmentEntry } from "~/models/logs/TreatmentEntry";
 
 export interface TreatmentState {
     treatment: Treatment;
@@ -30,11 +32,13 @@ export class TreatmentListHelpers {
         return ds?.treatments.concentrations[varName] || null;
     }
 
-    static persistDeviceSettingsAsync = (ds: DeviceSettings) => {
-        const persistConcentrationOverride = async () => {
-            await DeviceSettingsService.saveSettings(ds);
-        };
-        persistConcentrationOverride();
+    static getScoopForTreatment = (varName: string, scoops: Scoop[]): Scoop | null => {
+        for (let i = 0; i < scoops.length; i++) {
+            if (scoops[i].var === varName) {
+                return scoops[i];
+            }
+        }
+        return null;
     }
 
     // Returns true if an update occured, false otherwise
@@ -55,5 +59,15 @@ export class TreatmentListHelpers {
             setTreatmentState(tss);
         }
         return didChange;
+    }
+
+    static getUpdatedLastUsedUnits = (unitsMap: { [varName: string]: string }, treatmentStates: TreatmentState[]): { [varName: string]: string } => {
+        const newUnits = Util.deepCopy(unitsMap);
+        treatmentStates
+            .filter(ts => ts.isOn)
+            .forEach(ts => {
+                newUnits[ts.treatment.var] = ts.units;
+            });
+        return newUnits;
     }
 }

@@ -54,7 +54,7 @@ const RecipeScreenComponent: React.FunctionComponent<RecipeScreenProps> = (props
 
     const handleViewDetailsPressed = () => {
         console.log('aaahhh');
-        Linking.openURL(`${Config.web_url}/recipe/${meta.id}/edit`);
+        Linking.openURL(`${Config.web_app_url}/recipe/${meta.id}/edit`);
     }
 
     const webButtonStyles = isWebButtonPressed

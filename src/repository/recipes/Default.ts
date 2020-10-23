@@ -106,7 +106,7 @@ export const defaultRecipe: Recipe = {
             "name": "Muriatic Acid",
             "var": "m_acid",
             "formula": "// Muriatic Acid helps to lower the pH. I personally don't like\n// how the acid makes the water slimy & unswimmable for a few hours...\n// but meh.\n\n// If the pH isn't too high... then don't worry about it!\nif (r.ph < 7.6) {\n  return 0;\n}\n\nconst targetPh = 7.4;\nconst phDelta = targetPh - r.ph;    // This will be a negative number.\n\n// This is not very precise, feel free to remix. It's another non-linear effect,\n// where the multiplier is different depending on the measure.\nlet multiplier = 0;\n\nif (r.ph > 8.2) {\n    multiplier = -.0027;\n}\nelse if (r.ph > 8.0) {\n    multiplier = -.0028;\n}\nelse if (r.ph > 7.8) {\n    multiplier = -.0029;\n}\nelse if (r.ph > 7.6) {\n    multiplier = -.0030;\n}\n\n// Cap the total amount of acid, just in-case someone enters a pH of 100 somehow:\nconst maxAmount = .0032 * p.gallons;\nconst calculatedAmount = p.gallons * phDelta * multiplier;\n\nreturn Math.min(maxAmount, calculatedAmount);",
-            "type": "dryChemical",
+            "type": "liquidChemical",
             "concentration": 31
         },
         {

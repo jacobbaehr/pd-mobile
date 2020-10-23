@@ -49,10 +49,8 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
         treatmentNameTextStyles.push(styles.textDone);
     }
 
-    let treatmentName = t.name;
-    if (ts.concentration && ts.concentration < 100) {
-        treatmentName = `${ts.concentration.toFixed(0)}% ${t.name}`;
-    }
+    // I thought this next line would come out cleaner, whoops:
+    const treatmentName = Util.getDisplayNameForTreatment({ name: t.name, concentration: ts.concentration });
     const valueText = Util.removeSuffixIfPresent('.0', ts.value || '');
 
     const onTextBeginEditing = () => {
