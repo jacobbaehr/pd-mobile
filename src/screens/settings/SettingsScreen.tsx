@@ -103,8 +103,7 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
                     underlayColor={ '#F8F8F8' }
                     activeScale={ 0.97 }
                     onPress={ handleAddScoopPressed }
-                    hitSlop={ { top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop } }
-                    disabled={ Config.isAndroid }>
+                    hitSlop={ { top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop } }>
                     <Image
                         style={ styles.addScoopButtonImage }
                         source={ images.plusButton }
