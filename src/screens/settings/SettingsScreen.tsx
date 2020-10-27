@@ -24,6 +24,8 @@ import { images } from '~/assets/images';
 import { Haptic } from '~/services/HapticService';
 import { ScoopListItem } from './scoops/ScoopListItem';
 import { Scoop } from '~/models/Scoop';
+import { Conditional } from '~/components/Conditional';
+import { DS } from '~/services/DSUtil';
 
 
 interface SettingsProps {
@@ -42,6 +44,7 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
     const { goBack, navigate } = useNavigation<StackNavigationProp<PDNavStackParamList, 'Settings'>>();
     const insets = useSafeArea();
     const ds = props.deviceSettings;
+    const isUnlocked = DS.isSubscriptionValid(ds, Date.now());
 
     const handleGoBack = () => {
         goBack();
@@ -81,7 +84,7 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
 
     const dynamicInsets: ViewStyle = {
         paddingBottom: insets.bottom
-    };
+    }
 
     const hitSlop = 5;
     return <SafeAreaView forceInset={ { bottom: 'never' } } style={ styles.safeAreaContainer }>
@@ -113,8 +116,8 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
             </View>
             { getScoops() }
 
-            <PDText style={ styles.sectionTitle }>Unlock</PDText>
-            <Upgrade style={ styles.upgradeContainer } onPress={ handleUpgradePressed } />
+            <PDText style={ styles.sectionTitle }>{ isUnlocked ? 'Subscription' : 'Unlock' }</PDText>
+            <Upgrade style={ styles.upgradeContainer } onPress={ handleUpgradePressed } isUnlocked={ isUnlocked } />
             <PDText style={ styles.sectionTitle }>Feedback?</PDText>
             <PDText style={ styles.forumDetails }>I'd love to hear it in in the forum!</PDText>
             <BoringButton

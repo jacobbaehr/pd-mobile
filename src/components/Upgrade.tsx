@@ -3,10 +3,12 @@ import { View, Image, Text, StyleSheet, ViewStyle, StyleProp } from "react-nativ
 import { PDText } from "./PDText";
 import { images } from "~/assets/images";
 import { BoringButton } from "./buttons/BoringButton";
+import { Conditional } from "./Conditional";
 
 interface UpgradeProps {
     onPress: () => void;
     style: StyleProp<ViewStyle>;
+    isUnlocked: boolean;        // Whether the user has upgraded to the pro version
 }
 
 export const Upgrade: React.FunctionComponent<UpgradeProps> = (props) => {
@@ -17,13 +19,15 @@ export const Upgrade: React.FunctionComponent<UpgradeProps> = (props) => {
                 <Image style={ styles.pdProImageStyles } source={ images.logoGreenPlus } width={ 3000 } resizeMode={ 'contain' } />
                 <View style={ { flex: 1 } }></View>
             </View>
-            <View style={ styles.textContainer }>
-                <Text style={ styles.onlineBackupText }>• Charts</Text>
-                <Text style={ styles.onlineBackupText }>• Unlimited Pools</Text>
-                <Text style={ styles.onlineBackupText }>• Less than $2 / month</Text>
-            </View>
+            <Conditional condition={ !props.isUnlocked }>
+                <View style={ styles.textContainer }>
+                    <Text style={ styles.onlineBackupText }>• Charts</Text>
+                    <Text style={ styles.onlineBackupText }>• Unlimited Pools</Text>
+                    <Text style={ styles.onlineBackupText }>• Less than $2 / month</Text>
+                </View>
+            </Conditional>
             <BoringButton
-                title={ 'Unlock' }
+                title={ props.isUnlocked ? 'Manage' : 'Unlock' }
                 onPress={ props.onPress }
                 containerStyles={ styles.plusButton }
                 textStyles={ styles.plusButtonText }

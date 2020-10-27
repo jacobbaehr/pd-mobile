@@ -103,7 +103,7 @@ export class ChartCard extends React.PureComponent<ChartCardProps, ChartCardStat
                 </View>
                 { this.props.children }
                 <Animated.View style={ [styles.overlay, { opacity: this.state.overlayOpacity }] } pointerEvents={ 'none' }>
-                    <Upgrade style={ styles.upgradeContainer } onPress={ () => { } } />
+                    <Upgrade style={ styles.upgradeContainer } onPress={ () => { } } isUnlocked={ this.props.viewModel.isUnlocked } />
                 </Animated.View>
             </View>
         );
