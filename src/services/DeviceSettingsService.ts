@@ -27,6 +27,7 @@ export class DeviceSettingsService {
 
         // fill it in (if necessary)
         const ds = DeviceSettingsService.rawDeviceSettingsToDeviceSettings(rs);
+
         return ds;
     }
 

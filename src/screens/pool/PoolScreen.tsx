@@ -28,6 +28,8 @@ import { DS } from '~/services/DSUtil';
 import { selectedPoolReducer } from '~/redux/selectedPool/Reducer';
 import { ChartService } from '~/services/ChartService';
 import { Database } from '~/repository/Database';
+import { DataService } from '~/services/DataService';
+import { ExportService } from '~/services/ExportService';
 
 interface PoolScreenProps {
     // The id of the selected pool, if any
@@ -152,6 +154,16 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
         Database.deleteLogEntry(logEntryId);
     }
 
+    const handleDataButtonPressed = async () => {
+        try {
+            if (!props.selectedPool) { return; }
+            const filePath = await DataService.generateCsvFileForPool(props.selectedPool);
+            await ExportService.shareCSVFile('pooldash.csv', filePath);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
     const sections: SectionListData<any>[] = [
         {
             title: 'Recipe',
@@ -199,7 +211,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
                     <PDText style={ styles.lastServiceLabel }>{ lastServiceString }</PDText>
                 </View>;
         } else if (section.key === 'trends_section') {
-            if (history.length < 2) {
+            if (history.length < 1) {
                 return <></>;
             }
             contentBody = <TouchableScale
@@ -232,6 +244,18 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
         );
     }
 
+    const renderSectionFooter = (section: SectionListData<any>) => {
+        if (section.key != 'history_section' || history.length === 0) {
+            return <></>;
+        }
+        return <BoringButton
+            containerStyles={ styles.dataButton }
+            textStyles={ styles.dataButtonText }
+            onPress={ handleDataButtonPressed }
+            title="Export as CSV"
+        />;
+    }
+
     return (
         <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } } forceInset={ { bottom: 'never' } } >
             <PoolHeaderView
@@ -246,6 +270,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
                 contentInset={ { bottom: 34 } }
                 stickySectionHeadersEnabled={ true }
                 keyExtractor={ (section, item) => `${section.key}|${item}|${isUnlocked ? 'unlocked' : 'locked'}` }
+                renderSectionFooter={ (info) => renderSectionFooter(info.section) }
             />
         </SafeAreaView>
     );
@@ -299,4 +324,13 @@ const styles = StyleSheet.create({
         marginHorizontal: 12,
         marginBottom: 12
     },
+    dataButton: {
+        alignSelf: 'stretch',
+        backgroundColor: '#DFE6F7',
+        marginHorizontal: 12,
+        marginVertical: 24
+    },
+    dataButtonText: {
+        color: '#1E6BFF'
+    }
 });

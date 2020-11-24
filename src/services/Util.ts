@@ -57,6 +57,13 @@ export class Util {
         return original;
     }
 
+    static removePrefixIfPresent = (prefix: string, original: string): string => {
+        if (original.startsWith(prefix)) {
+            return original.slice(prefix.length);
+        }
+        return original;
+    }
+
     static getDisplayNameForTreatment = (t: { name: string, concentration?: number }): string => {
         if (t.concentration && t.concentration < 100) {
             return `${t.concentration.toFixed(0)}% ${t.name}`;

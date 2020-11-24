@@ -24,8 +24,10 @@ import { images } from '~/assets/images';
 import { Haptic } from '~/services/HapticService';
 import { ScoopListItem } from './scoops/ScoopListItem';
 import { Scoop } from '~/models/Scoop';
-import { Conditional } from '~/components/Conditional';
 import { DS } from '~/services/DSUtil';
+import { ExportService } from '~/services/ExportService';
+import { DataService } from '~/services/DataService';
+import { TempCsvRepo } from '~/repository/TempCsvRepo';
 
 
 interface SettingsProps {
@@ -67,6 +69,15 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
 
     const handleForumPressed = () => {
         Linking.openURL(Config.forum_url);
+    }
+
+    const handleDataButtonPressed = async () => {
+        try {
+            const filePath = await DataService.generateCsvFileForAllPools();
+            await ExportService.shareCSVFile('pooldash.csv', filePath);
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     const handleAddScoopPressed = () => {
@@ -118,11 +129,19 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
 
             <PDText style={ styles.sectionTitle }>{ isUnlocked ? 'Subscription' : 'Unlock' }</PDText>
             <Upgrade style={ styles.upgradeContainer } onPress={ handleUpgradePressed } isUnlocked={ isUnlocked } />
+            <PDText style={ styles.sectionTitle }>Data Export</PDText>
+            <PDText style={ styles.forumDetails }>This will create a .csv file with all of the history for all of your pools.</PDText>
+            <BoringButton
+                containerStyles={ styles.dataButton }
+                textStyles={ styles.dataButtonText }
+                onPress={ handleDataButtonPressed }
+                title="Export as CSV"
+            />
             <PDText style={ styles.sectionTitle }>Feedback?</PDText>
             <PDText style={ styles.forumDetails }>I'd love to hear it in in the forum!</PDText>
             <BoringButton
-                containerStyles={ styles.button }
-                textStyles={ styles.buttonText }
+                containerStyles={ styles.dataButton }
+                textStyles={ styles.dataButtonText }
                 onPress={ handleForumPressed }
                 title="Open in Browser"
             />
@@ -200,6 +219,15 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         color: 'black'
     },
+    dataButton: {
+        alignSelf: 'stretch',
+        backgroundColor: '#DFE6F7',
+        margin: 12,
+        marginBottom: 24,
+    },
+    dataButtonText: {
+        color: '#1E6BFF'
+    },
     forumDetails: {
         marginTop: 12,
         marginLeft: 24,
@@ -207,14 +235,14 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: '#666'
     },
-    button: {
+    forumButton: {
         alignSelf: 'stretch',
-        backgroundColor: '#DFE6F7',
+        backgroundColor: '#2c5fff',
         margin: 12,
         marginBottom: 24,
         shadowColor: 'transparent'
     },
-    buttonText: {
-        color: '#1E6BFF'
+    forumButtonText: {
+
     }
 });
