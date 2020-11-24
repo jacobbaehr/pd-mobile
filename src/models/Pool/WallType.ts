@@ -1,6 +1,6 @@
 import { DisplayValueOption } from '../Util';
 
-export type WallTypeValue = 'vinyl' | 'plaster' | 'fiberglass' | 'galvanized_steel';
+export type WallTypeValue = 'vinyl' | 'plaster' | 'fiberglass' | 'galvanized_steel' | 'tile';
 
 
 export const wallTypeOptions: DisplayValueOption<WallTypeValue>[] = [
@@ -19,6 +19,10 @@ export const wallTypeOptions: DisplayValueOption<WallTypeValue>[] = [
     {
         display: 'Galvanized Steel',
         value: 'galvanized_steel'
+    },
+    {
+        display: 'Tile',
+        value: 'tile'
     }
 ];
 
