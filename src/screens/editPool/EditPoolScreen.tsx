@@ -20,6 +20,7 @@ import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
 import { Util } from '~/services/Util';
 import { WallTypeValue, wallTypeOptions } from '~/models/Pool/WallType';
+import { Haptic } from '~/services/HapticService';
 
 interface EditPoolScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'EditPool'>;
@@ -95,6 +96,7 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
     }
 
     const handleSaveButtonPressed = () => {
+        Haptic.light();
         let volume = Number(volumeText);
         // Validate or bail
         if (volume <= 0 || name.length === 0) {

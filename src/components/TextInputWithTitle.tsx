@@ -23,6 +23,7 @@ export interface TextInputWithTitleProps {
     autoFocus?: boolean;
     value?: string;
     accessoryViewId?: string;
+    hitSlop?: number;
 }
 
 /** */
@@ -55,6 +56,7 @@ const TextInputWithTitleComponent = (props: TextInputWithTitleProps, ref: React.
                 autoFocus={ props.autoFocus }
                 value={ props.value }
                 inputAccessoryViewID={ props.accessoryViewId }
+                hitSlop={ { top: props.hitSlop, left: props.hitSlop, bottom: props.hitSlop, right: props.hitSlop } }
             />
         </View>
     );
