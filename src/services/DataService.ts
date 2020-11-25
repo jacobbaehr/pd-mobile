@@ -1,29 +1,30 @@
 import { LogEntry } from "~/models/logs/LogEntry";
 import { Pool } from "~/models/Pool";
 import { Database } from "~/repository/Database";
-import { TempCsvRepo } from "~/repository/TempCsvRepo";
 import { Util } from "./Util";
 
 export namespace DataService {
-    /// Returns the filepath of the csv file
-    export const generateCsvFileForAllPools = async (): Promise<string> => {
+
+    /// Returns the base64 encoded file data.
+    /// Really, this should stream to a file & not happen on the main thread.
+    /// But, Android file-sharing is tedious, and idk if multi-threading in RN or js even works.
+    export const generateCsvFileForAllPools = (): string => {
         let dataString = 'pool_dash,export\n';
 
         dataString += Database.loadPools()
             .map(pool => generateCSVEntriesForPool(pool))
             .join('\n**************\n');
 
-        const filePath = await TempCsvRepo.saveCSV(dataString);
-        return filePath;
+        return Util.stringToBase64(dataString);
     }
 
-    export const generateCsvFileForPool = async (pool: Pool): Promise<string> => {
+    /// Returns the base64 encoded file data
+    export const generateCsvFileForPool = (pool: Pool): string => {
         let dataString = 'pool_dash,export\n';
 
         dataString += generateCSVEntriesForPool(pool);
 
-        const filePath = await TempCsvRepo.saveCSV(dataString);
-        return filePath;
+        return Util.stringToBase64(dataString);
     }
 
     const generateCSVEntriesForPool = (pool: Pool): string => {

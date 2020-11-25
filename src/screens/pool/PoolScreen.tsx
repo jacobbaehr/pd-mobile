@@ -9,7 +9,6 @@ import { formatDistanceStrict } from 'date-fns'
 import { PDNavStackParamList } from '~/navigator/Navigators';
 import { images } from '~/assets/images';
 import { ChartCard } from '~/components/charts/ChartCard';
-import { ChartCardViewModel } from '~/components/charts/ChartCardViewModel';
 import { PDText } from '~/components/PDText';
 import { Pool } from '~/models/Pool';
 import { AppState } from '~/redux/AppState';
@@ -25,7 +24,6 @@ import { Util } from '~/services/Util';
 import { RecipeService } from '~/services/RecipeService';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { DS } from '~/services/DSUtil';
-import { selectedPoolReducer } from '~/redux/selectedPool/Reducer';
 import { ChartService } from '~/services/ChartService';
 import { Database } from '~/repository/Database';
 import { DataService } from '~/services/DataService';
@@ -157,8 +155,8 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
     const handleDataButtonPressed = async () => {
         try {
             if (!props.selectedPool) { return; }
-            const filePath = await DataService.generateCsvFileForPool(props.selectedPool);
-            await ExportService.shareCSVFile('pooldash.csv', filePath);
+            const fileData = DataService.generateCsvFileForPool(props.selectedPool);
+            await ExportService.shareCSVFile('pooldash.csv', fileData);
         } catch (e) {
             console.error(e);
         }

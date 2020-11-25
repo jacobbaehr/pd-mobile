@@ -1,4 +1,5 @@
 import { DeviceSettings } from "~/models/DeviceSettings";
+import base64 from 'react-native-base64';
 
 export class Util {
     static getDisplayVolume = (gallons: number, settings: DeviceSettings): string => {
@@ -71,4 +72,14 @@ export class Util {
             return t.name;
         }
     }
+
+    static stringToBase64 = (input: string) => {
+        return base64.encode(input);
+    }
+
+    /// NOTE: this function is untested
+    static stringFromBase64 = (input: string) => {
+        return base64.decode(input);
+    }
+
 }
