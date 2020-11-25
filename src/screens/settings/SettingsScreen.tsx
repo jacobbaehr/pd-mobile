@@ -27,7 +27,6 @@ import { Scoop } from '~/models/Scoop';
 import { DS } from '~/services/DSUtil';
 import { ExportService } from '~/services/ExportService';
 import { DataService } from '~/services/DataService';
-import { TempCsvRepo } from '~/repository/TempCsvRepo';
 
 
 interface SettingsProps {
