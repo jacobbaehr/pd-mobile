@@ -26,7 +26,7 @@ export const BuyHeader: React.FunctionComponent<BuyHeaderProps> = (props) => {
                 <BackButton
                     onPress={ props.goBack }
                     scale={ { scale: true, scaleLines: 2 } }
-                    color={ 'moneyGreen' }
+                    color={ 'blue' }
                 />
             </View>
             <View style={ { flexDirection: 'row', display: 'flex', marginTop: -40 } } pointerEvents={ 'none' }>

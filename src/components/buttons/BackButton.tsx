@@ -8,7 +8,7 @@ import { PDText } from '~/components/PDText';
 import { PlatformSpecific } from '../PlatformSpecific';
 import { Config } from '~/services/Config';
 
-type BackButtonColor = 'blue' | 'readingsBlue' | 'treatmentsPurple' | 'recipesGreen' | 'moneyGreen';
+type BackButtonColor = 'blue' | 'readingsBlue' | 'treatmentsPurple' | 'recipesGreen';
 
 interface BackButtonProps {
     title?: string;
@@ -35,8 +35,6 @@ export class BackButton extends React.Component<BackButtonProps, {}> {
             imageSource = images.backTreatmentsPurple;
         } else if (this.props.color === 'recipesGreen') {
             imageSource = images.backRecipesGreen;
-        } else if (this.props.color === 'moneyGreen') {
-            imageSource = images.backMoneyGreen;
         }
         const hitSlop = 5;
         return (

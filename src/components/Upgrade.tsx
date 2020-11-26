@@ -21,16 +21,16 @@ export const Upgrade: React.FunctionComponent<UpgradeProps> = (props) => {
             </View>
             <Conditional condition={ !props.isUnlocked }>
                 <View style={ styles.textContainer }>
-                    <Text style={ styles.onlineBackupText }>• Charts</Text>
-                    <Text style={ styles.onlineBackupText }>• Unlimited Pools</Text>
-                    <Text style={ styles.onlineBackupText }>• Less than $2 / month</Text>
+                    <PDText style={ styles.onlineBackupText }>+ Charts</PDText>
+                    <PDText style={ styles.onlineBackupText }>+ Unlimited Pools</PDText>
+                    <PDText style={ styles.onlineBackupText }>+ Less than $2 / month</PDText>
                 </View>
             </Conditional>
             <BoringButton
                 title={ props.isUnlocked ? 'Manage' : 'Unlock' }
                 onPress={ props.onPress }
-                containerStyles={ styles.plusButton }
-                textStyles={ styles.plusButtonText }
+                containerStyles={ styles.dataButton }
+                textStyles={ styles.dataButtonText }
             />
         </View>);
 }
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         flex: 1,
         borderRadius: 24,
         borderWidth: 2,
-        borderColor: '#00C89F',
+        borderColor: '#1E6BFF',
         padding: 15,
         alignItems: 'center'
     },
@@ -62,15 +62,15 @@ const styles = StyleSheet.create({
         flex: 1
     },
     onlineBackupText: {
-        flex: 1,
-        color: '#666',      // <-- The devil's color
-        fontWeight: '400',
-        fontSize: 20,
+
+        opacity: 0.6,
+        fontWeight: '600',
+        fontSize: 16,
         marginBottom: 4
     },
     plusButton: {
-        backgroundColor: '#00C89F',
-        borderRadius: 25,
+        backgroundColor: '#1E6BFF',
+        borderRadius: 12,
         shadowColor: 'transparent',
         paddingHorizontal: 12,
         marginBottom: 12,
@@ -80,4 +80,15 @@ const styles = StyleSheet.create({
     plusButtonText: {
         color: 'white'
     },
+    dataButton: {
+        alignSelf: 'stretch',
+        backgroundColor: '#DFE6F7',
+        marginHorizontal: 12,
+        marginVertical: 24,
+        borderRadius: 12,
+        shadowColor: 'transparent'
+    },
+    dataButtonText: {
+        color: '#1E6BFF'
+    }
 });
