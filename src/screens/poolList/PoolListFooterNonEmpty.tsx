@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { StyleSheet, View, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, TouchableHighlight, Image, Dimensions } from 'react-native';
 
 import { PDText } from '~/components/PDText';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { AppState } from '~/redux/AppState';
 import { connect } from 'react-redux';
 import { DS } from '~/services/DSUtil';
+import { images } from '~/assets/images';
 
 interface PoolListFooterNonEmptyPropsInternal {
     deviceSettings: DeviceSettings;
@@ -27,7 +28,21 @@ const PoolListFooterNonEmptyComponent: React.FunctionComponent<PoolListFooterNon
     const [isChangeButtonPressed, setIsChangeButtonPressed] = React.useState(false);
     const isPlus = DS.isSubscriptionValid(props.deviceSettings, Date.now());
 
-    if (isPlus) { return <></>; }
+    if (isPlus) {
+        // I don't know if this is necessary:
+        const imageWidth = Dimensions.get('window').width - 20;
+        const imageHeight = imageWidth * 0.3108;
+        return (
+            <View>
+                <Image
+                    style={ styles.image }
+                    source={ images.logoGreenPlus }
+                    width={ imageWidth }
+                    height={ imageHeight }
+                    resizeMode={ 'contain' } />
+            </View>
+        );
+    }
 
     const changeButtonStyles = isChangeButtonPressed
         ? styles.recipeLinkPressed
@@ -93,5 +108,10 @@ const styles = StyleSheet.create({
         color: 'rgba(0,0,0,.6)',
         fontSize: 18,
         marginTop: 12
+    },
+    image: {
+        marginTop: 10,
+        maxWidth: 250,
+        alignSelf: 'center'
     }
 });
