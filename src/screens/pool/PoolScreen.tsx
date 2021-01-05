@@ -156,7 +156,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
         try {
             if (!props.selectedPool) { return; }
             const fileData = DataService.generateCsvFileForPool(props.selectedPool);
-            await ExportService.shareCSVFile('pooldash.csv', fileData);
+            await ExportService.shareCSVFile(fileData);
         } catch (e) {
             console.error(e);
         }

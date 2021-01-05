@@ -14,7 +14,6 @@ export namespace DataService {
         dataString += Database.loadPools()
             .map(pool => generateCSVEntriesForPool(pool))
             .join('\n**************\n');
-
         return Util.stringToBase64(dataString);
     }
 

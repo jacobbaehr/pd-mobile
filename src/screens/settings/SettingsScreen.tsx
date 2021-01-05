@@ -73,7 +73,7 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
     const handleDataButtonPressed = async () => {
         try {
             const fileData = DataService.generateCsvFileForAllPools();
-            await ExportService.shareCSVFile('pooldash.csv', fileData);
+            await ExportService.shareCSVFile(fileData);
         } catch (e) {
             console.error(e);
         }

@@ -74,12 +74,13 @@ export class Util {
     }
 
     static stringToBase64 = (input: string) => {
-        return base64.encode(input);
+        const utf8 = unescape(encodeURIComponent(input));
+        return base64.encode(utf8);
     }
 
-    /// NOTE: this function is untested
-    static stringFromBase64 = (input: string) => {
-        return base64.decode(input);
+    /// NOTE: this function is untested, be careful!
+    static stringFromBase64UntestedArgh = (input: string) => {
+        const unicode = base64.decode(input);
+        return decodeURIComponent(escape(unicode));
     }
-
 }
