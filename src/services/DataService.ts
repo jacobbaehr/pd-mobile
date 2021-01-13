@@ -14,7 +14,8 @@ export namespace DataService {
         dataString += Database.loadPools()
             .map(pool => generateCSVEntriesForPool(pool))
             .join('\n**************\n');
-        return Util.stringToBase64(dataString);
+
+        return dataString;
     }
 
     /// Returns the base64 encoded file data
@@ -23,7 +24,7 @@ export namespace DataService {
 
         dataString += generateCSVEntriesForPool(pool);
 
-        return Util.stringToBase64(dataString);
+        return dataString;
     }
 
     const generateCSVEntriesForPool = (pool: Pool): string => {

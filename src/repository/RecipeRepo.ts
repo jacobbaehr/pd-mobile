@@ -34,7 +34,7 @@ export namespace RecipeRepo {
             return Promise.reject(e);
         }
         const promises = defaultRecipes.map(r => {
-            return new Promise(async (resolve) => {
+            return new Promise<void>(async (resolve) => {
                 await RecipeRepo.saveRecipe(r);
                 resolve();
             });

@@ -26,7 +26,6 @@ import { ScoopListItem } from './scoops/ScoopListItem';
 import { Scoop } from '~/models/Scoop';
 import { DS } from '~/services/DSUtil';
 import { ExportService } from '~/services/ExportService';
-import { DataService } from '~/services/DataService';
 
 
 interface SettingsProps {
@@ -72,8 +71,7 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
 
     const handleDataButtonPressed = async () => {
         try {
-            const fileData = DataService.generateCsvFileForAllPools();
-            await ExportService.shareCSVFile(fileData);
+            await ExportService.generateAndShareCSV(null);
         } catch (e) {
             console.error(e);
         }

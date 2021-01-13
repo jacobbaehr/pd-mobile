@@ -26,7 +26,6 @@ import { DeviceSettings } from '~/models/DeviceSettings';
 import { DS } from '~/services/DSUtil';
 import { ChartService } from '~/services/ChartService';
 import { Database } from '~/repository/Database';
-import { DataService } from '~/services/DataService';
 import { ExportService } from '~/services/ExportService';
 
 interface PoolScreenProps {
@@ -155,8 +154,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
     const handleDataButtonPressed = async () => {
         try {
             if (!props.selectedPool) { return; }
-            const fileData = DataService.generateCsvFileForPool(props.selectedPool);
-            await ExportService.shareCSVFile(fileData);
+            await ExportService.generateAndShareCSV(props.selectedPool);
         } catch (e) {
             console.error(e);
         }
