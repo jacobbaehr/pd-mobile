@@ -57,5 +57,3 @@ buck-out/
 *.jsbundle
 
 lib/
-
-ios/Pods/
