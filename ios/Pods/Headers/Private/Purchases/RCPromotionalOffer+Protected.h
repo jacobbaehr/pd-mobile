@@ -1,1 +1,0 @@
-../../../Purchases/Purchases/ProtectedExtensions/RCPromotionalOffer+Protected.h

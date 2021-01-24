@@ -1,6 +1,0 @@
-module Pods_pooldash {
-  umbrella header "Pods-pooldash-umbrella.h"
-
-  export *
-  module * { export * }
-}
