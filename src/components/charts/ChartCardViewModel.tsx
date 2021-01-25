@@ -1,4 +1,3 @@
-
 export interface ChartCardViewModel {
     /// The title to display on the chart card
     title: string;

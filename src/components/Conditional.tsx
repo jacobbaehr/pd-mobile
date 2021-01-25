@@ -10,5 +10,5 @@ export const Conditional: React.FunctionComponent<ConditionalProps> = (props) =>
     if (props.condition) {
         children = props.children;
     }
-    return <>{ children }</>;
-}
+    return <>{children}</>;
+};

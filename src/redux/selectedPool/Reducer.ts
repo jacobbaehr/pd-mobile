@@ -2,12 +2,7 @@ import { AnyAction } from 'redux';
 
 import { Pool } from 'models/Pool';
 
-import {
-    SelectPoolAction,
-    SAVE_POOL,
-    SELECT_POOL,
-    UPDATE_POOL
-} from './Actions';
+import { SelectPoolAction, SAVE_POOL, SELECT_POOL, UPDATE_POOL } from './Actions';
 
 export const selectedPoolReducer = (previousState: Pool | null = null, action: AnyAction): Pool | null => {
     switch (action.type) {

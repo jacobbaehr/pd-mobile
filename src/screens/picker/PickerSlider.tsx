@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { View, StyleSheet, NativeSyntheticEvent, TextInputEndEditingEventData, InputAccessoryView, Keyboard } from 'react-native';
+import {
+    View,
+    StyleSheet,
+    NativeSyntheticEvent,
+    TextInputEndEditingEventData,
+    InputAccessoryView,
+    Keyboard,
+} from 'react-native';
 // import Slider from '@react-native-community/slider';
 // @ts-ignore
 import Slider from 'react-native-slider';
@@ -25,7 +32,6 @@ interface PickerSliderProps {
 }
 
 export const PickerSlider: React.FunctionComponent<PickerSliderProps> = (props) => {
-
     const [isSliding, setIsSliding] = React.useState(false);
     const [textIsEditing, setTextIsEditing] = React.useState(false);
 
@@ -41,7 +47,7 @@ export const PickerSlider: React.FunctionComponent<PickerSliderProps> = (props) 
     const sliderMax = 100;
 
     // Keep the slider in range sliderMin <= x <= sliderMax
-    let sliderValue = (rs.value) ? parseInt(rs.value) : sliderMin;
+    let sliderValue = rs.value ? parseInt(rs.value) : sliderMin;
     sliderValue = Math.max(Math.min(sliderValue, sliderMax), sliderMin);
 
     const onTextBeginEditing = () => {
@@ -69,44 +75,47 @@ export const PickerSlider: React.FunctionComponent<PickerSliderProps> = (props) 
     };
 
     return (
-        <View style={ styles.container } >
-            <View style={ styles.content }>
-                <View style={ styles.topRow }>
-                    <View style={ styles.topRowContent }>
-                        < TextInput
-                            style={ styles.textInput }
-                            onFocus={ onTextBeginEditing }
-                            onChangeText={ onTextChange }
-                            onEndEditing={ onTextEndEditing }
-                            keyboardType={ 'number-pad' }
-                            inputAccessoryViewID={ keyboardAccessoryViewId } >
-                            { rs.value }
+        <View style={styles.container}>
+            <View style={styles.content}>
+                <View style={styles.topRow}>
+                    <View style={styles.topRowContent}>
+                        <TextInput
+                            style={styles.textInput}
+                            onFocus={onTextBeginEditing}
+                            onChangeText={onTextChange}
+                            onEndEditing={onTextEndEditing}
+                            keyboardType={'number-pad'}
+                            inputAccessoryViewID={keyboardAccessoryViewId}>
+                            {rs.value}
                         </TextInput>
-                        <PDText style={ styles.unitsText }>%</PDText>
+                        <PDText style={styles.unitsText}>%</PDText>
                     </View>
                 </View>
-                < Slider
-                    style={ styles.slider }
-                    minimumValue={ sliderMin }
-                    maximumValue={ sliderMax }
+                <Slider
+                    style={styles.slider}
+                    minimumValue={sliderMin}
+                    maximumValue={sliderMax}
                     minimumTrackTintColor="#E3E3E3"
                     maximumTrackTintColor="#E3E3E3"
-                    thumbImage={ images.sliderThumbBlue }
-                    onSlidingStart={ onSliderStart }
-                    onSlidingComplete={ onSliderEnd }
-                    onValueChange={ (value: number) => props.onSliderUpdatedValue(value) }
-                    value={ sliderValue }
-                    step={ sliderStep }
-                    thumbTouchSize={ { width: 55, height: 55 } }
+                    thumbImage={images.sliderThumbBlue}
+                    onSlidingStart={onSliderStart}
+                    onSlidingComplete={onSliderEnd}
+                    onValueChange={(value: number) => props.onSliderUpdatedValue(value)}
+                    value={sliderValue}
+                    step={sliderStep}
+                    thumbTouchSize={{ width: 55, height: 55 }}
                 />
             </View>
-            <PlatformSpecific include={ ['ios'] }>
-                <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
-                    <View style={ styles.keyboardAccessoryContainer }>
+            <PlatformSpecific include={['ios']}>
+                <InputAccessoryView nativeID={keyboardAccessoryViewId}>
+                    <View style={styles.keyboardAccessoryContainer}>
                         <BoringButton
-                            containerStyles={ styles.keyboardAccessoryButton }
-                            textStyles={ styles.keyboardAccessoryButtonText }
-                            onPress={ () => { Keyboard.dismiss(); Haptic.light(); } }
+                            containerStyles={styles.keyboardAccessoryButton}
+                            textStyles={styles.keyboardAccessoryButtonText}
+                            onPress={() => {
+                                Keyboard.dismiss();
+                                Haptic.light();
+                            }}
                             title="Save"
                         />
                     </View>
@@ -114,14 +123,14 @@ export const PickerSlider: React.FunctionComponent<PickerSliderProps> = (props) 
             </PlatformSpecific>
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'transparent',
         alignContent: 'stretch',
         borderRadius: 10,
-        marginTop: 22
+        marginTop: 22,
     },
     content: {
         backgroundColor: 'white',
@@ -130,7 +139,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         elevation: 2,
         marginBottom: 6,
-        marginHorizontal: 16
+        marginHorizontal: 16,
     },
     topRow: {
         borderRadius: 10,
@@ -138,7 +147,7 @@ const styles = StyleSheet.create({
         paddingTop: 12,
         paddingBottom: 3,
         marginBottom: 8,
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     topRowContent: {
         alignSelf: 'center',
@@ -148,7 +157,7 @@ const styles = StyleSheet.create({
     slider: {
         flex: 1,
         marginHorizontal: 12,
-        marginBottom: 12
+        marginBottom: 12,
     },
     textInput: {
         width: 80,
@@ -159,13 +168,13 @@ const styles = StyleSheet.create({
         fontFamily: 'Avenir Next',
         fontWeight: '600',
         fontSize: 22,
-        textAlign: 'center'
+        textAlign: 'center',
     },
     unitsText: {
         color: '#1E6BFF',
         fontSize: 22,
         textAlignVertical: 'center',
-        marginLeft: 6
+        marginLeft: 6,
     },
     keyboardAccessoryContainer: {
         backgroundColor: '#F8F8F8',
@@ -173,10 +182,10 @@ const styles = StyleSheet.create({
     },
     keyboardAccessoryButton: {
         backgroundColor: '#1E6BFF',
-        marginHorizontal: 24
+        marginHorizontal: 24,
     },
     keyboardAccessoryButtonText: {
         color: 'white',
-        fontSize: 18
-    }
+        fontSize: 18,
+    },
 });

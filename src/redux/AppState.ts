@@ -47,7 +47,7 @@ const initialAppState: AppState = {
     poolsLastUpdated: 0,
     hasValidSubscription: false,
     pickerState: null,
-    deviceSettings: DeviceSettingsService.getDefaultSettings()
+    deviceSettings: DeviceSettingsService.getDefaultSettings(),
 };
 
 const reducer = combineReducers({
@@ -57,7 +57,7 @@ const reducer = combineReducers({
     poolsLastUpdated: poolsLastUpdatedReducer,
     hasValidSubscription: hasValidSubscriptionReducer,
     pickerState: pickerStateReducer,
-    deviceSettings: deviceSettingsReducer
+    deviceSettings: deviceSettingsReducer,
 });
 
 // apply all middleware for application

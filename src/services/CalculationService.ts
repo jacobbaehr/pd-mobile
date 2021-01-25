@@ -61,21 +61,25 @@ export class CalculationService {
         const event = {
             recipe,
             pool,
-            readings: inputs
+            readings: inputs,
         };
-        const jsCall = calc + `const results = calc(${JSON.stringify(event)});document.getElementById("hello").innerHTML = JSON.stringify(results);window.ReactNativeWebView.postMessage(JSON.stringify(results));`;
+        const jsCall =
+            calc +
+            `const results = calc(${JSON.stringify(
+                event,
+            )});document.getElementById("hello").innerHTML = JSON.stringify(results);window.ReactNativeWebView.postMessage(JSON.stringify(results));`;
 
         return `<body><h1 id="hello">hello</h1><script>${jsCall}</script></body>`;
-    }
+    };
 
     static getTreatmentEntriesFromWebviewMessage = (event: WebViewMessageEvent, recipe: Recipe): TreatmentEntry[] => {
         console.log(event.nativeEvent.data);
         const results = JSON.parse(event.nativeEvent.data) as CalculationResult[];
         const tes: TreatmentEntry[] = [];
         results
-            .filter(tv => tv.value)
-            .forEach(tv => {
-                const correspondingTreatments = recipe.treatments.filter(t => t.var === tv.var);
+            .filter((tv) => tv.value)
+            .forEach((tv) => {
+                const correspondingTreatments = recipe.treatments.filter((t) => t.var === tv.var);
                 if (correspondingTreatments.length > 0) {
                     const correspondingTreatment = correspondingTreatments[0];
                     if (tv.value) {
@@ -86,29 +90,23 @@ export class CalculationService {
                             ounces: tv.value,
                             displayUnits: 'ounces',
                             concentration: correspondingTreatment.concentration,
-                            type: correspondingTreatment.type
+                            type: correspondingTreatment.type,
                         });
                     }
                 }
             });
         return tes;
-    }
+    };
 
     static mapTreatmentStatesToTreatmentEntries = (tss: TreatmentState[]): TreatmentEntry[] => {
         return tss
-            .filter(ts => ts.isOn)
-            .map(ts => {
+            .filter((ts) => ts.isOn)
+            .map((ts) => {
                 let displayUnits: string = ts.units;
-                if (['calculation', 'task'].some(x => ts.treatment.type === x)) {
+                if (['calculation', 'task'].some((x) => ts.treatment.type === x)) {
                     displayUnits = '';
                 }
-                return TreatmentEntry.make(
-                    ts.treatment,
-                    ts.ounces,
-                    ts.value || '0',
-                    displayUnits,
-                    ts.concentration
-                );
+                return TreatmentEntry.make(ts.treatment, ts.ounces, ts.value || '0', displayUnits, ts.concentration);
             });
-    }
+    };
 }

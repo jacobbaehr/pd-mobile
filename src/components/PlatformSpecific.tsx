@@ -10,15 +10,15 @@ interface PlatformSpecificProps {
 /// A component for platform-specific children
 export const PlatformSpecific: React.FunctionComponent<PlatformSpecificProps> = (props) => {
     let shouldRenderChildren = true;
-    if (props.exclude && (props.exclude.indexOf(Config.platformOS) > -1)) {
+    if (props.exclude && props.exclude.indexOf(Config.platformOS) > -1) {
         shouldRenderChildren = false;
     }
-    if (props.include && (props.include.indexOf(Config.platformOS) === -1)) {
+    if (props.include && props.include.indexOf(Config.platformOS) === -1) {
         shouldRenderChildren = false;
     }
     let children: React.ReactNode | null = null;
     if (shouldRenderChildren) {
         children = props.children;
     }
-    return <>{ children }</>;
-}
+    return <>{children}</>;
+};

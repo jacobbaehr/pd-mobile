@@ -14,7 +14,10 @@ export class RecipeService {
     static defaultRecipeKey = 'vast_argument_756|1593550871334';
 
     /// First, tries to load the recipe locally. If not found, it fetches, saves, then returns the recipe from the API.
-    static resolveRecipeWithKey = async (recipeKey: RecipeKey, client: ApolloClient<NormalizedCacheObject>): Promise<Recipe> => {
+    static resolveRecipeWithKey = async (
+        recipeKey: RecipeKey,
+        client: ApolloClient<NormalizedCacheObject>,
+    ): Promise<Recipe> => {
         console.log(`loading recipe ${recipeKey}`);
         try {
             const localRecipe = await RecipeRepo.loadLocalRecipeWithKey(recipeKey);
@@ -35,19 +38,22 @@ export class RecipeService {
             console.log('Could not fetch recipe remotely!');
             return Promise.reject(e);
         }
-    }
+    };
 
-    static getLatestRecipeVersion = async (key: RecipeKey, client: ApolloClient<NormalizedCacheObject>): Promise<Recipe> => {
+    static getLatestRecipeVersion = async (
+        key: RecipeKey,
+        client: ApolloClient<NormalizedCacheObject>,
+    ): Promise<Recipe> => {
         /// latestKey may or may not be equal to "key"
         const latestKey = await RecipeAPI.fetchLatestKeyForRecipe(key, client);
         return await RecipeService.resolveRecipeWithKey(latestKey, client);
-    }
+    };
 
     static updateAllLocalRecipes = async (client: ApolloClient<NormalizedCacheObject>): Promise<void> => {
         // First, update all the local recipes
         const oldLocalRecipeKeys = await RecipeRepo.loadLatestLocalRecipeKeys();
         // TODONT: batch these api calls?
-        const updateEach = oldLocalRecipeKeys.map(key => RecipeService.getLatestRecipeVersion(key, client));
+        const updateEach = oldLocalRecipeKeys.map((key) => RecipeService.getLatestRecipeVersion(key, client));
         await Promise.all(updateEach);
 
         // Pull a fresh list from the local repo:
@@ -56,25 +62,31 @@ export class RecipeService {
         // Then, iterate over all the pools & update them to the latest keys:
         const allPools = Database.loadPools();
         console.log(`Pools: ${allPools.length}`);
-        console.log(`${allPools.map(p => p.recipeKey)}`);
-        const outdatedPools = allPools.filter(p => !!p.recipeKey && (updatedKeys.indexOf(p.recipeKey) < 0));
+        console.log(`${allPools.map((p) => p.recipeKey)}`);
+        const outdatedPools = allPools.filter((p) => !!p.recipeKey && updatedKeys.indexOf(p.recipeKey) < 0);
 
         console.log(`Outdated Pools: ${outdatedPools.length}`);
 
-        const updatedInfos = updatedKeys.map(key => RS.reverseKey(key));
+        const updatedInfos = updatedKeys.map((key) => RS.reverseKey(key));
 
-        outdatedPools.forEach(pool => {
+        outdatedPools.forEach((pool) => {
             const oldKey = pool.recipeKey;
             console.log('a');
-            if (!oldKey) { return; }
+            if (!oldKey) {
+                return;
+            }
             console.log('b');
             const oldRecipeId = RS.reverseKey(oldKey).id;
-            const newInfo = updatedInfos.find(info => info.id === oldRecipeId);
-            if (!newInfo) { return; }
+            const newInfo = updatedInfos.find((info) => info.id === oldRecipeId);
+            if (!newInfo) {
+                return;
+            }
             console.log('c');
-            dispatch(updatePool(pool, (p) => {
-                p.recipeKey = RS.getKey(newInfo);
-            }))
+            dispatch(
+                updatePool(pool, (p) => {
+                    p.recipeKey = RS.getKey(newInfo);
+                }),
+            );
         });
-    }
+    };
 }

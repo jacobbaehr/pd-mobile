@@ -22,40 +22,36 @@ const Stack = createStackNavigator<PDNavStackParamList>();
 
 const MainStack = (): JSX.Element => {
     return (
-        <Stack.Navigator headerMode={ 'none' } mode={ 'card' }>
-            <Stack.Screen name="PoolList" component={ PoolListScreen } />
-            <Stack.Screen name="CreatePool" component={ EditPoolScreen } />
-            <Stack.Screen name="PoolScreen" component={ PoolScreen } />
-            <Stack.Screen name="EditPool" component={ EditPoolScreen } />
-            <Stack.Screen name="ReadingList" component={ ReadingListScreen } />
-            <Stack.Screen name="TreatmentList" component={ TreatmentListScreen } />
-            <Stack.Screen name="RecipeList" component={ RecipeListScreen } />
-            <Stack.Screen name="RecipeDetails" component={ RecipeScreen } />
-            <Stack.Screen name="PoolHistory" component={ PoolHistoryScreen } />
-            <Stack.Screen name="Settings" component={ SettingsScreen } />
-            <Stack.Screen name="Buy" component={ BuyScreen } />
+        <Stack.Navigator headerMode={'none'} mode={'card'}>
+            <Stack.Screen name="PoolList" component={PoolListScreen} />
+            <Stack.Screen name="CreatePool" component={EditPoolScreen} />
+            <Stack.Screen name="PoolScreen" component={PoolScreen} />
+            <Stack.Screen name="EditPool" component={EditPoolScreen} />
+            <Stack.Screen name="ReadingList" component={ReadingListScreen} />
+            <Stack.Screen name="TreatmentList" component={TreatmentListScreen} />
+            <Stack.Screen name="RecipeList" component={RecipeListScreen} />
+            <Stack.Screen name="RecipeDetails" component={RecipeScreen} />
+            <Stack.Screen name="PoolHistory" component={PoolHistoryScreen} />
+            <Stack.Screen name="Settings" component={SettingsScreen} />
+            <Stack.Screen name="Buy" component={BuyScreen} />
 
-            {/* <Stack.Screen name="PurchasePro" component={ PurchaseProStack } /> */ }
+            {/* <Stack.Screen name="PurchasePro" component={ PurchaseProStack } /> */}
         </Stack.Navigator>
     );
-}
+};
 
 const ModalScreens = (): JSX.Element => {
     return (
-        <Stack.Navigator headerMode={ 'none' } mode={ 'modal' }>
-            <Stack.Screen name="Main" component={ MainStack } />
-            <Stack.Screen name="PickerScreen" component={ PickerScreen } />
-            <Stack.Screen name="ScoopDetails" component={ ScoopDetailsScreen } />
+        <Stack.Navigator headerMode={'none'} mode={'modal'}>
+            <Stack.Screen name="Main" component={MainStack} />
+            <Stack.Screen name="PickerScreen" component={PickerScreen} />
+            <Stack.Screen name="ScoopDetails" component={ScoopDetailsScreen} />
         </Stack.Navigator>
     );
-}
+};
 
 export const PDNavStack = (): JSX.Element => {
-    return (
-        <NavigationContainer ref={ navigationRef }>
-            { ModalScreens() }
-        </NavigationContainer>
-    );
+    return <NavigationContainer ref={navigationRef}>{ModalScreens()}</NavigationContainer>;
 };
 
 export type PDNavStackParamList = {
@@ -67,7 +63,7 @@ export type PDNavStackParamList = {
     TreatmentList: undefined;
     Settings: undefined;
     RecipeList: { prevScreen: 'ReadingList' | 'PoolScreen' };
-    RecipeDetails: { recipeKey: RecipeKey, prevScreen: 'ReadingList' | 'PoolScreen' };
+    RecipeDetails: { recipeKey: RecipeKey; prevScreen: 'ReadingList' | 'PoolScreen' };
     PoolHistory: undefined;
     Buy: undefined;
     PickerScreen: PDPickerRouteProps;

@@ -14,23 +14,20 @@ interface ChoosyButtonProps {
 }
 
 export const ChoosyButton: React.FunctionComponent<ChoosyButtonProps> = (props: ChoosyButtonProps) => {
-
     const handleButtonPress = () => {
         props.onPress();
     };
 
     return (
         <TouchableScale
-            style={ [styles.container, props.styles] }
-            activeScale={ 0.96 }
-            onPress={ handleButtonPress }
-            disabled={ props.disabled } >
-            <PDText style={ [styles.text, props.textStyles] }>
-                { props.title }
-            </PDText>
+            style={[styles.container, props.styles]}
+            activeScale={0.96}
+            onPress={handleButtonPress}
+            disabled={props.disabled}>
+            <PDText style={[styles.text, props.textStyles]}>{props.title}</PDText>
         </TouchableScale>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -38,13 +35,13 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#F0F0F0',
         paddingTop: 4,
-        paddingHorizontal: 7
+        paddingHorizontal: 7,
     },
     text: {
         color: '#1E6BFF',
         textAlign: 'center',
         margin: '.5%',
         fontSize: 18,
-        fontWeight: '600'
-    }
+        fontWeight: '600',
+    },
 });

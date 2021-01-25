@@ -15,7 +15,6 @@ interface CycleButtonProps {
 }
 
 export const CycleButton: React.FunctionComponent<CycleButtonProps> = (props: CycleButtonProps) => {
-
     const handleButtonPress = () => {
         Haptic.selection();
         props.onPress();
@@ -23,16 +22,14 @@ export const CycleButton: React.FunctionComponent<CycleButtonProps> = (props: Cy
 
     return (
         <TouchableScale
-            style={ [styles.container, props.styles] }
-            activeScale={ 1.05 }
-            onPress={ handleButtonPress }
-            disabled={ props.disabled } >
-            <PDText style={ [styles.text, props.textStyles] }>
-                { props.title }
-            </PDText>
+            style={[styles.container, props.styles]}
+            activeScale={1.05}
+            onPress={handleButtonPress}
+            disabled={props.disabled}>
+            <PDText style={[styles.text, props.textStyles]}>{props.title}</PDText>
         </TouchableScale>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -40,7 +37,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#F0F0F0',
         paddingHorizontal: 7,
-        paddingVertical: 3
+        paddingVertical: 3,
     },
     text: {
         color: '#1E6BFF',
@@ -48,6 +45,6 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
         margin: '.5%',
         fontSize: 18,
-        fontWeight: '600'
-    }
+        fontWeight: '600',
+    },
 });

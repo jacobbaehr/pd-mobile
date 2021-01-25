@@ -16,15 +16,17 @@ interface PoolListFooterNonEmptyPropsExternal {
 }
 type PoolListFooterNonEmptyProps = PoolListFooterNonEmptyPropsInternal & PoolListFooterNonEmptyPropsExternal;
 
-const mapStateToProps = (state: AppState, ownProps: PoolListFooterNonEmptyPropsExternal): PoolListFooterNonEmptyProps => {
+const mapStateToProps = (
+    state: AppState,
+    ownProps: PoolListFooterNonEmptyPropsExternal,
+): PoolListFooterNonEmptyProps => {
     return {
         ...ownProps,
-        deviceSettings: state.deviceSettings
+        deviceSettings: state.deviceSettings,
     };
 };
 
 const PoolListFooterNonEmptyComponent: React.FunctionComponent<PoolListFooterNonEmptyProps> = (props) => {
-
     const [isChangeButtonPressed, setIsChangeButtonPressed] = React.useState(false);
     const isPlus = DS.isSubscriptionValid(props.deviceSettings, Date.now());
 
@@ -35,36 +37,33 @@ const PoolListFooterNonEmptyComponent: React.FunctionComponent<PoolListFooterNon
         return (
             <View>
                 <Image
-                    style={ styles.image }
-                    source={ images.logoGreenPlus }
-                    width={ imageWidth }
-                    height={ imageHeight }
-                    resizeMode={ 'contain' } />
+                    style={styles.image}
+                    source={images.logoGreenPlus}
+                    width={imageWidth}
+                    height={imageHeight}
+                    resizeMode={'contain'}
+                />
             </View>
         );
     }
 
-    const changeButtonStyles = isChangeButtonPressed
-        ? styles.recipeLinkPressed
-        : styles.recipeLinkNormal;
+    const changeButtonStyles = isChangeButtonPressed ? styles.recipeLinkPressed : styles.recipeLinkNormal;
 
     return (
-        <View style={ styles.container }>
-            <View style={ styles.topRow }>
+        <View style={styles.container}>
+            <View style={styles.topRow}>
                 <TouchableHighlight
-                    underlayColor={ 'transparent' }
-                    onPressIn={ () => setIsChangeButtonPressed(true) }
-                    onPressOut={ () => setIsChangeButtonPressed(false) }
-                    onPress={ props.pressedUpgrade }>
-                    <PDText style={ changeButtonStyles }>
-                        Unlock
-                    </PDText>
+                    underlayColor={'transparent'}
+                    onPressIn={() => setIsChangeButtonPressed(true)}
+                    onPressOut={() => setIsChangeButtonPressed(false)}
+                    onPress={props.pressedUpgrade}>
+                    <PDText style={changeButtonStyles}>Unlock</PDText>
                 </TouchableHighlight>
-                <PDText style={ styles.changeRecipeIntro }> to add more pools.</PDText>
+                <PDText style={styles.changeRecipeIntro}> to add more pools.</PDText>
             </View>
         </View>
     );
-}
+};
 
 export const PoolListFooterNonEmpty = connect(mapStateToProps)(PoolListFooterNonEmptyComponent);
 
@@ -78,40 +77,40 @@ const styles = StyleSheet.create({
     topRow: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
     changeRecipeIntro: {
         color: 'rgba(0,0,0,.6)',
-        fontSize: 18
+        fontSize: 18,
     },
     recipeLinkPressed: {
         backgroundColor: 'transparent',
         color: '#3910E8',
-        fontSize: 18
+        fontSize: 18,
     },
     recipeLinkNormal: {
         backgroundColor: 'transparent',
         color: '#3910E8',
         fontSize: 18,
-        textDecorationLine: 'underline'
+        textDecorationLine: 'underline',
     },
     recipeNameIntroText: {
         color: 'rgba(0,0,0,.6)',
-        fontSize: 18
+        fontSize: 18,
     },
     recipeNameText: {
         color: 'rgba(0,0,0,.6)',
         fontWeight: '700',
-        fontSize: 18
+        fontSize: 18,
     },
     recipeDescriptionText: {
         color: 'rgba(0,0,0,.6)',
         fontSize: 18,
-        marginTop: 12
+        marginTop: 12,
     },
     image: {
         marginTop: 10,
         maxWidth: 250,
-        alignSelf: 'center'
-    }
+        alignSelf: 'center',
+    },
 });

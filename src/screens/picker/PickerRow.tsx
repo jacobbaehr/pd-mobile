@@ -23,19 +23,18 @@ export const PickerRow: React.FunctionComponent<PickerRowProps> = (props: Picker
     const handleSelection = () => {
         Haptic.selection();
         props.onSelect(props.item.value);
-    }
+    };
 
     return (
         <TouchableScale
-            style={ containerStyles }
-            onPress={ handleSelection }
-            underlayColor={ 'transparent' }
-            activeScale={ 0.99 }>
-
-            <PDText style={ textStyles } >{ props.item.name }</PDText>
+            style={containerStyles}
+            onPress={handleSelection}
+            underlayColor={'transparent'}
+            activeScale={0.99}>
+            <PDText style={textStyles}>{props.item.name}</PDText>
         </TouchableScale>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -43,19 +42,19 @@ const styles = StyleSheet.create({
         borderRadius: 24,
         marginHorizontal: 12,
         marginVertical: 6,
-        backgroundColor: '#F5F5F5'
+        backgroundColor: '#F5F5F5',
     },
     text: {
         color: 'black',
         fontSize: 22,
         marginVertical: 12,
         marginHorizontal: 24,
-        fontWeight: '600'
+        fontWeight: '600',
     },
     activeContainer: {
-        backgroundColor: '#2C5FFF'
+        backgroundColor: '#2C5FFF',
     },
     activeText: {
-        color: 'white'
-    }
+        color: 'white',
+    },
 });

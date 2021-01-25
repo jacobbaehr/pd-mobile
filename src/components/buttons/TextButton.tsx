@@ -17,13 +17,11 @@ export interface TextButtonProps {
 export const TextButton: React.FunctionComponent<TextButtonProps> = (props) => {
     return (
         <TouchableScale
-            style={ props.containerStyles }
-            onPress={ props.onPress }
-            disabled={ props.disabled }
-            activeScale={ 0.96 }>
-            <PDText style={ [styles.text, props.textStyles] }>
-                { props.text }
-            </PDText>
+            style={props.containerStyles}
+            onPress={props.onPress}
+            disabled={props.disabled}
+            activeScale={0.96}>
+            <PDText style={[styles.text, props.textStyles]}>{props.text}</PDText>
         </TouchableScale>
     );
 };
@@ -34,6 +32,6 @@ const styles = StyleSheet.create({
         color: 'white',
         textAlign: 'center',
         fontSize: 24,
-        fontWeight: '700'
-    }
+        fontWeight: '700',
+    },
 });

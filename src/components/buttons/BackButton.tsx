@@ -13,18 +13,18 @@ type BackButtonColor = 'blue' | 'readingsBlue' | 'treatmentsPurple' | 'recipesGr
 interface BackButtonProps {
     title?: string;
     onPress: () => void;
-    scale?: { scale: boolean, scaleLines: number };
+    scale?: { scale: boolean; scaleLines: number };
     color?: BackButtonColor;
 }
 
 export class BackButton extends React.Component<BackButtonProps, {}> {
     private getText = () => {
         return this.props.title ? (
-            <PDText style={ styles.backButtonText } scale={ this.props.scale }>
-                { this.props.title }
+            <PDText style={styles.backButtonText} scale={this.props.scale}>
+                {this.props.title}
             </PDText>
         ) : null;
-    }
+    };
     render() {
         let imageSource = images.backBlue;
         if (this.props.color === 'blue') {
@@ -38,23 +38,18 @@ export class BackButton extends React.Component<BackButtonProps, {}> {
         }
         const hitSlop = 5;
         return (
-            <View style={ styles.backButtonOuterContainer }>
+            <View style={styles.backButtonOuterContainer}>
                 <TouchableScale
-                    style={ styles.backButtonInnerContainer }
-                    underlayColor={ '#F8F8F8' }
-                    activeScale={ 0.97 }
-                    onPress={ this.props.onPress }
-                    hitSlop={ { top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop } }
-                    disabled={ Config.isAndroid }>
-
-                    <PlatformSpecific exclude={ ['android'] }>
-                        <Image
-                            style={ styles.backButtonImage }
-                            source={ imageSource }
-                            width={ 32 }
-                            height={ 32 } />
+                    style={styles.backButtonInnerContainer}
+                    underlayColor={'#F8F8F8'}
+                    activeScale={0.97}
+                    onPress={this.props.onPress}
+                    hitSlop={{ top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop }}
+                    disabled={Config.isAndroid}>
+                    <PlatformSpecific exclude={['android']}>
+                        <Image style={styles.backButtonImage} source={imageSource} width={32} height={32} />
                     </PlatformSpecific>
-                    { this.getText() }
+                    {this.getText()}
                 </TouchableScale>
             </View>
         );
@@ -63,19 +58,19 @@ export class BackButton extends React.Component<BackButtonProps, {}> {
 
 const styles = StyleSheet.create({
     backButtonOuterContainer: {
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     backButtonInnerContainer: {
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     backButtonImage: {
         marginTop: 8,
-        marginRight: 10
+        marginRight: 10,
     },
     backButtonText: {
         paddingTop: 5,
         fontWeight: '700',
         fontSize: 28,
-        color: 'black'
-    }
+        color: 'black',
+    },
 });

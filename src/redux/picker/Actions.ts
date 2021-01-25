@@ -11,6 +11,6 @@ export interface UpdatePickerStateAction extends AnyAction {
 export const updatePickerState = (pickerState: PickerState | null): UpdatePickerStateAction => {
     return {
         type: UPDATE_PICKER_STATE,
-        pickerState
+        pickerState,
     };
 };

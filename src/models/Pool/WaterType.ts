@@ -2,28 +2,27 @@ import { DisplayValueOption } from '../Util';
 
 export type WaterTypeValue = 'chlorine' | 'salt_water' | 'bromine' | 'copper' | 'ozone';
 
-
 export const waterTypeOptions: DisplayValueOption<WaterTypeValue>[] = [
     {
         display: 'Chlorine',
-        value: 'chlorine'
+        value: 'chlorine',
     },
     {
         display: 'Salt Water',
-        value: 'salt_water'
+        value: 'salt_water',
     },
     {
         display: 'Bromine',
-        value: 'bromine'
+        value: 'bromine',
     },
     {
         display: 'Copper',
-        value: 'copper'
+        value: 'copper',
     },
     {
         display: 'Ozone',
-        value: 'ozone'
-    }
+        value: 'ozone',
+    },
 ];
 
 export const getDisplayForWaterType = (value: WaterTypeValue): string | null => {
@@ -33,4 +32,4 @@ export const getDisplayForWaterType = (value: WaterTypeValue): string | null => 
         }
     }
     return null;
-}
+};

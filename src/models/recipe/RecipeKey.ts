@@ -3,6 +3,6 @@
 export type RecipeKey = string;
 
 // We don't want to import recipe here, but we want this function to be convenient to call.
-export const getRecipeKey = (recipe: { id: string, ts: number }): string => {
+export const getRecipeKey = (recipe: { id: string; ts: number }): string => {
     return `${recipe.id}|${recipe.ts}`;
-}
+};

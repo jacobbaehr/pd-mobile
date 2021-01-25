@@ -22,7 +22,7 @@ export class SelectableTextButton extends React.Component<SelectableTextButtonPr
     handleOnPress = () => {
         this.setState({ isSelected: !this.state.isSelected });
         this.props.onPress(this.props.buttonText);
-    }
+    };
 
     componentWillReceiveProps(props: SelectableTextButtonProps) {
         this.setState({ isSelected: !!props.isSelected });
@@ -32,9 +32,9 @@ export class SelectableTextButton extends React.Component<SelectableTextButtonPr
         const buttonStyles = this.state.isSelected ? styles.selectedContainer : styles.unselectedContainer;
         const textStyles = this.state.isSelected ? styles.selectedText : styles.unselectedText;
         return (
-            <TouchableWithoutFeedback onPress={ this.handleOnPress }>
-                <View style={ [styles.baseContainer, buttonStyles] }>
-                    <Text style={ [styles.text, textStyles] }>{ this.props.buttonText }</Text>
+            <TouchableWithoutFeedback onPress={this.handleOnPress}>
+                <View style={[styles.baseContainer, buttonStyles]}>
+                    <Text style={[styles.text, textStyles]}>{this.props.buttonText}</Text>
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -46,22 +46,22 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5,
         paddingVertical: 3,
         borderRadius: 8,
-        borderWidth: 1
+        borderWidth: 1,
     },
     selectedContainer: {
-        borderColor: '#1E6BFF'
+        borderColor: '#1E6BFF',
     },
     unselectedContainer: {
-        borderColor: 'transparent'
+        borderColor: 'transparent',
     },
     text: {
         fontWeight: '700',
-        fontSize: 18
+        fontSize: 18,
     },
     selectedText: {
-        color: '#1E6BFF'
+        color: '#1E6BFF',
     },
     unselectedText: {
-        color: 'black'
-    }
+        color: 'black',
+    },
 });

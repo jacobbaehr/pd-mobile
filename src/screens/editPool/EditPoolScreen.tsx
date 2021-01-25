@@ -34,12 +34,11 @@ const mapStateToProps = (state: AppState, ownProps: EditPoolScreenProps): EditPo
         navigation: ownProps.navigation,
         selectedPool: state.selectedPool,
         pickerState: state.pickerState,
-        deviceSettings: state.deviceSettings
+        deviceSettings: state.deviceSettings,
     };
 };
 
 export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (props: EditPoolScreenProps) => {
-
     const pool = props.selectedPool;
     const originalSelectedPoolName = pool?.name;
     const [name, updateName] = React.useState(pool?.name || '');
@@ -68,23 +67,23 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
             return;
         }
         Alert.alert(
-            "Delete Pool?",
-            "This will delete the pool & all of its history. This CANNOT be undone.",
+            'Delete Pool?',
+            'This will delete the pool & all of its history. This CANNOT be undone.',
             [
                 {
-                    text: "Cancel",
-                    onPress: () => console.log("Cancel Pressed"),
-                    style: "cancel"
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
                 },
                 {
-                    text: "DELETE",
+                    text: 'DELETE',
                     onPress: handleDeleteConfirmed,
-                    style: "destructive"
-                }
+                    style: 'destructive',
+                },
             ],
-            { cancelable: true }
+            { cancelable: true },
         );
-    }
+    };
 
     const handleDeleteConfirmed = async () => {
         if (pool === undefined || pool === null) {
@@ -93,7 +92,7 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
         Database.deletePool(pool);
         dispatch(selectPool(null));
         navigate('PoolList');
-    }
+    };
 
     const handleSaveButtonPressed = () => {
         Haptic.light();
@@ -109,20 +108,21 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
             gallons = Util.litersToGallons(volume);
         }
         if (pool) {
-            dispatch(updatePool(pool, (p) => {
-                p.gallons = gallons;
-                p.name = name;
-                p.waterType = waterType;
-                p.wallType = wallType;
-            }));
-        }
-        else {
+            dispatch(
+                updatePool(pool, (p) => {
+                    p.gallons = gallons;
+                    p.name = name;
+                    p.waterType = waterType;
+                    p.wallType = wallType;
+                }),
+            );
+        } else {
             const newPool = Pool.make(name, gallons, waterType, wallType);
             dispatch(saveNewPool(newPool));
         }
 
         goBack();
-    }
+    };
 
     const handlePressedWaterTypeButton = () => {
         Keyboard.dismiss();
@@ -131,10 +131,10 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
             subtitle: '',
             items: waterTypeOptions.map((wt) => ({ name: wt.display, value: wt.value })),
             pickerKey: 'water_type',
-            prevSelection: waterType
+            prevSelection: waterType,
         };
         navigate('PickerScreen', pickerProps);
-    }
+    };
 
     const handlePressedWallTypeButton = () => {
         Keyboard.dismiss();
@@ -143,10 +143,10 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
             subtitle: '',
             items: wallTypeOptions.map((wt) => ({ name: wt.display, value: wt.value })),
             pickerKey: 'wall_type',
-            prevSelection: wallType
+            prevSelection: wallType,
         };
         navigate('PickerScreen', pickerProps);
-    }
+    };
 
     const handlePressedUnitsButton = () => {
         // Switch the units around
@@ -160,32 +160,33 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
         // Save it & tell everybody to update accordingly
         const newSettings = {
             ...props.deviceSettings,
-            units: deviceUnits
+            units: deviceUnits,
         };
         DeviceSettingsService.saveSettings(newSettings);
         dispatch(updateDeviceSettings(newSettings));
-    }
+    };
 
     const deleteButtonAction = pool ? handleDeletePoolPressed : null;
-    const volumeUnits = (props.deviceSettings.units === 'us') ? 'gallons' : 'liters';
+    const volumeUnits = props.deviceSettings.units === 'us' ? 'gallons' : 'liters';
 
     return (
         <PoolDetails
-            originalPoolName={ originalSelectedPoolName ?? '' }
-            name={ name }
-            volumeText={ volumeText }
-            volumeUnits={ volumeUnits }
-            waterType={ waterType }
-            wallType={ wallType }
-            goBack={ goBack }
-            updateVolume={ updateVolumeText }
-            updateName={ updateName }
-            pressedWaterTypeButton={ handlePressedWaterTypeButton }
-            pressedWallTypeButton={ handlePressedWallTypeButton }
-            pressedUnitsButton={ handlePressedUnitsButton }
-            rightButtonAction={ deleteButtonAction }
-            handleSavePoolPressed={ handleSaveButtonPressed } />
+            originalPoolName={originalSelectedPoolName ?? ''}
+            name={name}
+            volumeText={volumeText}
+            volumeUnits={volumeUnits}
+            waterType={waterType}
+            wallType={wallType}
+            goBack={goBack}
+            updateVolume={updateVolumeText}
+            updateName={updateName}
+            pressedWaterTypeButton={handlePressedWaterTypeButton}
+            pressedWallTypeButton={handlePressedWallTypeButton}
+            pressedUnitsButton={handlePressedUnitsButton}
+            rightButtonAction={deleteButtonAction}
+            handleSavePoolPressed={handleSaveButtonPressed}
+        />
     );
-}
+};
 
 export const EditPoolScreen = connect(mapStateToProps)(EditPoolComponent);

@@ -1,15 +1,16 @@
-import { DisplayValueOption } from "../Util";
+import { DisplayValueOption } from '../Util';
 
 export type VolumeUnits = 'gallons' | 'liters';
 
 export const volumeUnitOptions: DisplayValueOption<VolumeUnits>[] = [
     {
         display: 'Gallons',
-        value: 'gallons'
-    }, {
+        value: 'gallons',
+    },
+    {
         display: 'Liters',
-        value: 'liters'
-    }
+        value: 'liters',
+    },
 ];
 
 export const getDisplayForVolumeValue = (value: VolumeUnits): string | null => {
@@ -19,4 +20,4 @@ export const getDisplayForVolumeValue = (value: VolumeUnits): string | null => {
         }
     }
     return null;
-}
+};

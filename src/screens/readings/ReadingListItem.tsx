@@ -30,7 +30,6 @@ interface ReadingListItemProps {
 }
 
 export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (props) => {
-
     const [isSliding, setIsSliding] = React.useState(false);
     const [textIsEditing, setTextIsEditing] = React.useState(false);
 
@@ -40,16 +39,14 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
     const r = rs.reading;
 
     const readingTaken = rs.isOn;
-    const leftImageSource = readingTaken
-        ? images.greenCheck
-        : images.incomplete;
+    const leftImageSource = readingTaken ? images.greenCheck : images.incomplete;
 
     // The continuous slider would glitch around very slightly when dragging because of
     // how we're updating the rs.value prop. The steps mitigate this, and also are more precise.
     const sliderStep = Math.pow(10, -r.decimalPlaces);
 
     // Keep the slider in range sliderMin <= x <= sliderMax
-    let sliderValue = (rs.value) ? parseFloat(rs.value) : 0;
+    let sliderValue = rs.value ? parseFloat(rs.value) : 0;
     sliderValue = Math.max(Math.min(sliderValue, r.sliderMax), r.sliderMin);
 
     let readingUnitsText = '';
@@ -60,7 +57,7 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
     const textInputStyles: TextStyle[] = [styles.textInput];
     if (!rs.isOn && !isEditing) {
         textInputStyles.push(styles.textInputDisabled);
-    };
+    }
 
     const onTextBeginEditing = () => {
         setTextIsEditing(true);
@@ -87,61 +84,52 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
     };
 
     return (
-        <View style={ styles.container }>
-            <TouchableScale
-                onPress={ () => props.handleIconPressed(r.var) }
-                activeScale={ 0.98 } >
-                <View style={ styles.content }>
-                    <View style={ styles.topRow }>
+        <View style={styles.container}>
+            <TouchableScale onPress={() => props.handleIconPressed(r.var)} activeScale={0.98}>
+                <View style={styles.content}>
+                    <View style={styles.topRow}>
+                        <Image style={styles.circleImage} source={leftImageSource} width={28} height={28} />
 
-                        <Image
-                            style={ styles.circleImage }
-                            source={ leftImageSource }
-                            width={ 28 }
-                            height={ 28 } />
-
-                        <PDText style={ styles.readingName }>
-                            { r.name }
-                            <PDText style={ styles.readingUnits }>
-                                { readingUnitsText }
-                            </PDText>
+                        <PDText style={styles.readingName}>
+                            {r.name}
+                            <PDText style={styles.readingUnits}>{readingUnitsText}</PDText>
                         </PDText>
                         <TextInput
-                            style={ textInputStyles }
-                            onFocus={ onTextBeginEditing }
-                            onChangeText={ onTextChange }
-                            onEndEditing={ onTextEndEditing }
-                            keyboardType={ 'decimal-pad' }
-                            inputAccessoryViewID={ props.inputAccessoryId }>
-                            { rs.value }
+                            style={textInputStyles}
+                            onFocus={onTextBeginEditing}
+                            onChangeText={onTextChange}
+                            onEndEditing={onTextEndEditing}
+                            keyboardType={'decimal-pad'}
+                            inputAccessoryViewID={props.inputAccessoryId}>
+                            {rs.value}
                         </TextInput>
                     </View>
                     <Slider
-                        style={ styles.slider }
-                        minimumValue={ r.sliderMin }
-                        maximumValue={ r.sliderMax }
+                        style={styles.slider}
+                        minimumValue={r.sliderMin}
+                        maximumValue={r.sliderMax}
                         minimumTrackTintColor="#E3E3E3"
                         maximumTrackTintColor="#E3E3E3"
-                        thumbImage={ images.sliderThumbSmall }
-                        onSlidingStart={ onSliderStart }
-                        onSlidingComplete={ onSliderEnd }
-                        onValueChange={ (value: number) => props.onSliderUpdatedValue(r.var, value) }
-                        value={ sliderValue }
-                        step={ sliderStep }
-                        thumbTouchSize={ { width: 55, height: 55 } }
+                        thumbImage={images.sliderThumbSmall}
+                        onSlidingStart={onSliderStart}
+                        onSlidingComplete={onSliderEnd}
+                        onValueChange={(value: number) => props.onSliderUpdatedValue(r.var, value)}
+                        value={sliderValue}
+                        step={sliderStep}
+                        thumbTouchSize={{ width: 55, height: 55 }}
                     />
                 </View>
             </TouchableScale>
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'transparent',
         alignContent: 'stretch',
-        borderRadius: 10
+        borderRadius: 10,
     },
     content: {
         backgroundColor: 'white',
@@ -151,7 +139,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         elevation: 2,
         marginBottom: 12,
-        marginHorizontal: 16
+        marginHorizontal: 16,
     },
     topRow: {
         borderRadius: 10,
@@ -159,15 +147,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingHorizontal: 12,
         paddingTop: 12,
-        paddingBottom: 3
+        paddingBottom: 3,
     },
     slider: {
         flex: 1,
         marginHorizontal: 12,
-        marginBottom: 6
+        marginBottom: 6,
     },
     circleImage: {
-        marginRight: 10
+        marginRight: 10,
     },
     readingName: {
         color: 'black',
@@ -175,7 +163,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         flex: 1,
         textAlignVertical: 'center',
-        marginTop: 3
+        marginTop: 3,
     },
     readingUnits: {
         color: 'black',
@@ -184,7 +172,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         flex: 1,
         textAlignVertical: 'center',
-        marginTop: 3
+        marginTop: 3,
     },
     textInput: {
         width: 80,
@@ -195,9 +183,9 @@ const styles = StyleSheet.create({
         fontFamily: 'Avenir Next',
         fontWeight: '600',
         fontSize: 22,
-        textAlign: 'center'
+        textAlign: 'center',
     },
     textInputDisabled: {
-        color: '#BEBEBE'
-    }
+        color: '#BEBEBE',
+    },
 });

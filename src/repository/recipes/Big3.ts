@@ -17,7 +17,7 @@ export const big3: Recipe = {
             sliderMin: 0,
             decimalPlaces: 1,
             idealMin: 3,
-            idealMax: 4
+            idealMax: 4,
         },
         {
             name: 'pH',
@@ -29,7 +29,7 @@ export const big3: Recipe = {
             sliderMin: 5,
             decimalPlaces: 1,
             idealMin: 6.8,
-            idealMax: 7.2
+            idealMax: 7.2,
         },
         {
             name: 'Total Alkalinity',
@@ -41,8 +41,8 @@ export const big3: Recipe = {
             sliderMin: 50,
             decimalPlaces: 0,
             idealMax: 190,
-            idealMin: 220
-        }
+            idealMin: 220,
+        },
     ],
     treatments: [
         {
@@ -50,21 +50,21 @@ export const big3: Recipe = {
             var: 'chlorine',
             formula: 'if (r.fc > 3.0) return 0; return (3.0 - r.fc) * p.gallons * .06;',
             concentration: 67,
-            type: 'dryChemical'
+            type: 'dryChemical',
         },
         {
             name: 'Sodium Bicarbonate',
             var: 'baking_soda',
             formula: 'return 6;',
             concentration: 100,
-            type: 'dryChemical'
+            type: 'dryChemical',
         },
         {
             name: 'Sodium Carbonate',
             var: 'soda_ash',
             formula: 'return 0;',
             concentration: 100,
-            type: 'dryChemical'
-        }
-    ]
+            type: 'dryChemical',
+        },
+    ],
 };

@@ -12,7 +12,6 @@ import { AppState } from '~/redux/AppState';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { connect } from 'react-redux';
 
-
 interface PoolHeaderViewInternalProps {
     deviceSettings: DeviceSettings;
 }
@@ -26,7 +25,7 @@ type PoolHeaderViewProps = PoolHeaderViewInternalProps & PoolHeaderViewExternalP
 const mapStateToProps = (state: AppState, ownProps: PoolHeaderViewExternalProps): PoolHeaderViewProps => {
     return {
         ...ownProps,
-        deviceSettings: state.deviceSettings
+        deviceSettings: state.deviceSettings,
     };
 };
 
@@ -39,25 +38,31 @@ const PoolHeaderViewComponent: React.FunctionComponent<PoolHeaderViewProps> = (p
     const detailsText = `${getDisplayForWaterType(props.pool.waterType)} | ${volumeDisplay}`;
 
     return (
-        <View style={ styles.container }>
-            <View style={ styles.navRow }>
-                <View style={ styles.backButtonContainer }>
+        <View style={styles.container}>
+            <View style={styles.navRow}>
+                <View style={styles.backButtonContainer}>
                     <BackButton
-                        title={ props.pool.name }
-                        onPress={ props.handlePressedBack }
-                        scale={ { scale: true, scaleLines: 2 } }
+                        title={props.pool.name}
+                        onPress={props.handlePressedBack}
+                        scale={{ scale: true, scaleLines: 2 }}
                     />
                 </View>
-                <View style={ styles.editButtonContainer }>
-                    <Button title={ 'Edit' } onPress={ props.handlePressedEdit } styles={ styles.editButton } textStyles={ styles.editButtonText } hitSlop={ 12 } />
+                <View style={styles.editButtonContainer}>
+                    <Button
+                        title={'Edit'}
+                        onPress={props.handlePressedEdit}
+                        styles={styles.editButton}
+                        textStyles={styles.editButtonText}
+                        hitSlop={12}
+                    />
                 </View>
             </View>
-            <View style={ styles.infoRow }>
-                <PDText style={ styles.poolVolumeText } >{ detailsText }</PDText>
+            <View style={styles.infoRow}>
+                <PDText style={styles.poolVolumeText}>{detailsText}</PDText>
             </View>
         </View>
     );
-}
+};
 
 export const PoolHeaderView = connect(mapStateToProps)(PoolHeaderViewComponent);
 
@@ -68,31 +73,31 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         paddingHorizontal: 16,
         borderBottomColor: '#F0F0F0',
-        borderBottomWidth: 2
+        borderBottomWidth: 2,
     },
     navRow: {
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     infoRow: {
         marginTop: 15,
-        marginBottom: 15
+        marginBottom: 15,
     },
     poolVolumeText: {
         color: 'rgba(0,0,0,0.6)',
         fontSize: 18,
-        fontWeight: '600'
+        fontWeight: '600',
     },
     editButtonContainer: {
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     backButtonContainer: {
-        flex: 1
+        flex: 1,
     },
     editButton: {
         position: 'relative',
         backgroundColor: 'rgba(30,107,255,.1)',
-        borderRadius: 15
+        borderRadius: 15,
     },
     editButtonText: {
         color: '#2D5FFF',
@@ -102,6 +107,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '700',
         paddingHorizontal: 15,
-        paddingVertical: 3
-    }
+        paddingVertical: 3,
+    },
 });

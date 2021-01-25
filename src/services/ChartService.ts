@@ -1,14 +1,14 @@
-import { ChartCardViewModel } from "~/components/charts/ChartCardViewModel";
-import { DateRange } from "~/components/DateRangeSelector";
-import { Database } from "~/repository/Database";
-import { Pool } from "~/models/Pool";
+import { ChartCardViewModel } from '~/components/charts/ChartCardViewModel';
+import { DateRange } from '~/components/DateRangeSelector';
+import { Database } from '~/repository/Database';
+import { Pool } from '~/models/Pool';
 
 export class ChartService {
     static loadChartData = (dateRange: DateRange, pool: Pool, isUnlocked: boolean): ChartCardViewModel[] => {
         const msInRange = ChartService.msInDateRange(dateRange);
         const since_ts = msInRange ? Date.now() - msInRange : null;
         const data = Database.loadLogEntriesForPool(pool.objectId, since_ts, false);
-        const entries = (data === undefined) ? [] : data.map(le => le);
+        const entries = data === undefined ? [] : data.map((le) => le);
 
         interface Graphable {
             title: string;
@@ -18,40 +18,58 @@ export class ChartService {
         }
         // get all different readings & treatments
         let idsToGraph: Graphable[] = [];
-        entries.forEach(entry => {
-            entry.readingEntries
-                .forEach(reading => {
-                    const graphable: Graphable = { title: reading.readingName, id: reading.var, idealMin: reading.idealMin || null, idealMax: reading.idealMax || null };
-                    if (idsToGraph.filter(g => { return g.title == graphable.title && g.id == graphable.id }).length == 0) {
-                        idsToGraph.push(graphable);
-                    } else {
-                        // update the ideal range:
-                        const i = idsToGraph.findIndex(g => { return g.title == graphable.title && g.id == graphable.id });
-                        idsToGraph[i].idealMin = reading.idealMin || null;
-                        idsToGraph[i].idealMax = reading.idealMax || null;
-                    }
-                });
-            entry.treatmentEntries
-                .forEach(treatment => {
-                    const graphable: Graphable = { title: treatment.treatmentName, id: treatment.var, idealMin: null, idealMax: null };
-                    if (idsToGraph.filter(g => { return g.title == graphable.title && g.id == graphable.id }).length == 0) {
-                        idsToGraph.push(graphable);
-                    }
-                });
+        entries.forEach((entry) => {
+            entry.readingEntries.forEach((reading) => {
+                const graphable: Graphable = {
+                    title: reading.readingName,
+                    id: reading.var,
+                    idealMin: reading.idealMin || null,
+                    idealMax: reading.idealMax || null,
+                };
+                if (
+                    idsToGraph.filter((g) => {
+                        return g.title == graphable.title && g.id == graphable.id;
+                    }).length == 0
+                ) {
+                    idsToGraph.push(graphable);
+                } else {
+                    // update the ideal range:
+                    const i = idsToGraph.findIndex((g) => {
+                        return g.title == graphable.title && g.id == graphable.id;
+                    });
+                    idsToGraph[i].idealMin = reading.idealMin || null;
+                    idsToGraph[i].idealMax = reading.idealMax || null;
+                }
+            });
+            entry.treatmentEntries.forEach((treatment) => {
+                const graphable: Graphable = {
+                    title: treatment.treatmentName,
+                    id: treatment.var,
+                    idealMin: null,
+                    idealMax: null,
+                };
+                if (
+                    idsToGraph.filter((g) => {
+                        return g.title == graphable.title && g.id == graphable.id;
+                    }).length == 0
+                ) {
+                    idsToGraph.push(graphable);
+                }
+            });
         });
 
         // get a chartcardviewmodel for each
-        return idsToGraph.map(graphable => {
+        return idsToGraph.map((graphable) => {
             let dates: number[] = [];
             let values: number[] = [];
-            entries.forEach(entry => {
-                entry.readingEntries.forEach(reading => {
+            entries.forEach((entry) => {
+                entry.readingEntries.forEach((reading) => {
                     if (reading.var === graphable.id) {
                         dates.push(entry.ts);
                         values.push(reading.value);
                     }
                 });
-                entry.treatmentEntries.forEach(treatment => {
+                entry.treatmentEntries.forEach((treatment) => {
                     if (treatment.var === graphable.id) {
                         dates.push(entry.ts);
                         values.push(treatment.ounces);
@@ -66,10 +84,10 @@ export class ChartService {
                 interactive: true,
                 isUnlocked,
                 idealMin: graphable.idealMin,
-                idealMax: graphable.idealMax
+                idealMax: graphable.idealMax,
             };
         });
-    }
+    };
 
     static loadFakeData = (isUnlocked: boolean): ChartCardViewModel => {
         const timestamps = [4, 5, 6]; // TODO: remove
@@ -82,10 +100,10 @@ export class ChartService {
             interactive: false,
             isUnlocked,
             idealMin: 3,
-            idealMax: 4
+            idealMax: 4,
         };
         return vm;
-    }
+    };
 
     private static msInDateRange = (dr: DateRange): number | null => {
         switch (dr) {
@@ -102,5 +120,5 @@ export class ChartService {
             case 'ALL':
                 return null;
         }
-    }
+    };
 }
