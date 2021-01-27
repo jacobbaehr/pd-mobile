@@ -27,6 +27,7 @@ import { DS } from '~/services/DSUtil';
 import { ChartService } from '~/services/ChartService';
 import { Database } from '~/repository/Database';
 import { ExportService } from '~/services/ExportService';
+import PoolServiceConfiguration from './PoolServiceConfigSection';
 
 interface PoolScreenProps {
     // The id of the selected pool, if any
@@ -77,22 +78,6 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
     if (!props.selectedPool || !recipe) {
         return <></>;
     }
-
-    const handleBackPressed = () => {
-        goBack();
-    };
-
-    const handleStartServicePressed = () => {
-        navigate('ReadingList');
-    };
-
-    const handleEditButtonPressed = () => {
-        navigate('EditPool');
-    };
-
-    const handleChangeRecipeButtonPressed = () => {
-        navigate('RecipeList', { prevScreen: 'PoolScreen' });
-    };
 
     const handleChartsPressed = () => {
         if (isUnlocked) {
@@ -165,9 +150,9 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
 
     const sections: SectionListData<any>[] = [
         {
-            title: 'Recipe',
+            title: '',
             data: [{ key: 'bogus_recipe' }],
-            key: 'recipe_section',
+            key: 'service_section',
         },
         {
             title: 'Trends',
@@ -185,38 +170,9 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
         let titleElement = <PDText style={styles.sectionTitle}>{section.title}</PDText>;
         let contentBody = <></>;
         let marginBottom = 14;
-        if (section.key === 'recipe_section') {
-            if (!recipe) {
-                return <View></View>;
-            }
-            const hitSlop = 7;
 
-            let lastServiceString = '';
-            if (history.length > 0) {
-                const lsTime = formatDistanceStrict(history[0].ts, Date.now());
-                lastServiceString = `Last Serviced: ${lsTime} ago`;
-            }
-
-            contentBody = (
-                <View style={styles.recipeSection}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <TouchableScale
-                            onPress={handleChangeRecipeButtonPressed}
-                            activeScale={0.98}
-                            hitSlop={{ top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop }}
-                            style={styles.recipeButton}>
-                            <PDText style={styles.recipeName}>{recipe.name}</PDText>
-                            <Image source={images.rightArrow} height={21} width={22} style={styles.arrowImage} />
-                        </TouchableScale>
-                    </View>
-                    <BoringButton
-                        onPress={handleStartServicePressed}
-                        title={'Start Service'}
-                        containerStyles={styles.startButton}
-                    />
-                    <PDText style={styles.lastServiceLabel}>{lastServiceString}</PDText>
-                </View>
-            );
+        if (section.key === 'service_section') {
+            contentBody = <PoolServiceConfiguration />;
         } else if (section.key === 'trends_section') {
             if (history.length < 1) {
                 return <></>;
@@ -243,8 +199,8 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
 
         // We need the key here to change after a purchase to cause a re-render:
         return (
-            <View style={{ marginBottom }}>
-                {titleElement}
+            <View style={{ marginBottom,}}>
+                {section.key === 'service_section' || titleElement}
                 {contentBody}
             </View>
         );
@@ -266,11 +222,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }} forceInset={{ bottom: 'never' }}>
-            <PoolHeaderView
-                pool={props.selectedPool}
-                handlePressedEdit={handleEditButtonPressed}
-                handlePressedBack={handleBackPressed}
-            />
+            <PoolHeaderView pool={props.selectedPool} />
             <SectionList
                 sections={sections}
                 style={styles.sectionList}
@@ -290,12 +242,11 @@ const styles = StyleSheet.create({
     sectionList: {
         flex: 1,
         backgroundColor: '#F8F8F8',
-        paddingHorizontal: 20,
-        paddingBottom: 20,
     },
     sectionTitle: {
         fontWeight: '700',
-        fontSize: 28,
+        fontSize: 24,
+        lineHeight:36,
         marginTop: 6,
         marginBottom: 4,
     },
