@@ -97,7 +97,7 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
 
     const handleSaveButtonPressed = () => {
         Haptic.light();
-        let volume = Number(volumeText);
+        let volume = Number(volumeTextConverted);
         // Validate or bail
         if (volume <= 0 || name.length === 0) {
             return;
@@ -106,7 +106,7 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
         // Always save gallons, so convert from liters if necessary
         let gallons = volume;
         if (props.deviceSettings.units === 'metric') {
-            gallons = Util.litersToGallons(volume);
+            gallons = Math.round(Util.litersToGallons(volume));
         }
         if (pool) {
             dispatch(updatePool(pool, (p) => {
@@ -168,12 +168,13 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
 
     const deleteButtonAction = pool ? handleDeletePoolPressed : null;
     const volumeUnits = (props.deviceSettings.units === 'us') ? 'gallons' : 'liters';
+    const volumeTextConverted = (props.deviceSettings.units === 'us') ? volumeText : String(Util.gallonsToLiters(Number(volumeText)).toFixed(0))
 
     return (
         <PoolDetails
             originalPoolName={ originalSelectedPoolName ?? '' }
             name={ name }
-            volumeText={ volumeText }
+            volumeText={ volumeTextConverted }
             volumeUnits={ volumeUnits }
             waterType={ waterType }
             wallType={ wallType }
