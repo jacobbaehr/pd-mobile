@@ -17,7 +17,7 @@ export interface TextButtonProps {
 export const TextButton: React.FunctionComponent<TextButtonProps> = (props) => {
     return (
         <TouchableScale
-            style={props.containerStyles}
+            style={[styles.container, props.containerStyles]}
             onPress={props.onPress}
             disabled={props.disabled}
             activeScale={0.96}>
@@ -27,8 +27,11 @@ export const TextButton: React.FunctionComponent<TextButtonProps> = (props) => {
 };
 
 const styles = StyleSheet.create({
+    container: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     text: {
-        flex: 1,
         color: 'white',
         textAlign: 'center',
         fontSize: 24,

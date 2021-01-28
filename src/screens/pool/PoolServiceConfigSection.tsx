@@ -4,12 +4,19 @@ import { PDText } from '~/components/PDText';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { images } from '~/assets/images';
+import { useNavigation } from '@react-navigation/native';
+import { PDNavigationProps } from '~/navigator/Navigators';
 
 /**
  * Displays info about the recipe & customizations in the SectionList on the pool details screen.
  */
 const PoolServiceConfigSection = () => {
+    const {navigate} = useNavigation<PDNavigationProps>()
     const isEmptyCustom = false;
+
+    const navigateToCustomTargets =() => {
+        navigate("CustomTargets")
+    }
 
     const getCustomTargets = (values = ['Chlorine', 'Alkalinity', 'hi']) => {
         const lastItem = values.length - 1;
@@ -44,7 +51,7 @@ const PoolServiceConfigSection = () => {
                     {isEmptyCustom || (
                         <View>
                             <PDText style={styles.subTitle}>Custom Targets</PDText>
-                            <TouchableOpacity onPress={() => {}}>
+                            <TouchableOpacity onPress={navigateToCustomTargets}>
                                 <View style={styles.row}>
                                     <Text style={styles.buttonResults} numberOfLines={1} ellipsizeMode="tail">
                                         {getCustomTargets()}

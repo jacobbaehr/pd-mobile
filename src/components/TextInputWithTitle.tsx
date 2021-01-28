@@ -7,16 +7,14 @@ import {
     TextStyle,
     View,
     ViewStyle,
-    ReturnKeyType,
-    NativeSyntheticEvent,
-    TextInputSubmitEditingEventData,
+    TextInputProps,
 } from 'react-native';
 
 export interface Focusable {
     focus: () => void;
 }
 
-export interface TextInputWithTitleProps {
+export interface TextInputWithTitleProps extends Omit<TextInputProps, "hitSlop"> {
     titleText: string;
     subtitleText?: string;
     onTextChanged: (text: string) => void;
@@ -25,20 +23,25 @@ export interface TextInputWithTitleProps {
     titleTextStyles?: StyleProp<TextStyle>;
     subtitleTextStyles?: StyleProp<TextStyle>;
     inputStyles?: StyleProp<ViewStyle & TextStyle>;
-    secureTextEntry?: boolean;
-    autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
-    autoCorrect?: boolean;
-    keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad' | 'number-pad';
-    returnKeyType?: ReturnKeyType;
-    onSubmitEditing?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
-    autoFocus?: boolean;
-    value?: string;
     accessoryViewId?: string;
     hitSlop?: number;
 }
 
 /** */
 const TextInputWithTitleComponent = (props: TextInputWithTitleProps, ref: React.Ref<Focusable>) => {
+    const {
+        containerStyles,
+        titleText,
+        subtitleText,
+        onTextChanged,
+        titleTextStyles,
+        subtitleTextStyles,
+        inputStyles,
+        accessoryViewId,
+        placeholderText,
+        hitSlop,
+        ...propsInput
+    } = props;
     const inputRef = React.useRef<TextInput>(null);
 
     React.useImperativeHandle(ref, (): any => ({
@@ -48,26 +51,19 @@ const TextInputWithTitleComponent = (props: TextInputWithTitleProps, ref: React.
     }));
 
     return (
-        <View style={[styles.container, props.containerStyles]}>
+        <View style={containerStyles}>
             <View style={styles.titleContainer}>
-                <Text style={[styles.titleText, props.titleTextStyles]}>{props.titleText}</Text>
-                <Text style={[styles.subtitleText, props.subtitleTextStyles]}>{props.subtitleText}</Text>
+                <Text style={[styles.titleText, titleTextStyles]}>{titleText}</Text>
+                <Text style={[styles.subtitleText, subtitleTextStyles]}>{subtitleText}</Text>
             </View>
             <TextInput
-                keyboardType={props.keyboardType}
-                autoCorrect={props.autoCorrect}
-                autoCapitalize={props.autoCapitalize}
-                secureTextEntry={props.secureTextEntry}
-                placeholder={props.placeholderText}
-                onChangeText={props.onTextChanged}
-                style={[styles.input, props.inputStyles]}
-                returnKeyType={props.returnKeyType}
-                onSubmitEditing={props.onSubmitEditing}
+                {...propsInput}
+                placeholder={placeholderText}
+                onChangeText={onTextChanged}
+                style={[styles.input, inputStyles]}
                 ref={inputRef}
-                autoFocus={props.autoFocus}
-                value={props.value}
-                inputAccessoryViewID={props.accessoryViewId}
-                hitSlop={{ top: props.hitSlop, left: props.hitSlop, bottom: props.hitSlop, right: props.hitSlop }}
+                inputAccessoryViewID={accessoryViewId}
+                hitSlop={{ top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop }}
             />
         </View>
     );
@@ -76,7 +72,6 @@ const TextInputWithTitleComponent = (props: TextInputWithTitleProps, ref: React.
 export const TextInputWithTitle = React.forwardRef<Focusable, TextInputWithTitleProps>(TextInputWithTitleComponent);
 
 const styles = StyleSheet.create({
-    container: {},
     titleContainer: {
         flexDirection: 'row',
     },
