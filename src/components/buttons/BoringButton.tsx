@@ -16,19 +16,16 @@ interface ButtonProps {
 export class BoringButton extends React.Component<ButtonProps> {
     handleButtonPress = () => {
         this.props.onPress();
-    }
+    };
 
     render() {
         return (
             <TouchableScale
-                style={ [styles.container, this.props.containerStyles] }
-                onPress={ this.handleButtonPress }
-                disabled={ this.props.disabled }
-                activeScale={ 0.96 }>
-
-                <PDText style={ [styles.text, this.props.textStyles] }>
-                    { this.props.title }
-                </PDText>
+                style={[styles.container, this.props.containerStyles]}
+                onPress={this.handleButtonPress}
+                disabled={this.props.disabled}
+                activeScale={0.96}>
+                <PDText style={[styles.text, this.props.textStyles]}>{this.props.title}</PDText>
             </TouchableScale>
         );
     }
@@ -43,12 +40,12 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 3,
         elevation: 1,
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     text: {
         color: 'white',
         textAlign: 'center',
         fontSize: 24,
-        fontWeight: '700'
-    }
+        fontWeight: '700',
+    },
 });

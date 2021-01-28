@@ -26,12 +26,11 @@ interface RecipeListScreenProps {
 
 const mapStateToProps = (state: AppState, ownProps: RecipeListScreenProps): RecipeListScreenProps => {
     return {
-        pool: state.selectedPool
+        pool: state.selectedPool,
     };
 };
 
 const RecipeListScreenComponent: React.FunctionComponent<RecipeListScreenProps> = (props) => {
-
     const { data, loading, error } = RecipeAPI.useRecipeList();
     const { navigate, goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'RecipeList'>>();
     const currentRecipe = useRecipeHook(props.pool?.recipeKey || RecipeService.defaultRecipeKey);
@@ -39,27 +38,27 @@ const RecipeListScreenComponent: React.FunctionComponent<RecipeListScreenProps> 
 
     const handleUpdatePressed = () => {
         Linking.openURL(Config.appStoreListing);
-    }
+    };
 
     const promptUpdate = () => {
         Alert.alert(
-            "Update Required",
-            "This recipe requires a newer app version. Update now?",
+            'Update Required',
+            'This recipe requires a newer app version. Update now?',
             [
                 {
-                    text: "Cancel",
-                    onPress: () => console.log("Cancel Pressed"),
-                    style: "cancel"
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
                 },
                 {
-                    text: "Update",
+                    text: 'Update',
                     onPress: handleUpdatePressed,
-                    style: "default"
-                }
+                    style: 'default',
+                },
             ],
-            { cancelable: true }
+            { cancelable: true },
         );
-    }
+    };
 
     const handleRecipeSelected = (recipe: RecipeMeta): void => {
         if (RS.needUpdateToUseRecipe(recipe, Config.version)) {
@@ -68,19 +67,19 @@ const RecipeListScreenComponent: React.FunctionComponent<RecipeListScreenProps> 
             const key = RS.getKey(recipe);
             navigate('RecipeDetails', { recipeKey: key, prevScreen: params.prevScreen });
         }
-    }
+    };
 
     const currentMeta: RecipeMeta = {
         name: currentRecipe?.name || 'loading...',
         ts: currentRecipe?.ts || 0,
         id: currentRecipe?.id || '',
         desc: currentRecipe?.description || '',
-        appVersion: currentRecipe?.appVersion || '1.0.0'
-    }
+        appVersion: currentRecipe?.appVersion || '1.0.0',
+    };
 
     const handleBackPressed = () => {
         goBack();
-    }
+    };
 
     if (props.pool === null) {
         return <></>;
@@ -89,40 +88,43 @@ const RecipeListScreenComponent: React.FunctionComponent<RecipeListScreenProps> 
     const sections = [
         {
             title: 'Current',
-            data: [currentMeta]
-        }, {
+            data: [currentMeta],
+        },
+        {
             title: 'Community Recipes',
-            data: data?.listRecipes || []
-        }
+            data: data?.listRecipes || [],
+        },
     ];
 
     return (
-        <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } } forceInset={ { bottom: 'never' } }>
-            <RecipeListHeader handleBackPress={ handleBackPressed } pool={ props.pool } />
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }} forceInset={{ bottom: 'never' }}>
+            <RecipeListHeader handleBackPress={handleBackPressed} pool={props.pool} />
             <SectionList
-                style={ styles.scrollView }
-                sections={ sections }
-                renderItem={ ({ item }) => <RecipeListItem recipe={ item } onRecipeSelected={ handleRecipeSelected } key={ item.id } /> }
-                renderSectionHeader={ ({ section: { title } }) => <PDText style={ styles.sectionTitle }>{ title }</PDText> }
-                contentInset={ { bottom: 34 } }
-                stickySectionHeadersEnabled={ false }
+                style={styles.scrollView}
+                sections={sections}
+                renderItem={({ item }) => (
+                    <RecipeListItem recipe={item} onRecipeSelected={handleRecipeSelected} key={item.id} />
+                )}
+                renderSectionHeader={({ section: { title } }) => <PDText style={styles.sectionTitle}>{title}</PDText>}
+                contentInset={{ bottom: 34 }}
+                stickySectionHeadersEnabled={false}
             />
         </SafeAreaView>
     );
-}
+};
 
 export const RecipeListScreen = connect(mapStateToProps)(RecipeListScreenComponent);
 
 const styles = StyleSheet.create({
     scrollView: {
         flex: 1,
-        backgroundColor: '#F2F9F9'
+        backgroundColor: '#F2F9F9',
     },
     sectionTitle: {
         marginTop: 12,
         marginLeft: 16,
         fontSize: 28,
         fontWeight: '700',
-        color: 'black'
-    }
+        color: 'black',
+    },
 });

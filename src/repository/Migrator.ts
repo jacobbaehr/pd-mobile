@@ -8,7 +8,7 @@ import { TreatmentEntry } from '~/models/logs/TreatmentEntry';
  * time there is a change to the data model.
  */
 export const schemas = [
-    { schema: [Pool.schema, LogEntry.schema, ReadingEntry.schema, TreatmentEntry.schema], schemaVersion: 0 }
+    { schema: [Pool.schema, LogEntry.schema, ReadingEntry.schema, TreatmentEntry.schema], schemaVersion: 0 },
 ];
 
 /**

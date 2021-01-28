@@ -34,11 +34,17 @@ export class TreatmentEntry {
             displayUnits: 'string',
             concentration: 'double?',
             ounces: 'double',
-            type: 'string'
-        }
+            type: 'string',
+        },
     };
 
-    static make(treatment: Treatment, ounces: number, displayAmount: string, displayUnits?: string, concentration?: number): TreatmentEntry {
+    static make(
+        treatment: Treatment,
+        ounces: number,
+        displayAmount: string,
+        displayUnits?: string,
+        concentration?: number,
+    ): TreatmentEntry {
         let entry = new TreatmentEntry();
 
         entry.treatmentName = treatment.name;

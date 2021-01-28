@@ -1,6 +1,6 @@
-import { WaterTypeValue } from "./WaterType";
-import { RecipeKey } from "../recipe/RecipeKey";
-import { WallTypeValue } from "./WallType";
+import { WaterTypeValue } from './WaterType';
+import { RecipeKey } from '../recipe/RecipeKey';
+import { WallTypeValue } from './WallType';
 
 /**
  * Represents a swimming pool (duh).
@@ -34,11 +34,18 @@ export class PoolV0 {
             objectId: 'string',
             recipeKey: 'string?',
             waterType: 'string',
-            wallType: 'string'
-        }
+            wallType: 'string',
+        },
     };
 
-    static make(name: string, gallons: number, waterType: WaterTypeValue, wallType: WallTypeValue, objectId?: string, recipeKey?: RecipeKey): PoolV0 {
+    static make(
+        name: string,
+        gallons: number,
+        waterType: WaterTypeValue,
+        wallType: WallTypeValue,
+        objectId?: string,
+        recipeKey?: RecipeKey,
+    ): PoolV0 {
         const pool = new PoolV0();
         pool.name = name;
         pool.gallons = gallons;

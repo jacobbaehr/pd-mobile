@@ -34,7 +34,7 @@ const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolLi
     return {
         selectedPool: state.selectedPool,
         poolsLastUpdated: state.poolsLastUpdated,
-        deviceSettings: state.deviceSettings
+        deviceSettings: state.deviceSettings,
     };
 };
 
@@ -43,7 +43,6 @@ interface PoolListScreenState {
 }
 
 const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (props) => {
-
     const pools = useRealmPoolsHook();
     const { navigate } = useNavigation<StackNavigationProp<PDNavStackParamList, 'PoolList'>>();
     const insets = useSafeArea();
@@ -52,27 +51,27 @@ const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (p
         console.log('selected: ', pool);
         dispatch(selectPool(pool));
         navigate('PoolScreen');
-    }
+    };
 
     const promptUpgrade = () => {
         Alert.alert(
-            "Sorry, but...",
-            "You must unlock the app to add multiple pools.",
+            'Sorry, but...',
+            'You must unlock the app to add multiple pools.',
             [
                 {
-                    text: "Cancel",
-                    onPress: () => console.log("Cancel Pressed"),
-                    style: "cancel"
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
                 },
                 {
-                    text: "Unlock",
+                    text: 'Unlock',
                     onPress: handleUpgradePressed,
-                    style: "default"
-                }
+                    style: 'default',
+                },
             ],
-            { cancelable: true }
+            { cancelable: true },
         );
-    }
+    };
 
     const handleAddPoolPressed = async () => {
         const hasUpgraded = DS.isSubscriptionValid(props.deviceSettings, Date.now());
@@ -82,68 +81,62 @@ const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (p
         } else {
             promptUpgrade();
         }
-    }
+    };
 
     const handleSettingsPressed = () => {
         navigate('Settings');
-    }
+    };
     const handleUpgradePressed = () => {
         navigate('Buy');
-    }
+    };
 
     const isEmpty = pools.length === 0;
     const dynamicContainerStyles: ViewStyle = {
-        paddingTop: insets.top
+        paddingTop: insets.top,
     };
     return (
-        <View style={ [styles.container, dynamicContainerStyles] }>
-            <View style={ styles.header }>
-                <View style={ styles.headerLeft }>
+        <View style={[styles.container, dynamicContainerStyles]}>
+            <View style={styles.header}>
+                <View style={styles.headerLeft}>
                     <TouchableScale
-                        style={ styles.accountButton }
-                        underlayColor={ 'transparent' }
-                        activeScale={ 0.97 }
-                        onPress={ handleSettingsPressed }>
+                        style={styles.accountButton}
+                        underlayColor={'transparent'}
+                        activeScale={0.97}
+                        onPress={handleSettingsPressed}>
                         <Image
-                            style={ styles.accountButtonImage }
-                            source={ images.gearLightButton }
-                            width={ 38 }
-                            height={ 38 } />
+                            style={styles.accountButtonImage}
+                            source={images.gearLightButton}
+                            width={38}
+                            height={38}
+                        />
                     </TouchableScale>
-                    <PDText style={ styles.title }>My Pools</PDText>
+                    <PDText style={styles.title}>My Pools</PDText>
                 </View>
-                <View style={ styles.headerRight }>
+                <View style={styles.headerRight}>
                     <TouchableScale
-                        style={ styles.plusButton }
-                        underlayColor={ 'transparent' }
-                        activeScale={ 0.97 }
-                        onPress={ handleAddPoolPressed }>
-                        <Image
-                            style={ styles.plusButtonImage }
-                            source={ images.plusButton }
-                            width={ 38 }
-                            height={ 38 } />
+                        style={styles.plusButton}
+                        underlayColor={'transparent'}
+                        activeScale={0.97}
+                        onPress={handleAddPoolPressed}>
+                        <Image style={styles.plusButtonImage} source={images.plusButton} width={38} height={38} />
                     </TouchableScale>
                 </View>
             </View>
             <SectionList
-                style={ styles.sectionList }
-                renderItem={ ({ item }) => <PoolListItem
-                    pool={ item }
-                    onPoolSelected={ handlePoolSelected } /> }
-                renderSectionHeader={ () => null }
-                sections={ [
-                    { data: pools, title: 'Pools' }
-                ] }
-                renderSectionFooter={ () => <PoolListFooter
-                    isEmpty={ isEmpty }
-                    handlePressedUpgrade={ handleUpgradePressed } /> }
-                keyExtractor={ item => (item as Pool).objectId }
-                overScrollMode={ 'always' }
-                contentInset={ { bottom: 50 } } />
+                style={styles.sectionList}
+                renderItem={({ item }) => <PoolListItem pool={item} onPoolSelected={handlePoolSelected} />}
+                renderSectionHeader={() => null}
+                sections={[{ data: pools, title: 'Pools' }]}
+                renderSectionFooter={() => (
+                    <PoolListFooter isEmpty={isEmpty} handlePressedUpgrade={handleUpgradePressed} />
+                )}
+                keyExtractor={(item) => (item as Pool).objectId}
+                overScrollMode={'always'}
+                contentInset={{ bottom: 50 }}
+            />
         </View>
     );
-}
+};
 
 export const PoolListScreen = connect(mapStateToProps)(PoolListScreenComponent);
 
@@ -151,23 +144,23 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'flex-start',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
     },
     header: {
         display: 'flex',
         flexDirection: 'row',
         backgroundColor: 'white',
         borderBottomColor: '#F0F0F0',
-        borderBottomWidth: 2
+        borderBottomWidth: 2,
     },
     headerLeft: {
         display: 'flex',
         flexDirection: 'row',
-        flex: 1
+        flex: 1,
     },
     headerRight: {
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
     },
     editStyle: {
         margin: 5,
@@ -178,23 +171,20 @@ const styles = StyleSheet.create({
         // marginLeft: 12,
         marginTop: 18,
         fontSize: 28,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
-    accountButton: {
-
-    },
+    accountButton: {},
     accountButtonImage: {
         margin: 18,
-        marginRight: 12
+        marginRight: 12,
     },
-    plusButton: {
-    },
+    plusButton: {},
     plusButtonImage: {
-        margin: 18
+        margin: 18,
     },
     sectionList: {
         flex: 1,
         paddingTop: 20,
-        backgroundColor: '#F5F5F5'
-    }
+        backgroundColor: '#F5F5F5',
+    },
 });

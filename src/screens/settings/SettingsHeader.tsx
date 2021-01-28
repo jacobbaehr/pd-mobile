@@ -7,21 +7,16 @@ interface SettingsHeaderProps {
 }
 
 export const SettingsHeader: React.FunctionComponent<SettingsHeaderProps> = (props) => {
-
     return (
-        <View style={ styles.container }>
-            <View style={ styles.navRow }>
-                <View style={ styles.backButtonContainer }>
-                    <BackButton
-                        title={ 'Settings' }
-                        onPress={ props.goBack }
-                        scale={ { scale: true, scaleLines: 2 } }
-                    />
+        <View style={styles.container}>
+            <View style={styles.navRow}>
+                <View style={styles.backButtonContainer}>
+                    <BackButton title={'Settings'} onPress={props.goBack} scale={{ scale: true, scaleLines: 2 }} />
                 </View>
             </View>
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -30,15 +25,15 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         paddingHorizontal: 16,
         borderBottomColor: '#F0F0F0',
-        borderBottomWidth: 2
+        borderBottomWidth: 2,
     },
     navRow: {
         display: 'flex',
         flexDirection: 'row',
         marginTop: 12,
-        marginBottom: 18
+        marginBottom: 18,
     },
     backButtonContainer: {
-        flex: 1
-    }
+        flex: 1,
+    },
 });

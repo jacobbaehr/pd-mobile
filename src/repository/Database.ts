@@ -54,7 +54,7 @@ export class Database {
                     waterType: pool.waterType,
                     objectId: pool.objectId,
                     recipeKey: pool.recipeKey,
-                    wallType: pool.wallType
+                    wallType: pool.wallType,
                 });
             });
         } catch (e) {
@@ -75,7 +75,7 @@ export class Database {
                     treatmentEntries: entry.treatmentEntries,
                     ts: entry.ts,
                     recipeKey: entry.recipeKey,
-                    notes: entry.notes
+                    notes: entry.notes,
                 });
                 return Promise.resolve();
             });
@@ -86,7 +86,11 @@ export class Database {
         }
     };
 
-    static loadLogEntriesForPool = (poolId: string, since_ts: number | null, recentFirst: boolean): Realm.Collection<LogEntry> => {
+    static loadLogEntriesForPool = (
+        poolId: string,
+        since_ts: number | null,
+        recentFirst: boolean,
+    ): Realm.Collection<LogEntry> => {
         const realm = Database.realm;
         let query = `poolId = "${poolId}"`;
         if (since_ts) {
@@ -122,7 +126,9 @@ export class Database {
         try {
             // We have to delete the actual realm object
             realm.write(() => {
-                const logEntry = Database.realm.objects<LogEntry>(LogEntry.schema.name).filtered('objectId = $0', id)[0];
+                const logEntry = Database.realm
+                    .objects<LogEntry>(LogEntry.schema.name)
+                    .filtered('objectId = $0', id)[0];
                 realm.delete(logEntry);
                 return Promise.resolve();
             });

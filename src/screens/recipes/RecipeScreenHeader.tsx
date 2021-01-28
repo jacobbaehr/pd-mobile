@@ -12,38 +12,31 @@ interface RecipeScreenHeaderProps {
 
 export const RecipeScreenHeader: React.FunctionComponent<RecipeScreenHeaderProps> = (props) => {
     return (
-        <View style={ styles.container }>
-            <BackButton
-                title={ 'Recipes' }
-                onPress={ props.handleBackPress }
-                color={ 'recipesGreen' } />
-            <PDText style={ styles.gradientText } >
-                { props.meta.name }
-            </PDText>
-            <PDText style={ styles.detailsText }>
-                { props.meta.id }
-            </PDText>
+        <View style={styles.container}>
+            <BackButton title={'Recipes'} onPress={props.handleBackPress} color={'recipesGreen'} />
+            <PDText style={styles.gradientText}>{props.meta.name}</PDText>
+            <PDText style={styles.detailsText}>{props.meta.id}</PDText>
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         paddingHorizontal: 16,
         backgroundColor: 'white',
         borderBottomColor: '#F0F0F0',
-        borderBottomWidth: 2
+        borderBottomWidth: 2,
     },
     gradientText: {
         color: '#009384',
         fontSize: 28,
         fontWeight: '700',
-        marginTop: 3
+        marginTop: 3,
     },
     detailsText: {
         color: 'rgba(0,0,0,.6)',
         fontWeight: '600',
         fontSize: 18,
-        marginVertical: 7
-    }
+        marginVertical: 7,
+    },
 });

@@ -25,7 +25,6 @@ interface TreatmentListItemProps {
 }
 
 export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> = (props) => {
-
     const [textIsEditing, setTextIsEditing] = React.useState(false);
 
     const isEditing = textIsEditing;
@@ -34,9 +33,7 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
     const t = ts.treatment;
 
     const treatmentTaken = ts.isOn;
-    const leftImageSource = treatmentTaken
-        ? images.greenCheck
-        : images.incomplete;
+    const leftImageSource = treatmentTaken ? images.greenCheck : images.incomplete;
 
     const textInputStyles: TextStyle[] = [styles.textInput];
     const unitsTextStyles: TextStyle[] = [styles.unitsText];
@@ -69,82 +66,78 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
 
     const onPressedUnitsButton = () => {
         props.handleUnitsButtonPressed(t.var);
-    }
+    };
 
     const onPressedTreatmentNameButton = () => {
         props.handleTreatmentNameButtonPressed(t.var);
-    }
+    };
 
     return (
-        <View style={ styles.container }>
-
+        <View style={styles.container}>
             <TouchableScale
-                onPress={ () => props.handleIconPressed(t.var) }
-                activeScale={ 0.98 }
-                disabled={ t.type === 'calculation' } >
-                <View style={ styles.content }>
-                    <View style={ styles.topRow }>
-                        <Conditional condition={ t.type === 'calculation' }>
-                            <PDText style={ styles.ofLabel }>
-                                { t.name }
-                            </PDText>
+                onPress={() => props.handleIconPressed(t.var)}
+                activeScale={0.98}
+                disabled={t.type === 'calculation'}>
+                <View style={styles.content}>
+                    <View style={styles.topRow}>
+                        <Conditional condition={t.type === 'calculation'}>
+                            <PDText style={styles.ofLabel}>{t.name}</PDText>
                             <TextInput
-                                style={ textInputStyles }
-                                onFocus={ onTextBeginEditing }
-                                onChangeText={ onTextChange }
-                                onEndEditing={ onTextEndEditing }
-                                keyboardType={ 'decimal-pad' }
-                                inputAccessoryViewID={ props.inputAccessoryId }>
-                                { valueText }
+                                style={textInputStyles}
+                                onFocus={onTextBeginEditing}
+                                onChangeText={onTextChange}
+                                onEndEditing={onTextEndEditing}
+                                keyboardType={'decimal-pad'}
+                                inputAccessoryViewID={props.inputAccessoryId}>
+                                {valueText}
                             </TextInput>
                         </Conditional>
-                        <Conditional condition={ t.type !== 'calculation' }>
-                            <Image
-                                style={ styles.circleImage }
-                                source={ leftImageSource }
-                                width={ 28 }
-                                height={ 28 } />
+                        <Conditional condition={t.type !== 'calculation'}>
+                            <Image style={styles.circleImage} source={leftImageSource} width={28} height={28} />
 
-                            <Conditional condition={ ['dryChemical', 'liquidChemical'].some(x => t.type === x) }>
-                                <PDText style={ styles.addLabel }>
-                                    Add
-                                </PDText>
+                            <Conditional condition={['dryChemical', 'liquidChemical'].some((x) => t.type === x)}>
+                                <PDText style={styles.addLabel}>Add</PDText>
                                 <TextInput
-                                    style={ textInputStyles }
-                                    onFocus={ onTextBeginEditing }
-                                    onChangeText={ onTextChange }
-                                    onEndEditing={ onTextEndEditing }
-                                    keyboardType={ 'decimal-pad' }
-                                    inputAccessoryViewID={ props.inputAccessoryId }>
-                                    { valueText }
+                                    style={textInputStyles}
+                                    onFocus={onTextBeginEditing}
+                                    onChangeText={onTextChange}
+                                    onEndEditing={onTextEndEditing}
+                                    keyboardType={'decimal-pad'}
+                                    inputAccessoryViewID={props.inputAccessoryId}>
+                                    {valueText}
                                 </TextInput>
-                                <CycleButton title={ pluralize(ts.units, parseFloat(valueText)) } onPress={ onPressedUnitsButton } textStyles={ unitsTextStyles } styles={ styles.unitsButton } />
-                                <PDText style={ styles.ofLabel }>
-                                    of
-                                </PDText>
-                                <ChoosyButton title={ treatmentName } onPress={ onPressedTreatmentNameButton } textStyles={ treatmentNameTextStyles } styles={ styles.treatmentNameButton } />
+                                <CycleButton
+                                    title={pluralize(ts.units, parseFloat(valueText))}
+                                    onPress={onPressedUnitsButton}
+                                    textStyles={unitsTextStyles}
+                                    styles={styles.unitsButton}
+                                />
+                                <PDText style={styles.ofLabel}>of</PDText>
+                                <ChoosyButton
+                                    title={treatmentName}
+                                    onPress={onPressedTreatmentNameButton}
+                                    textStyles={treatmentNameTextStyles}
+                                    styles={styles.treatmentNameButton}
+                                />
                             </Conditional>
 
-                            <Conditional condition={ t.type === 'task' }>
-                                <PDText style={ treatmentNameTextStyles }>
-                                    { t.name }
-                                </PDText>
+                            <Conditional condition={t.type === 'task'}>
+                                <PDText style={treatmentNameTextStyles}>{t.name}</PDText>
                             </Conditional>
                         </Conditional>
                     </View>
                 </View>
             </TouchableScale>
-
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'transparent',
         alignContent: 'stretch',
-        borderRadius: 10
+        borderRadius: 10,
     },
     content: {
         backgroundColor: 'white',
@@ -154,7 +147,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         elevation: 2,
         marginBottom: 12,
-        marginHorizontal: 16
+        marginHorizontal: 16,
     },
     topRow: {
         flex: 1,
@@ -163,11 +156,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 12,
         paddingTop: 4,
-        paddingBottom: 3
+        paddingBottom: 3,
     },
     circleImage: {
         marginRight: 10,
-        marginBottom: 16
+        marginBottom: 16,
     },
     addLabel: {
         color: 'black',
@@ -175,7 +168,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         textAlignVertical: 'center',
         marginRight: 10,
-        marginBottom: 16
+        marginBottom: 16,
     },
     ofLabel: {
         color: 'black',
@@ -184,27 +177,27 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
         marginLeft: 10,
         marginRight: 10,
-        marginBottom: 16
+        marginBottom: 16,
     },
     treatmentNameButton: {
         marginBottom: 12,
         alignSelf: 'flex-start',
-        marginTop: 5
+        marginTop: 5,
     },
     treatmentNameText: {
         color: '#B700F8',
         padding: 0,
         textAlignVertical: 'center',
-        fontSize: 22
+        fontSize: 22,
     },
     unitsButton: {
         marginLeft: 9,
-        marginBottom: 16
+        marginBottom: 16,
     },
     unitsText: {
         color: '#B700F8',
         fontSize: 22,
-        fontWeight: '600'
+        fontWeight: '600',
     },
     textInput: {
         minWidth: 60,
@@ -219,9 +212,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         textAlignVertical: 'center',
         paddingTop: 2,
-        marginBottom: 16
+        marginBottom: 16,
     },
     textDone: {
-        color: '#000'
-    }
+        color: '#000',
+    },
 });

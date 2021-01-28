@@ -8,8 +8,8 @@ export const getApolloClient = () => {
         cache: new InMemoryCache(),
         link: createHttpLink({
             uri: Config.gql_url,
-            credentials: 'include'
-        })
+            credentials: 'include',
+        }),
     });
     return apolloClient;
-}
+};

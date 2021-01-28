@@ -15,10 +15,9 @@ export const recordInput = (reading: Reading, value: number): RecordReadingActio
     return {
         type: RECORD_INPUT,
         value,
-        reading
+        reading,
     };
 };
-
 
 export interface ClearReadingsAction extends AnyAction {
     type: string;
@@ -26,6 +25,6 @@ export interface ClearReadingsAction extends AnyAction {
 
 export const clearReadings = (): ClearReadingsAction => {
     return {
-        type: CLEAR_READINGS
-    }
-}
+        type: CLEAR_READINGS,
+    };
+};

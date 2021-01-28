@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { View, StyleSheet, SectionListData, SafeAreaView, LayoutAnimation, InputAccessoryView, Keyboard } from 'react-native';
+import {
+    View,
+    StyleSheet,
+    SectionListData,
+    SafeAreaView,
+    LayoutAnimation,
+    InputAccessoryView,
+    Keyboard,
+} from 'react-native';
 import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
@@ -31,12 +39,11 @@ const mapStateToProps = (state: AppState, ownProps: ReadingListScreenProps): Rea
     return {
         navigation: ownProps.navigation,
         pool: state.selectedPool!,
-        updated: state.poolsLastUpdated
+        updated: state.poolsLastUpdated,
     };
 };
 
 const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps> = (props) => {
-
     const [isSliding, setIsSliding] = React.useState(false);
     const [readingStates, setReadingStates] = React.useState<ReadingState[]>([]);
     const recipe = useRecipeHook(props.pool.recipeKey || RecipeService.defaultRecipeKey);
@@ -47,15 +54,15 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
     React.useEffect(() => {
         setOptions({ gestureResponseDistance: { horizontal: 5 } });
         if (recipe) {
-            const initialReadingStates = recipe.readings.map(r => ({
+            const initialReadingStates = recipe.readings.map((r) => ({
                 reading: r,
                 value: r.defaultValue.toFixed(r.decimalPlaces),
-                isOn: false
+                isOn: false,
             }));
 
             // Just incase we had some old reading entries laying around:
-            readingStates.forEach(rs => {
-                initialReadingStates.forEach(is => {
+            readingStates.forEach((rs) => {
+                initialReadingStates.forEach((is) => {
                     if (is.reading.var === rs.reading.var) {
                         is.value = rs.value || is.reading.defaultValue.toFixed(is.reading.decimalPlaces);
                         is.isOn = rs.isOn;
@@ -69,8 +76,8 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
 
     const handleCalculatePressed = (): void => {
         dispatch(clearReadings());
-        readingStates.forEach(rs => {
-            if (rs.isOn && (rs.value !== undefined)) {
+        readingStates.forEach((rs) => {
+            if (rs.isOn && rs.value !== undefined) {
                 dispatch(recordInput(rs.reading, parseFloat(rs.value)));
             }
         });
@@ -98,10 +105,10 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
                 property: LayoutAnimation.Properties.scaleXY,
             };
             const animationConfig = {
-                duration: 250, // how long the animation will take	
+                duration: 250, // how long the animation will take
                 create: undefined,
                 update: springAnimationProperties,
-                delete: undefined
+                delete: undefined,
             };
             LayoutAnimation.configureNext(animationConfig);
             setReadingStates(rs);
@@ -168,69 +175,71 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
             property: LayoutAnimation.Properties.scaleXY,
         };
         const animationConfig = {
-            duration: 250, // how long the animation will take	
+            duration: 250, // how long the animation will take
             create: undefined,
             update: springAnimationProperties,
-            delete: undefined
+            delete: undefined,
         };
         LayoutAnimation.configureNext(animationConfig);
         setReadingStates(rs);
-    }
+    };
 
     const handleChangeRecipePressed = () => {
         navigate('RecipeList', { prevScreen: 'ReadingList' });
-    }
+    };
 
     // Really, we shouldn't be using a sectionlist, because there's only 1 section
     let sections: SectionListData<ReadingState>[] = [{ data: readingStates }];
 
     let progress = 0;
     if (recipe) {
-        const completed = readingStates.filter(r => r.isOn);
-        progress = (readingStates.length == 0)
-            ? 1
-            : (completed.length / readingStates.length);
+        const completed = readingStates.filter((r) => r.isOn);
+        progress = readingStates.length == 0 ? 1 : completed.length / readingStates.length;
     }
     return (
-        <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } }>
-            <View style={ styles.container }>
-                <ReadingListHeader handleBackPress={ handleBackPressed } pool={ props.pool } percentComplete={ progress } />
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+            <View style={styles.container}>
+                <ReadingListHeader handleBackPress={handleBackPressed} pool={props.pool} percentComplete={progress} />
                 <KeyboardAwareSectionList
-                    style={ styles.sectionList }
-                    scrollEnabled={ !isSliding }
-                    keyboardDismissMode={ 'interactive' }
-                    keyboardShouldPersistTaps={ 'handled' }
-                    renderItem={ ({ item }) => <ReadingListItem
-                        readingState={ item }
-                        onTextboxUpdated={ handleTextboxUpdated }
-                        onTextboxFinished={ handleTextboxDismissed }
-                        onSlidingStart={ handleSlidingStarted }
-                        onSlidingComplete={ handleSlidingStopped }
-                        onSliderUpdatedValue={ handleSliderUpdatedValue }
-                        handleIconPressed={ handleIconPressed }
-                        inputAccessoryId={ keyboardAccessoryViewId } /> }
-                    sections={ sections }
-                    keyExtractor={ (item) => item.reading.var }
-                    contentInsetAdjustmentBehavior={ 'always' }
-                    stickySectionHeadersEnabled={ false }
-                    canCancelContentTouches={ true }
-                    renderSectionFooter={ () => <ReadingListFooter recipe={ recipe || null } pressedChangeRecipe={ handleChangeRecipePressed } /> }
+                    style={styles.sectionList}
+                    scrollEnabled={!isSliding}
+                    keyboardDismissMode={'interactive'}
+                    keyboardShouldPersistTaps={'handled'}
+                    renderItem={({ item }) => (
+                        <ReadingListItem
+                            readingState={item}
+                            onTextboxUpdated={handleTextboxUpdated}
+                            onTextboxFinished={handleTextboxDismissed}
+                            onSlidingStart={handleSlidingStarted}
+                            onSlidingComplete={handleSlidingStopped}
+                            onSliderUpdatedValue={handleSliderUpdatedValue}
+                            handleIconPressed={handleIconPressed}
+                            inputAccessoryId={keyboardAccessoryViewId}
+                        />
+                    )}
+                    sections={sections}
+                    keyExtractor={(item) => item.reading.var}
+                    contentInsetAdjustmentBehavior={'always'}
+                    stickySectionHeadersEnabled={false}
+                    canCancelContentTouches={true}
+                    renderSectionFooter={() => (
+                        <ReadingListFooter recipe={recipe || null} pressedChangeRecipe={handleChangeRecipePressed} />
+                    )}
                 />
-                <View style={ styles.bottomButtonContainer }>
-                    <BoringButton
-                        containerStyles={ styles.button }
-                        onPress={ handleCalculatePressed }
-                        title="Calculate"
-                    />
+                <View style={styles.bottomButtonContainer}>
+                    <BoringButton containerStyles={styles.button} onPress={handleCalculatePressed} title="Calculate" />
                 </View>
             </View>
-            <PlatformSpecific include={ ["ios"] }>
-                <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
-                    <View style={ styles.keyboardAccessoryContainer }>
+            <PlatformSpecific include={['ios']}>
+                <InputAccessoryView nativeID={keyboardAccessoryViewId}>
+                    <View style={styles.keyboardAccessoryContainer}>
                         <BoringButton
-                            containerStyles={ styles.keyboardAccessoryButton }
-                            textStyles={ styles.keyboardAccessoryButtonText }
-                            onPress={ () => { Keyboard.dismiss(); Haptic.light(); } }
+                            containerStyles={styles.keyboardAccessoryButton}
+                            textStyles={styles.keyboardAccessoryButtonText}
+                            onPress={() => {
+                                Keyboard.dismiss();
+                                Haptic.light();
+                            }}
                             title="Done Typing"
                         />
                     </View>
@@ -238,7 +247,7 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
             </PlatformSpecific>
         </SafeAreaView>
     );
-}
+};
 
 export const ReadingListScreen = connect(mapStateToProps)(ReadingListScreenComponent);
 
@@ -256,13 +265,13 @@ const styles = StyleSheet.create({
     bottomButtonContainer: {
         backgroundColor: 'white',
         borderTopColor: '#F0F0F0',
-        borderTopWidth: 2
+        borderTopWidth: 2,
     },
     button: {
         alignSelf: 'stretch',
         backgroundColor: '#3910E8',
         margin: 12,
-        marginBottom: 24
+        marginBottom: 24,
     },
     keyboardAccessoryContainer: {
         backgroundColor: '#F8F8F8',
@@ -270,10 +279,10 @@ const styles = StyleSheet.create({
     },
     keyboardAccessoryButton: {
         backgroundColor: 'rgba(57, 16, 232, 0.6)',
-        marginHorizontal: 24
+        marginHorizontal: 24,
     },
     keyboardAccessoryButtonText: {
         color: 'white',
-        fontSize: 18
-    }
+        fontSize: 18,
+    },
 });

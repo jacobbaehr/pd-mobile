@@ -18,7 +18,10 @@ export class InAppPurchasesService {
      *
      * @param userId
      */
-    public static async configureInAppPurchasesProvider(userId: string, onPurchaserInfoUpdated: PurchaserInfoUpdateListener): Promise<void> {
+    public static async configureInAppPurchasesProvider(
+        userId: string,
+        onPurchaserInfoUpdated: PurchaserInfoUpdateListener,
+    ): Promise<void> {
         await Purchases.setup('', userId);
         Purchases.setDebugLogsEnabled(__DEV__);
         Purchases.setAllowSharingStoreAccount(true);

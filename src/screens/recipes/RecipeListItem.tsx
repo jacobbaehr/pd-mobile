@@ -12,21 +12,19 @@ interface RecipeListItemProps {
 }
 
 export class RecipeListItem extends React.Component<RecipeListItemProps, {}> {
-
     private handleButtonPressed = (): void => {
         this.props.onRecipeSelected(this.props.recipe);
-    }
+    };
 
     render() {
         const recipe = this.props.recipe;
         return (
-            <TouchableScale
-                style={ styles.content }
-                onPress={ this.handleButtonPressed }
-                activeScale={ 0.98 }>
-                <View style={ { flex: 1 } }>
-                    <PDText style={ styles.recipeNameText }>{ recipe.name } <PDText style={ styles.recipeIdText }>({ recipe.id })</PDText></PDText>
-                    <PDText style={ styles.recipeDescriptionText }>{ recipe.desc } </PDText>
+            <TouchableScale style={styles.content} onPress={this.handleButtonPressed} activeScale={0.98}>
+                <View style={{ flex: 1 }}>
+                    <PDText style={styles.recipeNameText}>
+                        {recipe.name} <PDText style={styles.recipeIdText}>({recipe.id})</PDText>
+                    </PDText>
+                    <PDText style={styles.recipeDescriptionText}>{recipe.desc} </PDText>
                 </View>
             </TouchableScale>
         );
@@ -43,21 +41,21 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#F0F0F0',
         paddingVertical: 12,
-        paddingHorizontal: 16
+        paddingHorizontal: 16,
     },
     recipeNameText: {
         color: '#009384',
         fontSize: 20,
-        fontWeight: '700'
+        fontWeight: '700',
     },
     recipeIdText: {
         color: '#666666',
         fontSize: 16,
-        fontWeight: '600'
+        fontWeight: '600',
     },
     recipeDescriptionText: {
         color: '#4C4C4C',
         fontSize: 16,
-        fontWeight: '600'
-    }
+        fontWeight: '600',
+    },
 });

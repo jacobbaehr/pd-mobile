@@ -13,6 +13,6 @@ export type UpdateDeviceSettingsActions = UpdateDeviceSettingsAction;
 export const updateDeviceSettings = (newSettings: DeviceSettings): UpdateDeviceSettingsAction => {
     return {
         type: UPDATE_DEVICE_SETTINGS,
-        deviceSettings: newSettings
+        deviceSettings: newSettings,
     };
 };
