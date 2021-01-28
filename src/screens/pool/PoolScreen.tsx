@@ -4,10 +4,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
-import { formatDistanceStrict } from 'date-fns';
 
 import { PDNavStackParamList } from '~/navigator/Navigators';
-import { images } from '~/assets/images';
 import { ChartCard } from '~/components/charts/ChartCard';
 import { PDText } from '~/components/PDText';
 import { Pool } from '~/models/Pool';
@@ -27,7 +25,7 @@ import { DS } from '~/services/DSUtil';
 import { ChartService } from '~/services/ChartService';
 import { Database } from '~/repository/Database';
 import { ExportService } from '~/services/ExportService';
-import PoolServiceConfiguration from './PoolServiceConfigSection';
+import PoolServiceConfigSection from './PoolServiceConfigSection';
 
 interface PoolScreenProps {
     // The id of the selected pool, if any
@@ -169,11 +167,13 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
     const renderItem = (section: SectionListData<any>, item: any): JSX.Element => {
         let titleElement = <PDText style={styles.sectionTitle}>{section.title}</PDText>;
         let contentBody = <></>;
+        let marginHorizontal = 0;
         let marginBottom = 14;
 
         if (section.key === 'service_section') {
-            contentBody = <PoolServiceConfiguration />;
+            contentBody = <PoolServiceConfigSection />;
         } else if (section.key === 'trends_section') {
+            marginHorizontal = 18;
             if (history.length < 1) {
                 return <></>;
             }
@@ -184,6 +184,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
             );
         } else if (section.key === 'history_section') {
             marginBottom = 6;
+            marginHorizontal = 18;
             if (history.indexOf(item) !== 0) {
                 titleElement = <></>;
             }
@@ -199,7 +200,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
 
         // We need the key here to change after a purchase to cause a re-render:
         return (
-            <View style={{ marginBottom,}}>
+            <View style={{ marginBottom, marginHorizontal }}>
                 {section.key === 'service_section' || titleElement}
                 {contentBody}
             </View>
@@ -246,7 +247,7 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontWeight: '700',
         fontSize: 24,
-        lineHeight:36,
+        lineHeight: 36,
         marginTop: 6,
         marginBottom: 4,
     },
