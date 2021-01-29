@@ -12,6 +12,8 @@ export class Config {
 
     static revenueCatPublicKey = 'wciuClkgweIivYNTlQfmRfvRRoptoHGZ';
 
-    static version = '1.0.0';       // TODO: don't forget to update this.
-    static appStoreListing = Config.isIos ? 'https://itunes.apple.com/app/id1505607801' : 'https://play.google.com/store/apps/details?id=com.gazzini.pooldash';
+    static version = '1.0.0'; // TODO: don't forget to update this.
+    static appStoreListing = Config.isIos
+        ? 'https://itunes.apple.com/app/id1505607801'
+        : 'https://play.google.com/store/apps/details?id=com.gazzini.pooldash';
 }

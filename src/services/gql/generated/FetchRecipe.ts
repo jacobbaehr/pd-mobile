@@ -8,7 +8,7 @@
 // ====================================================
 
 export interface FetchRecipe_recipeVersion_readings {
-    __typename: "Reading";
+    __typename: 'Reading';
     name: string;
     var: string;
     sliderMin: number | null;
@@ -22,7 +22,7 @@ export interface FetchRecipe_recipeVersion_readings {
 }
 
 export interface FetchRecipe_recipeVersion_treatments {
-    __typename: "Treatment";
+    __typename: 'Treatment';
     name: string;
     var: string;
     formula: string;
@@ -31,7 +31,7 @@ export interface FetchRecipe_recipeVersion_treatments {
 }
 
 export interface FetchRecipe_recipeVersion {
-    __typename: "Recipe";
+    __typename: 'Recipe';
     id: string;
     author_id: string;
     author_username: string;

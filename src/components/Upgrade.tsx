@@ -1,39 +1,45 @@
-import React from "react";
-import { View, Image, Text, StyleSheet, ViewStyle, StyleProp } from "react-native";
-import { PDText } from "./PDText";
-import { images } from "~/assets/images";
-import { BoringButton } from "./buttons/BoringButton";
-import { Conditional } from "./Conditional";
+import React from 'react';
+import { View, Image, Text, StyleSheet, ViewStyle, StyleProp } from 'react-native';
+import { PDText } from './PDText';
+import { images } from '~/assets/images';
+import { BoringButton } from './buttons/BoringButton';
+import { Conditional } from './Conditional';
 
 interface UpgradeProps {
     onPress: () => void;
     style: StyleProp<ViewStyle>;
-    isUnlocked: boolean;        // Whether the user has upgraded to the pro version
+    isUnlocked: boolean; // Whether the user has upgraded to the pro version
 }
 
 export const Upgrade: React.FunctionComponent<UpgradeProps> = (props) => {
     return (
-        <View style={ [styles.plusContainer, props.style] }>
-            <View style={ { flexDirection: 'row', display: 'flex' } }>
-                <View style={ { flex: 1 } }></View>
-                <Image style={ styles.pdProImageStyles } source={ images.logoGreenPlus } width={ 3000 } resizeMode={ 'contain' } />
-                <View style={ { flex: 1 } }></View>
+        <View style={[styles.plusContainer, props.style]}>
+            <View style={{ flexDirection: 'row', display: 'flex' }}>
+                <View style={{ flex: 1 }}></View>
+                <Image
+                    style={styles.pdProImageStyles}
+                    source={images.logoGreenPlus}
+                    width={3000}
+                    resizeMode={'contain'}
+                />
+                <View style={{ flex: 1 }}></View>
             </View>
-            <Conditional condition={ !props.isUnlocked }>
-                <View style={ styles.textContainer }>
-                    <PDText style={ styles.onlineBackupText }>+ Charts</PDText>
-                    <PDText style={ styles.onlineBackupText }>+ Unlimited Pools</PDText>
-                    <PDText style={ styles.onlineBackupText }>+ Less than $2 / month</PDText>
+            <Conditional condition={!props.isUnlocked}>
+                <View style={styles.textContainer}>
+                    <PDText style={styles.onlineBackupText}>+ Charts</PDText>
+                    <PDText style={styles.onlineBackupText}>+ Unlimited Pools</PDText>
+                    <PDText style={styles.onlineBackupText}>+ Less than $2 / month</PDText>
                 </View>
             </Conditional>
             <BoringButton
-                title={ props.isUnlocked ? 'Manage' : 'Unlock' }
-                onPress={ props.onPress }
-                containerStyles={ styles.dataButton }
-                textStyles={ styles.dataButtonText }
+                title={props.isUnlocked ? 'Manage' : 'Unlock'}
+                onPress={props.onPress}
+                containerStyles={styles.dataButton}
+                textStyles={styles.dataButtonText}
             />
-        </View>);
-}
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     plusContainer: {
@@ -47,26 +53,25 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#1E6BFF',
         padding: 15,
-        alignItems: 'center'
+        alignItems: 'center',
     },
     pdProImageStyles: {
         margin: 10,
         marginVertical: 12,
-        flex: 4
+        flex: 4,
     },
     textContainer: {
         alignItems: 'flex-start',
         alignSelf: 'flex-start',
         marginLeft: 12,
         paddingTop: 6,
-        flex: 1
+        flex: 1,
     },
     onlineBackupText: {
-
         opacity: 0.6,
         fontWeight: '600',
         fontSize: 16,
-        marginBottom: 4
+        marginBottom: 4,
     },
     plusButton: {
         backgroundColor: '#1E6BFF',
@@ -75,10 +80,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
         marginBottom: 12,
         marginTop: 16,
-        alignSelf: 'stretch'
+        alignSelf: 'stretch',
     },
     plusButtonText: {
-        color: 'white'
+        color: 'white',
     },
     dataButton: {
         alignSelf: 'stretch',
@@ -86,9 +91,9 @@ const styles = StyleSheet.create({
         marginHorizontal: 12,
         marginVertical: 24,
         borderRadius: 12,
-        shadowColor: 'transparent'
+        shadowColor: 'transparent',
     },
     dataButtonText: {
-        color: '#1E6BFF'
-    }
+        color: '#1E6BFF',
+    },
 });

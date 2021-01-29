@@ -24,31 +24,31 @@ type PoolListItemProps = PoolListItemInternalProps & PoolListItemExternalProps;
 const mapStateToProps = (state: AppState, ownProps: PoolListItemExternalProps): PoolListItemProps => {
     return {
         ...ownProps,
-        deviceSettings: state.deviceSettings
+        deviceSettings: state.deviceSettings,
     };
 };
 
 const PoolListComponent: React.FunctionComponent<PoolListItemProps> = (props) => {
-
     const handleButtonPressed = (): void => {
         props.onPoolSelected(props.pool);
-    }
+    };
 
     const pool = props.pool;
     const volumeDisplay = Util.getDisplayVolume(pool.gallons, props.deviceSettings);
 
     return (
         <TouchableScale
-            style={ styles.container }
-            onPress={ handleButtonPressed }
-            underlayColor={ 'transparent' }
-            activeScale={ 0.99 }>
-
-            <PDText style={ styles.poolNameText } >{ pool.name }</PDText>
-            <PDText style={ styles.poolVolumeText } >{ `${getDisplayForWaterType(pool.waterType)} | ${volumeDisplay}` }</PDText>
+            style={styles.container}
+            onPress={handleButtonPressed}
+            underlayColor={'transparent'}
+            activeScale={0.99}>
+            <PDText style={styles.poolNameText}>{pool.name}</PDText>
+            <PDText style={styles.poolVolumeText}>{`${getDisplayForWaterType(
+                pool.waterType,
+            )} | ${volumeDisplay}`}</PDText>
         </TouchableScale>
     );
-}
+};
 
 export const PoolListItem = connect(mapStateToProps)(PoolListComponent);
 
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
         paddingBottom: 0,
         marginBottom: 15,
         borderColor: '#F0F0F0',
-        borderWidth: 2
+        borderWidth: 2,
     },
     poolNameText: {
         color: 'black',
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         marginTop: 12,
         marginLeft: 24,
         marginRight: 12,
-        fontWeight: '700'
+        fontWeight: '700',
     },
     poolVolumeText: {
         color: 'black',
@@ -79,6 +79,6 @@ const styles = StyleSheet.create({
         marginRight: 12,
         marginBottom: 12,
         fontWeight: '600',
-        opacity: 0.6
-    }
+        opacity: 0.6,
+    },
 });

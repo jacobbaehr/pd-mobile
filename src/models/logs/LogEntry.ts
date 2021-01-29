@@ -38,7 +38,7 @@ export class LogEntry {
             treatmentEntries: 'TreatmentEntry[]',
             ts: 'int',
             recipeKey: 'string',
-            notes: 'string?'
+            notes: 'string?',
         },
     };
 
@@ -49,7 +49,7 @@ export class LogEntry {
         readingEntries: ReadingEntry[],
         treatmentEntries: TreatmentEntry[],
         recipeKey: RecipeKey,
-        notes: string | null
+        notes: string | null,
     ): LogEntry {
         let logEntry = new LogEntry();
         logEntry.objectId = objectId;

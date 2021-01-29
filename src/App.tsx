@@ -13,8 +13,7 @@ import { getApolloClient } from './services/gql/Client';
 import { IAP } from './services/IAP';
 import { RecipeService } from './services/RecipeService';
 
-
-interface AppProps extends DispatchProp<any> { }
+interface AppProps extends DispatchProp<any> {}
 
 export const AppComponent: React.FunctionComponent<AppProps> = () => {
     const [isDatabaseLoaded, setIsDatabaseLoaded] = React.useState(false);
@@ -53,7 +52,7 @@ export const AppComponent: React.FunctionComponent<AppProps> = () => {
             // We don't want to block app-start on any network calls
             RecipeService.updateAllLocalRecipes(apolloClient);
         }
-    }
+    };
 
     const isAppReady = isDatabaseLoaded && areRecipesPreloaded && areDeviceSettingsLoaded;
     if (!isAppReady) {
@@ -61,10 +60,10 @@ export const AppComponent: React.FunctionComponent<AppProps> = () => {
     }
 
     return (
-        <ApolloProvider client={ apolloClient }>
+        <ApolloProvider client={apolloClient}>
             <PDNavStack />
         </ApolloProvider>
     );
-}
+};
 
 export const App = connect()(AppComponent);

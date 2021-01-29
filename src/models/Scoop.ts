@@ -1,5 +1,5 @@
-import { TreatmentType } from "./recipe/Treatment";
-import { Units } from "~/models/TreatmentUnits";
+import { TreatmentType } from './recipe/Treatment';
+import { Units } from '~/models/TreatmentUnits';
 
 /// Represents a custom volumetric unit defined by a user.
 export interface Scoop {
@@ -9,5 +9,5 @@ export interface Scoop {
     displayValue: string;
     displayUnits: Units;
     ounces: number;
-    type: TreatmentType;    // This is a subset of string
+    type: TreatmentType; // This is a subset of string
 }

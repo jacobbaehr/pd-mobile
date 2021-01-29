@@ -47,7 +47,7 @@ const mapStateToProps = (state: AppState, ownProps: TreatmentListScreenProps): T
         readings: state.readingEntries,
         pool: state.selectedPool!,
         pickerState: state.pickerState,
-        deviceSettings: state.deviceSettings
+        deviceSettings: state.deviceSettings,
     };
 };
 
@@ -68,11 +68,16 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
     // This happens on every render... whatever.
     React.useEffect(() => {
         const { pickerState } = props;
-        if (pickerState && pickerState.key === 'chem_concentration' && pickerState.value !== null && concentrationTreatmentVar) {
+        if (
+            pickerState &&
+            pickerState.key === 'chem_concentration' &&
+            pickerState.value !== null &&
+            concentrationTreatmentVar
+        ) {
             const newConcentration = Math.min(Math.max(parseInt(pickerState.value), 1), 100);
 
             const treatmentModification = (ts: TreatmentState) => {
-                const newOunces = ts.ounces * ts.concentration / newConcentration;
+                const newOunces = (ts.ounces * ts.concentration) / newConcentration;
                 let newValue = newOunces;
                 const scoop = TreatmentListHelpers.getScoopForTreatment(ts.treatment.var, allScoops);
                 if (ts.treatment.type === 'dryChemical') {
@@ -85,8 +90,13 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                 ts.value = newValue.toFixed(ts.decimalPlaces);
                 ts.concentration = newConcentration;
                 return true;
-            }
-            const didChange = TreatmentListHelpers.updateTreatmentState(concentrationTreatmentVar, treatmentModification, treatmentStates, setTreatmentStates);
+            };
+            const didChange = TreatmentListHelpers.updateTreatmentState(
+                concentrationTreatmentVar,
+                treatmentModification,
+                treatmentStates,
+                setTreatmentStates,
+            );
 
             dispatch(updatePickerState(null));
             updateConcentrationTreatment(null);
@@ -122,76 +132,81 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
 
         // Save the last-used units:
         const newDeviceSettings = Util.deepCopy(deviceSettings);
-        newDeviceSettings.treatments.units = TreatmentListHelpers.getUpdatedLastUsedUnits(newDeviceSettings.treatments.units, treatmentStates);
+        newDeviceSettings.treatments.units = TreatmentListHelpers.getUpdatedLastUsedUnits(
+            newDeviceSettings.treatments.units,
+            treatmentStates,
+        );
         dispatch(updateDeviceSettings(newDeviceSettings));
         await DeviceSettingsService.saveSettings(newDeviceSettings);
 
         navigate('PoolScreen');
-    }
+    };
 
     const onMessage = (event: WebViewMessageEvent) => {
         const tes = CalculationService.getTreatmentEntriesFromWebviewMessage(event, recipe);
 
         const lastUnits = deviceSettings.treatments.units;
-        const tss: TreatmentState[] = tes.map(te => {
-            const t = TreatmentListHelpers.getTreatmentFromRecipe(te.var, recipe);
-            if (t === null) {
-                return null;
-            }
-            const defaultDecimalPlaces = 1;
-
-            let ounces = te.ounces || 0;
-            const baseConcentration = t.concentration || 100;
-            const concentrationOverride = TreatmentListHelpers.getConcentrationForTreatment(t.var, deviceSettings);
-
-            if (concentrationOverride) {
-                ounces = ounces * baseConcentration / concentrationOverride;
-            }
-
-            let units: Units = 'ounces';
-            let value = ounces;
-            const scoop = TreatmentListHelpers.getScoopForTreatment(t.var, allScoops);
-            console.log('a');
-
-            if (!!scoop) {
-                console.log('b');
-                // If we have a saved scoop, start with that:
-                units = 'scoops';
-                if (t.type === 'dryChemical') {
-                    console.log('c');
-                    value = Converter.dry(value, 'ounces', 'scoops', scoop);
-                    console.log('value: ' + value);
-                    console.log(JSON.stringify(scoop));
-                } else if (t.type === 'liquidChemical') {
-                    value = Converter.wet(value, 'ounces', 'scoops', scoop);
+        const tss: TreatmentState[] = tes
+            .map((te) => {
+                const t = TreatmentListHelpers.getTreatmentFromRecipe(te.var, recipe);
+                if (t === null) {
+                    return null;
                 }
-            } else if (!!lastUnits[t.var]) {
-                // Otherwise, try to start w/ the same units as last time
-                units = lastUnits[t.var] as Units;
-                if (units === 'scoops' && !scoop) {
-                    /// If the scoop has been deleted
-                    units = 'ounces';
-                }
-                if (t.type === 'dryChemical') {
-                    value = Converter.dry(value, 'ounces', units as DryChemicalUnits, scoop);
-                } else if (t.type === 'liquidChemical') {
-                    value = Converter.wet(value, 'ounces', units as WetChemicalUnits, scoop);
-                }
-            }
+                const defaultDecimalPlaces = 1;
 
-            return {
-                treatment: t,
-                isOn: (t.type === 'calculation'),
-                value: value.toFixed(defaultDecimalPlaces),
-                units: units as Units,
-                ounces,
-                decimalPlaces: defaultDecimalPlaces,
-                concentration: concentrationOverride || baseConcentration
-            }
-        }).filter(Util.notEmpty);
+                let ounces = te.ounces || 0;
+                const baseConcentration = t.concentration || 100;
+                const concentrationOverride = TreatmentListHelpers.getConcentrationForTreatment(t.var, deviceSettings);
+
+                if (concentrationOverride) {
+                    ounces = (ounces * baseConcentration) / concentrationOverride;
+                }
+
+                let units: Units = 'ounces';
+                let value = ounces;
+                const scoop = TreatmentListHelpers.getScoopForTreatment(t.var, allScoops);
+                console.log('a');
+
+                if (!!scoop) {
+                    console.log('b');
+                    // If we have a saved scoop, start with that:
+                    units = 'scoops';
+                    if (t.type === 'dryChemical') {
+                        console.log('c');
+                        value = Converter.dry(value, 'ounces', 'scoops', scoop);
+                        console.log('value: ' + value);
+                        console.log(JSON.stringify(scoop));
+                    } else if (t.type === 'liquidChemical') {
+                        value = Converter.wet(value, 'ounces', 'scoops', scoop);
+                    }
+                } else if (!!lastUnits[t.var]) {
+                    // Otherwise, try to start w/ the same units as last time
+                    units = lastUnits[t.var] as Units;
+                    if (units === 'scoops' && !scoop) {
+                        /// If the scoop has been deleted
+                        units = 'ounces';
+                    }
+                    if (t.type === 'dryChemical') {
+                        value = Converter.dry(value, 'ounces', units as DryChemicalUnits, scoop);
+                    } else if (t.type === 'liquidChemical') {
+                        value = Converter.wet(value, 'ounces', units as WetChemicalUnits, scoop);
+                    }
+                }
+
+                return {
+                    treatment: t,
+                    isOn: t.type === 'calculation',
+                    value: value.toFixed(defaultDecimalPlaces),
+                    units: units as Units,
+                    ounces,
+                    decimalPlaces: defaultDecimalPlaces,
+                    concentration: concentrationOverride || baseConcentration,
+                };
+            })
+            .filter(Util.notEmpty);
 
         setTreatmentStates(tss);
-    }
+    };
 
     const handleIconPressed = (varName: string) => {
         Haptic.heavy();
@@ -202,10 +217,10 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
             property: LayoutAnimation.Properties.scaleXY,
         };
         const animationConfig = {
-            duration: 250, // how long the animation will take	
+            duration: 250, // how long the animation will take
             create: undefined,
             update: springAnimationProperties,
-            delete: undefined
+            delete: undefined,
         };
         LayoutAnimation.configureNext(animationConfig);
 
@@ -215,9 +230,9 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                 ts.value = '0';
             }
             return true;
-        }
+        };
         TreatmentListHelpers.updateTreatmentState(varName, modification, treatmentStates, setTreatmentStates);
-    }
+    };
 
     const handleUnitsButtonPressed = (varName: string) => {
         Haptic.light();
@@ -238,9 +253,9 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
             ts.units = newUnits;
             ts.value = newValue.toFixed(ts.decimalPlaces);
             return true;
-        }
+        };
         TreatmentListHelpers.updateTreatmentState(varName, modification, treatmentStates, setTreatmentStates);
-    }
+    };
 
     const handleTextUpdated = (varName: string, newText: string) => {
         const modification = (ts: TreatmentState) => {
@@ -267,7 +282,7 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
             return false;
         };
         TreatmentListHelpers.updateTreatmentState(varName, modification, treatmentStates, setTreatmentStates);
-    }
+    };
 
     const handleTextFinishedEditing = (varName: string, newText: string) => {
         const modification = (ts: TreatmentState) => {
@@ -297,21 +312,25 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
             const scoop = TreatmentListHelpers.getScoopForTreatment(ts.treatment.var, allScoops);
 
             if (ts.treatment.type === 'dryChemical') {
-                ts.value = Converter.dry(newOunces, 'ounces', ts.units as DryChemicalUnits, scoop).toFixed(newDecimalPlaces);
+                ts.value = Converter.dry(newOunces, 'ounces', ts.units as DryChemicalUnits, scoop).toFixed(
+                    newDecimalPlaces,
+                );
             } else if (ts.treatment.type === 'liquidChemical') {
-                ts.value = Converter.wet(newOunces, 'ounces', ts.units as WetChemicalUnits, scoop).toFixed(newDecimalPlaces);
+                ts.value = Converter.wet(newOunces, 'ounces', ts.units as WetChemicalUnits, scoop).toFixed(
+                    newDecimalPlaces,
+                );
             } else if (ts.treatment.type === 'calculation') {
                 ts.value = newText;
             }
             return true;
         };
         TreatmentListHelpers.updateTreatmentState(varName, modification, treatmentStates, setTreatmentStates);
-    }
+    };
 
     const handleTreatmentNameButtonPressed = (varName: string) => {
-
         const t = TreatmentListHelpers.getTreatmentFromRecipe(varName, recipe);
-        const concentration = TreatmentListHelpers.getConcentrationForTreatment(varName, deviceSettings) || t?.concentration || 100;
+        const concentration =
+            TreatmentListHelpers.getConcentrationForTreatment(varName, deviceSettings) || t?.concentration || 100;
         updateConcentrationTreatment(varName);
 
         Keyboard.dismiss();
@@ -319,68 +338,64 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
             title: `Concentration %`,
             subtitle: t?.name || '',
             pickerKey: 'chem_concentration',
-            prevSelection: concentration.toFixed(0)
+            prevSelection: concentration.toFixed(0),
         };
         navigate('PickerScreen', pickerProps);
-    }
+    };
 
     const handleBackPress = () => {
         goBack();
-    }
+    };
 
     const sections = [{ title: 'booga', data: treatmentStates }];
     let progress = 0;
     if (recipe) {
-        const countedTreatmentStates = treatmentStates.filter(ts => ts.treatment.type !== 'calculation');
-        const completed = countedTreatmentStates.filter(ts => ts.isOn);
-        progress = (countedTreatmentStates.length == 0)
-            ? 0
-            : (completed.length / countedTreatmentStates.length);
+        const countedTreatmentStates = treatmentStates.filter((ts) => ts.treatment.type !== 'calculation');
+        const completed = countedTreatmentStates.filter((ts) => ts.isOn);
+        progress = countedTreatmentStates.length == 0 ? 0 : completed.length / countedTreatmentStates.length;
     }
 
     return (
-        <SafeAreaView style={ { display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: 'white' } }>
-            <TreatmentListHeader handleBackPress={ handleBackPress } pool={ props.pool } percentComplete={ progress } />
-            <View style={ styles.container }>
+        <SafeAreaView style={{ display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: 'white' }}>
+            <TreatmentListHeader handleBackPress={handleBackPress} pool={props.pool} percentComplete={progress} />
+            <View style={styles.container}>
                 <KeyboardAwareSectionList
-                    style={ styles.sectionList }
-                    keyboardDismissMode={ 'interactive' }
-                    keyboardShouldPersistTaps={ 'handled' }
-                    renderItem={ ({ item }) => <TreatmentListItem
-                        treatmentState={ item }
-                        onTextboxUpdated={ handleTextUpdated }
-                        onTextboxFinished={ handleTextFinishedEditing }
-                        handleUnitsButtonPressed={ handleUnitsButtonPressed }
-                        handleIconPressed={ handleIconPressed }
-                        handleTreatmentNameButtonPressed={ handleTreatmentNameButtonPressed }
-                        inputAccessoryId={ keyboardAccessoryViewId } /> }
-                    sections={ sections }
-                    keyExtractor={ (item) => item.treatment.var }
-                    contentInsetAdjustmentBehavior={ 'always' }
-                    stickySectionHeadersEnabled={ false }
-                    canCancelContentTouches={ true }
-                    renderSectionFooter={ () => <TreatmentListFooter text={ notes } updatedText={ setNotes } /> }
+                    style={styles.sectionList}
+                    keyboardDismissMode={'interactive'}
+                    keyboardShouldPersistTaps={'handled'}
+                    renderItem={({ item }) => (
+                        <TreatmentListItem
+                            treatmentState={item}
+                            onTextboxUpdated={handleTextUpdated}
+                            onTextboxFinished={handleTextFinishedEditing}
+                            handleUnitsButtonPressed={handleUnitsButtonPressed}
+                            handleIconPressed={handleIconPressed}
+                            handleTreatmentNameButtonPressed={handleTreatmentNameButtonPressed}
+                            inputAccessoryId={keyboardAccessoryViewId}
+                        />
+                    )}
+                    sections={sections}
+                    keyExtractor={(item) => item.treatment.var}
+                    contentInsetAdjustmentBehavior={'always'}
+                    stickySectionHeadersEnabled={false}
+                    canCancelContentTouches={true}
+                    renderSectionFooter={() => <TreatmentListFooter text={notes} updatedText={setNotes} />}
                 />
-                <WebView
-                    containerStyle={ styles.webview }
-                    onMessage={ onMessage }
-                    source={ { html: htmlString } }
-                />
-                <View style={ styles.bottomButtonContainer }>
-                    <BoringButton
-                        containerStyles={ styles.button }
-                        onPress={ save }
-                        title="Save"
-                    />
+                <WebView containerStyle={styles.webview} onMessage={onMessage} source={{ html: htmlString }} />
+                <View style={styles.bottomButtonContainer}>
+                    <BoringButton containerStyles={styles.button} onPress={save} title="Save" />
                 </View>
             </View>
-            <PlatformSpecific include={ ["ios"] }>
-                <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
-                    <View style={ styles.keyboardAccessoryContainer }>
+            <PlatformSpecific include={['ios']}>
+                <InputAccessoryView nativeID={keyboardAccessoryViewId}>
+                    <View style={styles.keyboardAccessoryContainer}>
                         <BoringButton
-                            containerStyles={ styles.keyboardAccessoryButton }
-                            textStyles={ styles.keyboardAccessoryButtonText }
-                            onPress={ () => { Keyboard.dismiss(); Haptic.light(); } }
+                            containerStyles={styles.keyboardAccessoryButton}
+                            textStyles={styles.keyboardAccessoryButtonText}
+                            onPress={() => {
+                                Keyboard.dismiss();
+                                Haptic.light();
+                            }}
                             title="Done Typing"
                         />
                     </View>
@@ -388,45 +403,45 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
             </PlatformSpecific>
         </SafeAreaView>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
     },
     sectionList: {
         flex: 1,
         backgroundColor: '#F5F3FF',
-        paddingTop: 12
+        paddingTop: 12,
     },
     webview: {
         backgroundColor: 'red',
         height: 1,
-        flex: 0
+        flex: 0,
     },
     text: {
         margin: 15,
         justifyContent: 'center',
-        color: 'black'
+        color: 'black',
     },
     bottomButtonContainer: {
         backgroundColor: 'white',
         borderTopColor: '#F0F0F0',
-        borderTopWidth: 2
+        borderTopWidth: 2,
     },
     button: {
         alignSelf: 'stretch',
         backgroundColor: '#B700F8',
         margin: 12,
-        marginBottom: 24
+        marginBottom: 24,
     },
     sectionTitle: {
         fontWeight: '700',
         fontSize: 28,
         marginTop: 6,
         marginBottom: 4,
-        marginLeft: 16
+        marginLeft: 16,
     },
     keyboardAccessoryContainer: {
         backgroundColor: '#F8F8F8',
@@ -434,12 +449,12 @@ const styles = StyleSheet.create({
     },
     keyboardAccessoryButton: {
         backgroundColor: 'rgba(57, 16, 232, 0.6)',
-        marginHorizontal: 24
+        marginHorizontal: 24,
     },
     keyboardAccessoryButtonText: {
         color: 'white',
-        fontSize: 18
-    }
+        fontSize: 18,
+    },
 });
 
 export const TreatmentListScreen = connect(mapStateToProps)(TreatmentListScreenComponent);

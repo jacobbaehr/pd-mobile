@@ -2,28 +2,27 @@ import { DisplayValueOption } from '../Util';
 
 export type WallTypeValue = 'vinyl' | 'plaster' | 'fiberglass' | 'galvanized_steel' | 'tile';
 
-
 export const wallTypeOptions: DisplayValueOption<WallTypeValue>[] = [
     {
         display: 'Vinyl',
-        value: 'vinyl'
+        value: 'vinyl',
     },
     {
         display: 'Plaster',
-        value: 'plaster'
+        value: 'plaster',
     },
     {
         display: 'Fiberglass',
-        value: 'fiberglass'
+        value: 'fiberglass',
     },
     {
         display: 'Galvanized Steel',
-        value: 'galvanized_steel'
+        value: 'galvanized_steel',
     },
     {
         display: 'Tile',
-        value: 'tile'
-    }
+        value: 'tile',
+    },
 ];
 
 export const getDisplayForWallType = (value: WallTypeValue): string | null => {
@@ -33,4 +32,4 @@ export const getDisplayForWallType = (value: WallTypeValue): string | null => {
         }
     }
     return null;
-}
+};

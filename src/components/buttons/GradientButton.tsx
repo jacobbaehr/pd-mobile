@@ -19,25 +19,23 @@ interface ButtonProps {
 export class GradientButton extends React.Component<ButtonProps, {}> {
     handleButtonPress = () => {
         this.props.onPress();
-    }
+    };
 
     render() {
         const gradientStart = this.props.gradientStart ? this.props.gradientStart : '#07A5FF';
         const gradientEnd = this.props.gradientEnd ? this.props.gradientEnd : '#FF0073';
         return (
             <TouchableScale
-                style={ [styles.container, this.props.containerStyles] }
-                onPress={ this.handleButtonPress }
-                disabled={ this.props.disabled }
-                activeScale={ 0.96 }>
+                style={[styles.container, this.props.containerStyles]}
+                onPress={this.handleButtonPress}
+                disabled={this.props.disabled}
+                activeScale={0.96}>
                 <LinearGradient
-                    colors={ [gradientStart, gradientEnd] }
-                    start={ { x: -0.1, y: -0.1 } }
-                    end={ { x: 1.15, y: 1.1 } }
-                    style={ styles.linearGradient }>
-                    <PDText style={ styles.text }>
-                        { this.props.title }
-                    </PDText>
+                    colors={[gradientStart, gradientEnd]}
+                    start={{ x: -0.1, y: -0.1 }}
+                    end={{ x: 1.15, y: 1.1 }}
+                    style={styles.linearGradient}>
+                    <PDText style={styles.text}>{this.props.title}</PDText>
                 </LinearGradient>
             </TouchableScale>
         );
@@ -52,17 +50,17 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 3,
         elevation: 1,
-        width: '100%'
+        width: '100%',
     },
     text: {
         color: 'white',
         textAlign: 'center',
         fontSize: 24,
         fontWeight: '700',
-        paddingVertical: 15
+        paddingVertical: 15,
     },
     linearGradient: {
         borderRadius: 9.5,
-        marginVertical: 8
-    }
+        marginVertical: 8,
+    },
 });

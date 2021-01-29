@@ -10,33 +10,27 @@ interface PDProgressBarProps {
 }
 
 export const PDProgressBar: React.FunctionComponent<PDProgressBarProps> = (props) => {
-
     const foregroundFlex = props.progress;
     const backgroundFlex = 1 - foregroundFlex;
 
-    const containerStyle = StyleSheet.flatten([
-        styles.container,
-        props.style
-    ]);
+    const containerStyle = StyleSheet.flatten([styles.container, props.style]);
 
     const backgroundStyle = {
         backgroundColor: 'transparent',
-        flex: backgroundFlex
+        flex: backgroundFlex,
     };
     return (
-        <View style={ containerStyle }>
-            <View
-                style={ { flex: foregroundFlex, backgroundColor: props.foregroundColor, borderRadius: 8 } }>
-            </View>
-            <View style={ backgroundStyle } />
+        <View style={containerStyle}>
+            <View style={{ flex: foregroundFlex, backgroundColor: props.foregroundColor, borderRadius: 8 }}></View>
+            <View style={backgroundStyle} />
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         borderRadius: 8,
-        overflow: 'hidden'
-    }
+        overflow: 'hidden',
+    },
 });

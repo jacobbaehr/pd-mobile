@@ -27,7 +27,6 @@ import { Scoop } from '~/models/Scoop';
 import { DS } from '~/services/DSUtil';
 import { ExportService } from '~/services/ExportService';
 
-
 interface SettingsProps {
     deviceSettings: DeviceSettings;
 }
@@ -35,12 +34,11 @@ interface SettingsProps {
 const mapStateToProps = (state: AppState, ownProps: SettingsProps): SettingsProps => {
     return {
         ...ownProps,
-        deviceSettings: state.deviceSettings
+        deviceSettings: state.deviceSettings,
     };
 };
 
 const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
-
     const { goBack, navigate } = useNavigation<StackNavigationProp<PDNavStackParamList, 'Settings'>>();
     const insets = useSafeArea();
     const ds = props.deviceSettings;
@@ -48,26 +46,26 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
 
     const handleGoBack = () => {
         goBack();
-    }
+    };
 
     const handlePressedUnits = () => {
-        const newUnits = (ds.units === 'metric') ? 'us' : 'metric';
+        const newUnits = ds.units === 'metric' ? 'us' : 'metric';
         const newSettings: DeviceSettings = {
             ...ds,
-            units: newUnits
+            units: newUnits,
         };
         dispatch(updateDeviceSettings(newSettings));
         DeviceSettingsService.saveSettings(newSettings);
-    }
-    const unitsText = (ds.units === 'metric') ? 'Metric' : 'US';
+    };
+    const unitsText = ds.units === 'metric' ? 'Metric' : 'US';
 
     const handleUpgradePressed = () => {
         navigate('Buy');
-    }
+    };
 
     const handleForumPressed = () => {
         Linking.openURL(Config.forum_url);
-    }
+    };
 
     const handleDataButtonPressed = async () => {
         try {
@@ -75,96 +73,98 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
         } catch (e) {
             console.error(e);
         }
-    }
+    };
 
     const handleAddScoopPressed = () => {
         Haptic.medium();
         navigate('ScoopDetails', { prevScoop: null });
-    }
+    };
 
     const handlePressedScoop = (scoop: Scoop) => {
         navigate('ScoopDetails', { prevScoop: scoop });
-    }
+    };
 
     const getScoops = () => {
-        return props.deviceSettings.scoops.map(scoop => <ScoopListItem scoop={ scoop } handlePressedScoop={ handlePressedScoop } key={ scoop.guid } />);
-    }
+        return props.deviceSettings.scoops.map((scoop) => (
+            <ScoopListItem scoop={scoop} handlePressedScoop={handlePressedScoop} key={scoop.guid} />
+        ));
+    };
 
     const dynamicInsets: ViewStyle = {
-        paddingBottom: insets.bottom
-    }
+        paddingBottom: insets.bottom,
+    };
 
     const hitSlop = 5;
-    return <SafeAreaView forceInset={ { bottom: 'never' } } style={ styles.safeAreaContainer }>
-        <SettingsHeader goBack={ handleGoBack } />
-        <ScrollView style={ styles.scrollView }>
-            <PDText style={ styles.sectionTitle }>Units</PDText>
-            <View style={ styles.listItemContainer }>
-                <PDText style={ styles.unitsTitle }>Pool Volume</PDText>
-                <CycleButton
-                    styles={ styles.unitsButton }
-                    title={ unitsText }
-                    textStyles={ styles.unitsButtonText }
-                    onPress={ handlePressedUnits } />
-            </View>
-            <View style={ styles.addScoopSectionHeader }>
-                <PDText style={ styles.sectionTitle }>Scoops</PDText>
-                <TouchableScale
-                    style={ styles.addScoopButtonContainer }
-                    underlayColor={ '#F8F8F8' }
-                    activeScale={ 0.97 }
-                    onPress={ handleAddScoopPressed }
-                    hitSlop={ { top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop } }>
-                    <Image
-                        style={ styles.addScoopButtonImage }
-                        source={ images.plusButton }
-                        width={ 32 }
-                        height={ 32 } />
-                </TouchableScale>
-            </View>
-            { getScoops() }
+    return (
+        <SafeAreaView forceInset={{ bottom: 'never' }} style={styles.safeAreaContainer}>
+            <SettingsHeader goBack={handleGoBack} />
+            <ScrollView style={styles.scrollView}>
+                <PDText style={styles.sectionTitle}>Units</PDText>
+                <View style={styles.listItemContainer}>
+                    <PDText style={styles.unitsTitle}>Pool Volume</PDText>
+                    <CycleButton
+                        styles={styles.unitsButton}
+                        title={unitsText}
+                        textStyles={styles.unitsButtonText}
+                        onPress={handlePressedUnits}
+                    />
+                </View>
+                <View style={styles.addScoopSectionHeader}>
+                    <PDText style={styles.sectionTitle}>Scoops</PDText>
+                    <TouchableScale
+                        style={styles.addScoopButtonContainer}
+                        underlayColor={'#F8F8F8'}
+                        activeScale={0.97}
+                        onPress={handleAddScoopPressed}
+                        hitSlop={{ top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop }}>
+                        <Image style={styles.addScoopButtonImage} source={images.plusButton} width={32} height={32} />
+                    </TouchableScale>
+                </View>
+                {getScoops()}
 
-            <PDText style={ styles.sectionTitle }>{ isUnlocked ? 'Subscription' : 'Unlock' }</PDText>
-            <Upgrade style={ styles.upgradeContainer } onPress={ handleUpgradePressed } isUnlocked={ isUnlocked } />
-            <PDText style={ styles.sectionTitle }>Data Export</PDText>
-            <PDText style={ styles.forumDetails }>This will create a .csv file with all of the history for all of your pools.</PDText>
-            <BoringButton
-                containerStyles={ styles.dataButton }
-                textStyles={ styles.dataButtonText }
-                onPress={ handleDataButtonPressed }
-                title="Export as CSV"
-            />
-            <PDText style={ styles.sectionTitle }>Feedback?</PDText>
-            <PDText style={ styles.forumDetails }>I'd love to hear it in in the forum!</PDText>
-            <BoringButton
-                containerStyles={ styles.dataButton }
-                textStyles={ styles.dataButtonText }
-                onPress={ handleForumPressed }
-                title="Open in Browser"
-            />
-            <View style={ dynamicInsets } />
-        </ScrollView>
-    </SafeAreaView >;
-}
+                <PDText style={styles.sectionTitle}>{isUnlocked ? 'Subscription' : 'Unlock'}</PDText>
+                <Upgrade style={styles.upgradeContainer} onPress={handleUpgradePressed} isUnlocked={isUnlocked} />
+                <PDText style={styles.sectionTitle}>Data Export</PDText>
+                <PDText style={styles.forumDetails}>
+                    This will create a .csv file with all of the history for all of your pools.
+                </PDText>
+                <BoringButton
+                    containerStyles={styles.dataButton}
+                    textStyles={styles.dataButtonText}
+                    onPress={handleDataButtonPressed}
+                    title="Export as CSV"
+                />
+                <PDText style={styles.sectionTitle}>Feedback?</PDText>
+                <PDText style={styles.forumDetails}>I'd love to hear it in in the forum!</PDText>
+                <BoringButton
+                    containerStyles={styles.dataButton}
+                    textStyles={styles.dataButtonText}
+                    onPress={handleForumPressed}
+                    title="Open in Browser"
+                />
+                <View style={dynamicInsets} />
+            </ScrollView>
+        </SafeAreaView>
+    );
+};
 export const SettingsScreen = connect(mapStateToProps)(SettingsComponent);
-
 
 const styles = StyleSheet.create({
     safeAreaContainer: {
         backgroundColor: 'white',
-        flex: 1
+        flex: 1,
     },
     header: {
         display: 'flex',
         flexDirection: 'row',
         backgroundColor: 'white',
         borderBottomColor: '#F0F0F0',
-        borderBottomWidth: 2
+        borderBottomWidth: 2,
     },
     scrollView: {
         flex: 1,
         backgroundColor: '#F5F5F5',
-        paddingTop: 12
+        paddingTop: 12,
     },
     listItemContainer: {
         flexDirection: 'row',
@@ -176,45 +176,43 @@ const styles = StyleSheet.create({
         paddingHorizontal: 24,
         borderRadius: 24,
         borderWidth: 2,
-        borderColor: '#F0F0F0'
+        borderColor: '#F0F0F0',
     },
     unitsTitle: {
         fontWeight: '600',
         fontSize: 22,
         color: 'black',
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
     unitsButton: {
         alignSelf: 'flex-end',
-        marginLeft: 'auto'
+        marginLeft: 'auto',
     },
     unitsButtonText: {
         fontSize: 22,
         paddingHorizontal: 7,
-        paddingVertical: 4
+        paddingVertical: 4,
     },
     addScoopSectionHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 6
+        marginBottom: 6,
     },
     addScoopButtonContainer: {
         marginRight: 28,
-        marginTop: 'auto'
+        marginTop: 'auto',
     },
-    addScoopButtonImage: {
-
-    },
+    addScoopButtonImage: {},
     upgradeContainer: {
         marginVertical: 16,
-        marginHorizontal: 28
+        marginHorizontal: 28,
     },
     sectionTitle: {
         marginTop: 12,
         marginLeft: 16,
         fontSize: 28,
         fontWeight: '700',
-        color: 'black'
+        color: 'black',
     },
     dataButton: {
         alignSelf: 'stretch',
@@ -223,23 +221,21 @@ const styles = StyleSheet.create({
         marginBottom: 24,
     },
     dataButtonText: {
-        color: '#1E6BFF'
+        color: '#1E6BFF',
     },
     forumDetails: {
         marginTop: 12,
         marginLeft: 24,
         fontSize: 22,
         fontWeight: '600',
-        color: '#666'
+        color: '#666',
     },
     forumButton: {
         alignSelf: 'stretch',
         backgroundColor: '#2c5fff',
         margin: 12,
         marginBottom: 24,
-        shadowColor: 'transparent'
+        shadowColor: 'transparent',
     },
-    forumButtonText: {
-
-    }
+    forumButtonText: {},
 });

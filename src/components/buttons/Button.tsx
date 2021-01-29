@@ -20,36 +20,31 @@ interface ButtonProps {
 }
 
 export class Button extends React.Component<ButtonProps, {}> {
-
     handleButtonPress = () => {
         this.props.onPress();
-    }
+    };
 
     render() {
         const slop = this.props.hitSlop || 0;
         return (
             <TouchableScale
-                style={ [styles.container, this.props.styles] }
-                onPress={ this.handleButtonPress }
-                disabled={ this.props.disabled }
-                activeScale={ 0.97 }
-                hitSlop={ { top: slop, left: slop, bottom: slop, right: slop } }>
-                <PDText style={ this.props.textStyles ? this.props.textStyles : styles.text }>
-                    { this.props.title }
-                </PDText>
+                style={[styles.container, this.props.styles]}
+                onPress={this.handleButtonPress}
+                disabled={this.props.disabled}
+                activeScale={0.97}
+                hitSlop={{ top: slop, left: slop, bottom: slop, right: slop }}>
+                <PDText style={this.props.textStyles ? this.props.textStyles : styles.text}>{this.props.title}</PDText>
             </TouchableScale>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-
-    },
+    container: {},
     text: {
         flex: 1,
         color: 'white',
         textAlign: 'center',
         margin: '.5%',
-    }
+    },
 });

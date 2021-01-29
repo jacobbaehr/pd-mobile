@@ -16,44 +16,33 @@ interface TreatmentListHeaderViewInternalProps {
     deviceSettings: DeviceSettings;
 }
 interface TreatmentListHeaderViewExternalProps {
-    handleBackPress: () => void
-    pool: Pool
-    percentComplete: number
+    handleBackPress: () => void;
+    pool: Pool;
+    percentComplete: number;
 }
 type TreatmentListHeaderProps = TreatmentListHeaderViewInternalProps & TreatmentListHeaderViewExternalProps;
 
 const mapStateToProps = (state: AppState, ownProps: TreatmentListHeaderViewExternalProps): TreatmentListHeaderProps => {
     return {
         ...ownProps,
-        deviceSettings: state.deviceSettings
+        deviceSettings: state.deviceSettings,
     };
 };
 
 const TreatmentListHeaderComponent: React.FunctionComponent<TreatmentListHeaderProps> = (props) => {
-
     // const percentText = `${(this.props.percentComplete * 100).toFixed(0)}% Complete`;
     const volumeDisplay = Util.getDisplayVolume(props.pool.gallons, props.deviceSettings);
     const detailsText = `${getDisplayForWaterType(props.pool.waterType)} | ${volumeDisplay}`;
 
     return (
-        <View style={ styles.container }>
-            <BackButton
-                title={ props.pool.name }
-                onPress={ props.handleBackPress }
-                color={ 'treatmentsPurple' } />
-            <PDText style={ styles.gradientText } >
-                Treatments
-                </PDText>
-            <PDProgressBar
-                progress={ props.percentComplete }
-                foregroundColor={ '#B21FF1' }
-                style={ styles.progressBar } />
-            <PDText style={ styles.detailsText }>
-                { detailsText }
-            </PDText>
+        <View style={styles.container}>
+            <BackButton title={props.pool.name} onPress={props.handleBackPress} color={'treatmentsPurple'} />
+            <PDText style={styles.gradientText}>Treatments</PDText>
+            <PDProgressBar progress={props.percentComplete} foregroundColor={'#B21FF1'} style={styles.progressBar} />
+            <PDText style={styles.detailsText}>{detailsText}</PDText>
         </View>
     );
-}
+};
 
 export const TreatmentListHeader = connect(mapStateToProps)(TreatmentListHeaderComponent);
 
@@ -64,22 +53,22 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         backgroundColor: 'white',
         borderBottomColor: '#F0F0F0',
-        borderBottomWidth: 2
+        borderBottomWidth: 2,
     },
     gradientText: {
         color: '#B21FF1',
         fontSize: 28,
         fontWeight: '700',
-        marginTop: 3
+        marginTop: 3,
     },
     progressBar: {
         backgroundColor: 'rgba(0,0,0,0.2)',
-        height: 6
+        height: 6,
     },
     detailsText: {
         color: 'rgba(0,0,0,.6)',
         fontWeight: '600',
         fontSize: 18,
-        marginVertical: 7
-    }
+        marginVertical: 7,
+    },
 });

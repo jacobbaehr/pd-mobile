@@ -1,4 +1,4 @@
-import { DeviceSettings } from "~/models/DeviceSettings";
+import { DeviceSettings } from '~/models/DeviceSettings';
 
 export class DS {
     static isSubscriptionValid = (ds: DeviceSettings, now: number): boolean => {
@@ -6,5 +6,5 @@ export class DS {
             return false;
         }
         return ds.sub_exp > now;
-    }
+    };
 }

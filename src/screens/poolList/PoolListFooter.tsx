@@ -6,8 +6,8 @@ import { images } from '~/assets/images';
 import { PoolListFooterNonEmpty } from './PoolListFooterNonEmpty';
 
 interface PoolListFooterProps {
-    isEmpty: boolean,
-    handlePressedUpgrade: () => void
+    isEmpty: boolean;
+    handlePressedUpgrade: () => void;
 }
 
 export const PoolListFooter: React.FunctionComponent<PoolListFooterProps> = (props) => {
@@ -16,24 +16,18 @@ export const PoolListFooter: React.FunctionComponent<PoolListFooterProps> = (pro
     const imageStyles = {
         ...styles.image,
         height: imageHeight,
-        width: imageWidth
+        width: imageWidth,
     };
     if (!props.isEmpty) {
-        return <PoolListFooterNonEmpty pressedUpgrade={ props.handlePressedUpgrade } />;
+        return <PoolListFooterNonEmpty pressedUpgrade={props.handlePressedUpgrade} />;
     }
     return (
         <View>
-            <PDText style={ styles.bottomText }>
-                Tap the + icon above to get started.
-                </PDText>
-            <Image
-                style={ imageStyles }
-                source={ images.poolListEmpty }
-                width={ imageWidth }
-                height={ imageHeight } />
+            <PDText style={styles.bottomText}>Tap the + icon above to get started.</PDText>
+            <Image style={imageStyles} source={images.poolListEmpty} width={imageWidth} height={imageHeight} />
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     button: {
@@ -45,17 +39,17 @@ const styles = StyleSheet.create({
         marginHorizontal: 14,
         marginTop: 20,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     buttonEmpty: {
-        marginTop: 0
+        marginTop: 0,
     },
     buttonNonEmpty: {
-        opacity: 0.25
+        opacity: 0.25,
     },
     plusText: {
         color: 'black',
-        fontSize: 80
+        fontSize: 80,
         // marginTop: -10
     },
     bottomText: {
@@ -64,9 +58,9 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         marginHorizontal: 20,
         textAlign: 'center',
-        marginTop: 100
+        marginTop: 100,
     },
     image: {
-        alignSelf: 'center'
-    }
+        alignSelf: 'center',
+    },
 });

@@ -9,7 +9,6 @@ const recipeFolderName = 'recipes';
 const defaultRecipes: Recipe[] = [defaultRecipe];
 
 export namespace RecipeRepo {
-
     /// Attempts to load the recipes from the Recipe folder
     export const loadLocalRecipeWithKey = async (recipeKey: RecipeKey): Promise<Recipe> => {
         const filePath = getFilepathForRecipeKey(recipeKey);
@@ -24,7 +23,7 @@ export namespace RecipeRepo {
         // TODO: validate recipe object here
 
         return recipe;
-    }
+    };
 
     /// Saves all the pre-packaged recipes to the file-system:
     export const savePreloadedRecipes = async () => {
@@ -33,14 +32,14 @@ export namespace RecipeRepo {
         } catch (e) {
             return Promise.reject(e);
         }
-        const promises = defaultRecipes.map(r => {
+        const promises = defaultRecipes.map((r) => {
             return new Promise<void>(async (resolve) => {
                 await RecipeRepo.saveRecipe(r);
                 resolve();
             });
         });
         await Promise.all(promises);
-    }
+    };
 
     /// Saves recipe, will overwrite existing file if it already exists.
     export const saveRecipe = async (recipe: Recipe): Promise<Boolean> => {
@@ -61,27 +60,28 @@ export namespace RecipeRepo {
             console.warn(JSON.stringify(e));
             return false;
         }
-    }
+    };
 
     /// Loads the latest version of each recipe from the filesystem
     export const loadLatestLocalRecipes = async (): Promise<Recipe[]> => {
         const latestRecipeKeys = await RecipeRepo.loadLatestLocalRecipeKeys();
-        const loadLatest = latestRecipeKeys.map(key => RecipeRepo.loadLocalRecipeWithKey(key));
+        const loadLatest = latestRecipeKeys.map((key) => RecipeRepo.loadLocalRecipeWithKey(key));
         return await Promise.all(loadLatest);
-    }
+    };
 
     export const loadLatestLocalRecipeKeys = async (): Promise<RecipeKey[]> => {
         const folderPath = `${RNFS.DocumentDirectoryPath}/${recipeFolderName}/`;
         const allRecipeFiles = await RNFS.readDir(folderPath);
-        const latestRecipeInfos: { id: string, ts: number }[] = [];
+        const latestRecipeInfos: { id: string; ts: number }[] = [];
 
-        allRecipeFiles.forEach(file => {
-
+        allRecipeFiles.forEach((file) => {
             const key = getRecipeKeyFromFileName(file.name);
-            if (!key) { return; /* continue to next */ }
+            if (!key) {
+                return; /* continue to next */
+            }
 
             const meta = RS.reverseKey(key);
-            const existingIndex = latestRecipeInfos.findIndex(r => r.id === meta.id);
+            const existingIndex = latestRecipeInfos.findIndex((r) => r.id === meta.id);
             if (existingIndex >= 0) {
                 // If we already have a recipe w/ this id, keep the newer one
                 if (latestRecipeInfos[existingIndex].ts < meta.ts) {
@@ -93,11 +93,11 @@ export namespace RecipeRepo {
             }
         });
 
-        return latestRecipeInfos.map(info => RS.getKey(info));
-    }
+        return latestRecipeInfos.map((info) => RS.getKey(info));
+    };
 
     const ensureRecipeDirectoryExists = async () => {
-        const dirPath = `${RNFS.DocumentDirectoryPath}/${recipeFolderName}`
+        const dirPath = `${RNFS.DocumentDirectoryPath}/${recipeFolderName}`;
         const fileExists = await RNFS.exists(dirPath);
         if (!fileExists) {
             try {
@@ -107,21 +107,21 @@ export namespace RecipeRepo {
                 return Promise.reject(e);
             }
         }
-    }
+    };
 
     const getFilepathForRecipeKey = (recipeKey: RecipeKey): string => {
         const fileName = recipeKey + '.json';
         const filePath = `${RNFS.DocumentDirectoryPath}/${recipeFolderName}/${fileName}`;
         // console.warn(filePath);
         return filePath;
-    }
+    };
 
     const getRecipeKeyFromFileName = (name: string): RecipeKey | null => {
         if (!name.endsWith('.json')) {
             return null;
         }
         return Util.removeSuffixIfPresent('.json', name);
-    }
+    };
 
     const deleteRecipeWithId = async (recipeKey: RecipeKey): Promise<boolean> => {
         const filePath = getFilepathForRecipeKey(recipeKey);
@@ -136,5 +136,5 @@ export namespace RecipeRepo {
         } catch (e) {
             return Promise.reject(e);
         }
-    }
+    };
 }

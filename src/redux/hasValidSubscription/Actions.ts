@@ -12,6 +12,6 @@ export type HasValidSubscriptionActions = UpdateValidSubscriptionAction;
 export const updateValidSubscription = (hasValidSubscription: boolean): UpdateValidSubscriptionAction => {
     return {
         type: UPDATE_VALID_SUBSCRIPTION,
-        hasValidSubscription
+        hasValidSubscription,
     };
 };

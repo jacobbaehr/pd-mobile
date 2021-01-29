@@ -28,5 +28,5 @@ export const images = {
     greenCheck: require('./images/green_check.png'),
     incomplete: require('./images/incomplete.png'),
     trends: require('./images/trends.png'),
-    pools3: require('./images/pools_3.png')
+    pools3: require('./images/pools_3.png'),
 };

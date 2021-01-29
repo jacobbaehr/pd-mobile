@@ -1,10 +1,9 @@
-import { LogEntry } from "~/models/logs/LogEntry";
-import { Pool } from "~/models/Pool";
-import { Database } from "~/repository/Database";
-import { Util } from "./Util";
+import { LogEntry } from '~/models/logs/LogEntry';
+import { Pool } from '~/models/Pool';
+import { Database } from '~/repository/Database';
+import { Util } from './Util';
 
 export namespace DataService {
-
     /// Returns the base64 encoded file data.
     /// Really, this should stream to a file & not happen on the main thread.
     /// But, Android file-sharing is tedious, and idk if multi-threading in RN or js even works.
@@ -12,11 +11,11 @@ export namespace DataService {
         let dataString = 'pool_dash,export\n';
 
         dataString += Database.loadPools()
-            .map(pool => generateCSVEntriesForPool(pool))
+            .map((pool) => generateCSVEntriesForPool(pool))
             .join('\n**************\n');
 
         return dataString;
-    }
+    };
 
     /// Returns the base64 encoded file data
     export const generateCsvFileForPool = (pool: Pool): string => {
@@ -25,7 +24,7 @@ export namespace DataService {
         dataString += generateCSVEntriesForPool(pool);
 
         return dataString;
-    }
+    };
 
     const generateCSVEntriesForPool = (pool: Pool): string => {
         let result = `\npool,\
@@ -39,26 +38,26 @@ export namespace DataService {
             ${pool.recipeKey ?? ''},\
             ${pool.objectId}`;
         const logs = Database.loadLogEntriesForPool(pool.objectId, null, true);
-        logs.forEach(entry => {
-            result += `${getRowsForEntry(entry)}\n`
+        logs.forEach((entry) => {
+            result += `${getRowsForEntry(entry)}\n`;
         });
         return result;
-    }
+    };
 
     const getRowsForEntry = (logEntry: LogEntry): string => {
         let result = `\nlog_entry,\
-            ${(new Date(logEntry.ts)).toISOString()},\
+            ${new Date(logEntry.ts).toISOString()},\
             ${logEntry.notes ?? '---'},\
             ${logEntry.recipeKey},\
             ${logEntry.objectId}`;
-        logEntry.readingEntries.forEach(re => {
+        logEntry.readingEntries.forEach((re) => {
             result += `\nreading,\
                 ${re.readingName},\
                 ${re.var},\
                 ${re.value},\
                 ${re.units ?? ''}`;
         });
-        logEntry.treatmentEntries.forEach(te => {
+        logEntry.treatmentEntries.forEach((te) => {
             result += `\ntreatment,\
                 ${Util.getDisplayNameForTreatment({ name: te.treatmentName, concentration: te.concentration })},\
                 ${te.var},\
@@ -68,5 +67,5 @@ export namespace DataService {
                 ounces`;
         });
         return result;
-    }
+    };
 }
