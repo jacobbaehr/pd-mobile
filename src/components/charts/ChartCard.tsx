@@ -58,7 +58,7 @@ export class ChartCard extends React.PureComponent<ChartCardProps, ChartCardStat
         return format(ts, df);
     };
 
-    private onChartsLoaded = (args: any) => {
+    private onChartsLoaded = () => {
         if (this.webView !== null) {
             const labels = this.props.viewModel.timestamps.map((d) => this.formatTimestamp(d, 'MMM d, ha'));
             console.log(labels);

@@ -30,7 +30,7 @@ interface PoolListScreenProps {
     deviceSettings: DeviceSettings;
 }
 
-const mapStateToProps = (state: AppState, ownProps: PoolListScreenProps): PoolListScreenProps => {
+const mapStateToProps = (state: AppState): PoolListScreenProps => {
     return {
         selectedPool: state.selectedPool,
         poolsLastUpdated: state.poolsLastUpdated,

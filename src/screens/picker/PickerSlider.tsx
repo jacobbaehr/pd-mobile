@@ -34,7 +34,8 @@ interface PickerSliderProps {
 export const PickerSlider: React.FunctionComponent<PickerSliderProps> = (props) => {
     const [isSliding, setIsSliding] = React.useState(false);
     const [textIsEditing, setTextIsEditing] = React.useState(false);
-
+    // TODO: Never used:
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const isEditing = isSliding || textIsEditing;
     const keyboardAccessoryViewId = 'picker-percent-keyboard-accessory-view-id';
 

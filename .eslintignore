@@ -1,0 +1,6 @@
+web.bundle
+node_modules
+*.json
+*.yml
+Pods
+./src/assets

@@ -1,11 +1,9 @@
 import { Recipe } from '~/models/recipe/Recipe';
 import { Treatment } from '~/models/recipe/Treatment';
 import { DeviceSettings } from '~/models/DeviceSettings';
-import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 import { Util } from '~/services/Util';
 import { Units } from '~/models/TreatmentUnits';
 import { Scoop } from '~/models/Scoop';
-import { TreatmentEntry } from '~/models/logs/TreatmentEntry';
 
 export interface TreatmentState {
     treatment: Treatment;

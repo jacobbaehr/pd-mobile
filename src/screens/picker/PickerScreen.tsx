@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, SafeAreaView, View, SectionList, Keyboard, ScrollView } from 'react-native';
+import { StyleSheet, SafeAreaView, View, SectionList, Keyboard } from 'react-native';
 
 import { PDText } from '~/components/PDText';
 import { StackNavigationProp } from '@react-navigation/stack';

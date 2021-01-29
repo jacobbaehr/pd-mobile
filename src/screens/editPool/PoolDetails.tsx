@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, InputAccessoryView, Keyboard } from 'react-native';
+import { StyleSheet, View, InputAccessoryView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { BoringButton } from '~/components/buttons/BoringButton';
@@ -13,7 +13,7 @@ import { CycleButton } from '~/components/buttons/CycleButton';
 import { getDisplayForVolumeValue, VolumeUnits } from '~/models/Pool/VolumeUnits';
 import { WallTypeValue, getDisplayForWallType } from '~/models/Pool/WallType';
 import { PlatformSpecific } from '~/components/PlatformSpecific';
-import SafeAreaView, { useSafeArea } from 'react-native-safe-area-view';
+import SafeAreaView from 'react-native-safe-area-view';
 
 interface PoolDetailProps {
     name: string;
@@ -37,7 +37,6 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
     const waterTypeDisplay = getDisplayForWaterType(props.waterType);
     const wallTypeDisplay = getDisplayForWallType(props.wallType);
     const volumeUnitsDisplay = getDisplayForVolumeValue(props.volumeUnits);
-    const insets = useSafeArea();
 
     const nameRef = React.useRef<Focusable>(null);
     const volumeRef = React.useRef<Focusable>(null);

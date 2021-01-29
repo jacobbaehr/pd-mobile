@@ -72,6 +72,7 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
 
             setReadingStates(initialReadingStates);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recipe?.id, recipe?.ts, props.updated]);
 
     const handleCalculatePressed = (): void => {

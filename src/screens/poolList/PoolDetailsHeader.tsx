@@ -1,10 +1,8 @@
-import { Color } from 'csstype';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { BackButton } from '~/components/buttons/BackButton';
 import { Button } from '~/components/buttons/Button';
-import { PDText } from '~/components/PDText';
 
 interface EditListHeaderProps {
     handleBackPress: () => void;

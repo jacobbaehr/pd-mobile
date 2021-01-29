@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
 import { ApolloProvider } from '@apollo/react-hooks';

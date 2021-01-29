@@ -11,7 +11,7 @@ export class Converter {
     // Helper function for cycling through all dry chemical options
     static nextDry = (prevUnits: DryChemicalUnits, scoop: Scoop | null): DryChemicalUnits => {
         const allDryUnits = Util.deepCopy(Converter.allDryUnits);
-        if (!!scoop) {
+        if (scoop) {
             allDryUnits.unshift('scoops');
         }
         console.log(JSON.stringify(allDryUnits));
@@ -23,7 +23,7 @@ export class Converter {
     // Helper function for cycling through all wet chemical options
     static nextWet = (prevUnits: WetChemicalUnits, scoop: Scoop | null): WetChemicalUnits => {
         const allWetUnits = Util.deepCopy(Converter.allWetUnits);
-        if (!!scoop) {
+        if (scoop) {
             allWetUnits.unshift('scoops');
         }
         let index = allWetUnits.indexOf(prevUnits);

@@ -8,7 +8,7 @@ interface PDTextProps extends TextProps {
 export class PDText extends React.Component<PDTextProps, {}> {
     render() {
         let adjustsFontSizeToFit = false;
-        let numberOfLines = undefined;
+        let numberOfLines;
         if (this.props.scale !== undefined) {
             adjustsFontSizeToFit = this.props.scale.scale;
             numberOfLines = this.props.scale.scaleLines;

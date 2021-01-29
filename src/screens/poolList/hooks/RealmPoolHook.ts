@@ -72,14 +72,15 @@ export const useRecipeHook = (recipeKey: RecipeKey): Recipe | null => {
     useEffect(() => {
         try {
             const loadRecipe = async () => {
-                const recipe = await RecipeService.resolveRecipeWithKey(recipeKey, client);
+                const recipeResult = await RecipeService.resolveRecipeWithKey(recipeKey, client);
                 // TODO: check async state here for subsequent requests
-                setRecipe(recipe);
+                setRecipe(recipeResult);
             };
             loadRecipe();
         } catch (e) {
             console.error(e);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recipeKey]);
     return recipe;
 };

@@ -1,7 +1,5 @@
 import { ReadingEntry } from '../models/logs/ReadingEntry';
 import { TreatmentEntry } from '~/models/logs/TreatmentEntry';
-import { Treatment } from '../models/recipe/Treatment';
-import { Reading } from '../models/recipe/Reading';
 import { Recipe } from '../models/recipe/Recipe';
 import { Pool } from '../models/Pool';
 import { WebViewMessageEvent } from 'react-native-webview';

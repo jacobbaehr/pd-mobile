@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, SectionList, SectionListData, LayoutAnimation, Image, Alert } from 'react-native';
+import { StyleSheet, View, SectionList, SectionListData, LayoutAnimation, Alert } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 // @ts-ignore
@@ -37,7 +37,7 @@ interface PoolScreenProps {
     deviceSettings: DeviceSettings;
 }
 
-const mapStateToProps = (state: AppState, ownProps: PoolScreenProps): PoolScreenProps => {
+const mapStateToProps = (state: AppState): PoolScreenProps => {
     return {
         selectedPool: state.selectedPool,
         poolsLastUpdated: state.poolsLastUpdated,
@@ -48,7 +48,7 @@ const mapStateToProps = (state: AppState, ownProps: PoolScreenProps): PoolScreen
 const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) => {
     const isUnlocked = DS.isSubscriptionValid(props.deviceSettings, Date.now());
 
-    const { navigate, goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'PoolScreen'>>();
+    const { navigate } = useNavigation<StackNavigationProp<PDNavStackParamList, 'PoolScreen'>>();
     const history = useRealmPoolHistoryHook(props.selectedPool?.objectId || '');
     const [selectedHistoryCellIds, setSelectedHistoryCellIds] = React.useState<string[]>([]);
     const recipe = useRecipeHook(props.selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
@@ -71,6 +71,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
             }
         }
         setChartData(chosen);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isUnlocked, props.poolsLastUpdated]);
 
     if (!props.selectedPool || !recipe) {

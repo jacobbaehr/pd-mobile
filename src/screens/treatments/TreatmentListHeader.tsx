@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Color } from 'csstype';
 
 import { PDText } from '~/components/PDText';
 import { BackButton } from '~/components/buttons/BackButton';
@@ -46,7 +45,8 @@ const TreatmentListHeaderComponent: React.FunctionComponent<TreatmentListHeaderP
 
 export const TreatmentListHeader = connect(mapStateToProps)(TreatmentListHeaderComponent);
 
-const gradientColors: Color[] = ['#07A5FF', '#FF0073'];
+// TODO: Never used
+// const gradientColors: Color[] = ['#07A5FF', '#FF0073'];
 
 const styles = StyleSheet.create({
     container: {

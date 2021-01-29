@@ -21,11 +21,9 @@ import { Util } from '~/services/Util';
 import { CycleButton } from '~/components/buttons/CycleButton';
 import { Converter } from '~/services/TreatmentUnitsService';
 import { Units, DryChemicalUnits, WetChemicalUnits } from '~/models/TreatmentUnits';
-import { startOfSecond } from 'date-fns/esm';
 import { CloseButton } from '~/components/buttons/CloseButton';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { PlatformSpecific } from '~/components/PlatformSpecific';
-import { UniqueDirectiveNames } from 'graphql/validation/rules/UniqueDirectiveNames';
 import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
 import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 import pluralize from 'pluralize';
@@ -63,7 +61,7 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
     const type = treatment?.type || 'dryChemical';
 
     const [units, setUnits] = React.useState<Units>(getUnits(type, prevScoop?.displayUnits));
-    const headerTitle = !!prevScoop ? 'Edit Scoop' : 'Add Scoop';
+    const headerTitle = prevScoop ? 'Edit Scoop' : 'Add Scoop';
 
     const keyboardAccessoryViewId = 'dedgumThisIsSomeReallyUniqueTextScoopDetailsKeyboard';
 
@@ -93,9 +91,11 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
             }
         };
         loadAllTreatments();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Handle selection of a treatment
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => {
         const { pickerState } = props;
         if (pickerState && pickerState.key === 'scoop_chem' && pickerState.value !== null) {
@@ -166,13 +166,14 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
         setTextValue(newValue);
     };
 
-    const handleTextboxDismissed = (newValue: string) => {
-        // Range enforcer:
-        let finalValue = newValue ? parseInt(newValue) : 1;
-        finalValue = Math.max(Math.min(finalValue, 100), 1);
+    // TODO: John: never used
+    // const handleTextboxDismissed = (newValue: string) => {
+    //     // Range enforcer:
+    //     let finalValue = newValue ? parseInt(newValue) : 1;
+    //     finalValue = Math.max(Math.min(finalValue, 100), 1);
 
-        setTextValue(finalValue.toFixed(0));
-    };
+    //     setTextValue(finalValue.toFixed(0));
+    // };
 
     const handleSavePressed = async () => {
         Keyboard.dismiss();
@@ -225,7 +226,7 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
     };
 
     let chemButtonTitle = 'choose';
-    if (!!treatment) {
+    if (treatment) {
         chemButtonTitle = Util.getDisplayNameForTreatment(treatment);
     } else if (prevScoop) {
         chemButtonTitle = prevScoop.chemName;

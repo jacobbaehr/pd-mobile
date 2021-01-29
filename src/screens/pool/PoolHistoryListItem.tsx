@@ -90,7 +90,7 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
                         onPress={() => props.handleDeletePressed(props.logEntry.objectId)}
                     />
                 </View>
-                <View style={styles.buttonRowColumn}></View>
+                <View style={styles.buttonRowColumn} />
             </View>,
         ];
     }

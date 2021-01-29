@@ -7,12 +7,12 @@ interface BorderInputWithLabel extends TextInputProps {
 }
 
 const BorderInputWithLabel: React.FC<BorderInputWithLabel> = (props) => {
-    const {label, ...TextInputProps} = props;
+    const { label, ...TextInputProps } = props;
 
     return (
-        <View >
+        <View>
             <Text style={styles.label}>{label}</Text>
-            <TextInput {...TextInputProps} style={styles.textInput} placeholderTextColor="#BBBBBB"/>
+            <TextInput {...TextInputProps} style={styles.textInput} placeholderTextColor="#BBBBBB" />
         </View>
     );
 };

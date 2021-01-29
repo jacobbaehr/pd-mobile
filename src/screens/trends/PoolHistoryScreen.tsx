@@ -5,7 +5,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import SafeAreaView, { useSafeArea } from 'react-native-safe-area-view';
 
-import { Database } from '~/repository/Database';
 import { PDNavStackParamList } from '~/navigator/Navigators';
 import { BackButton } from '~/components/buttons/BackButton';
 import { ChartCard } from '~/components/charts/ChartCard';
@@ -14,10 +13,7 @@ import { PDGradientText } from '~/components/PDGradientText';
 import { Pool } from '~/models/Pool';
 import { AppState } from '~/redux/AppState';
 import { ChartCardViewModel } from '~/components/charts/ChartCardViewModel';
-import { Reading } from '~/models/recipe/Reading';
-import { Treatment } from '~/models/recipe/Treatment';
 import { DeviceSettings } from '~/models/DeviceSettings';
-import { stat } from 'react-native-fs';
 import { useNavigation } from '@react-navigation/native';
 import { DS } from '~/services/DSUtil';
 import { ChartService } from '~/services/ChartService';
@@ -28,7 +24,7 @@ interface PoolHistoryProps {
     deviceSettings: DeviceSettings;
 }
 
-const mapStateToProps = (state: AppState, ownProps: PoolHistoryProps): PoolHistoryProps => {
+const mapStateToProps = (state: AppState): PoolHistoryProps => {
     return {
         deviceSettings: state.deviceSettings,
         selectedPool: state.selectedPool!,
@@ -46,6 +42,7 @@ const PoolHistoryComponent: React.FunctionComponent<PoolHistoryProps> = (props) 
 
     React.useEffect(() => {
         setChartData(ChartService.loadChartData(dateRange, selectedPool, isUnlocked));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedPool.objectId, dateRange]);
 
     const handleBackPress = () => {

@@ -1,7 +1,13 @@
 module.exports = {
     root: true,
-    extends: '@react-native-community',
+    env: {
+        'es6': true,
+        'jest/globals': true,
+      },
+    extends: '@react-native-community/eslint-config',
     parser: '@typescript-eslint/parser',
     plugins: [ '@typescript-eslint' ],
-    "react-native/no-inline-styles": 0,
+    rules: {
+        "react-native/no-inline-styles": 0,
+    }
 };

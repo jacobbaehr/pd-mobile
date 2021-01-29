@@ -47,6 +47,7 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
     const [volumeText, updateVolumeText] = React.useState(`${pool?.gallons || ''}`);
 
     // This happens on every render... whatever.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => {
         const { pickerState } = props;
         if (pickerState && pickerState.key === 'water_type' && pickerState.value !== null) {

@@ -11,12 +11,12 @@ import { PDNavigationProps } from '~/navigator/Navigators';
  * Displays info about the recipe & customizations in the SectionList on the pool details screen.
  */
 const PoolServiceConfigSection = () => {
-    const {navigate} = useNavigation<PDNavigationProps>()
+    const { navigate } = useNavigation<PDNavigationProps>();
     const isEmptyCustom = false;
 
-    const navigateToCustomTargets =() => {
-        navigate("CustomTargets")
-    }
+    const navigateToCustomTargets = () => {
+        navigate('CustomTargets');
+    };
 
     const getCustomTargets = (values = ['Chlorine', 'Alkalinity', 'hi']) => {
         const lastItem = values.length - 1;

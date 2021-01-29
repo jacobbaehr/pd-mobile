@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Color } from 'csstype';
 
 import { PDText } from '~/components/PDText';
 import { BackButton } from '~/components/buttons/BackButton';

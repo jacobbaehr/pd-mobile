@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TouchableHighlight } from 'react-native';
+import { StyleSheet } from 'react-native';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
 

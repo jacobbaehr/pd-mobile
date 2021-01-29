@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
 
@@ -9,7 +9,6 @@ import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { AppState } from '~/redux/AppState';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { connect } from 'react-redux';
-import { getDisplayForVolumeValue } from '~/models/Pool/VolumeUnits';
 import { Util } from '~/services/Util';
 
 interface PoolListItemInternalProps {

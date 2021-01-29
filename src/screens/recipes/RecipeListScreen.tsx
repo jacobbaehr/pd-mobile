@@ -24,14 +24,14 @@ interface RecipeListScreenProps {
     pool: Pool | null;
 }
 
-const mapStateToProps = (state: AppState, ownProps: RecipeListScreenProps): RecipeListScreenProps => {
+const mapStateToProps = (state: AppState): RecipeListScreenProps => {
     return {
         pool: state.selectedPool,
     };
 };
 
 const RecipeListScreenComponent: React.FunctionComponent<RecipeListScreenProps> = (props) => {
-    const { data, loading, error } = RecipeAPI.useRecipeList();
+    const { data } = RecipeAPI.useRecipeList();
     const { navigate, goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'RecipeList'>>();
     const currentRecipe = useRecipeHook(props.pool?.recipeKey || RecipeService.defaultRecipeKey);
     const { params } = useRoute<RouteProp<PDNavStackParamList, 'RecipeList'>>();

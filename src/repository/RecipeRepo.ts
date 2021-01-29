@@ -123,7 +123,7 @@ export namespace RecipeRepo {
         return Util.removeSuffixIfPresent('.json', name);
     };
 
-    const deleteRecipeWithId = async (recipeKey: RecipeKey): Promise<boolean> => {
+    export const deleteRecipeWithId = async (recipeKey: RecipeKey): Promise<boolean> => {
         const filePath = getFilepathForRecipeKey(recipeKey);
         const fileExists = await RNFS.exists(filePath);
         if (!fileExists) {

@@ -1,8 +1,5 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button } from '~/components/buttons/Button';
-
-import { Pool } from '~/models/Pool';
 
 import { BackButton } from '~/components/buttons/BackButton';
 import { useNavigation } from '@react-navigation/native';

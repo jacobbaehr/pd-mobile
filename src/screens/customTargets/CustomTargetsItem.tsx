@@ -10,8 +10,8 @@ interface CustomTargetsItem {
 }
 
 const CustomTargetsItem: React.FC<CustomTargetsItem> = (props) => {
-    const { value } = props
-    
+    const { value } = props;
+
     return (
         <View style={styles.container}>
             <View style={styles.row}>

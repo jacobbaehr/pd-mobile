@@ -25,6 +25,7 @@ export class RecipeAPI {
                 }
             }
         `;
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         return useQuery<ListRecipes>(query, { fetchPolicy: 'no-cache' });
     };
 

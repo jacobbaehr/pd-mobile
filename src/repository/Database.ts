@@ -64,19 +64,21 @@ export class Database {
         return pool;
     };
 
-    static saveNewLogEntry = async (entry: LogEntry) => {
+    // TODO: John: linter marks as unused
+    // static saveNewLogEntry = async (entry: LogEntry) => {
+    static saveNewLogEntry = async () => {
         const realm = Database.realm;
         try {
             realm.write(() => {
-                const object: LogEntry = realm.create(LogEntry.schema.name, {
-                    objectId: entry.objectId,
-                    poolId: entry.poolId,
-                    readingEntries: entry.readingEntries,
-                    treatmentEntries: entry.treatmentEntries,
-                    ts: entry.ts,
-                    recipeKey: entry.recipeKey,
-                    notes: entry.notes,
-                });
+                // const object: LogEntry = realm.create(LogEntry.schema.name, {
+                //     objectId: entry.objectId,
+                //     poolId: entry.poolId,
+                //     readingEntries: entry.readingEntries,
+                //     treatmentEntries: entry.treatmentEntries,
+                //     ts: entry.ts,
+                //     recipeKey: entry.recipeKey,
+                //     notes: entry.notes,
+                // });
                 return Promise.resolve();
             });
         } catch (e) {

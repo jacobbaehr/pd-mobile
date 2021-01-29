@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Text, StyleSheet, ViewStyle, StyleProp } from 'react-native';
+import { View, Image, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { PDText } from './PDText';
 import { images } from '~/assets/images';
 import { BoringButton } from './buttons/BoringButton';
@@ -15,14 +15,14 @@ export const Upgrade: React.FunctionComponent<UpgradeProps> = (props) => {
     return (
         <View style={[styles.plusContainer, props.style]}>
             <View style={{ flexDirection: 'row', display: 'flex' }}>
-                <View style={{ flex: 1 }}></View>
+                <View style={{ flex: 1 }} />
                 <Image
                     style={styles.pdProImageStyles}
                     source={images.logoGreenPlus}
                     width={3000}
                     resizeMode={'contain'}
                 />
-                <View style={{ flex: 1 }}></View>
+                <View style={{ flex: 1 }} />
             </View>
             <Conditional condition={!props.isUnlocked}>
                 <View style={styles.textContainer}>

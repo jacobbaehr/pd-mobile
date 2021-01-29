@@ -7,7 +7,7 @@
         "ios": "npx react-native run-ios --scheme dev",
         "start": "npx react-native start",
         "test": "jest",
-        "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+        "lint": "eslint . --ext .ts,.tsx",
         "apollo-dev": "npx apollo codegen:generate --endpoint https://dev-api.pooldash.com/graphql --target typescript --tagName=gql --outputFlat src/services/gql/generated --globalTypesFile /_garbage.txt",
         "apollo-prod": "npx apollo codegen:generate --endpoint https://dev-api.pooldash.com/graphql --target typescript --tagName=gql --outputFlat src/services/gql/generated --globalTypesFile /_garbage.txt"
     },
@@ -76,7 +76,9 @@
         "babel-jest": "^24.9.0",
         "babel-plugin-root-import": "^6.5.0",
         "eslint": "^6.5.1",
+        "husky": "^4.3.8",
         "jest": "^24.9.0",
+        "lint-staged": "^10.5.3",
         "metro-react-native-babel-preset": "^0.58.0",
         "prettier": "^2.0.2",
         "react-test-renderer": "16.11.0",
@@ -91,6 +93,17 @@
             "jsx",
             "json",
             "node"
+        ]
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.{ts,tsx}": [
+            "npx prettier ./src --write",
+            "npx eslint . --fix --ext .ts,.tsx --cache"
         ]
     }
 }

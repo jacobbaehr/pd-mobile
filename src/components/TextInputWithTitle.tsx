@@ -1,20 +1,11 @@
 import * as React from 'react';
-import {
-    StyleProp,
-    StyleSheet,
-    Text,
-    TextInput,
-    TextStyle,
-    View,
-    ViewStyle,
-    TextInputProps,
-} from 'react-native';
+import { StyleProp, StyleSheet, Text, TextInput, TextStyle, View, ViewStyle, TextInputProps } from 'react-native';
 
 export interface Focusable {
     focus: () => void;
 }
 
-export interface TextInputWithTitleProps extends Omit<TextInputProps, "hitSlop"> {
+export interface TextInputWithTitleProps extends Omit<TextInputProps, 'hitSlop'> {
     titleText: string;
     subtitleText?: string;
     onTextChanged: (text: string) => void;

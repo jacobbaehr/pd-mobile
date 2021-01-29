@@ -25,14 +25,14 @@ export const BuyHeader: React.FunctionComponent<BuyHeaderProps> = (props) => {
                 <BackButton onPress={props.goBack} scale={{ scale: true, scaleLines: 2 }} color={'blue'} />
             </View>
             <View style={{ flexDirection: 'row', display: 'flex', marginTop: -40 }} pointerEvents={'none'}>
-                <View style={{ flex: 1 }}></View>
+                <View style={{ flex: 1 }} />
                 <Image
                     style={styles.pdProImageStyles}
                     source={images.logoGreenPlusWhite}
                     width={3000}
                     resizeMode={'contain'}
                 />
-                <View style={{ flex: 1 }}></View>
+                <View style={{ flex: 1 }} />
             </View>
         </View>
     );

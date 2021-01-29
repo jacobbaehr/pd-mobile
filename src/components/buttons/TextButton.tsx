@@ -29,7 +29,7 @@ export const TextButton: React.FunctionComponent<TextButtonProps> = (props) => {
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     text: {
         color: 'white',

@@ -21,7 +21,7 @@ export const PDProgressBar: React.FunctionComponent<PDProgressBarProps> = (props
     };
     return (
         <View style={containerStyle}>
-            <View style={{ flex: foregroundFlex, backgroundColor: props.foregroundColor, borderRadius: 8 }}></View>
+            <View style={{ flex: foregroundFlex, backgroundColor: props.foregroundColor, borderRadius: 8 }} />
             <View style={backgroundStyle} />
         </View>
     );

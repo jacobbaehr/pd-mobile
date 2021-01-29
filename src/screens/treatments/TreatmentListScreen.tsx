@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, SafeAreaView, InputAccessoryView, Keyboard, LayoutAnimation, Platform } from 'react-native';
+import { StyleSheet, View, SafeAreaView, InputAccessoryView, Keyboard, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 
@@ -66,6 +66,7 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
     const keyboardAccessoryViewId = 'dedgumThisIsSomeReallyUniqueTextTreatmentListKeyboard';
 
     // This happens on every render... whatever.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => {
         const { pickerState } = props;
         if (
@@ -113,7 +114,7 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
     });
 
     if (!recipe) {
-        return <View></View>;
+        return <View />;
     }
 
     const htmlString = CalculationService.getHtmlStringForLocalHermes(recipe, props.pool, props.readings);
@@ -167,7 +168,7 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                 const scoop = TreatmentListHelpers.getScoopForTreatment(t.var, allScoops);
                 console.log('a');
 
-                if (!!scoop) {
+                if (scoop) {
                     console.log('b');
                     // If we have a saved scoop, start with that:
                     units = 'scoops';
@@ -179,7 +180,7 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                     } else if (t.type === 'liquidChemical') {
                         value = Converter.wet(value, 'ounces', 'scoops', scoop);
                     }
-                } else if (!!lastUnits[t.var]) {
+                } else if (lastUnits[t.var]) {
                     // Otherwise, try to start w/ the same units as last time
                     units = lastUnits[t.var] as Units;
                     if (units === 'scoops' && !scoop) {
@@ -335,7 +336,7 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
 
         Keyboard.dismiss();
         const pickerProps: PDPickerRouteProps = {
-            title: `Concentration %`,
+            title: 'Concentration %',
             subtitle: t?.name || '',
             pickerKey: 'chem_concentration',
             prevSelection: concentration.toFixed(0),

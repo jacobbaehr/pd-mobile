@@ -31,7 +31,7 @@ export class IAP {
             console.log('boooooo');
             return IAP.getStatus(purchaserInfo);
         } catch (e) {
-            if (!!e.userCancelled) {
+            if (e.userCancelled) {
                 return 'cancelled';
             }
             return 'error';
@@ -59,11 +59,11 @@ export class IAP {
                 console.log('Offerings: ', JSON.stringify(offerings.current));
                 return offerings.current;
             } else {
-                return Promise.reject(`There are no purchases currently available`);
+                return Promise.reject('There are no purchases currently available');
             }
         } catch (e) {
             console.error(e);
-            return Promise.reject(`unable to retrive offerings`);
+            return Promise.reject('unable to retrive offerings');
         }
     };
 

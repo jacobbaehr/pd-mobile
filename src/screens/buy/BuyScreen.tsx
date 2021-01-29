@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, Linking, Image, ViewStyle, Alert } from 'react-native';
+import { StyleSheet, View, Linking, Image, ViewStyle } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { PDNavStackParamList } from '~/navigator/Navigators';
 import { connect } from 'react-redux';

@@ -30,7 +30,7 @@ export class DeviceSettingsService {
         return ds;
     };
 
-    /************************ 
+    /************************
      * This will "trick" your local app into thinking that the app is unlocked,
      * but won't allow you to actually test the checkout flow in dev.
      * *********************/
