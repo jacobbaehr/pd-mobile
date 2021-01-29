@@ -1,8 +1,7 @@
-import moment from 'moment';
 import * as React from 'react';
 import { Animated, Platform, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { WebView } from 'react-native-webview';
-
+import format from 'date-fns/format';
 import { ChartCardViewModel } from './ChartCardViewModel';
 import { Upgrade } from '../Upgrade';
 
@@ -56,12 +55,12 @@ export class ChartCard extends React.PureComponent<ChartCardProps, ChartCardStat
     };
 
     private formatTimestamp = (ts: number, df: string): string => {
-        return moment(ts).format(df);
+        return format(ts, df);
     };
 
     private onChartsLoaded = (args: any) => {
         if (this.webView !== null) {
-            const labels = this.props.viewModel.timestamps.map((d) => this.formatTimestamp(d, 'MMM D, ha'));
+            const labels = this.props.viewModel.timestamps.map((d) => this.formatTimestamp(d, 'MMM d, ha'));
             console.log(labels);
             console.log(this.props.viewModel.timestamps);
             const graphData = {
