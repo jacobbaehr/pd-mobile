@@ -40,12 +40,25 @@ const mapStateToProps = (state: AppState, ownProps: EditPoolScreenProps): EditPo
 
 export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (props: EditPoolScreenProps) => {
 
+    const convertVolumeUnits = () => {
+        if (props.deviceSettings.units === 'us') {
+            return `${pool?.gallons.toFixed(0) || ''}`
+        } else {
+            if (pool?.gallons !== undefined) {
+                const liters = Util.gallonsToLiters(pool.gallons).toFixed(0)
+                return `${liters}`
+            } else {
+                return ''
+            }
+        }
+    }
+
     const pool = props.selectedPool;
     const originalSelectedPoolName = pool?.name;
     const [name, updateName] = React.useState(pool?.name || '');
     const [waterType, updateWaterType] = React.useState(pool?.waterType || 'salt_water');
     const [wallType, updateWallType] = React.useState(pool?.wallType || 'vinyl');
-    const [volumeText, updateVolumeText] = React.useState(`${pool?.gallons || ''}`);
+    const [volumeText, updateVolumeText] = React.useState(convertVolumeUnits());
 
     // This happens on every render... whatever.
     React.useEffect(() => {
@@ -97,7 +110,7 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
 
     const handleSaveButtonPressed = () => {
         Haptic.light();
-        let volume = Number(volumeTextConverted);
+        let volume = +volumeText;
         // Validate or bail
         if (volume <= 0 || name.length === 0) {
             return;
@@ -106,7 +119,7 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
         // Always save gallons, so convert from liters if necessary
         let gallons = volume;
         if (props.deviceSettings.units === 'metric') {
-            gallons = Math.round(Util.litersToGallons(volume));
+            gallons = Util.litersToGallons(volume);
         }
         if (pool) {
             dispatch(updatePool(pool, (p) => {
@@ -168,13 +181,12 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
 
     const deleteButtonAction = pool ? handleDeletePoolPressed : null;
     const volumeUnits = (props.deviceSettings.units === 'us') ? 'gallons' : 'liters';
-    const volumeTextConverted = (props.deviceSettings.units === 'us') ? volumeText : String(Util.gallonsToLiters(Number(volumeText)).toFixed(0))
 
     return (
         <PoolDetails
             originalPoolName={ originalSelectedPoolName ?? '' }
             name={ name }
-            volumeText={ volumeTextConverted }
+            volumeText={ volumeText }
             volumeUnits={ volumeUnits }
             waterType={ waterType }
             wallType={ wallType }
