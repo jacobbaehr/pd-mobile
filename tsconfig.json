@@ -3,11 +3,15 @@
         "target": "es5",
         "module": "commonjs",
         "jsx": "react-native",
-        "lib": ["es6", "esnext.asynciterable"],
+        "lib": [
+            "es6",
+            "esnext.asynciterable"
+        ],
         "strict": true,
         "esModuleInterop": true,
         "rootDir": "src",
         "forceConsistentCasingInFileNames": true,
+        "noEmit": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noImplicitAny": true,
@@ -18,9 +22,18 @@
         "allowSyntheticDefaultImports": true,
         "baseUrl": "./src",
         "paths": {
-            "~/*": ["*"]
+            "~/*": [
+                "*"
+            ]
         }
     },
-    "include": ["./src"],
-    "exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js"]
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "node_modules",
+        "babel.config.js",
+        "metro.config.js",
+        "jest.config.js"
+    ]
 }

@@ -38,7 +38,7 @@ export namespace TempCsvRepo {
         return fileData;
     };
 
-    export const ensureDirectoryExists = async () => {
+    export const ensureDirectoryExists = async (): Promise<void> => {
         const dirPath = `${RNFS.DocumentDirectoryPath}/${csvFolderName}`;
         const fileExists = await RNFS.exists(dirPath);
         if (!fileExists) {

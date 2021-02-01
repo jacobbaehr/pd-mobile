@@ -32,11 +32,6 @@ interface PickerSliderProps {
 }
 
 export const PickerSlider: React.FunctionComponent<PickerSliderProps> = (props) => {
-    const [isSliding, setIsSliding] = React.useState(false);
-    const [textIsEditing, setTextIsEditing] = React.useState(false);
-    // TODO: Never used:
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const isEditing = isSliding || textIsEditing;
     const keyboardAccessoryViewId = 'picker-percent-keyboard-accessory-view-id';
 
     const rs = props.sliderState;
@@ -48,30 +43,23 @@ export const PickerSlider: React.FunctionComponent<PickerSliderProps> = (props) 
     const sliderMax = 100;
 
     // Keep the slider in range sliderMin <= x <= sliderMax
-    let sliderValue = rs.value ? parseInt(rs.value) : sliderMin;
+    let sliderValue = rs.value ? parseInt(rs.value, 10) : sliderMin;
     sliderValue = Math.max(Math.min(sliderValue, sliderMax), sliderMin);
-
-    const onTextBeginEditing = () => {
-        setTextIsEditing(true);
-    };
 
     const onTextChange = (newText: string) => {
         props.onTextboxUpdated(newText);
     };
 
     const onTextEndEditing = (event: NativeSyntheticEvent<TextInputEndEditingEventData>) => {
-        setTextIsEditing(false);
         const finalText = event.nativeEvent.text;
         props.onTextboxFinished(finalText);
     };
 
     const onSliderStart = () => {
-        setIsSliding(true);
         props.onSlidingStart();
     };
 
     const onSliderEnd = () => {
-        setIsSliding(false);
         props.onSlidingComplete();
     };
 
@@ -82,7 +70,6 @@ export const PickerSlider: React.FunctionComponent<PickerSliderProps> = (props) 
                     <View style={styles.topRowContent}>
                         <TextInput
                             style={styles.textInput}
-                            onFocus={onTextBeginEditing}
                             onChangeText={onTextChange}
                             onEndEditing={onTextEndEditing}
                             keyboardType={'number-pad'}

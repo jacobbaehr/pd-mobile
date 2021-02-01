@@ -38,10 +38,6 @@ const mapStateToProps = (state: AppState): PoolListScreenProps => {
     };
 };
 
-interface PoolListScreenState {
-    initialLoadFinished: boolean;
-}
-
 const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (props) => {
     const pools = useRealmPoolsHook();
     const { navigate } = useNavigation<StackNavigationProp<PDNavStackParamList, 'PoolList'>>();

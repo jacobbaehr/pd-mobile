@@ -64,23 +64,21 @@ export class Database {
         return pool;
     };
 
-    // TODO: John: linter marks as unused
-    // static saveNewLogEntry = async (entry: LogEntry) => {
-    static saveNewLogEntry = async () => {
+    static saveNewLogEntry = async (entry: LogEntry) => {
         const realm = Database.realm;
         try {
             realm.write(() => {
-                // const object: LogEntry = realm.create(LogEntry.schema.name, {
-                //     objectId: entry.objectId,
-                //     poolId: entry.poolId,
-                //     readingEntries: entry.readingEntries,
-                //     treatmentEntries: entry.treatmentEntries,
-                //     ts: entry.ts,
-                //     recipeKey: entry.recipeKey,
-                //     notes: entry.notes,
-                // });
-                return Promise.resolve();
+                realm.create(LogEntry.schema.name, {
+                    objectId: entry.objectId,
+                    poolId: entry.poolId,
+                    readingEntries: entry.readingEntries,
+                    treatmentEntries: entry.treatmentEntries,
+                    ts: entry.ts,
+                    recipeKey: entry.recipeKey,
+                    notes: entry.notes,
+                });
             });
+            return Promise.resolve();
         } catch (e) {
             console.log(e);
             console.error('couldnt save it');
@@ -113,9 +111,8 @@ export class Database {
             // We have to delete the actual realm object
             realm.write(() => {
                 realm.delete(pool);
-                return Promise.resolve();
             });
-            // realm.removeListener('change',Database.loadPools)
+            return Promise.resolve();
         } catch (e) {
             console.log(e);
             console.error('couldnt delete it');
@@ -123,7 +120,7 @@ export class Database {
         }
     };
 
-    static deleteLogEntry = (id: string) => {
+    static deleteLogEntry = async (id: string) => {
         const realm = Database.realm;
         try {
             // We have to delete the actual realm object
@@ -132,11 +129,11 @@ export class Database {
                     .objects<LogEntry>(LogEntry.schema.name)
                     .filtered('objectId = $0', id)[0];
                 realm.delete(logEntry);
-                return Promise.resolve();
             });
+            return Promise.resolve();
         } catch (e) {
             console.log(e);
-            console.error('couldnt delete it');
+            console.error('could not delete it');
             return Promise.reject(e);
         }
     };

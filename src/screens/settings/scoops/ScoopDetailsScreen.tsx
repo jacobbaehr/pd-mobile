@@ -152,28 +152,9 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
         }
     };
 
-    // const handleDeletePressed = (value: string) => {
-    //     const pickerState: PickerState = {
-    //         key: pickerKey,
-    //         value
-    //     };
-    //     dispatch(updatePickerState(pickerState));
-    //     goBack();
-    // };
-
     const handleTextboxUpdated = (newValue: string) => {
-        console.log('booooooga');
         setTextValue(newValue);
     };
-
-    // TODO: John: never used
-    // const handleTextboxDismissed = (newValue: string) => {
-    //     // Range enforcer:
-    //     let finalValue = newValue ? parseInt(newValue) : 1;
-    //     finalValue = Math.max(Math.min(finalValue, 100), 1);
-
-    //     setTextValue(finalValue.toFixed(0));
-    // };
 
     const handleSavePressed = async () => {
         Keyboard.dismiss();

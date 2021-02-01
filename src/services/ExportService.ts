@@ -30,8 +30,6 @@ export namespace ExportService {
         const filePath = await TempCsvRepo.saveCSV(stringData);
 
         const sharableURL = `file://${filePath}`;
-        // TODO: never used
-        // const fileName = `pd-${new Date().toISOString()}.csv`;
 
         const options: Options | MultipleOptions = {
             title: 'pooldash export',
@@ -77,7 +75,7 @@ export namespace ExportService {
         return await share(options);
     };
 
-    const share = async (options: Options) => {
+    const share = async (options: Options): Promise<void> => {
         try {
             await Share.open(options);
         } catch (e) {

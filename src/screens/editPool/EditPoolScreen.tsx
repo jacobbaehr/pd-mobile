@@ -39,13 +39,14 @@ const mapStateToProps = (state: AppState, ownProps: EditPoolScreenProps): EditPo
 };
 
 export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (props: EditPoolScreenProps) => {
-
     const pool = props.selectedPool;
     const originalSelectedPoolName = pool?.name;
     const [name, updateName] = React.useState(pool?.name || '');
     const [waterType, updateWaterType] = React.useState(pool?.waterType || 'salt_water');
     const [wallType, updateWallType] = React.useState(pool?.wallType || 'vinyl');
-    const [volumeText, updateVolumeText] = React.useState(getInitialVolumeText(props.deviceSettings.units, pool?.gallons));
+    const [volumeText, updateVolumeText] = React.useState(
+        getInitialVolumeText(props.deviceSettings.units, pool?.gallons),
+    );
 
     // This happens on every render... whatever.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -170,36 +171,37 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
 
     const deleteButtonAction = pool ? handleDeletePoolPressed : null;
 
-    const volumeUnits = (props.deviceSettings.units === 'us') ? 'gallons' : 'liters';
+    const volumeUnits = props.deviceSettings.units === 'us' ? 'gallons' : 'liters';
 
     return (
         <PoolDetails
-            originalPoolName={ originalSelectedPoolName ?? '' }
-            name={ name }
-            volumeText={ volumeText }
-            volumeUnits={ volumeUnits }
-            waterType={ waterType }
-            wallType={ wallType }
-            goBack={ goBack }
-            updateVolume={ updateVolumeText }
-            updateName={ updateName }
-            pressedWaterTypeButton={ handlePressedWaterTypeButton }
-            pressedWallTypeButton={ handlePressedWallTypeButton }
-            pressedUnitsButton={ handlePressedUnitsButton }
-            rightButtonAction={ deleteButtonAction }
-            handleSavePoolPressed={ handleSaveButtonPressed } />
+            originalPoolName={originalSelectedPoolName ?? ''}
+            name={name}
+            volumeText={volumeText}
+            volumeUnits={volumeUnits}
+            waterType={waterType}
+            wallType={wallType}
+            goBack={goBack}
+            updateVolume={updateVolumeText}
+            updateName={updateName}
+            pressedWaterTypeButton={handlePressedWaterTypeButton}
+            pressedWallTypeButton={handlePressedWallTypeButton}
+            pressedUnitsButton={handlePressedUnitsButton}
+            rightButtonAction={deleteButtonAction}
+            handleSavePoolPressed={handleSaveButtonPressed}
+        />
     );
 };
 
 const getInitialVolumeText = (units: string, pool: number | undefined) => {
     if (units === 'us') {
-        return `${pool?.toFixed(0) || ''}`
+        return `${pool?.toFixed(0) || ''}`;
     } else {
         if (pool !== undefined) {
-            const liters = Util.gallonsToLiters(pool).toFixed(0)
-            return `${liters}`
+            const liters = Util.gallonsToLiters(pool).toFixed(0);
+            return `${liters}`;
         } else {
-            return ''
+            return '';
         }
     }
 };

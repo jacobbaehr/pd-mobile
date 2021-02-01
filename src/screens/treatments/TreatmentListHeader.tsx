@@ -29,7 +29,6 @@ const mapStateToProps = (state: AppState, ownProps: TreatmentListHeaderViewExter
 };
 
 const TreatmentListHeaderComponent: React.FunctionComponent<TreatmentListHeaderProps> = (props) => {
-    // const percentText = `${(this.props.percentComplete * 100).toFixed(0)}% Complete`;
     const volumeDisplay = Util.getDisplayVolume(props.pool.gallons, props.deviceSettings);
     const detailsText = `${getDisplayForWaterType(props.pool.waterType)} | ${volumeDisplay}`;
 
@@ -44,9 +43,6 @@ const TreatmentListHeaderComponent: React.FunctionComponent<TreatmentListHeaderP
 };
 
 export const TreatmentListHeader = connect(mapStateToProps)(TreatmentListHeaderComponent);
-
-// TODO: Never used
-// const gradientColors: Color[] = ['#07A5FF', '#FF0073'];
 
 const styles = StyleSheet.create({
     container: {

@@ -13,7 +13,7 @@ interface EditListHeaderProps {
 export class EditListHeader extends React.Component<EditListHeaderProps, {}> {
     render() {
         const rightButton =
-            this.props.rightButtonAction != undefined ? (
+            this.props.rightButtonAction !== undefined ? (
                 <View>
                     <Button
                         title={'Delete'}

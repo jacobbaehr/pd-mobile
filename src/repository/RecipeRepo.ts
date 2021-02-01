@@ -26,7 +26,7 @@ export namespace RecipeRepo {
     };
 
     /// Saves all the pre-packaged recipes to the file-system:
-    export const savePreloadedRecipes = async () => {
+    export const savePreloadedRecipes = async (): Promise<void> => {
         try {
             await ensureRecipeDirectoryExists();
         } catch (e) {
@@ -96,7 +96,7 @@ export namespace RecipeRepo {
         return latestRecipeInfos.map((info) => RS.getKey(info));
     };
 
-    const ensureRecipeDirectoryExists = async () => {
+    const ensureRecipeDirectoryExists = async (): Promise<void> => {
         const dirPath = `${RNFS.DocumentDirectoryPath}/${recipeFolderName}`;
         const fileExists = await RNFS.exists(dirPath);
         if (!fileExists) {
