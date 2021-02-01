@@ -40,25 +40,12 @@ const mapStateToProps = (state: AppState, ownProps: EditPoolScreenProps): EditPo
 
 export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (props: EditPoolScreenProps) => {
 
-    const convertVolumeUnits = () => {
-        if (props.deviceSettings.units === 'us') {
-            return `${pool?.gallons.toFixed(0) || ''}`
-        } else {
-            if (pool?.gallons !== undefined) {
-                const liters = Util.gallonsToLiters(pool.gallons).toFixed(0)
-                return `${liters}`
-            } else {
-                return ''
-            }
-        }
-    }
-
     const pool = props.selectedPool;
     const originalSelectedPoolName = pool?.name;
     const [name, updateName] = React.useState(pool?.name || '');
     const [waterType, updateWaterType] = React.useState(pool?.waterType || 'salt_water');
     const [wallType, updateWallType] = React.useState(pool?.wallType || 'vinyl');
-    const [volumeText, updateVolumeText] = React.useState(convertVolumeUnits());
+    const [volumeText, updateVolumeText] = React.useState(getInitialVolumeText(props.deviceSettings.units, pool?.gallons));
 
     // This happens on every render... whatever.
     React.useEffect(() => {
@@ -201,6 +188,19 @@ export const EditPoolComponent: React.FunctionComponent<EditPoolScreenProps> = (
             rightButtonAction={ deleteButtonAction }
             handleSavePoolPressed={ handleSaveButtonPressed } />
     );
+};
+
+const getInitialVolumeText = (units: string, pool: number | undefined) => {
+    if (units === 'us') {
+        return `${pool?.toFixed(0) || ''}`
+    } else {
+        if (pool !== undefined) {
+            const liters = Util.gallonsToLiters(pool).toFixed(0)
+            return `${liters}`
+        } else {
+            return ''
+        }
+    }
 };
 
 export const EditPoolScreen = connect(mapStateToProps)(EditPoolComponent);
