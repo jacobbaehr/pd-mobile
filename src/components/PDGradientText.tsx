@@ -28,7 +28,7 @@ export class PDGradientText extends React.Component<PDGradientTextProps, {}> {
 
 const styles = StyleSheet.create({
     default: {
-        fontFamily: 'Avenir Next',
+        fontFamily: 'Poppins',
         fontWeight: '700',
         fontSize: 28,
     },

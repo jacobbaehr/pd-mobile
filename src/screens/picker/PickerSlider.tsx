@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
         borderColor: '#F8F8F8',
         borderRadius: 6,
         color: '#1E6BFF',
-        fontFamily: 'Avenir Next',
+        fontFamily: 'Poppins',
         fontWeight: '600',
         fontSize: 22,
         textAlign: 'center',

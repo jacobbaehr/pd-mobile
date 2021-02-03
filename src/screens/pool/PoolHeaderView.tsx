@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         color: '#2D5FFF',
         textAlign: 'center',
         marginTop: '2%',
-        fontFamily: 'Avenir Next',
+        fontFamily: 'Poppins',
         fontSize: 16,
         fontWeight: '700',
         paddingHorizontal: 15,

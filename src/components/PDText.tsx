@@ -26,7 +26,7 @@ export class PDText extends React.Component<PDTextProps, {}> {
 
 const styles = StyleSheet.create({
     default: {
-        fontFamily: 'Avenir Next',
+        fontFamily: 'Poppins',
         fontWeight: '600',
     },
 });

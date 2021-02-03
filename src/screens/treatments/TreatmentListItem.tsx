@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
         borderColor: '#F8F8F8',
         borderRadius: 6,
         color: '#B700F8',
-        fontFamily: 'Avenir Next',
+        fontFamily: 'Poppins',
         fontWeight: '600',
         fontSize: 22,
         textAlign: 'center',

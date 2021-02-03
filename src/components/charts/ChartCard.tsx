@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         fontSize: 18,
         fontWeight: '600',
-        fontFamily: 'Avenir Next',
+        fontFamily: 'Poppins',
         color: '#676767',
     },
     chartContainer: {
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     labelText: {
         fontSize: 18,
         fontWeight: '500',
-        fontFamily: 'Avenir Next',
+        fontFamily: 'Poppins',
         color: '#676767',
     },
     overlay: {

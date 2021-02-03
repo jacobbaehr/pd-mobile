@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
         color: '#9B9B9B',
         fontSize: 18,
         fontWeight: '600',
-        fontFamily: 'AvenirNext-Italic',
+        fontFamily: 'Poppins-SemiBoldItalic',
         alignSelf: 'flex-end',
         marginLeft: 'auto',
     },
