@@ -1,32 +1,32 @@
+import pluralize from 'pluralize';
 import * as React from 'react';
-import { StyleSheet, SafeAreaView, View, Keyboard, TextInput, InputAccessoryView, Alert } from 'react-native';
-
+import { Alert, InputAccessoryView, Keyboard, SafeAreaView, StyleSheet, TextInput, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { connect } from 'react-redux';
+import { BoringButton } from '~/components/buttons/BoringButton';
+import { ChoosyButton } from '~/components/buttons/ChoosyButton';
+import { CloseButton } from '~/components/buttons/CloseButton';
+import { CycleButton } from '~/components/buttons/CycleButton';
 import { PDText } from '~/components/PDText';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { PlatformSpecific } from '~/components/PlatformSpecific';
+import { DeviceSettings } from '~/models/DeviceSettings';
+import { Treatment, TreatmentType } from '~/models/recipe/Treatment';
+import { Scoop } from '~/models/Scoop';
+import { DryChemicalUnits, Units, WetChemicalUnits } from '~/models/TreatmentUnits';
 import { PDNavStackParamList } from '~/navigator/Navigators';
-import { RouteProp, useNavigation, useFocusEffect } from '@react-navigation/native';
-import { dispatch, AppState } from '~/redux/AppState';
+import { AppState, dispatch } from '~/redux/AppState';
+import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
 import { updatePickerState } from '~/redux/picker/Actions';
 import { PickerState } from '~/redux/picker/PickerState';
-import { Haptic } from '~/services/HapticService';
-import { BoringButton } from '~/components/buttons/BoringButton';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Scoop } from '~/models/Scoop';
-import { ChoosyButton } from '~/components/buttons/ChoosyButton';
-import { Treatment, TreatmentType } from '~/models/recipe/Treatment';
-import { ScoopService } from '~/services/ScoopService';
 import { PDPickerRouteProps } from '~/screens/picker/PickerScreen';
-import { connect } from 'react-redux';
-import { Util } from '~/services/Util';
-import { CycleButton } from '~/components/buttons/CycleButton';
-import { Converter } from '~/services/TreatmentUnitsService';
-import { Units, DryChemicalUnits, WetChemicalUnits } from '~/models/TreatmentUnits';
-import { CloseButton } from '~/components/buttons/CloseButton';
-import { DeviceSettings } from '~/models/DeviceSettings';
-import { PlatformSpecific } from '~/components/PlatformSpecific';
-import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
 import { DeviceSettingsService } from '~/services/DeviceSettingsService';
-import pluralize from 'pluralize';
+import { Haptic } from '~/services/HapticService';
+import { ScoopService } from '~/services/ScoopService';
+import { Converter } from '~/services/TreatmentUnitsService';
+import { Util } from '~/services/Util';
+
+import { RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 export interface ScoopDetailsRouteProps {
     prevScoop: Scoop | null;
@@ -368,7 +368,7 @@ const styles = StyleSheet.create({
         borderColor: '#F8F8F8',
         borderRadius: 6,
         color: '#1E6BFF',
-        fontFamily: 'Poppins',
+        fontFamily: 'Poppins-Regular',
         fontWeight: '600',
         fontSize: 22,
         textAlign: 'center',

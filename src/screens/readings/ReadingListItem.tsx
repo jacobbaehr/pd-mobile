@@ -1,16 +1,15 @@
 import * as React from 'react';
-import { View, StyleSheet, Image, NativeSyntheticEvent, TextInputEndEditingEventData, TextStyle } from 'react-native';
+import { Image, NativeSyntheticEvent, StyleSheet, TextInputEndEditingEventData, TextStyle, View } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 // import Slider from '@react-native-community/slider';
 // @ts-ignore
 import Slider from 'react-native-slider';
+// @ts-ignore
+import TouchableScale from 'react-native-touchable-scale';
+import { images } from '~/assets/images';
 
 import { PDText } from '../../components/PDText';
 import { Reading } from '../../models/recipe/Reading';
-// @ts-ignore
-import TouchableScale from 'react-native-touchable-scale';
-
-import { images } from '~/assets/images';
-import { TextInput } from 'react-native-gesture-handler';
 
 export interface ReadingState {
     reading: Reading;
@@ -180,7 +179,7 @@ const styles = StyleSheet.create({
         borderColor: '#F8F8F8',
         borderRadius: 6,
         color: '#3910E8',
-        fontFamily: 'Poppins',
+        fontFamily: 'Poppins-Regular',
         fontWeight: '600',
         fontSize: 22,
         textAlign: 'center',

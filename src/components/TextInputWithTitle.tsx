@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, Text, TextInput, TextStyle, View, ViewStyle, TextInputProps } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 
 export interface Focusable {
     focus: () => void;
@@ -67,13 +67,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     titleText: {
-        fontFamily: 'Poppins',
+        fontFamily: 'Poppins-Regular',
         fontSize: 18,
         paddingBottom: 5,
         marginRight: 5,
     },
     subtitleText: {
-        fontFamily: 'Poppins',
+        fontFamily: 'Poppins-Regular',
         fontSize: 18,
         paddingBottom: 5,
     },
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         borderColor: '#4a4a4a',
         marginBottom: 15,
-        fontFamily: 'Poppins',
+        fontFamily: 'Poppins-Regular',
         fontSize: 22,
         paddingHorizontal: 5,
         color: '#00c89f',

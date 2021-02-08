@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-
 import { BackButton } from '~/components/buttons/BackButton';
 import { Button } from '~/components/buttons/Button';
 
@@ -72,7 +71,7 @@ const styles = StyleSheet.create({
         color: '#2D5FFF',
         textAlign: 'center',
         marginTop: '2%',
-        fontFamily: 'Poppins',
+        fontFamily: 'Poppins-Regular',
         fontSize: 16,
         fontWeight: '700',
         paddingHorizontal: 15,

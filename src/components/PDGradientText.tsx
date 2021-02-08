@@ -1,8 +1,9 @@
-import * as React from 'react';
-import { Text, TextProps, StyleSheet, View } from 'react-native';
-import MaskedView from '@react-native-community/masked-view';
-import LinearGradient from 'react-native-linear-gradient';
 import { Color } from 'csstype';
+import * as React from 'react';
+import { StyleSheet, Text, TextProps, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+
+import MaskedView from '@react-native-community/masked-view';
 
 interface PDGradientTextProps extends TextProps {
     /// The id for a shared-element fluid transition
@@ -28,7 +29,7 @@ export class PDGradientText extends React.Component<PDGradientTextProps, {}> {
 
 const styles = StyleSheet.create({
     default: {
-        fontFamily: 'Poppins',
+        fontFamily: 'Poppins-Regular',
         fontWeight: '700',
         fontSize: 28,
     },

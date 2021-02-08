@@ -1,9 +1,10 @@
+import format from 'date-fns/format';
 import * as React from 'react';
 import { Animated, Platform, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { WebView } from 'react-native-webview';
-import format from 'date-fns/format';
-import { ChartCardViewModel } from './ChartCardViewModel';
+
 import { Upgrade } from '../Upgrade';
+import { ChartCardViewModel } from './ChartCardViewModel';
 
 interface ChartCardProps {
     viewModel: ChartCardViewModel;
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         fontSize: 18,
         fontWeight: '600',
-        fontFamily: 'Poppins',
+        fontFamily: 'Poppins-Regular',
         color: '#676767',
     },
     chartContainer: {
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
     labelText: {
         fontSize: 18,
         fontWeight: '500',
-        fontFamily: 'Poppins',
+        fontFamily: 'Poppins-Regular',
         color: '#676767',
     },
     overlay: {

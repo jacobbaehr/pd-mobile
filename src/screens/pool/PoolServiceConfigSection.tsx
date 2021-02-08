@@ -1,11 +1,12 @@
 import React from 'react';
 import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
-import { PDText } from '~/components/PDText';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { BoringButton } from '~/components/buttons/BoringButton';
 import { images } from '~/assets/images';
-import { useNavigation } from '@react-navigation/native';
+import { BoringButton } from '~/components/buttons/BoringButton';
+import { PDText } from '~/components/PDText';
 import { PDNavigationProps } from '~/navigator/Navigators';
+
+import { useNavigation } from '@react-navigation/native';
 
 /**
  * Displays info about the recipe & customizations in the SectionList on the pool details screen.
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
         color: '#2D5FFF',
         textAlign: 'center',
         marginTop: '2%',
-        fontFamily: 'Poppins',
+        fontFamily: 'Poppins-Regular',
         fontSize: 16,
         fontWeight: '700',
         paddingHorizontal: 15,

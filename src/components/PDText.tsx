@@ -1,32 +1,57 @@
 import * as React from 'react';
-import { Text, TextProps, StyleSheet } from 'react-native';
+import { StyleSheet, TextStyle } from 'react-native';
+import { Theme } from '~/theme';
 
-interface PDTextProps extends TextProps {
+import {
+    ColorProps,
+    createText,
+    OpacityProps,
+    PositionProps,
+    TextProps,
+    TextShadowProps,
+    TypographyProps,
+    VisibleProps,
+} from '@shopify/restyle';
+
+const Text = createText<Theme>();
+
+type PDText = ColorProps<Theme> &
+    OpacityProps<Theme> &
+    VisibleProps<Theme> &
+    TypographyProps<Theme> &
+    TextShadowProps<Theme> &
+    TextProps<Theme> &
+    PositionProps<Theme>;
+
+interface PDTextProps extends PDText {
     scale?: { scale: boolean; scaleLines: number };
+    style?: TextStyle;
 }
 
-export class PDText extends React.Component<PDTextProps, {}> {
-    render() {
-        let adjustsFontSizeToFit = false;
-        let numberOfLines;
-        if (this.props.scale !== undefined) {
-            adjustsFontSizeToFit = this.props.scale.scale;
-            numberOfLines = this.props.scale.scaleLines;
-        }
-        return (
-            <Text
-                adjustsFontSizeToFit={adjustsFontSizeToFit}
-                numberOfLines={numberOfLines}
-                style={[styles.default, this.props.style]}>
-                {this.props.children}
-            </Text>
-        );
+export const PDText: React.FC<PDTextProps> = (props) => {
+    const { scale, children, style, ...restProps } = props;
+
+    let adjustsFontSizeToFit = false;
+    let numberOfLines;
+    if (scale !== undefined) {
+        adjustsFontSizeToFit = scale.scale;
+        numberOfLines = scale.scaleLines;
     }
-}
+
+    return (
+        <Text
+            adjustsFontSizeToFit={adjustsFontSizeToFit}
+            numberOfLines={numberOfLines}
+            style={[styles.default, style]}
+            {...restProps}>
+            {children}
+        </Text>
+    );
+};
 
 const styles = StyleSheet.create({
     default: {
-        fontFamily: 'Poppins',
+        fontFamily: 'Poppins-Regular',
         fontWeight: '600',
     },
 });

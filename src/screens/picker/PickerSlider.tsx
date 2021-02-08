@@ -1,22 +1,22 @@
 import * as React from 'react';
 import {
-    View,
-    StyleSheet,
-    NativeSyntheticEvent,
-    TextInputEndEditingEventData,
     InputAccessoryView,
     Keyboard,
+    NativeSyntheticEvent,
+    StyleSheet,
+    TextInputEndEditingEventData,
+    View,
 } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 // import Slider from '@react-native-community/slider';
 // @ts-ignore
 import Slider from 'react-native-slider';
+import { images } from '~/assets/images';
+import { BoringButton } from '~/components/buttons/BoringButton';
+import { PlatformSpecific } from '~/components/PlatformSpecific';
+import { Haptic } from '~/services/HapticService';
 
 import { PDText } from '../../components/PDText';
-import { images } from '~/assets/images';
-import { TextInput } from 'react-native-gesture-handler';
-import { BoringButton } from '~/components/buttons/BoringButton';
-import { Haptic } from '~/services/HapticService';
-import { PlatformSpecific } from '~/components/PlatformSpecific';
 
 export interface PickerSliderState {
     value?: string;
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
         borderColor: '#F8F8F8',
         borderRadius: 6,
         color: '#1E6BFF',
-        fontFamily: 'Poppins',
+        fontFamily: 'Poppins-Regular',
         fontWeight: '600',
         fontSize: 22,
         textAlign: 'center',

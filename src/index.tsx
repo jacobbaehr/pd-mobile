@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { AppRegistry, StatusBar } from 'react-native';
-import { Provider } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-
-import { store } from '~/redux/AppState';
+import { Provider } from 'react-redux';
 import { App } from '~/App';
+import { store } from '~/redux/AppState';
+
+import { ThemeProvider } from '@shopify/restyle';
+
+import theme from './theme';
 
 const PoolDash: React.FunctionComponent<{}> = () => {
     React.useEffect(() => {
@@ -13,7 +16,9 @@ const PoolDash: React.FunctionComponent<{}> = () => {
     return (
         <Provider store={store}>
             <SafeAreaProvider>
-                <App />
+                <ThemeProvider theme={theme}>
+                    <App />
+                </ThemeProvider>
             </SafeAreaProvider>
         </Provider>
     );

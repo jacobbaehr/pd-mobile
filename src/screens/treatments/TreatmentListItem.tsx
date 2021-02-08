@@ -1,18 +1,17 @@
+import pluralize from 'pluralize';
 import * as React from 'react';
-import { View, StyleSheet, Image, NativeSyntheticEvent, TextInputEndEditingEventData, TextStyle } from 'react-native';
-
-import { PDText } from '../../components/PDText';
+import { Image, NativeSyntheticEvent, StyleSheet, TextInputEndEditingEventData, TextStyle, View } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
-
-import pluralize from 'pluralize';
 import { images } from '~/assets/images';
-import { TextInput } from 'react-native-gesture-handler';
 import { ChoosyButton } from '~/components/buttons/ChoosyButton';
 import { CycleButton } from '~/components/buttons/CycleButton';
-import { Util } from '~/services/Util';
-import { TreatmentState } from './TreatmentListHelpers';
 import { Conditional } from '~/components/Conditional';
+import { Util } from '~/services/Util';
+
+import { PDText } from '../../components/PDText';
+import { TreatmentState } from './TreatmentListHelpers';
 
 interface TreatmentListItemProps {
     treatmentState: TreatmentState;
@@ -206,7 +205,7 @@ const styles = StyleSheet.create({
         borderColor: '#F8F8F8',
         borderRadius: 6,
         color: '#B700F8',
-        fontFamily: 'Poppins',
+        fontFamily: 'Poppins-Regular',
         fontWeight: '600',
         fontSize: 22,
         textAlign: 'center',
