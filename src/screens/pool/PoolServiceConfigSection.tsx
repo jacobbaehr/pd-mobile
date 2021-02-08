@@ -19,6 +19,14 @@ const PoolServiceConfigSection = () => {
         navigate('CustomTargets');
     };
 
+    const navigateToRecipes = () => {
+        navigate('RecipeList', { prevScreen: 'PoolScreen' });
+    };
+
+    const navigateToReadings = () => {
+        navigate('ReadingList');
+    };
+
     const getCustomTargets = (values = ['Chlorine', 'Alkalinity', 'hi']) => {
         const lastItem = values.length - 1;
         return values.reduce((acm, value, i) => {
@@ -40,7 +48,7 @@ const PoolServiceConfigSection = () => {
                 <View>
                     <View>
                         <PDText style={styles.subTitle}>Recipe</PDText>
-                        <TouchableOpacity onPress={() => {}}>
+                        <TouchableOpacity onPress={navigateToRecipes}>
                             <View style={styles.row}>
                                 <Text style={styles.buttonResults} numberOfLines={1} ellipsizeMode="tail">
                                     Default Recipe
@@ -69,7 +77,7 @@ const PoolServiceConfigSection = () => {
                     )}
                 </View>
             </View>
-            <BoringButton title="Start Service" onPress={() => {}} containerStyles={styles.buttonContainer} />
+            <BoringButton title="Start Service" onPress={navigateToReadings} containerStyles={styles.buttonContainer} />
             <PDText style={styles.lastUpdateText}>Last Serviced 20 days ago</PDText>
         </View>
     );
