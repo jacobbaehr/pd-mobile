@@ -14,6 +14,7 @@ interface PoolHistoryListItemProps {
     isExpanded: boolean;
     handleCellSelected: (id: string) => void;
     handleDeletePressed: (id: string) => void;
+    handleEmailPressed: (logEntry: LogEntry) => void;
 }
 
 export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemProps> = (props) => {
@@ -82,14 +83,19 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
                 • {recipeName}
             </PDText>,
             <View style={styles.buttonRow} key={recipeName + props.logEntry.objectId + 'afsd98'}>
-                <View style={styles.buttonRowColumn}>
-                    <BoringButton
-                        containerStyles={styles.deleteButtonContainer}
-                        textStyles={styles.deleteButtonText}
-                        title="Delete"
-                        onPress={() => props.handleDeletePressed(props.logEntry.objectId)}
-                    />
-                </View>
+                <BoringButton
+                    containerStyles={styles.deleteButtonContainer}
+                    textStyles={styles.deleteButtonText}
+                    title="Delete"
+                    onPress={() => props.handleDeletePressed(props.logEntry.objectId)}
+                />
+                <BoringButton
+                    containerStyles={styles.emailButtonContainer}
+                    textStyles={styles.emailButtonText}
+                    title="Email"
+                    onPress={() => props.handleEmailPressed(props.logEntry)}
+                />
+
                 <View style={styles.buttonRowColumn} />
             </View>,
         ];
@@ -144,18 +150,28 @@ const styles = StyleSheet.create({
     },
     buttonRow: {
         flexDirection: 'row',
-    },
-    buttonRowColumn: {
-        flex: 1,
+        justifyContent: 'space-around',
     },
     deleteButtonContainer: {
         backgroundColor: '#FFF4F3',
         marginVertical: 12,
         shadowColor: 'transparent',
-        height: 40,
+        height: 50,
     },
     deleteButtonText: {
         color: '#FB2315',
-        padding: 0,
+        padding: 5,
+        paddingHorizontal: 10,
+    },
+    emailButtonContainer: {
+        backgroundColor: '#DFE6F7',
+        marginVertical: 12,
+        shadowColor: 'transparent',
+        height: 50,
+    },
+    emailButtonText: {
+        color: '#1E6BFF',
+        padding: 5,
+        paddingHorizontal: 10,
     },
 });

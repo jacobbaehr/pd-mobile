@@ -26,6 +26,7 @@ import { ChartService } from '~/services/ChartService';
 import { Database } from '~/repository/Database';
 import { ExportService } from '~/services/ExportService';
 import PoolServiceConfigSection from './PoolServiceConfigSection';
+import { EmailService } from '~/services/EmailService';
 
 interface PoolScreenProps {
     // The id of the selected pool, if any
@@ -136,6 +137,10 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
         Database.deleteLogEntry(logEntryId);
     };
 
+    const handleHistoryCellEmailPressed = (logEntry: LogEntry) => {
+        EmailService.emailLogEntry(logEntry);
+    };
+
     const handleDataButtonPressed = async () => {
         try {
             if (!props.selectedPool) {
@@ -194,6 +199,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
                     logEntry={item}
                     handleCellSelected={handleHistoryCellPressed}
                     handleDeletePressed={handleHistoryCellDeletePressed}
+                    handleEmailPressed={handleHistoryCellEmailPressed}
                     isExpanded={selectedHistoryCellIds.includes(item.objectId)}
                 />
             );
