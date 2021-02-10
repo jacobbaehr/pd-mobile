@@ -1,19 +1,34 @@
+import { formatDistanceStrict } from 'date-fns';
 import React from 'react';
 import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 import { images } from '~/assets/images';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { PDText } from '~/components/PDText';
+import { Pool } from '~/models/Pool';
 import { PDNavigationProps } from '~/navigator/Navigators';
+import { AppState } from '~/redux/AppState';
+import { getCustomTargetsBySelectedPool } from '~/redux/selectedPool/Selectors';
+import { RecipeService } from '~/services/RecipeService';
 
 import { useNavigation } from '@react-navigation/native';
+
+import { useRealmPoolHistoryHook, useRecipeHook } from '../poolList/hooks/RealmPoolHook';
 
 /**
  * Displays info about the recipe & customizations in the SectionList on the pool details screen.
  */
 const PoolServiceConfigSection = () => {
     const { navigate } = useNavigation<PDNavigationProps>();
-    const isEmptyCustom = false;
+    const selectedPool = useSelector<AppState>((state) => state.selectedPool) as Pool;
+    const recipe = useRecipeHook(selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
+    const customTargets = useSelector((state: AppState) => getCustomTargetsBySelectedPool(state, recipe));
+    const history = useRealmPoolHistoryHook(selectedPool?.objectId);
+
+    console.log('history', history.length);
+
+    const isEmptyCustom = customTargets?.length === 0;
 
     const navigateToCustomTargets = () => {
         navigate('CustomTargets');
@@ -27,19 +42,26 @@ const PoolServiceConfigSection = () => {
         navigate('ReadingList');
     };
 
-    const getCustomTargets = (values = ['Chlorine', 'Alkalinity', 'hi']) => {
-        const lastItem = values.length - 1;
-        return values.reduce((acm, value, i) => {
-            if (i === lastItem) {
-                acm += `and ${value}`;
-            } else if (i === 0) {
-                acm += `${value}`;
-            } else {
-                acm += `, ${value} `;
-            }
-            return acm;
-        }, '');
+    const getCustomTargets = () => {
+        let customNames = '';
+        if (customTargets?.length > 0) {
+            const lastIndex = customTargets.length - 1;
+            customNames = customTargets.reduce((acm, { name }, i) => {
+                if (i === 0) {
+                    acm += `${name}`;
+                } else if (i === lastIndex) {
+                    acm += `and ${name}`;
+                } else {
+                    acm += `, ${name} `;
+                }
+                return acm;
+            }, '');
+        }
+        return customNames;
     };
+
+    const lastTimeUpdate = () =>
+        history.length > 0 ? `Last Serviced: ${formatDistanceStrict(history[0].ts, Date.now())} ago` : '';
 
     return (
         <View style={styles.container}>
@@ -47,11 +69,11 @@ const PoolServiceConfigSection = () => {
                 <PDText style={styles.title}>Configuration Service</PDText>
                 <View>
                     <View>
-                        <PDText style={styles.subTitle}>Recipe</PDText>
+                        <PDText style={styles.subTitle}>{recipe?.name}</PDText>
                         <TouchableOpacity onPress={navigateToRecipes}>
                             <View style={styles.row}>
                                 <Text style={styles.buttonResults} numberOfLines={1} ellipsizeMode="tail">
-                                    Default Recipe
+                                    {recipe?.name}
                                 </Text>
                                 <Image source={images.rightArrow} height={21} width={22} style={styles.arrowImage} />
                             </View>
@@ -78,7 +100,7 @@ const PoolServiceConfigSection = () => {
                 </View>
             </View>
             <BoringButton title="Start Service" onPress={navigateToReadings} containerStyles={styles.buttonContainer} />
-            <PDText style={styles.lastUpdateText}>Last Serviced 20 days ago</PDText>
+            <PDText style={styles.lastUpdateText}>{lastTimeUpdate()}</PDText>
         </View>
     );
 };

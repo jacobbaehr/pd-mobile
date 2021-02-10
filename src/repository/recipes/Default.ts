@@ -131,4 +131,23 @@ export const defaultRecipe: Recipe = {
             concentration: 100,
         },
     ],
+    custom: [
+        {
+            name: 'Free Chlorine',
+            var: 'fc',
+            description: 'This is some text about the free chlorine',
+            defaults: [
+                {
+                    waterType: null,
+                    min: 3,
+                    max: 5,
+                },
+                {
+                    waterType: 'ozone',
+                    min: 0.1,
+                    max: 0.3,
+                },
+            ],
+        },
+    ],
 };

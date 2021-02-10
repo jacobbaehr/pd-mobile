@@ -1,30 +1,29 @@
 import * as React from 'react';
-import { StyleSheet, View, SectionList, SectionListData, LayoutAnimation, Alert } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { connect } from 'react-redux';
+import { Alert, LayoutAnimation, SectionList, SectionListData, StyleSheet, View } from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
-
-import { PDNavStackParamList } from '~/navigator/Navigators';
+import { connect } from 'react-redux';
+import { BoringButton } from '~/components/buttons/BoringButton';
 import { ChartCard } from '~/components/charts/ChartCard';
 import { PDText } from '~/components/PDText';
-import { Pool } from '~/models/Pool';
-import { AppState } from '~/redux/AppState';
-import SafeAreaView from 'react-native-safe-area-view';
-
-import { PoolHeaderView } from './PoolHeaderView';
-import { BoringButton } from '~/components/buttons/BoringButton';
-import { useNavigation } from '@react-navigation/native';
-import { useRealmPoolHistoryHook, useRecipeHook } from '../poolList/hooks/RealmPoolHook';
-import { PoolHistoryListItem } from './PoolHistoryListItem';
-import { Haptic } from '~/services/HapticService';
-import { Util } from '~/services/Util';
-import { RecipeService } from '~/services/RecipeService';
 import { DeviceSettings } from '~/models/DeviceSettings';
-import { DS } from '~/services/DSUtil';
-import { ChartService } from '~/services/ChartService';
+import { Pool } from '~/models/Pool';
+import { PDNavigationProps } from '~/navigator/Navigators';
+import { AppState } from '~/redux/AppState';
 import { Database } from '~/repository/Database';
+import { ChartService } from '~/services/ChartService';
+import { DS } from '~/services/DSUtil';
 import { ExportService } from '~/services/ExportService';
+import { Haptic } from '~/services/HapticService';
+import { RecipeService } from '~/services/RecipeService';
+import { Util } from '~/services/Util';
+
+import { useNavigation } from '@react-navigation/native';
+
+import { useRealmPoolHistoryHook, useRecipeHook } from '../poolList/hooks/RealmPoolHook';
+import { PoolHeaderView } from './PoolHeaderView';
+import { PoolHistoryListItem } from './PoolHistoryListItem';
 import PoolServiceConfigSection from './PoolServiceConfigSection';
 import { EmailService } from '~/services/EmailService';
 
@@ -49,7 +48,7 @@ const mapStateToProps = (state: AppState): PoolScreenProps => {
 const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) => {
     const isUnlocked = DS.isSubscriptionValid(props.deviceSettings, Date.now());
 
-    const { navigate } = useNavigation<StackNavigationProp<PDNavStackParamList, 'PoolScreen'>>();
+    const { navigate } = useNavigation<PDNavigationProps>();
     const history = useRealmPoolHistoryHook(props.selectedPool?.objectId || '');
     const [selectedHistoryCellIds, setSelectedHistoryCellIds] = React.useState<string[]>([]);
     const recipe = useRecipeHook(props.selectedPool?.recipeKey || RecipeService.defaultRecipeKey);

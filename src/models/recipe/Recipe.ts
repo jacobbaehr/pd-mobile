@@ -1,4 +1,5 @@
 import { Reading } from './Reading';
+import { TargetRange } from './TargetRange';
 import { Treatment } from './Treatment';
 
 /**
@@ -25,4 +26,7 @@ export interface Recipe {
 
     // The minimum app version required to run the recipe successfully:
     appVersion: string;
+
+    // TODO: think description
+    custom: TargetRange[];
 }

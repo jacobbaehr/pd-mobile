@@ -1,21 +1,22 @@
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
-
+import { TargetRange } from '~/models/recipe/CustomTarget';
+import { RecipeKey } from '~/models/recipe/RecipeKey';
+import { BuyScreen } from '~/screens/buy/BuyScreen';
+import CustomTargetsScreen from '~/screens/customTargets/CustomTargetsScreen';
+import { EditPoolScreen } from '~/screens/editPool/EditPoolScreen';
+import { PDPickerRouteProps, PickerScreen } from '~/screens/picker/PickerScreen';
 import { PoolScreen } from '~/screens/pool/PoolScreen';
-import { PoolHistoryScreen } from '~/screens/trends/PoolHistoryScreen';
 import { PoolListScreen } from '~/screens/poolList/PoolListScreen';
 import { ReadingListScreen } from '~/screens/readings/ReadingListScreen';
 import { RecipeListScreen } from '~/screens/recipes/RecipeListScreen';
-import { TreatmentListScreen } from '~/screens/treatments/TreatmentListScreen';
-import { EditPoolScreen } from '~/screens/editPool/EditPoolScreen';
-import { PickerScreen, PDPickerRouteProps } from '~/screens/picker/PickerScreen';
 import { RecipeScreen } from '~/screens/recipes/RecipeScreen';
-import { RecipeKey } from '~/models/recipe/RecipeKey';
+import { ScoopDetailsRouteProps, ScoopDetailsScreen } from '~/screens/settings/scoops/ScoopDetailsScreen';
 import { SettingsScreen } from '~/screens/settings/SettingsScreen';
-import { BuyScreen } from '~/screens/buy/BuyScreen';
-import { ScoopDetailsScreen, ScoopDetailsRouteProps } from '~/screens/settings/scoops/ScoopDetailsScreen';
-import CustomTargetsScreen from '~/screens/customTargets/CustomTargetsScreen';
+import { TreatmentListScreen } from '~/screens/treatments/TreatmentListScreen';
+import { PoolHistoryScreen } from '~/screens/trends/PoolHistoryScreen';
+
+import { NavigationContainer, RouteProp } from '@react-navigation/native';
+import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 
 export type PDNavStackParamList = {
     PoolList: undefined;
@@ -32,10 +33,16 @@ export type PDNavStackParamList = {
     PickerScreen: PDPickerRouteProps;
     Main: undefined;
     ScoopDetails: ScoopDetailsRouteProps;
-    CustomTargets: undefined;
+    CustomTargets: { customTargets: TargetRange[] };
 };
 
 export type PDNavigationProps = StackNavigationProp<PDNavStackParamList>;
+export type PDRouteProps =
+    | RouteProp<PDNavStackParamList, 'CustomTargets'>
+    | RouteProp<PDNavStackParamList, 'RecipeList'>
+    | RouteProp<PDNavStackParamList, 'PickerScreen'>
+    | RouteProp<PDNavStackParamList, 'ScoopDetails'>
+    | RouteProp<PDNavStackParamList, 'RecipeDetails'>;
 
 const Stack = createStackNavigator<PDNavStackParamList>();
 

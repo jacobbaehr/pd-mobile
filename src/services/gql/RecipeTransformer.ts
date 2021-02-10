@@ -1,11 +1,12 @@
+import { Reading, ReadingType } from '~/models/recipe/Reading';
+import { Recipe } from '~/models/recipe/Recipe';
+import { Treatment, TreatmentType } from '~/models/recipe/Treatment';
+
 import {
     FetchRecipe_recipeVersion,
     FetchRecipe_recipeVersion_readings,
     FetchRecipe_recipeVersion_treatments,
 } from './generated/FetchRecipe';
-import { Recipe } from '~/models/recipe/Recipe';
-import { Reading, ReadingType } from '~/models/recipe/Reading';
-import { Treatment, TreatmentType } from '~/models/recipe/Treatment';
 
 export class RecipeTransformer {
     static fromAPI = (apiRec: FetchRecipe_recipeVersion): Recipe => {

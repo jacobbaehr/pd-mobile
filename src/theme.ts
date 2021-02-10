@@ -9,7 +9,8 @@ const palette = {
     blue: '#1E6BFF',
     purple: '#B21FF1',
 
-    white: '#FAFAFA',
+    white: '#ffffff',
+    lightWhite: '#FAFAFA',
     black: '#000000',
 
     greyLighter: '#F5F5F5',
@@ -21,6 +22,7 @@ const palette = {
 
 const theme = createTheme({
     colors: {
+        ...palette,
         whiteBackground: palette.white,
         blueBackground: palette.white,
         purpleBackground: palette.white,
@@ -30,7 +32,8 @@ const theme = createTheme({
         pinkBackground: palette.white,
     },
     spacing: {
-        sm: 8,
+        xs: 8,
+        sm: 12,
         md: 16,
         lg: 24,
         xl: 40,
@@ -51,6 +54,12 @@ const theme = createTheme({
             fontStyle: 'normal',
             lineHeight: 21,
             fontSize: 14,
+        },
+        bodyRegular: {
+            fontFamily: 'Poppins-Regular',
+            fontStyle: 'normal',
+            lineHeight: 24,
+            fontSize: 16,
         },
         bodyBold: {
             fontFamily: 'Poppins-Bold',
@@ -83,14 +92,13 @@ const theme = createTheme({
             fontStyle: 'normal',
             lineHeight: 27,
             fontSize: 18,
-            color: palette.black,
         },
         heading: {
-            fontFamily: 'Poppins-ExtraBold',
+            fontFamily: 'Poppins-Regular',
+            fontWeight: 'bold',
             fontStyle: 'normal',
             lineHeight: 36,
             fontSize: 24,
-            color: palette.black,
         },
     },
     cardVariants: {

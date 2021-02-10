@@ -1,5 +1,4 @@
 import Realm from 'realm';
-
 import { LogEntry } from '~/models/logs/LogEntry';
 import { Pool } from '~/models/Pool';
 

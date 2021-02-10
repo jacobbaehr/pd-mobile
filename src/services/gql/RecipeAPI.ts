@@ -1,16 +1,17 @@
-import gql from 'graphql-tag';
-import { ListRecipes } from './generated/ListRecipes';
-import { useQuery } from '@apollo/react-hooks';
-import { QueryResult } from '@apollo/react-common';
-import { RecipeKey } from '~/models/recipe/RecipeKey';
-import { Recipe } from '~/models/recipe/Recipe';
-import ApolloClient from 'apollo-client';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
-import { FetchRecipeVariables } from './generated/FetchRecipe';
-import { RecipeTransformer } from './RecipeTransformer';
+import ApolloClient from 'apollo-client';
+import gql from 'graphql-tag';
+import { Recipe } from '~/models/recipe/Recipe';
+import { RecipeKey } from '~/models/recipe/RecipeKey';
+
+import { QueryResult } from '@apollo/react-common';
+import { useQuery } from '@apollo/react-hooks';
+
 import { RS } from '../RecipeUtil';
-import { FetchRecipe } from './generated/FetchRecipe';
 import { FetchLatestRecipeMeta, FetchLatestRecipeMetaVariables } from './generated/FetchLatestRecipeMeta';
+import { FetchRecipe, FetchRecipeVariables } from './generated/FetchRecipe';
+import { ListRecipes } from './generated/ListRecipes';
+import { RecipeTransformer } from './RecipeTransformer';
 
 export class RecipeAPI {
     static useRecipeList = (): QueryResult<ListRecipes> => {
@@ -58,6 +59,16 @@ export class RecipeAPI {
                         formula
                         type
                         concentration
+                    }
+                    custom {
+                        name
+                        var
+                        description
+                        defaults {
+                            waterType
+                            min
+                            max
+                        }
                     }
                 }
             }

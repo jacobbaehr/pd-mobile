@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TextStyle } from 'react-native';
+import { StyleSheet, TextProps as RnTextProps, TextStyle } from 'react-native';
 import { Theme } from '~/theme';
 
 import {
@@ -21,6 +21,7 @@ type PDText = ColorProps<Theme> &
     TypographyProps<Theme> &
     TextShadowProps<Theme> &
     TextProps<Theme> &
+    RnTextProps &
     PositionProps<Theme>;
 
 interface PDTextProps extends PDText {

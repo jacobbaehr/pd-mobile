@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react';
-import Realm from 'realm';
-import { Pool } from '~/models/Pool';
-import { Database } from '~/repository/Database';
-import { LogEntry } from '~/models/logs/LogEntry';
-import { RecipeKey } from '~/models/recipe/RecipeKey';
-import { Recipe } from '~/models/recipe/Recipe';
-import { RecipeService } from '~/services/RecipeService';
-import { useApolloClient } from '@apollo/react-hooks';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import ApolloClient from 'apollo-client';
+import { useEffect, useState } from 'react';
+import Realm from 'realm';
+import { LogEntry } from '~/models/logs/LogEntry';
+import { Pool } from '~/models/Pool';
+import { Recipe } from '~/models/recipe/Recipe';
+import { RecipeKey } from '~/models/recipe/RecipeKey';
+import { Database } from '~/repository/Database';
+import { RecipeService } from '~/services/RecipeService';
+
+import { useApolloClient } from '@apollo/react-hooks';
 
 export const useRealmPoolsHook = (): Realm.Collection<Pool> => {
     const [data, setData] = useState({
