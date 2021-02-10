@@ -10,10 +10,11 @@ const getSelectedPoolAndCurrentRecipe = (state: AppState, props: Recipe | null) 
 });
 
 export const getCustomTargetsBySelectedPool = createSelector([getSelectedPoolAndCurrentRecipe], ({ pool, recipe }) => {
-    const customTargets = recipe?.custom.map((customTarget) => ({
-        ...customTarget,
-        defaults: customTarget.defaults.filter((cs) => cs.waterType === pool?.waterType),
-    }));
+    const customTargets =
+        recipe?.custom?.map((customTarget) => ({
+            ...customTarget,
+            defaults: customTarget.defaults.filter((cs) => cs.waterType === pool?.waterType),
+        })) ?? [];
 
     return customTargets as TargetRange[];
 });
