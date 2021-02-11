@@ -27,3 +27,12 @@ export interface DefaultRange {
     /// range max
     max: number;
 }
+
+/**
+ * The shape of the objects actually passed to the CalculationService to run the recipe formulas.
+ */
+export interface EffectiveTargetRange {
+    var: string;
+    min: number;
+    max: number;
+}

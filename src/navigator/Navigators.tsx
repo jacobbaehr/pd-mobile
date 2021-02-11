@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TargetRange } from '~/models/recipe/CustomTarget';
+import { TargetRange } from '~/models/recipe/TargetRange';
 import { RecipeKey } from '~/models/recipe/RecipeKey';
 import { BuyScreen } from '~/screens/buy/BuyScreen';
 import CustomTargetsScreen from '~/screens/customTargets/CustomTargetsScreen';

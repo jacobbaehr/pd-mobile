@@ -4,6 +4,7 @@ import { Recipe } from '../models/recipe/Recipe';
 import { Pool } from '../models/Pool';
 import { WebViewMessageEvent } from 'react-native-webview';
 import { TreatmentState } from '~/screens/treatments/TreatmentListHelpers';
+import { EffectiveTargetRange } from '~/models/recipe/TargetRange';
 
 export interface CalculationResult {
     value: number | null;
@@ -12,7 +13,12 @@ export interface CalculationResult {
 
 export class CalculationService {
     /// Hermes is the thing that runs the formulas, obviously.
-    static getHtmlStringForLocalHermes = (recipe: Recipe, pool: Pool, inputs: ReadingEntry[]): string => {
+    static getHtmlStringForLocalHermes = (
+        recipe: Recipe,
+        pool: Pool,
+        inputs: ReadingEntry[],
+        targets: EffectiveTargetRange[],
+    ): string => {
         const calc = `
         const calc = (event) => {
             // Load up the recipe
@@ -28,6 +34,7 @@ export class CalculationService {
                 }
             });
             const inputsAsArgs = \`const r = {\${ recipe.readings.map(r => \`\${r.var}: \${readings[r.var]}\`).join(',') }};\`;
+            const customTargetsAsArgs = \`const c = {\${event.custom.map(c => \`\${c.var}: { min: \${c.min}, max: \${c.max}}\`).join(',')}};\`;
             const poolAsArgs = \`const p = {gallons: \${event.pool.gallons}, liters: \${event.pool.liters}, wall_type: '\${event.pool.wallType}', water_type: '\${event.pool.waterType}'};\`;
             for (let i = 0; i < recipe.treatments.length; i++) {
                 const t = recipe.treatments[ i ];
@@ -38,6 +45,7 @@ export class CalculationService {
                     \${inputsAsArgs}
                     \${poolAsArgs}
                     \${previousTreatmentsAsArgs}
+                    \${customTargetsAsArgs}
                     \${t.formula}
                 \`;
 
@@ -56,10 +64,11 @@ export class CalculationService {
 
             return treatments;
         };`;
-        const event = {
+        const event: RecipeRunRequest = {
             recipe,
             pool,
             readings: inputs,
+            custom: targets,
         };
         const jsCall =
             calc +
@@ -107,4 +116,22 @@ export class CalculationService {
                 return TreatmentEntry.make(ts.treatment, ts.ounces, ts.value || '0', displayUnits, ts.concentration);
             });
     };
+}
+
+interface RecipeRunRequest {
+    recipe: Recipe;
+    readings: RecipeReading[];
+    custom: RecipeCustomTargets[];
+    pool: Pool;
+}
+
+interface RecipeCustomTargets {
+    var: string;
+    min: number;
+    max: number;
+}
+
+interface RecipeReading {
+    var: string;
+    value: number;
 }

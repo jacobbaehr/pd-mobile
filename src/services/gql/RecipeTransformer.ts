@@ -1,3 +1,4 @@
+import { WaterTypeValue } from '~/models/Pool/WaterType';
 import { Reading, ReadingType } from '~/models/recipe/Reading';
 import { Recipe } from '~/models/recipe/Recipe';
 import { Treatment, TreatmentType } from '~/models/recipe/Treatment';
@@ -14,6 +15,15 @@ export class RecipeTransformer {
             ...apiRec,
             readings: apiRec.readings.map((ar) => RecipeTransformer.readingFromAPI(ar)),
             treatments: apiRec.treatments.map((at) => RecipeTransformer.treatmentFromAPI(at)),
+
+            // This is gross: all this to typecast the waterType from "string | null" -> "waterType | null"
+            custom: apiRec.custom.map((c) => ({
+                ...c,
+                defaults: c.defaults.map((d) => ({
+                    ...d,
+                    waterType: d.waterType as WaterTypeValue,
+                })),
+            })),
         };
     };
 

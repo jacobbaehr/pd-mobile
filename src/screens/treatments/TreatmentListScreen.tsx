@@ -32,6 +32,7 @@ import { PlatformSpecific } from '~/components/PlatformSpecific';
 import { Config } from '~/services/Config';
 import { TreatmentListFooter } from './TreatmentListFooter';
 import { DryChemicalUnits, WetChemicalUnits, Units } from '~/models/TreatmentUnits';
+import { EffectiveTargetRange } from '~/models/recipe/TargetRange';
 
 interface TreatmentListScreenProps {
     navigation: StackNavigationProp<PDNavStackParamList, 'TreatmentList'>;
@@ -116,8 +117,9 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
     if (!recipe) {
         return <View />;
     }
-
-    const htmlString = CalculationService.getHtmlStringForLocalHermes(recipe, props.pool, props.readings);
+    // TODO: get the effective values for the pool / recipe combo here:
+    const targets: EffectiveTargetRange[] = [];
+    const htmlString = CalculationService.getHtmlStringForLocalHermes(recipe, props.pool, props.readings, targets);
 
     const save = async () => {
         const id = Math.random().toString(36).slice(2);

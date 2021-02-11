@@ -69,28 +69,26 @@ export const big3: Recipe = {
     ],
     custom: [
         {
-            waterType: 'ozone',
-            min: 21,
-            max: 14,
-            var: 'oz',
-            name: 'Chornicle',
-            description: 'example',
-        },
-        {
-            waterType: 'salt_water',
-            min: 21,
-            max: 14,
             var: 'fc',
-            name: 'Example',
+            name: 'Chlorine',
             description: 'example',
-        },
-        {
-            waterType: null,
-            min: 21,
-            max: 14,
-            var: 'fc',
-            name: 'Example',
-            description: 'example',
+            defaults: [
+                {
+                    waterType: 'ozone',
+                    min: 0.2,
+                    max: 0.4,
+                },
+                {
+                    waterType: 'salt_water',
+                    min: 3.0,
+                    max: 4.0,
+                },
+                {
+                    waterType: null,
+                    min: 3.0,
+                    max: 4.1,
+                },
+            ],
         },
     ],
 };
