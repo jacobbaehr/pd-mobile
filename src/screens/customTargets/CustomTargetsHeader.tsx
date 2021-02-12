@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
-
 import { BackButton } from '~/components/buttons/BackButton';
+import { PDBox } from '~/components/PDBox';
+import { PDText } from '~/components/PDText';
+
 import { useNavigation } from '@react-navigation/native';
 
 const CustomTargetsHeader: React.FC = () => {
@@ -10,21 +11,26 @@ const CustomTargetsHeader: React.FC = () => {
     const handlePressedBack = () => {
         goBack();
     };
+
     return (
-        <View style={styles.container}>
-            <BackButton title="House Pool" onPress={handlePressedBack} scale={{ scale: true, scaleLines: 2 }} />
-        </View>
+        <PDBox
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
+            px="md"
+            backgroundColor="white"
+            borderBottomColor="greyLighter"
+            borderBottomWidth={2}
+            pb="sm">
+            <BackButton title="" onPress={handlePressedBack} scale={{ scale: true, scaleLines: 2 }} />
+            <PDBox>
+                <PDText variant="heading" color="black">
+                    Custom Targets
+                </PDText>
+            </PDBox>
+            <PDBox />
+        </PDBox>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        paddingHorizontal: 18,
-        backgroundColor: '#fff',
-        borderBottomColor: '#F0F0F0',
-        borderBottomWidth: 2,
-        paddingBottom: 12,
-    },
-});
 
 export default CustomTargetsHeader;

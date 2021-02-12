@@ -2,24 +2,40 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import SafeAreaView from 'react-native-safe-area-view';
+import { useSelector } from 'react-redux';
 import { PDText } from '~/components/PDText';
+import { Pool } from '~/models/Pool';
+import { TargetRange } from '~/models/recipe/TargetRange';
+import { PDNavStackParamList } from '~/navigator/Navigators';
+import { AppState } from '~/redux/AppState';
+import { RecipeService } from '~/services/RecipeService';
+
+import { RouteProp, useRoute } from '@react-navigation/native';
+
+import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
 import CustomTargetsHeader from './CustomTargetsHeader';
 import CustomTargetsItem from './CustomTargetsItem';
 
 const CustomTargetsScreen = () => {
+    const selectedPool = useSelector<AppState>((state) => state.selectedPool) as Pool;
+    const recipe = useRecipeHook(selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
+    const { params } = useRoute<RouteProp<PDNavStackParamList, 'CustomTargets'>>();
+
     return (
         <SafeAreaView style={styles.safeArea}>
             <CustomTargetsHeader />
             <FlatList
-                data={[
-                    { id: 0, value: '21' },
-                    { id: 1, value: '' },
-                    { id: 2, value: '12' },
-                ]}
+                data={params?.customTargets || ([] as TargetRange[])}
                 renderItem={({ item }) => <CustomTargetsItem {...item} />}
-                keyExtractor={(item) => item.id.toString()}
-                ListHeaderComponent={() => <PDText style={styles.title}>Customize Targets</PDText>}
-                contentContainerStyle={styles.container}
+                keyExtractor={(item: TargetRange) => item.var}
+                ListHeaderComponent={() => (
+                    <PDText variant="subHeading" mb="sm" color="greyDarker">
+                        {recipe?.name}
+                    </PDText>
+                )}
+                style={styles.container}
+                contentContainerStyle={styles.content}
+                automaticallyAdjustContentInsets
             />
         </SafeAreaView>
     );
@@ -33,15 +49,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F8F8F8',
-        padding: 18,
     },
-    title: {
-        fontSize: 18,
-        lineHeight: 27,
-        fontStyle: 'normal',
-        fontWeight: 'bold',
-        color: '#323232',
-        marginBottom: 12,
+    content: {
+        paddingHorizontal: 18,
+        paddingTop: 18,
+        marginBottom: 18,
     },
 });
 

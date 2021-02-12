@@ -1,5 +1,5 @@
+import { CustomTarget } from '~/models/recipe/CustomTarget';
 import { Recipe } from '~/models/recipe/Recipe';
-import { TargetRange } from '~/models/recipe/TargetRange';
 import { AppState } from '~/redux/AppState';
 
 import { createSelector } from '@reduxjs/toolkit';
@@ -16,5 +16,5 @@ export const getCustomTargetsBySelectedPool = createSelector([getSelectedPoolAnd
             defaults: customTarget.defaults.filter((cs) => cs.waterType === pool?.waterType),
         })) ?? [];
 
-    return customTargets as TargetRange[];
+    return customTargets as CustomTarget[];
 });

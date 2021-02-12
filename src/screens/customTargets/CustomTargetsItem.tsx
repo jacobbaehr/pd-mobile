@@ -1,68 +1,109 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { Controller, useForm } from 'react-hook-form';
+import { StyleSheet } from 'react-native';
 import { TextButton } from '~/components/buttons/TextButton';
+import { Card } from '~/components/Card';
 import BorderInputWithLabel from '~/components/inputs/BorderInputWithLabel';
+import { PDBox } from '~/components/PDBox';
 import { PDText } from '~/components/PDText';
+import { CustomTarget } from '~/models/recipe/CustomTarget';
 
-interface CustomTargetsItem {
-    id: number;
-    value: string;
-}
+/**
+ *  List Item for Custom Targets by Defaults values fro each waterType.
+ */
+const CustomTargetsItem: React.FC<CustomTarget> = (props) => {
+    const { name, description, defaults } = props;
+    const { control, handleSubmit, setValue, errors, formState } = useForm<CustomTarget>({
+        defaultValues: props,
+        mode: 'all',
+    });
+    const { isDirty } = formState;
+    const hasErrors = Object.keys(errors).length >= 1;
 
-const CustomTargetsItem: React.FC<CustomTargetsItem> = (props) => {
-    const { value } = props;
+    const defaultMin = defaults[0]?.min ?? 0;
+    const defaultMax = defaults[0]?.max ?? 0;
+
+    const handleResetValue = () => {
+        setValue('defaults', props.defaults);
+    };
+
+    const handleBlurred = handleSubmit(() => {});
 
     return (
-        <View style={styles.container}>
-            <View style={styles.row}>
-                <PDText style={styles.title}>Chlorine</PDText>
+        <PDBox backgroundColor="white" borderRadius={24} borderWidth={2} borderColor="greyLight" p="lg" mb="sm">
+            <PDBox
+                flexDirection="row"
+                justifyContent="space-between"
+                borderBottomWidth={2}
+                borderColor="greyLighter"
+                marginBottom="sm"
+                paddingBottom="sm">
+                <PDText variant="bodyMedium" color="black">
+                    {name}
+                </PDText>
                 <TextButton
                     text="Reset"
-                    onPress={() => {}}
-                    disabled={!value}
+                    onPress={handleResetValue}
+                    disabled={!isDirty}
                     containerStyles={styles.buttonContainer}
-                    textStyles={[styles.buttonText, Boolean(value) && styles.activeButton]}
+                    textStyles={[styles.buttonText, isDirty && styles.activeButton]}
                 />
-            </View>
-            <View>
-                <View style={styles.rowButtonsContainer}>
-                    <BorderInputWithLabel label="min" placeholder="123" />
-                    <BorderInputWithLabel label="max" placeholder="123" />
-                </View>
-                <View>
-                    <PDText numberOfLines={3} style={styles.body}>
-                        This is a really cool description that talks about some really cool innovations in the chlorine
-                        industry.
+            </PDBox>
+            <PDBox>
+                <PDBox flexDirection="row" justifyContent="space-between" alignItems="center" mb="sm">
+                    <Controller
+                        control={control}
+                        name="defaults[0].min"
+                        render={({ value, onChange }) => (
+                            <BorderInputWithLabel
+                                label="min"
+                                placeholder={defaultMin.toString()}
+                                onChangeText={onChange}
+                                value={value}
+                                onBlur={handleBlurred}
+                                keyboardType="numeric"
+                            />
+                        )}
+                        rules={{
+                            validate: (newMin) => newMin < defaultMax,
+                        }}
+                    />
+                    <Controller
+                        control={control}
+                        name="defaults[0].max"
+                        render={({ value, onChange }) => (
+                            <BorderInputWithLabel
+                                label="max"
+                                placeholder={defaultMax.toString()}
+                                onChangeText={onChange}
+                                value={value}
+                                onBlur={handleBlurred}
+                                keyboardType="numeric"
+                            />
+                        )}
+                        rules={{
+                            validate: (newMax) => newMax > defaultMin,
+                        }}
+                    />
+                </PDBox>
+                {hasErrors && (
+                    <Card variant="default" backgroundColor="blurredRed" my="sm">
+                        <PDText variant="bodyBold" color="red">
+                            Your target’s min value cannot greater than the max value
+                        </PDText>
+                    </Card>
+                )}
+                <PDBox>
+                    <PDText numberOfLines={3} variant="bodyRegular" color="grey">
+                        {description}
                     </PDText>
-                </View>
-            </View>
-        </View>
+                </PDBox>
+            </PDBox>
+        </PDBox>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#fff',
-        borderRadius: 24,
-        borderWidth: 2,
-        borderColor: '#F0F0F0',
-        padding: 24,
-        marginBottom: 12,
-    },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderBottomWidth: 2,
-        borderColor: '#F0F0F0',
-        marginBottom: 12,
-        paddingBottom: 8,
-    },
-    title: {
-        fontWeight: '600',
-        fontSize: 16,
-        fontStyle: 'normal',
-        lineHeight: 24,
-    },
     buttonContainer: {
         borderRadius: 12.5,
         backgroundColor: '#00000004',
@@ -73,19 +114,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontStyle: 'normal',
         color: '#7C7C7C',
-    },
-    body: {
-        fontWeight: '500',
-        fontStyle: 'normal',
-        fontSize: 14,
-        lineHeight: 21,
-        color: '#8C8C8C',
-    },
-    rowButtonsContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 12,
     },
     activeButton: {
         color: '#000000',

@@ -1,32 +1,34 @@
 import React from 'react';
-import { View, Text, StyleSheet, TextInputProps } from 'react-native';
+import { StyleSheet, TextInputProps } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+
+import { PDBox } from '../PDBox';
+import { PDText } from '../PDText';
 
 interface BorderInputWithLabel extends TextInputProps {
     label: string;
 }
 
 const BorderInputWithLabel: React.FC<BorderInputWithLabel> = (props) => {
-    const { label, ...TextInputProps } = props;
+    const { label, ...restTextInputProps } = props;
 
     return (
-        <View>
-            <Text style={styles.label}>{label}</Text>
-            <TextInput {...TextInputProps} style={styles.textInput} placeholderTextColor="#BBBBBB" />
-        </View>
+        <PDBox>
+            <PDText
+                variant="bodyGreyBold"
+                lineHeight={21}
+                fontStyle="normal"
+                letterSpacing={0.5}
+                color="grey"
+                textTransform="uppercase">
+                {label}
+            </PDText>
+            <TextInput {...restTextInputProps} style={styles.textInput} placeholderTextColor="#BBBBBB" blurOnSubmit />
+        </PDBox>
     );
 };
 
 const styles = StyleSheet.create({
-    label: {
-        fontWeight: '700',
-        fontSize: 14,
-        lineHeight: 21,
-        letterSpacing: 0.5,
-        fontStyle: 'normal',
-        color: '#999999',
-        textTransform: 'uppercase',
-    },
     textInput: {
         borderColor: '#F0F0F0',
         borderWidth: 2,

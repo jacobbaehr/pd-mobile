@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TextProps as RnTextProps, TextStyle } from 'react-native';
+import { TextProps as RnTextProps, TextStyle } from 'react-native';
 import { Theme } from '~/theme';
 
 import {
@@ -30,7 +30,7 @@ interface PDTextProps extends PDText {
 }
 
 export const PDText: React.FC<PDTextProps> = (props) => {
-    const { scale, children, style, ...restProps } = props;
+    const { scale, children, ...restProps } = props;
 
     let adjustsFontSizeToFit = false;
     let numberOfLines;
@@ -40,19 +40,8 @@ export const PDText: React.FC<PDTextProps> = (props) => {
     }
 
     return (
-        <Text
-            adjustsFontSizeToFit={adjustsFontSizeToFit}
-            numberOfLines={numberOfLines}
-            style={[styles.default, style]}
-            {...restProps}>
+        <Text adjustsFontSizeToFit={adjustsFontSizeToFit} numberOfLines={numberOfLines} {...restProps}>
             {children}
         </Text>
     );
 };
-
-const styles = StyleSheet.create({
-    default: {
-        fontFamily: 'Poppins-Regular',
-        fontWeight: '600',
-    },
-});

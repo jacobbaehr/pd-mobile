@@ -34,6 +34,7 @@
         "hoist-non-react-statics": "^3.3.2",
         "pluralize": "^8.0.0",
         "react": "16.13.1",
+        "react-hook-form": "^6.15.1",
         "react-native": "0.63.3",
         "react-native-base64": "^0.1.0",
         "react-native-fs": "^2.16.6",

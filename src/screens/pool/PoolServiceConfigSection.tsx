@@ -26,12 +26,12 @@ const PoolServiceConfigSection = () => {
     const customTargets = useSelector((state: AppState) => getCustomTargetsBySelectedPool(state, recipe));
     const history = useRealmPoolHistoryHook(selectedPool?.objectId);
 
-    console.log('history', history.length);
-
     const isEmptyCustom = customTargets?.length === 0;
 
     const navigateToCustomTargets = () => {
-        navigate('CustomTargets');
+        navigate('CustomTargets', {
+            customTargets,
+        });
     };
 
     const navigateToRecipes = () => {

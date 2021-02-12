@@ -18,6 +18,8 @@ const palette = {
     grey: '#BBBBBB',
     greyDark: '#8C8C8C',
     greyDarker: '#262626',
+
+    blurredRed: '#F9000010',
 };
 
 const theme = createTheme({
@@ -43,6 +45,10 @@ const theme = createTheme({
         tablet: 768,
     },
     textVariants: {
+        default: {
+            fontFamily: 'Poppins-Regular',
+            fontWeight: '600',
+        },
         tooltip: {
             fontFamily: 'Poppins-Medium',
             fontStyle: 'normal',
@@ -102,55 +108,13 @@ const theme = createTheme({
         },
     },
     cardVariants: {
-        border: {
-            backgroundColor: palette.white,
-            borderWidth: 2,
-            borderColor: palette.greyLight,
-            borderRadius: 24,
-            padding: 24,
-            marginHorizontal: 18,
-        },
-        blueBackground: {
-            backgroundColor: palette.blue,
-            opacity: 0.03,
-            padding: 24,
-            borderRadius: 18,
-            marginHorizontal: 18,
-        },
-        purpleBackground: {
-            backgroundColor: palette.purple,
-            opacity: 0.03,
-            padding: 24,
-            borderRadius: 18,
-            marginHorizontal: 18,
-        },
-        redBackground: {
-            backgroundColor: palette.red,
-            opacity: 0.03,
-            padding: 24,
-            borderRadius: 18,
-            marginHorizontal: 18,
-        },
-        tealBackground: {
-            backgroundColor: palette.teal,
-            opacity: 0.03,
-            padding: 24,
-            borderRadius: 18,
-            marginHorizontal: 18,
-        },
-        greenBackground: {
-            backgroundColor: palette.green,
-            opacity: 0.03,
-            padding: 24,
-            borderRadius: 18,
-            marginHorizontal: 18,
-        },
-        pinkBackground: {
-            backgroundColor: palette.pink,
-            opacity: 0.03,
-            padding: 24,
-            borderRadius: 18,
-            marginHorizontal: 18,
+        default: {
+            // opacity: 0.05,
+            borderRadius: 8,
+            paddingVertical: 'xs',
+            paddingHorizontal: 'sm',
+            justifyContent: 'center',
+            alignItems: 'center',
         },
     },
 });
