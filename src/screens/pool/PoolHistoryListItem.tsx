@@ -96,7 +96,7 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
                     onPress={() => props.handleEmailPressed(props.logEntry)}
                 />
 
-                <View style={styles.buttonRowColumn} />
+                <View />
             </View>,
         ];
     }

@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { PDText } from '~/components/PDText';
 import { Pool } from '~/models/Pool';
 import { TargetRange } from '~/models/recipe/TargetRange';
-import { PDNavStackParamList } from '~/navigator/Navigators';
+import { PDCardNavigatorParams } from '~/navigator/PDCardNavigator';
 import { AppState } from '~/redux/AppState';
 import { RecipeService } from '~/services/RecipeService';
 
@@ -19,7 +19,7 @@ import CustomTargetsItem from './CustomTargetsItem';
 const CustomTargetsScreen = () => {
     const selectedPool = useSelector<AppState>((state) => state.selectedPool) as Pool;
     const recipe = useRecipeHook(selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
-    const { params } = useRoute<RouteProp<PDNavStackParamList, 'CustomTargets'>>();
+    const { params } = useRoute<RouteProp<PDCardNavigatorParams, 'CustomTargets'>>();
 
     return (
         <SafeAreaView style={styles.safeArea}>

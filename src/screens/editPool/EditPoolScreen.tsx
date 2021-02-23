@@ -4,7 +4,6 @@ import { Keyboard, Alert } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 
-import { PDNavStackParamList } from '~/navigator/Navigators';
 import { Pool } from '~/models/Pool';
 import { saveNewPool, updatePool } from '~/redux/selectedPool/Actions';
 import { dispatch, AppState } from '~/redux/AppState';
@@ -21,9 +20,10 @@ import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
 import { Util } from '~/services/Util';
 import { WallTypeValue, wallTypeOptions } from '~/models/Pool/WallType';
 import { Haptic } from '~/services/HapticService';
+import { PDNavParams } from '~/navigator/shared';
 
 interface EditPoolScreenProps {
-    navigation: StackNavigationProp<PDNavStackParamList, 'EditPool'>;
+    navigation: StackNavigationProp<PDNavParams, 'EditPool'>;
     selectedPool: Pool | null;
     pickerState: PickerState | null;
     deviceSettings: DeviceSettings;

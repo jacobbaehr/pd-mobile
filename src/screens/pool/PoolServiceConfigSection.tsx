@@ -7,7 +7,6 @@ import { images } from '~/assets/images';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { PDText } from '~/components/PDText';
 import { Pool } from '~/models/Pool';
-import { PDNavigationProps } from '~/navigator/Navigators';
 import { AppState } from '~/redux/AppState';
 import { getCustomTargetsBySelectedPool } from '~/redux/selectedPool/Selectors';
 import { RecipeService } from '~/services/RecipeService';
@@ -15,12 +14,13 @@ import { RecipeService } from '~/services/RecipeService';
 import { useNavigation } from '@react-navigation/native';
 
 import { useRealmPoolHistoryHook, useRecipeHook } from '../poolList/hooks/RealmPoolHook';
-
+import { StackNavigationProp } from '@react-navigation/stack';
+import { PDNavParams } from '~/navigator/shared';
 /**
  * Displays info about the recipe & customizations in the SectionList on the pool details screen.
  */
 const PoolServiceConfigSection = () => {
-    const { navigate } = useNavigation<PDNavigationProps>();
+    const { navigate } = useNavigation<StackNavigationProp<PDNavParams>>();
     const selectedPool = useSelector<AppState>((state) => state.selectedPool) as Pool;
     const recipe = useRecipeHook(selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
     const customTargets = useSelector((state: AppState) => getCustomTargetsBySelectedPool(state, recipe));

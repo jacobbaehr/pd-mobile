@@ -3,7 +3,7 @@ import { View, StyleSheet, SafeAreaView, ScrollView, TouchableHighlight, Linking
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 
-import { PDNavStackParamList } from '~/navigator/Navigators';
+import { PDCardNavigatorParams } from '~/navigator/PDCardNavigator';
 import { AppState, dispatch } from '~/redux/AppState';
 import { Pool } from '~/models/Pool';
 
@@ -16,6 +16,7 @@ import { PDText } from '~/components/PDText';
 import { Config } from '~/services/Config';
 import { updatePool } from '~/redux/selectedPool/Actions';
 import { format } from 'date-fns';
+import { PDNavParams } from '~/navigator/shared';
 
 interface RecipeScreenProps {
     pool: Pool;
@@ -29,8 +30,8 @@ const mapStateToProps = (state: AppState, ownProps: RecipeScreenProps): RecipeSc
 };
 
 const RecipeScreenComponent: React.FunctionComponent<RecipeScreenProps> = (props) => {
-    const { navigate, goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'RecipeDetails'>>();
-    const { params } = useRoute<RouteProp<PDNavStackParamList, 'RecipeDetails'>>();
+    const { navigate, goBack } = useNavigation<StackNavigationProp<PDNavParams, 'RecipeDetails'>>();
+    const { params } = useRoute<RouteProp<PDCardNavigatorParams, 'RecipeDetails'>>();
     const recipe = useRecipeHook(params.recipeKey);
     const [isWebButtonPressed, setIsWebButtonPressed] = React.useState(false);
 

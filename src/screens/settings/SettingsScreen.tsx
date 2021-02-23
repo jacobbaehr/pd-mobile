@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View, Linking, ViewStyle, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { PDNavStackParamList } from '~/navigator/Navigators';
 import { connect } from 'react-redux';
 import SafeAreaView, { useSafeArea } from 'react-native-safe-area-view';
 // @ts-ignore
@@ -26,6 +25,7 @@ import { ScoopListItem } from './scoops/ScoopListItem';
 import { Scoop } from '~/models/Scoop';
 import { DS } from '~/services/DSUtil';
 import { ExportService } from '~/services/ExportService';
+import { PDNavParams } from '~/navigator/shared';
 
 interface SettingsProps {
     deviceSettings: DeviceSettings;
@@ -39,7 +39,7 @@ const mapStateToProps = (state: AppState, ownProps: SettingsProps): SettingsProp
 };
 
 const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
-    const { goBack, navigate } = useNavigation<StackNavigationProp<PDNavStackParamList, 'Settings'>>();
+    const { goBack, navigate } = useNavigation<StackNavigationProp<PDNavParams, 'Settings'>>();
     const insets = useSafeArea();
     const ds = props.deviceSettings;
     const isUnlocked = DS.isSubscriptionValid(ds, Date.now());

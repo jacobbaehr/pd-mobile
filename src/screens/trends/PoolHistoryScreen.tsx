@@ -5,7 +5,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import SafeAreaView, { useSafeArea } from 'react-native-safe-area-view';
 
-import { PDNavStackParamList } from '~/navigator/Navigators';
 import { BackButton } from '~/components/buttons/BackButton';
 import { ChartCard } from '~/components/charts/ChartCard';
 import { DateRangeSelector, DateRange } from '~/components/DateRangeSelector';
@@ -17,6 +16,7 @@ import { DeviceSettings } from '~/models/DeviceSettings';
 import { useNavigation } from '@react-navigation/native';
 import { DS } from '~/services/DSUtil';
 import { ChartService } from '~/services/ChartService';
+import { PDNavParams } from '~/navigator/shared';
 
 interface PoolHistoryProps {
     /**  */
@@ -34,7 +34,7 @@ const mapStateToProps = (state: AppState): PoolHistoryProps => {
 const PoolHistoryComponent: React.FunctionComponent<PoolHistoryProps> = (props) => {
     const [dateRange, setDateRange] = React.useState<DateRange>('1M');
     const [chartData, setChartData] = React.useState<ChartCardViewModel[]>([]);
-    const { goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'PoolHistory'>>();
+    const { goBack } = useNavigation<StackNavigationProp<PDNavParams, 'PoolHistory'>>();
     const insets = useSafeArea();
 
     const { selectedPool, deviceSettings } = props;

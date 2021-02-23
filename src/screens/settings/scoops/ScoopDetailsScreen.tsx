@@ -13,7 +13,6 @@ import { DeviceSettings } from '~/models/DeviceSettings';
 import { Treatment, TreatmentType } from '~/models/recipe/Treatment';
 import { Scoop } from '~/models/Scoop';
 import { DryChemicalUnits, Units, WetChemicalUnits } from '~/models/TreatmentUnits';
-import { PDNavStackParamList } from '~/navigator/Navigators';
 import { AppState, dispatch } from '~/redux/AppState';
 import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
 import { updatePickerState } from '~/redux/picker/Actions';
@@ -27,14 +26,15 @@ import { Util } from '~/services/Util';
 
 import { RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { PDNavParams } from '~/navigator/shared';
 
 export interface ScoopDetailsRouteProps {
     prevScoop: Scoop | null;
 }
 
 interface ScoopDetailsScreenProps {
-    navigation: StackNavigationProp<PDNavStackParamList, 'ScoopDetails'>;
-    route: RouteProp<PDNavStackParamList, 'ScoopDetails'>;
+    navigation: StackNavigationProp<PDNavParams, 'ScoopDetails'>;
+    route: RouteProp<PDNavParams, 'ScoopDetails'>;
     pickerState: PickerState | null;
     deviceSettings: DeviceSettings;
 }

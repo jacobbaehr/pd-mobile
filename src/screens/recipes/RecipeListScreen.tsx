@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, SectionList, Alert, Linking } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { PDNavStackParamList } from '~/navigator/Navigators';
 import { connect } from 'react-redux';
 import SafeAreaView from 'react-native-safe-area-view';
 
@@ -18,6 +17,7 @@ import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
 import { RecipeService } from '~/services/RecipeService';
 import { RS } from '~/services/RecipeUtil';
 import { Config } from '~/services/Config';
+import { PDNavParams } from '~/navigator/shared';
 
 interface RecipeListScreenProps {
     // The selected pool
@@ -32,9 +32,9 @@ const mapStateToProps = (state: AppState): RecipeListScreenProps => {
 
 const RecipeListScreenComponent: React.FunctionComponent<RecipeListScreenProps> = (props) => {
     const { data } = RecipeAPI.useRecipeList();
-    const { navigate, goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'RecipeList'>>();
+    const { navigate, goBack } = useNavigation<StackNavigationProp<PDNavParams, 'RecipeList'>>();
     const currentRecipe = useRecipeHook(props.pool?.recipeKey || RecipeService.defaultRecipeKey);
-    const { params } = useRoute<RouteProp<PDNavStackParamList, 'RecipeList'>>();
+    const { params } = useRoute<RouteProp<PDNavParams, 'RecipeList'>>();
 
     const handleUpdatePressed = () => {
         Linking.openURL(Config.appStoreListing);

@@ -3,7 +3,6 @@ import { StyleSheet, SafeAreaView, View, SectionList, Keyboard } from 'react-nat
 
 import { PDText } from '~/components/PDText';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { PDNavStackParamList } from '~/navigator/Navigators';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { PickerItem } from './PickerItem';
 import { PickerRow } from './PickerRow';
@@ -15,6 +14,7 @@ import { Haptic } from '~/services/HapticService';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { CloseButton } from '~/components/buttons/CloseButton';
+import { PDNavParams } from '~/navigator/shared';
 
 export interface PDPickerRouteProps {
     title: string;
@@ -27,8 +27,8 @@ export interface PDPickerRouteProps {
 }
 
 interface PickerScreenProps {
-    navigation: StackNavigationProp<PDNavStackParamList, 'PickerScreen'>;
-    route: RouteProp<PDNavStackParamList, 'PickerScreen'>;
+    navigation: StackNavigationProp<PDNavParams, 'PickerScreen'>;
+    route: RouteProp<PDNavParams, 'PickerScreen'>;
 }
 
 export const PickerScreen: React.FunctionComponent<PickerScreenProps> = (props: PickerScreenProps) => {

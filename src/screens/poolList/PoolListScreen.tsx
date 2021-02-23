@@ -4,7 +4,6 @@ import { useSafeArea } from 'react-native-safe-area-context';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { PDNavStackParamList } from '~/navigator/Navigators';
 import { connect } from 'react-redux';
 
 import { images } from '~/assets/images';
@@ -19,6 +18,7 @@ import { useRealmPoolsHook } from './hooks/RealmPoolHook';
 import { useNavigation } from '@react-navigation/native';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { DS } from '~/services/DSUtil';
+import { PDNavParams } from '~/navigator/shared';
 
 interface PoolListScreenProps {
     // The id of the selected pool, if any
@@ -40,7 +40,7 @@ const mapStateToProps = (state: AppState): PoolListScreenProps => {
 
 const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (props) => {
     const pools = useRealmPoolsHook();
-    const { navigate } = useNavigation<StackNavigationProp<PDNavStackParamList, 'PoolList'>>();
+    const { navigate } = useNavigation<StackNavigationProp<PDNavParams, 'PoolList'>>();
     const insets = useSafeArea();
 
     const handlePoolSelected = async (pool: Pool): Promise<void> => {

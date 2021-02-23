@@ -9,7 +9,6 @@ import { ChartCard } from '~/components/charts/ChartCard';
 import { PDText } from '~/components/PDText';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { Pool } from '~/models/Pool';
-import { PDNavigationProps } from '~/navigator/Navigators';
 import { AppState } from '~/redux/AppState';
 import { Database } from '~/repository/Database';
 import { ChartService } from '~/services/ChartService';
@@ -26,6 +25,9 @@ import { PoolHeaderView } from './PoolHeaderView';
 import { PoolHistoryListItem } from './PoolHistoryListItem';
 import PoolServiceConfigSection from './PoolServiceConfigSection';
 import { EmailService } from '~/services/EmailService';
+import { LogEntry } from '~/models/logs/LogEntry';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { PDNavParams } from '~/navigator/shared';
 
 interface PoolScreenProps {
     // The id of the selected pool, if any
@@ -48,7 +50,7 @@ const mapStateToProps = (state: AppState): PoolScreenProps => {
 const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) => {
     const isUnlocked = DS.isSubscriptionValid(props.deviceSettings, Date.now());
 
-    const { navigate } = useNavigation<PDNavigationProps>();
+    const { navigate } = useNavigation<StackNavigationProp<PDNavParams>>();
     const history = useRealmPoolHistoryHook(props.selectedPool?.objectId || '');
     const [selectedHistoryCellIds, setSelectedHistoryCellIds] = React.useState<string[]>([]);
     const recipe = useRecipeHook(props.selectedPool?.recipeKey || RecipeService.defaultRecipeKey);

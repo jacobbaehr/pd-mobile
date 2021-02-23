@@ -3,7 +3,6 @@ import { StyleSheet, View, SafeAreaView, InputAccessoryView, Keyboard, LayoutAni
 import { connect } from 'react-redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import { PDNavStackParamList } from '~/navigator/Navigators';
 import { ReadingEntry } from '~/models/logs/ReadingEntry';
 import { Pool } from '~/models/Pool';
 import { AppState, dispatch } from '~/redux/AppState';
@@ -33,9 +32,10 @@ import { Config } from '~/services/Config';
 import { TreatmentListFooter } from './TreatmentListFooter';
 import { DryChemicalUnits, WetChemicalUnits, Units } from '~/models/TreatmentUnits';
 import { EffectiveTargetRange } from '~/models/recipe/TargetRange';
+import { PDNavParams } from '~/navigator/shared';
 
 interface TreatmentListScreenProps {
-    navigation: StackNavigationProp<PDNavStackParamList, 'TreatmentList'>;
+    navigation: StackNavigationProp<PDNavParams, 'TreatmentList'>;
     readings: ReadingEntry[];
     pool: Pool;
     pickerState: PickerState | null;
@@ -56,7 +56,7 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
     const recipeKey = props.pool.recipeKey || RecipeService.defaultRecipeKey;
     const [treatmentStates, setTreatmentStates] = React.useState<TreatmentState[]>([]);
     const [notes, setNotes] = React.useState('');
-    const { goBack, navigate } = useNavigation<StackNavigationProp<PDNavStackParamList>>();
+    const { goBack, navigate } = useNavigation<StackNavigationProp<PDNavParams>>();
     // I hate this... it's dirty. We should move this into the picker screen maybe?
     const [concentrationTreatmentVar, updateConcentrationTreatment] = React.useState<string | null>(null);
     const recipe = useRecipeHook(recipeKey);

@@ -7,7 +7,7 @@ import { images } from '~/assets/images';
 
 interface CloseButtonProps {
     onPress: () => void;
-    containerStyle: StyleProp<ViewStyle>;
+    containerStyle?: StyleProp<ViewStyle>;
 }
 
 export const CloseButton: React.FunctionComponent<CloseButtonProps> = (props) => {

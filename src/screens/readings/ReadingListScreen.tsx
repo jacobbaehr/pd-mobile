@@ -12,7 +12,6 @@ import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-vie
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 
-import { PDNavStackParamList } from '~/navigator/Navigators';
 import { AppState, dispatch } from '~/redux/AppState';
 import { Pool } from '~/models/Pool';
 
@@ -28,9 +27,10 @@ import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
 import { RecipeService } from '~/services/RecipeService';
 import { Config } from '~/services/Config';
 import { PlatformSpecific } from '~/components/PlatformSpecific';
+import { PDNavParams } from '~/navigator/shared';
 
 interface ReadingListScreenProps {
-    navigation: StackNavigationProp<PDNavStackParamList, 'ReadingList'>;
+    navigation: StackNavigationProp<PDNavParams, 'ReadingList'>;
     pool: Pool;
     updated: number;
 }
@@ -48,7 +48,8 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
     const [readingStates, setReadingStates] = React.useState<ReadingState[]>([]);
     const recipe = useRecipeHook(props.pool.recipeKey || RecipeService.defaultRecipeKey);
 
-    const { setOptions, navigate, goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'ReadingList'>>();
+    const { setOptions, navigate, goBack } = useNavigation<StackNavigationProp<PDNavParams, 'ReadingList'>>();
+
     const keyboardAccessoryViewId = 'wowThisIsSomeReallyUniqueTextReadingListKeyboard';
 
     React.useEffect(() => {

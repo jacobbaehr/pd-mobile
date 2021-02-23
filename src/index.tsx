@@ -4,6 +4,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { App } from '~/App';
 import { store } from '~/redux/AppState';
+import { enableScreens } from 'react-native-screens';
+
+enableScreens();
 
 import { ThemeProvider } from '@shopify/restyle';
 

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View, Linking, Image, ViewStyle } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { PDNavStackParamList } from '~/navigator/Navigators';
 import { connect } from 'react-redux';
 import SafeAreaView, { useSafeArea } from 'react-native-safe-area-view';
 
@@ -20,6 +19,7 @@ import { lifeStory } from './LifeStory';
 import { IAP, PurchaseStatus } from '~/services/IAP';
 import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 import { DS } from '~/services/DSUtil';
+import { PDNavParams } from '~/navigator/shared';
 
 interface BuyScreenProps {
     deviceSettings: DeviceSettings;
@@ -33,7 +33,7 @@ const mapStateToProps = (state: AppState, ownProps: BuyScreenProps): BuyScreenPr
 };
 
 const BuyComponent: React.FunctionComponent<BuyScreenProps> = (props) => {
-    const { goBack } = useNavigation<StackNavigationProp<PDNavStackParamList, 'Buy'>>();
+    const { goBack } = useNavigation<StackNavigationProp<PDNavParams, 'Buy'>>();
     const insets = useSafeArea();
     const [isLoading, setIsLoading] = React.useState(false);
     const isPurchased = DS.isSubscriptionValid(props.deviceSettings, Date.now());

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
 import { ApolloProvider } from '@apollo/react-hooks';
 
-import { PDNavStack } from '~/navigator/Navigators';
+import { PDRootNavigator } from '~/navigator/PDRootNavigator';
 import { Database } from './repository/Database';
 import { RecipeRepo } from './repository/RecipeRepo';
 import { DeviceSettingsService } from './services/DeviceSettingsService';
@@ -62,7 +62,7 @@ export const AppComponent: React.FunctionComponent<AppProps> = () => {
 
     return (
         <ApolloProvider client={apolloClient}>
-            <PDNavStack />
+            <PDRootNavigator />
         </ApolloProvider>
     );
 };
