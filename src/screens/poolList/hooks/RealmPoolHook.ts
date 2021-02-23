@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Realm from 'realm';
 import { LogEntry } from '~/models/logs/LogEntry';
 import { Pool } from '~/models/Pool';
+import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
 import { Recipe } from '~/models/recipe/Recipe';
 import { RecipeKey } from '~/models/recipe/RecipeKey';
 import { Database } from '~/repository/Database';
@@ -84,4 +85,31 @@ export const useRecipeHook = (recipeKey: RecipeKey): Recipe | null => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recipeKey]);
     return recipe;
+};
+
+export const useRealmPoolTargetRange = (poolId: string, variable: string): TargetRangeOverride | undefined => {
+    const [data, setData] = useState({
+        data: Database.loadCustomTargets(poolId),
+        a: Date.now(),
+    });
+
+    useEffect(() => {
+        const handleChange = (newData: Realm.Collection<TargetRangeOverride>) => {
+            setData({
+                data: newData,
+                a: Date.now(),
+            });
+        };
+        const dataQuery = Database.loadCustomTargets(poolId);
+        dataQuery.addListener(handleChange);
+
+        // This will run sort-of like componentWillUnmount or whatever that lifecycle method was called
+        return () => {
+            dataQuery.removeAllListeners();
+        };
+    }, [poolId]);
+    //TODO: Sebas: find better way to match with the current Custom target. Could be the objectId?
+    const getCurrentTargeRange = data.data.find((ct) => ct.var === variable);
+
+    return getCurrentTargeRange;
 };

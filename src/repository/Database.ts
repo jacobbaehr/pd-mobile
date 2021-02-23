@@ -1,6 +1,8 @@
-import Realm from 'realm';
+import Realm, { UpdateMode } from 'realm';
 import { LogEntry } from '~/models/logs/LogEntry';
 import { Pool } from '~/models/Pool';
+import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
+import { Util } from '~/services/Util';
 
 import { Migrator } from './Migrator';
 
@@ -38,13 +40,14 @@ export class Database {
         if (Database.realm === undefined) {
             console.error('wait on realm to load');
         }
+
         const results = Database.realm.objects<Pool>(Pool.schema.name);
         return results;
     };
 
     static saveNewPool = (pool: Pool) => {
         const realm = Database.realm;
-        pool.objectId = getObjectId();
+        pool.objectId = Util.generateUUID();
         try {
             realm.write(() => {
                 realm.create(Pool.schema.name, {
@@ -79,8 +82,6 @@ export class Database {
             });
             return Promise.resolve();
         } catch (e) {
-            console.log(e);
-            console.error('couldnt save it');
             return Promise.reject('error saving entry');
         }
     };
@@ -148,8 +149,34 @@ export class Database {
             updates();
         });
     };
-}
 
-const getObjectId = (): string => {
-    return Math.random().toString(36).slice(2);
-};
+    static saveNewCustomTarget = (customTarget: TargetRangeOverride) => {
+        const realm = Database.realm;
+        try {
+            realm.write(() => {
+                realm.create<TargetRangeOverride>(
+                    TargetRangeOverride.schema.name,
+                    {
+                        objectId: customTarget.objectId,
+                        poolId: customTarget.poolId,
+                        var: customTarget.var,
+                        min: +customTarget.min,
+                        max: +customTarget.max,
+                    },
+                    UpdateMode.Modified,
+                );
+            });
+
+            return Promise.resolve();
+        } catch (error) {
+            return Promise.reject('Error saving a customTarget');
+        }
+    };
+
+    static loadCustomTargets = (poolId: string): Realm.Collection<TargetRangeOverride> => {
+        const realm = Database.realm;
+        const query = `poolId = "${poolId}"`;
+        const data = realm.objects<TargetRangeOverride>(TargetRangeOverride.schema.name).filtered(query);
+        return data;
+    };
+}

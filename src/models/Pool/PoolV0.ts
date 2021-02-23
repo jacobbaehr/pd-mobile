@@ -1,6 +1,6 @@
-import { WaterTypeValue } from './WaterType';
 import { RecipeKey } from '../recipe/RecipeKey';
 import { WallTypeValue } from './WallType';
+import { WaterTypeValue } from './WaterType';
 
 /**
  * Represents a swimming pool (duh).

@@ -1,4 +1,5 @@
-import { CustomTarget } from './CustomTarget';
+import { TargetRange } from '~/models/recipe/TargetRange';
+
 import { Reading } from './Reading';
 import { Treatment } from './Treatment';
 
@@ -28,5 +29,5 @@ export interface Recipe {
     appVersion: string;
 
     // All The default values fro custom targets
-    custom: CustomTarget[];
+    custom: TargetRange[];
 }

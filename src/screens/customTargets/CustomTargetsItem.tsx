@@ -1,33 +1,62 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 import { TextButton } from '~/components/buttons/TextButton';
 import { Card } from '~/components/Card';
 import BorderInputWithLabel from '~/components/inputs/BorderInputWithLabel';
 import { PDBox } from '~/components/PDBox';
 import { PDText } from '~/components/PDText';
-import { CustomTarget } from '~/models/recipe/CustomTarget';
+import { Pool } from '~/models/Pool';
+import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
+import { TargetRange } from '~/models/recipe/TargetRange';
+import { AppState } from '~/redux/AppState';
+import { Database } from '~/repository/Database';
+
+import { useRealmPoolTargetRange } from '../poolList/hooks/RealmPoolHook';
 
 /**
  *  List Item for Custom Targets by Defaults values fro each waterType.
  */
-const CustomTargetsItem: React.FC<CustomTarget> = (props) => {
+const CustomTargetsItem: React.FC<TargetRange> = (props) => {
     const { name, description, defaults } = props;
-    const { control, handleSubmit, setValue, errors, formState } = useForm<CustomTarget>({
+    const pool = useSelector<AppState>((state) => state.selectedPool) as Pool;
+    const loadedCustomTarget = useRealmPoolTargetRange(pool.objectId, props.var) ?? ({} as TargetRangeOverride);
+    const { control, handleSubmit, setValue, errors, formState } = useForm<TargetRange>({
         defaultValues: props,
         mode: 'all',
     });
     const { isDirty } = formState;
+
     const hasErrors = Object.keys(errors).length >= 1;
 
     const defaultMin = defaults[0]?.min ?? 0;
     const defaultMax = defaults[0]?.max ?? 0;
 
+    const isOverrides = (key: 'min' | 'max') => Boolean(loadedCustomTarget[key]);
+
     const handleResetValue = () => {
         setValue('defaults', props.defaults);
     };
 
-    const handleBlurred = handleSubmit(() => {});
+    const handleBlurred = handleSubmit(async (values) => {
+        const mapDefaultCustomTargets = {
+            objectId: loadedCustomTarget.objectId,
+            min: props.defaults[0].min,
+            max: props.defaults[0].max,
+            poolId: pool.objectId,
+            var: props.var,
+        };
+
+        const mapValuesCustomTargets = {
+            min: values.defaults[0].min,
+            max: values.defaults[0].max,
+        };
+
+        const mapCustomTarget = TargetRangeOverride.make(mapDefaultCustomTargets, mapValuesCustomTargets);
+
+        await Database.saveNewCustomTarget(mapCustomTarget);
+    });
 
     return (
         <PDBox backgroundColor="white" borderRadius={24} borderWidth={2} borderColor="greyLight" p="lg" mb="sm">
@@ -44,7 +73,7 @@ const CustomTargetsItem: React.FC<CustomTarget> = (props) => {
                 <TextButton
                     text="Reset"
                     onPress={handleResetValue}
-                    disabled={!isDirty}
+                    disabled={!isDirty || isOverrides('min') || isOverrides('max')}
                     containerStyles={styles.buttonContainer}
                     textStyles={[styles.buttonText, isDirty && styles.activeButton]}
                 />
@@ -57,11 +86,15 @@ const CustomTargetsItem: React.FC<CustomTarget> = (props) => {
                         render={({ value, onChange }) => (
                             <BorderInputWithLabel
                                 label="min"
-                                placeholder={defaultMin.toString()}
+                                placeholder={
+                                    isOverrides('min') ? loadedCustomTarget?.min.toString() : defaultMin.toString()
+                                }
+                                placeholderTextColor={isOverrides('min') ? '#1E6BFF' : '#BBBBBB'}
                                 onChangeText={onChange}
                                 value={value}
                                 onBlur={handleBlurred}
                                 keyboardType="numeric"
+                                maxLength={3}
                             />
                         )}
                         rules={{
@@ -74,11 +107,15 @@ const CustomTargetsItem: React.FC<CustomTarget> = (props) => {
                         render={({ value, onChange }) => (
                             <BorderInputWithLabel
                                 label="max"
-                                placeholder={defaultMax.toString()}
+                                placeholder={
+                                    isOverrides('max') ? loadedCustomTarget?.max.toString() : defaultMax.toString()
+                                }
+                                placeholderTextColor={isOverrides('max') ? '#1E6BFF' : '#BBBBBB'}
                                 onChangeText={onChange}
                                 value={value}
                                 onBlur={handleBlurred}
                                 keyboardType="numeric"
+                                maxLength={3}
                             />
                         )}
                         rules={{
@@ -117,6 +154,9 @@ const styles = StyleSheet.create({
     },
     activeButton: {
         color: '#000000',
+    },
+    isOverride: {
+        color: '#1E6BFF',
     },
 });
 

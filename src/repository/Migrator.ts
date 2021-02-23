@@ -1,15 +1,19 @@
 import Realm from 'realm';
-import { Pool } from '~/models/Pool';
 import { LogEntry } from '~/models/logs/LogEntry';
 import { ReadingEntry } from '~/models/logs/ReadingEntry';
 import { TreatmentEntry } from '~/models/logs/TreatmentEntry';
+import { Pool } from '~/models/Pool';
+import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
 
 /**
  * List of schemas for the Realm database. This array should be updated every
  * time there is a change to the data model.
  */
 export const schemas = [
-    { schema: [Pool.schema, LogEntry.schema, ReadingEntry.schema, TreatmentEntry.schema], schemaVersion: 0 },
+    {
+        schema: [Pool.schema, LogEntry.schema, ReadingEntry.schema, TreatmentEntry.schema, TargetRangeOverride.schema],
+        schemaVersion: 0,
+    },
 ];
 
 /**

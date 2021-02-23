@@ -23,7 +23,12 @@ const BorderInputWithLabel: React.FC<BorderInputWithLabel> = (props) => {
                 textTransform="uppercase">
                 {label}
             </PDText>
-            <TextInput {...restTextInputProps} style={styles.textInput} placeholderTextColor="#BBBBBB" blurOnSubmit />
+            <TextInput
+                style={[styles.textInput, props.style]}
+                placeholderTextColor="#BBBBBB"
+                blurOnSubmit
+                {...restTextInputProps}
+            />
         </PDBox>
     );
 };

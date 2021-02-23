@@ -1,5 +1,5 @@
-import { DeviceSettings } from '~/models/DeviceSettings';
 import base64 from 'react-native-base64';
+import { DeviceSettings } from '~/models/DeviceSettings';
 
 export class Util {
     static getDisplayVolume = (gallons: number, settings: DeviceSettings): string => {
@@ -88,5 +88,9 @@ export class Util {
     static stringFromBase64UntestedArgh = (input: string) => {
         const unicode = base64.decode(input);
         return decodeURIComponent(escape(unicode));
+    };
+
+    static generateUUID = () => {
+        return Math.random().toString(36).slice(2);
     };
 }

@@ -109,7 +109,6 @@ const theme = createTheme({
     },
     cardVariants: {
         default: {
-            // opacity: 0.05,
             borderRadius: 8,
             paddingVertical: 'xs',
             paddingHorizontal: 'sm',
