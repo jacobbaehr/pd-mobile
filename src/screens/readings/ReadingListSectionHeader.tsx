@@ -7,7 +7,11 @@ interface ReadingListSectionHeaderProps {
 }
 
 export const ReadingListSectionHeader: React.FunctionComponent<ReadingListSectionHeaderProps> = (props) => {
-    return <PDText style={styles.remainingText}>{props.title}</PDText>;
+    return (
+        <PDText type="default" style={styles.remainingText}>
+            {props.title}
+        </PDText>
+    );
 };
 
 const styles = StyleSheet.create({

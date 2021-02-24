@@ -35,7 +35,9 @@ export class GradientButton extends React.Component<ButtonProps, {}> {
                     start={{ x: -0.1, y: -0.1 }}
                     end={{ x: 1.15, y: 1.1 }}
                     style={styles.linearGradient}>
-                    <PDText style={styles.text}>{this.props.title}</PDText>
+                    <PDText color="white" type="default" style={styles.text}>
+                        {this.props.title}
+                    </PDText>
                 </LinearGradient>
             </TouchableScale>
         );
@@ -55,6 +57,7 @@ const styles = StyleSheet.create({
     text: {
         color: 'white',
         textAlign: 'center',
+        // TODO: PDTextType & theme spacing
         fontSize: 24,
         fontWeight: '700',
         paddingVertical: 15,

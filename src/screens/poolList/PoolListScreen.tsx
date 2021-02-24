@@ -71,7 +71,7 @@ const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (p
 
     const handleAddPoolPressed = async () => {
         const hasUpgraded = DS.isSubscriptionValid(props.deviceSettings, Date.now());
-        if (hasUpgraded || pools.length == 0) {
+        if (hasUpgraded || pools.length === 0) {
             dispatch(selectPool(null));
             navigate('CreatePool');
         } else {
@@ -94,11 +94,7 @@ const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (p
         <View style={[styles.container, dynamicContainerStyles]}>
             <View style={styles.header}>
                 <View style={styles.headerLeft}>
-                    <TouchableScale
-                        style={styles.accountButton}
-                        underlayColor={'transparent'}
-                        activeScale={0.97}
-                        onPress={handleSettingsPressed}>
+                    <TouchableScale style={styles.accountButton} activeScale={0.97} onPress={handleSettingsPressed}>
                         <Image
                             style={styles.accountButtonImage}
                             source={images.gearLightButton}
@@ -106,14 +102,12 @@ const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (p
                             height={38}
                         />
                     </TouchableScale>
-                    <PDText style={styles.title}>My Pools</PDText>
+                    <PDText type="default" style={styles.title}>
+                        My Pools
+                    </PDText>
                 </View>
                 <View style={styles.headerRight}>
-                    <TouchableScale
-                        style={styles.plusButton}
-                        underlayColor={'transparent'}
-                        activeScale={0.97}
-                        onPress={handleAddPoolPressed}>
+                    <TouchableScale style={styles.plusButton} activeScale={0.97} onPress={handleAddPoolPressed}>
                         <Image style={styles.plusButtonImage} source={images.plusButton} width={38} height={38} />
                     </TouchableScale>
                 </View>

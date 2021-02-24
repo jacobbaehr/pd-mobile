@@ -33,7 +33,12 @@ export class Button extends React.Component<ButtonProps, {}> {
                 disabled={this.props.disabled}
                 activeScale={0.97}
                 hitSlop={{ top: slop, left: slop, bottom: slop, right: slop }}>
-                <PDText style={this.props.textStyles ? this.props.textStyles : styles.text}>{this.props.title}</PDText>
+                <PDText
+                    type="default"
+                    color="white"
+                    style={this.props.textStyles ? this.props.textStyles : styles.text}>
+                    {this.props.title}
+                </PDText>
             </TouchableScale>
         );
     }
@@ -43,7 +48,6 @@ const styles = StyleSheet.create({
     container: {},
     text: {
         flex: 1,
-        color: 'white',
         textAlign: 'center',
         margin: '.5%',
     },

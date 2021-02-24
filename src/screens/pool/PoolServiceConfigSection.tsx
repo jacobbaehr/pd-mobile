@@ -66,10 +66,14 @@ const PoolServiceConfigSection = () => {
     return (
         <View style={styles.container}>
             <View>
-                <PDText style={styles.title}>Configuration Service</PDText>
+                <PDText type="default" style={styles.title}>
+                    Configuration Service
+                </PDText>
                 <View>
                     <View>
-                        <PDText style={styles.subTitle}>{recipe?.name}</PDText>
+                        <PDText type="default" style={styles.subTitle}>
+                            {recipe?.name}
+                        </PDText>
                         <TouchableOpacity onPress={navigateToRecipes}>
                             <View style={styles.row}>
                                 <Text style={styles.buttonResults} numberOfLines={1} ellipsizeMode="tail">
@@ -81,7 +85,9 @@ const PoolServiceConfigSection = () => {
                     </View>
                     {isEmptyCustom || (
                         <View>
-                            <PDText style={styles.subTitle}>Custom Targets</PDText>
+                            <PDText type="default" style={styles.subTitle}>
+                                Custom Targets
+                            </PDText>
                             <TouchableOpacity onPress={navigateToCustomTargets}>
                                 <View style={styles.row}>
                                     <Text style={styles.buttonResults} numberOfLines={1} ellipsizeMode="tail">
@@ -100,7 +106,9 @@ const PoolServiceConfigSection = () => {
                 </View>
             </View>
             <BoringButton title="Start Service" onPress={navigateToReadings} containerStyles={styles.buttonContainer} />
-            <PDText style={styles.lastUpdateText}>{lastTimeUpdate()}</PDText>
+            <PDText type="default" style={styles.lastUpdateText}>
+                {lastTimeUpdate()}
+            </PDText>
         </View>
     );
 };

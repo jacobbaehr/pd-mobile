@@ -14,7 +14,9 @@ export const RecipeListHeader: React.FunctionComponent<RecipeListHeaderProps> = 
     return (
         <View style={styles.container}>
             <BackButton title={props.pool.name} onPress={props.handleBackPress} color={'recipesGreen'} />
-            <PDText style={styles.gradientText}>Change Recipe</PDText>
+            <PDText type="default" style={styles.gradientText}>
+                Change Recipe
+            </PDText>
         </View>
     );
 };

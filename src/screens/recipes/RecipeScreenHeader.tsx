@@ -14,8 +14,12 @@ export const RecipeScreenHeader: React.FunctionComponent<RecipeScreenHeaderProps
     return (
         <View style={styles.container}>
             <BackButton title={'Recipes'} onPress={props.handleBackPress} color={'recipesGreen'} />
-            <PDText style={styles.gradientText}>{props.meta.name}</PDText>
-            <PDText style={styles.detailsText}>{props.meta.id}</PDText>
+            <PDText type="default" style={styles.gradientText}>
+                {props.meta.name}
+            </PDText>
+            <PDText type="default" style={styles.detailsText}>
+                {props.meta.id}
+            </PDText>
         </View>
     );
 };

@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { BackButton } from '~/components/buttons/BackButton';
-import { PDBox } from '~/components/PDBox';
+import { PDView } from '~/components/PDView';
 import { PDText } from '~/components/PDText';
 
 import { useNavigation } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
+import { PDSpacing } from '~/components/PDTheme';
 
 const CustomTargetsHeader: React.FC = () => {
     const { goBack } = useNavigation();
@@ -13,24 +15,28 @@ const CustomTargetsHeader: React.FC = () => {
     };
 
     return (
-        <PDBox
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="space-between"
-            px="md"
-            backgroundColor="white"
-            borderBottomColor="greyLighter"
-            borderBottomWidth={2}
-            pb="sm">
+        <PDView style={styles.container} bgColor="white">
             <BackButton title="" onPress={handlePressedBack} scale={{ scale: true, scaleLines: 2 }} />
-            <PDBox>
-                <PDText variant="heading" color="black">
+            <PDView>
+                <PDText type="heading" color="black">
                     Custom Targets
                 </PDText>
-            </PDBox>
-            <PDBox />
-        </PDBox>
+            </PDView>
+            <PDView />
+        </PDView>
     );
 };
 
 export default CustomTargetsHeader;
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: PDSpacing.md,
+        paddingBottom: PDSpacing.sm,
+        borderBottomColor: '#F5F5F5',
+        borderBottomWidth: 2,
+    },
+});

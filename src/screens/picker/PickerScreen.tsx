@@ -38,7 +38,7 @@ export const PickerScreen: React.FunctionComponent<PickerScreenProps> = (props: 
     // This state only applies to the slider (yuck)
     const [textValue, setTextValue] = React.useState(props.route.params.prevSelection || '1');
     // Reminder: this only gets set to `textValue` by this line on the first render
-    const [sliderValue, updateSliderValue] = React.useState(parseInt(textValue));
+    const [sliderValue, updateSliderValue] = React.useState(parseInt(textValue, 10));
     const [isSliding, setIsSliding] = React.useState(false);
 
     const handleButtonPress = (value: string) => {
@@ -76,7 +76,7 @@ export const PickerScreen: React.FunctionComponent<PickerScreenProps> = (props: 
 
         const handleSliderChanged = (newValue: number) => {
             console.log('newValue: ', newValue);
-            if (newValue != sliderValue) {
+            if (newValue !== sliderValue) {
                 Haptic.bumpyGlide();
                 updateSliderValue(newValue);
                 setTextValue(newValue.toFixed(0));
@@ -90,7 +90,7 @@ export const PickerScreen: React.FunctionComponent<PickerScreenProps> = (props: 
 
         const handleTextboxDismissed = (newValue: string) => {
             // Range enforcer:
-            let finalValue = newValue ? parseInt(newValue) : 1;
+            let finalValue = newValue ? parseInt(newValue, 10) : 1;
             finalValue = Math.max(Math.min(finalValue, 100), 1);
 
             setTextValue(finalValue.toFixed(0));
@@ -134,8 +134,12 @@ export const PickerScreen: React.FunctionComponent<PickerScreenProps> = (props: 
             <View style={styles.container}>
                 <View style={styles.header}>
                     <View style={styles.headerLeft}>
-                        <PDText style={[styles.title, styles.titleTop]}>{title}</PDText>
-                        <PDText style={[styles.title, styles.titleBottom]}>{subtitle}</PDText>
+                        <PDText type="default" style={[styles.title, styles.titleTop]}>
+                            {title}
+                        </PDText>
+                        <PDText type="default" style={[styles.title, styles.titleBottom]}>
+                            {subtitle}
+                        </PDText>
                     </View>
                     <CloseButton onPress={handleClosePressed} containerStyle={styles.closeButton} />
                 </View>

@@ -76,7 +76,7 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
             pickerState.value !== null &&
             concentrationTreatmentVar
         ) {
-            const newConcentration = Math.min(Math.max(parseInt(pickerState.value), 1), 100);
+            const newConcentration = Math.min(Math.max(parseInt(pickerState.value, 10), 1), 100);
 
             const treatmentModification = (ts: TreatmentState) => {
                 const newOunces = (ts.ounces * ts.concentration) / newConcentration;
@@ -355,7 +355,7 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
     if (recipe) {
         const countedTreatmentStates = treatmentStates.filter((ts) => ts.treatment.type !== 'calculation');
         const completed = countedTreatmentStates.filter((ts) => ts.isOn);
-        progress = countedTreatmentStates.length == 0 ? 0 : completed.length / countedTreatmentStates.length;
+        progress = countedTreatmentStates.length === 0 ? 0 : completed.length / countedTreatmentStates.length;
     }
 
     return (

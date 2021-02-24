@@ -103,7 +103,9 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
                         </View>
                     </View>
                     <View style={styles.listContainer}>
-                        <PDText style={styles.waterTypeLabel}>Water Type</PDText>
+                        <PDText type="default" style={styles.waterTypeLabel}>
+                            Water Type
+                        </PDText>
                         <ChoosyButton
                             title={waterTypeDisplay || ''}
                             onPress={props.pressedWaterTypeButton}
@@ -112,7 +114,9 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
                         />
                     </View>
                     <View style={styles.listContainer}>
-                        <PDText style={styles.waterTypeLabel}>Wall Type</PDText>
+                        <PDText type="default" style={styles.waterTypeLabel}>
+                            Wall Type
+                        </PDText>
                         <ChoosyButton
                             title={wallTypeDisplay || ''}
                             onPress={props.pressedWallTypeButton}

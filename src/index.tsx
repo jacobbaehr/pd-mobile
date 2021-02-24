@@ -8,9 +8,7 @@ import { enableScreens } from 'react-native-screens';
 
 enableScreens();
 
-import { ThemeProvider } from '@shopify/restyle';
-
-import theme from './theme';
+import { lightTheme, PDThemeContext } from '~/components/PDTheme';
 
 const PoolDash: React.FunctionComponent<{}> = () => {
     React.useEffect(() => {
@@ -19,9 +17,9 @@ const PoolDash: React.FunctionComponent<{}> = () => {
     return (
         <Provider store={store}>
             <SafeAreaProvider>
-                <ThemeProvider theme={theme}>
+                <PDThemeContext.Provider value={lightTheme}>
                     <App />
-                </ThemeProvider>
+                </PDThemeContext.Provider>
             </SafeAreaProvider>
         </Provider>
     );

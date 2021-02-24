@@ -196,7 +196,7 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
     let progress = 0;
     if (recipe) {
         const completed = readingStates.filter((r) => r.isOn);
-        progress = readingStates.length == 0 ? 1 : completed.length / readingStates.length;
+        progress = readingStates.length === 0 ? 1 : completed.length / readingStates.length;
     }
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>

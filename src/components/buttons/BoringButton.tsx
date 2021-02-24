@@ -25,7 +25,9 @@ export class BoringButton extends React.Component<ButtonProps> {
                 onPress={this.handleButtonPress}
                 disabled={this.props.disabled}
                 activeScale={0.96}>
-                <PDText style={[styles.text, this.props.textStyles]}>{this.props.title}</PDText>
+                <PDText type="default" style={[styles.text, this.props.textStyles]}>
+                    {this.props.title}
+                </PDText>
             </TouchableScale>
         );
     }

@@ -62,12 +62,12 @@ const RecipeScreenComponent: React.FunctionComponent<RecipeScreenProps> = (props
     const webButtonStyles = isWebButtonPressed ? styles.recipeLinkPressed : styles.recipeLinkNormal;
 
     const readingList = recipe.readings.map((r) => (
-        <PDText style={styles.textBody} key={`r:${recipe.readings.indexOf(r)}`}>
+        <PDText type="default" style={styles.textBody} key={`r:${recipe.readings.indexOf(r)}`}>
             • {r.name}
         </PDText>
     ));
     const treatmentList = recipe.treatments.map((t) => (
-        <PDText style={styles.textBody} key={`t:${recipe.treatments.indexOf(t)}`}>
+        <PDText type="default" style={styles.textBody} key={`t:${recipe.treatments.indexOf(t)}`}>
             • {t.name}
         </PDText>
     ));
@@ -78,22 +78,37 @@ const RecipeScreenComponent: React.FunctionComponent<RecipeScreenProps> = (props
             <View style={styles.container}>
                 <RecipeScreenHeader handleBackPress={handleBackPressed} meta={meta} />
                 <ScrollView style={styles.scrollView} contentInset={{ top: 12, bottom: 12 }}>
-                    <PDText style={styles.textTitle}>Description</PDText>
-                    <PDText style={styles.textBody}>{recipe.description}</PDText>
-                    <PDText style={styles.textTitle}>Readings</PDText>
+                    <PDText type="default" style={styles.textTitle}>
+                        Description
+                    </PDText>
+                    <PDText type="default" style={styles.textBody}>
+                        {recipe.description}
+                    </PDText>
+                    <PDText type="default" style={styles.textTitle}>
+                        Readings
+                    </PDText>
                     {readingList}
-                    <PDText style={styles.textTitle}>Treatments</PDText>
+                    <PDText type="default" style={styles.textTitle}>
+                        Treatments
+                    </PDText>
                     {treatmentList}
-                    <PDText style={styles.textTitle}>Last Updated</PDText>
-                    <PDText style={styles.textBody}>{updatedText}</PDText>
-                    <PDText style={styles.recipeNameIntroText}>Want to see the formulas?</PDText>
+                    <PDText type="default" style={styles.textTitle}>
+                        Last Updated
+                    </PDText>
+                    <PDText type="default" style={styles.textBody}>
+                        {updatedText}
+                    </PDText>
+                    <PDText type="default" style={styles.recipeNameIntroText}>
+                        Want to see the formulas?
+                    </PDText>
                     <View style={styles.topRow}>
                         <TouchableHighlight
-                            underlayColor={'transparent'}
                             onPressIn={() => setIsWebButtonPressed(true)}
                             onPressOut={() => setIsWebButtonPressed(false)}
                             onPress={handleViewDetailsPressed}>
-                            <PDText style={webButtonStyles}>Open in your browser</PDText>
+                            <PDText type="default" style={webButtonStyles}>
+                                Open in your browser
+                            </PDText>
                         </TouchableHighlight>
                     </View>
                 </ScrollView>

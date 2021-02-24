@@ -172,7 +172,11 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
     ];
 
     const renderItem = (section: SectionListData<any>, item: any): JSX.Element => {
-        let titleElement = <PDText style={styles.sectionTitle}>{section.title}</PDText>;
+        let titleElement = (
+            <PDText type="default" style={styles.sectionTitle}>
+                {section.title}
+            </PDText>
+        );
         let contentBody = <></>;
         let marginHorizontal = 0;
         let marginBottom = 14;
@@ -216,7 +220,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
     };
 
     const renderSectionFooter = (section: SectionListData<any>) => {
-        if (section.key != 'history_section' || history.length === 0) {
+        if (section.key !== 'history_section' || history.length === 0) {
             return <></>;
         }
         return (

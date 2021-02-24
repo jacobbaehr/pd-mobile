@@ -15,6 +15,7 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
 import CustomTargetsHeader from './CustomTargetsHeader';
 import CustomTargetsItem from './CustomTargetsItem';
+import { PDSpacing } from '~/components/PDTheme';
 
 const CustomTargetsScreen = () => {
     const selectedPool = useSelector<AppState>((state) => state.selectedPool) as Pool;
@@ -29,7 +30,7 @@ const CustomTargetsScreen = () => {
                 renderItem={({ item }) => <CustomTargetsItem {...item} />}
                 keyExtractor={(item: TargetRange) => item.var}
                 ListHeaderComponent={() => (
-                    <PDText variant="subHeading" mb="sm" color="greyDarker">
+                    <PDText type="subHeading" color="greyDarker" style={styles.recipeName}>
                         {recipe?.name}
                     </PDText>
                 )}
@@ -54,6 +55,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 18,
         paddingTop: 18,
         marginBottom: 18,
+    },
+    recipeName: {
+        marginBottom: PDSpacing.sm,
     },
 });
 

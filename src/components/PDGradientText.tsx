@@ -1,4 +1,3 @@
-import { Color } from 'csstype';
 import * as React from 'react';
 import { StyleSheet, Text, TextProps, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -8,7 +7,7 @@ import MaskedView from '@react-native-community/masked-view';
 interface PDGradientTextProps extends TextProps {
     /// The id for a shared-element fluid transition
     shared?: string;
-    colors: Color[];
+    colors: string[];
 }
 
 export class PDGradientText extends React.Component<PDGradientTextProps, {}> {

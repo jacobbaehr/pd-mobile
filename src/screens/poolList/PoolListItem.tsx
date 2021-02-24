@@ -36,13 +36,11 @@ const PoolListComponent: React.FunctionComponent<PoolListItemProps> = (props) =>
     const volumeDisplay = Util.getDisplayVolume(pool.gallons, props.deviceSettings);
 
     return (
-        <TouchableScale
-            style={styles.container}
-            onPress={handleButtonPressed}
-            underlayColor={'transparent'}
-            activeScale={0.99}>
-            <PDText style={styles.poolNameText}>{pool.name}</PDText>
-            <PDText style={styles.poolVolumeText}>{`${getDisplayForWaterType(
+        <TouchableScale style={styles.container} onPress={handleButtonPressed} activeScale={0.99}>
+            <PDText type="default" style={styles.poolNameText}>
+                {pool.name}
+            </PDText>
+            <PDText type="default" style={styles.poolVolumeText}>{`${getDisplayForWaterType(
                 pool.waterType,
             )} | ${volumeDisplay}`}</PDText>
         </TouchableScale>

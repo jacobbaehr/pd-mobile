@@ -26,7 +26,9 @@ export const CycleButton: React.FunctionComponent<CycleButtonProps> = (props: Cy
             activeScale={1.05}
             onPress={handleButtonPress}
             disabled={props.disabled}>
-            <PDText style={[styles.text, props.textStyles]}>{props.title}</PDText>
+            <PDText type="default" style={[styles.text, props.textStyles]}>
+                {props.title}
+            </PDText>
         </TouchableScale>
     );
 };
@@ -43,6 +45,7 @@ const styles = StyleSheet.create({
         color: '#1E6BFF',
         textAlign: 'center',
         textAlignVertical: 'center',
+        // TODO: use theme spacing & fonts
         margin: '.5%',
         fontSize: 18,
         fontWeight: '600',

@@ -35,9 +35,13 @@ const TreatmentListHeaderComponent: React.FunctionComponent<TreatmentListHeaderP
     return (
         <View style={styles.container}>
             <BackButton title={props.pool.name} onPress={props.handleBackPress} color={'treatmentsPurple'} />
-            <PDText style={styles.gradientText}>Treatments</PDText>
+            <PDText type="default" style={styles.gradientText}>
+                Treatments
+            </PDText>
             <PDProgressBar progress={props.percentComplete} foregroundColor={'#B21FF1'} style={styles.progressBar} />
-            <PDText style={styles.detailsText}>{detailsText}</PDText>
+            <PDText type="default" style={styles.detailsText}>
+                {detailsText}
+            </PDText>
         </View>
     );
 };

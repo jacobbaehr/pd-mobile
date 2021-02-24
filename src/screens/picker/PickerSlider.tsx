@@ -73,10 +73,12 @@ export const PickerSlider: React.FunctionComponent<PickerSliderProps> = (props) 
                             onChangeText={onTextChange}
                             onEndEditing={onTextEndEditing}
                             keyboardType={'number-pad'}
-                            inputAccessoryViewID={keyboardAccessoryViewId}>
-                            {rs.value}
-                        </TextInput>
-                        <PDText style={styles.unitsText}>%</PDText>
+                            inputAccessoryViewID={keyboardAccessoryViewId}
+                            value={rs.value}
+                        />
+                        <PDText type="default" style={styles.unitsText}>
+                            %
+                        </PDText>
                     </View>
                 </View>
                 <Slider

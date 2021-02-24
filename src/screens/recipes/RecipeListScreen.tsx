@@ -105,7 +105,11 @@ const RecipeListScreenComponent: React.FunctionComponent<RecipeListScreenProps> 
                 renderItem={({ item }) => (
                     <RecipeListItem recipe={item} onRecipeSelected={handleRecipeSelected} key={item.id} />
                 )}
-                renderSectionHeader={({ section: { title } }) => <PDText style={styles.sectionTitle}>{title}</PDText>}
+                renderSectionHeader={({ section: { title } }) => (
+                    <PDText type="default" style={styles.sectionTitle}>
+                        {title}
+                    </PDText>
+                )}
                 contentInset={{ bottom: 34 }}
                 stickySectionHeadersEnabled={false}
             />

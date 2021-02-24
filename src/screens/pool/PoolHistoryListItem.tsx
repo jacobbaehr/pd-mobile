@@ -25,7 +25,7 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
     let expandedContent: JSX.Element[] = [];
     if (props.isExpanded) {
         const readings = props.logEntry.readingEntries.map((re) => (
-            <PDText style={styles.lineItem} key={'r' + re.var + props.logEntry.objectId}>
+            <PDText type="default" style={styles.lineItem} key={'r' + re.var + props.logEntry.objectId}>
                 • {re.readingName}: {re.value} {re.units}
             </PDText>
         ));
@@ -48,7 +48,7 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
             }
 
             return (
-                <PDText style={styles.lineItem} key={'t' + te.var + props.logEntry.objectId}>
+                <PDText type="default" style={styles.lineItem} key={'t' + te.var + props.logEntry.objectId}>
                     {content}
                 </PDText>
             );
@@ -57,29 +57,29 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
         let notes = [<></>];
         if (props.logEntry.notes) {
             notes = [
-                <PDText style={styles.header} key={'9o8as8766++' + props.logEntry.objectId}>
+                <PDText type="default" style={styles.header} key={'9o8as8766++' + props.logEntry.objectId}>
                     Notes
                 </PDText>,
-                <PDText style={styles.lineItem} key={'9o8as8766++++' + props.logEntry.objectId}>
+                <PDText type="default" style={styles.lineItem} key={'9o8as8766++++' + props.logEntry.objectId}>
                     {props.logEntry.notes}
                 </PDText>,
             ];
         }
 
         expandedContent = [
-            <PDText style={styles.header} key={'9o8asd89' + props.logEntry.objectId}>
+            <PDText type="default" style={styles.header} key={'9o8asd89' + props.logEntry.objectId}>
                 Readings
             </PDText>,
             ...readings,
-            <PDText style={styles.header} key={'9o8asd88' + props.logEntry.objectId}>
+            <PDText type="default" style={styles.header} key={'9o8asd88' + props.logEntry.objectId}>
                 Treatments
             </PDText>,
             ...treatments,
             ...notes,
-            <PDText style={styles.header} key={'9o8asd87' + props.logEntry.objectId}>
+            <PDText type="default" style={styles.header} key={'9o8asd87' + props.logEntry.objectId}>
                 Recipe|Version
             </PDText>,
-            <PDText style={styles.lineItem} key={recipeName + props.logEntry.objectId}>
+            <PDText type="default" style={styles.lineItem} key={recipeName + props.logEntry.objectId}>
                 • {recipeName}
             </PDText>,
             <View style={styles.buttonRow} key={recipeName + props.logEntry.objectId + 'afsd98'}>
@@ -107,13 +107,13 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
         props.handleCellSelected(props.logEntry.objectId);
     };
     return (
-        <TouchableScale
-            style={styles.container}
-            onPress={handleButtonPressed}
-            underlayColor={'transparent'}
-            activeScale={0.99}>
-            <PDText style={styles.weekday}>{dayOfWeek}</PDText>
-            <PDText style={styles.date}>{boringDate}</PDText>
+        <TouchableScale style={styles.container} onPress={handleButtonPressed} activeScale={0.99}>
+            <PDText type="default" style={styles.weekday}>
+                {dayOfWeek}
+            </PDText>
+            <PDText type="default" style={styles.date}>
+                {boringDate}
+            </PDText>
             {expandedContent}
         </TouchableScale>
     );

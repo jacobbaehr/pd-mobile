@@ -80,38 +80,44 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
                 <View style={styles.content}>
                     <View style={styles.topRow}>
                         <Conditional condition={t.type === 'calculation'}>
-                            <PDText style={styles.ofLabel}>{t.name}</PDText>
+                            <PDText type="default" style={styles.ofLabel}>
+                                {t.name}
+                            </PDText>
                             <TextInput
                                 style={textInputStyles}
                                 onFocus={onTextBeginEditing}
                                 onChangeText={onTextChange}
                                 onEndEditing={onTextEndEditing}
                                 keyboardType={'decimal-pad'}
-                                inputAccessoryViewID={props.inputAccessoryId}>
-                                {valueText}
-                            </TextInput>
+                                inputAccessoryViewID={props.inputAccessoryId}
+                                value={valueText}
+                            />
                         </Conditional>
                         <Conditional condition={t.type !== 'calculation'}>
                             <Image style={styles.circleImage} source={leftImageSource} width={28} height={28} />
 
                             <Conditional condition={['dryChemical', 'liquidChemical'].some((x) => t.type === x)}>
-                                <PDText style={styles.addLabel}>Add</PDText>
+                                <PDText type="default" style={styles.addLabel}>
+                                    Add
+                                </PDText>
                                 <TextInput
                                     style={textInputStyles}
                                     onFocus={onTextBeginEditing}
                                     onChangeText={onTextChange}
                                     onEndEditing={onTextEndEditing}
                                     keyboardType={'decimal-pad'}
-                                    inputAccessoryViewID={props.inputAccessoryId}>
-                                    {valueText}
-                                </TextInput>
+                                    inputAccessoryViewID={props.inputAccessoryId}
+                                    value={valueText}
+                                />
                                 <CycleButton
                                     title={pluralize(ts.units, parseFloat(valueText))}
                                     onPress={onPressedUnitsButton}
                                     textStyles={unitsTextStyles}
                                     styles={styles.unitsButton}
                                 />
-                                <PDText style={styles.ofLabel}>of</PDText>
+                                <PDText type="default" style={styles.ofLabel}>
+                                    of
+                                </PDText>
                                 <ChoosyButton
                                     title={treatmentName}
                                     onPress={onPressedTreatmentNameButton}
@@ -121,7 +127,9 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
                             </Conditional>
 
                             <Conditional condition={t.type === 'task'}>
-                                <PDText style={treatmentNameTextStyles}>{t.name}</PDText>
+                                <PDText type="default" style={treatmentNameTextStyles}>
+                                    {t.name}
+                                </PDText>
                             </Conditional>
                         </Conditional>
                     </View>

@@ -3,9 +3,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { TextButton } from '~/components/buttons/TextButton';
-import { Card } from '~/components/Card';
 import BorderInputWithLabel from '~/components/inputs/BorderInputWithLabel';
-import { PDBox } from '~/components/PDBox';
+import { PDView } from '~/components/PDView';
 import { PDText } from '~/components/PDText';
 import { Pool } from '~/models/Pool';
 import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
@@ -14,9 +13,10 @@ import { AppState } from '~/redux/AppState';
 import { Database } from '~/repository/Database';
 
 import { useRealmPoolTargetRange } from '../poolList/hooks/RealmPoolHook';
+import { PDSpacing } from '~/components/PDTheme';
 
 /**
- *  List Item for Custom Targets by Defaults values fro each waterType.
+ *  List Item for Custom Targets by Defaults values from each waterType.
  */
 const CustomTargetsItem: React.FC<TargetRange> = (props) => {
     const { name, description, defaults } = props;
@@ -59,15 +59,9 @@ const CustomTargetsItem: React.FC<TargetRange> = (props) => {
     });
 
     return (
-        <PDBox backgroundColor="white" borderRadius={24} borderWidth={2} borderColor="greyLight" p="lg" mb="sm">
-            <PDBox
-                flexDirection="row"
-                justifyContent="space-between"
-                borderBottomWidth={2}
-                borderColor="greyLighter"
-                marginBottom="sm"
-                paddingBottom="sm">
-                <PDText variant="bodyMedium" color="black">
+        <PDView style={styles.container} bgColor="white">
+            <PDView style={styles.topRow}>
+                <PDText type="bodyMedium" color="black">
                     {name}
                 </PDText>
                 <TextButton
@@ -77,9 +71,9 @@ const CustomTargetsItem: React.FC<TargetRange> = (props) => {
                     containerStyles={styles.buttonContainer}
                     textStyles={[styles.buttonText, isDirty && styles.activeButton]}
                 />
-            </PDBox>
-            <PDBox>
-                <PDBox flexDirection="row" justifyContent="space-between" alignItems="center" mb="sm">
+            </PDView>
+            <PDView>
+                <PDView style={styles.inputRow}>
                     <Controller
                         control={control}
                         name="defaults[0].min"
@@ -122,25 +116,54 @@ const CustomTargetsItem: React.FC<TargetRange> = (props) => {
                             validate: (newMax) => newMax > defaultMin,
                         }}
                     />
-                </PDBox>
+                </PDView>
                 {hasErrors && (
-                    <Card variant="default" backgroundColor="blurredRed" my="sm">
-                        <PDText variant="bodyBold" color="red">
+                    <PDView bgColor="blurredRed" style={styles.errorContainer}>
+                        <PDText type="bodyBold" color="red">
                             Your target’s min value cannot greater than the max value
                         </PDText>
-                    </Card>
+                    </PDView>
                 )}
-                <PDBox>
-                    <PDText numberOfLines={3} variant="bodyRegular" color="grey">
+                <PDView>
+                    <PDText numberOfLines={3} type="bodyRegular" color="grey">
                         {description}
                     </PDText>
-                </PDBox>
-            </PDBox>
-        </PDBox>
+                </PDView>
+            </PDView>
+        </PDView>
     );
 };
 
 const styles = StyleSheet.create({
+    container: {
+        borderRadius: 24,
+        borderWidth: 2,
+        borderColor: '#EDEDED',
+        padding: PDSpacing.lg,
+        marginBottom: PDSpacing.sm,
+    },
+    topRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderBottomWidth: 2,
+        borderColor: '#F5F5F5',
+        marginBottom: PDSpacing.sm,
+        paddingBottom: PDSpacing.sm,
+    },
+    inputRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: PDSpacing.sm,
+    },
+    errorContainer: {
+        borderRadius: 8,
+        paddingVertical: PDSpacing.xs,
+        paddingHorizontal: PDSpacing.sm,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: PDSpacing.sm,
+    },
     buttonContainer: {
         borderRadius: 12.5,
         backgroundColor: '#00000004',

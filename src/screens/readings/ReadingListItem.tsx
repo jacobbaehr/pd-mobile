@@ -89,9 +89,11 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
                     <View style={styles.topRow}>
                         <Image style={styles.circleImage} source={leftImageSource} width={28} height={28} />
 
-                        <PDText style={styles.readingName}>
+                        <PDText type="default" style={styles.readingName}>
                             {r.name}
-                            <PDText style={styles.readingUnits}>{readingUnitsText}</PDText>
+                            <PDText type="default" style={styles.readingUnits}>
+                                {readingUnitsText}
+                            </PDText>
                         </PDText>
                         <TextInput
                             style={textInputStyles}
@@ -99,9 +101,9 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
                             onChangeText={onTextChange}
                             onEndEditing={onTextEndEditing}
                             keyboardType={'decimal-pad'}
-                            inputAccessoryViewID={props.inputAccessoryId}>
-                            {rs.value}
-                        </TextInput>
+                            inputAccessoryViewID={props.inputAccessoryId}
+                            value={rs.value}
+                        />
                     </View>
                     <Slider
                         style={styles.slider}

@@ -11,7 +11,9 @@ interface TreatmentListFooterProps {
 export const TreatmentListFooter: React.FunctionComponent<TreatmentListFooterProps> = (props) => {
     return (
         <View style={{ paddingHorizontal: 16 }}>
-            <PDText style={styles.sectionTitle}>Notes</PDText>
+            <PDText type="default" style={styles.sectionTitle}>
+                Notes
+            </PDText>
             <View style={styles.container}>
                 <TextInput
                     style={styles.text}

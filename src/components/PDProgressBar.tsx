@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Color } from 'csstype';
 import { StyleSheet, View, StyleProp, ViewStyle } from 'react-native';
 
 interface PDProgressBarProps {
     /// From 0 to 1
     progress: number;
-    foregroundColor: Color;
+    foregroundColor: string;
     style: StyleProp<ViewStyle>;
 }
 

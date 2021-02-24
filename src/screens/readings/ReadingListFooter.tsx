@@ -20,17 +20,23 @@ export const ReadingListFooter: React.FunctionComponent<ReadingListFooterProps> 
 
     return (
         <View style={styles.container}>
-            <PDText style={styles.recipeNameIntroText}>
-                Current recipe: <PDText style={styles.recipeNameText}>{props.recipe.name}</PDText>
+            <PDText type="default" style={styles.recipeNameIntroText}>
+                Current recipe:{' '}
+                <PDText type="default" style={styles.recipeNameText}>
+                    {props.recipe.name}
+                </PDText>
             </PDText>
             <View style={styles.topRow}>
-                <PDText style={styles.changeRecipeIntro}>Want different readings? </PDText>
+                <PDText type="default" style={styles.changeRecipeIntro}>
+                    Want different readings?{' '}
+                </PDText>
                 <TouchableHighlight
-                    underlayColor={'transparent'}
                     onPressIn={() => setIsChangeButtonPressed(true)}
                     onPressOut={() => setIsChangeButtonPressed(false)}
                     onPress={props.pressedChangeRecipe}>
-                    <PDText style={changeButtonStyles}>Change recipe.</PDText>
+                    <PDText type="default" style={changeButtonStyles}>
+                        Change recipe.
+                    </PDText>
                 </TouchableHighlight>
             </View>
         </View>

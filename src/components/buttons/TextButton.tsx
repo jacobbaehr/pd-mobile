@@ -21,7 +21,9 @@ export const TextButton: React.FunctionComponent<TextButtonProps> = (props) => {
             onPress={props.onPress}
             disabled={props.disabled}
             activeScale={0.96}>
-            <PDText style={[styles.text, props.textStyles]}>{props.text}</PDText>
+            <PDText type="default" style={[styles.text, props.textStyles]}>
+                {props.text}
+            </PDText>
         </TouchableScale>
     );
 };

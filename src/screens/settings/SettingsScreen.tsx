@@ -99,9 +99,13 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
         <SafeAreaView forceInset={{ bottom: 'never' }} style={styles.safeAreaContainer}>
             <SettingsHeader goBack={handleGoBack} />
             <ScrollView style={styles.scrollView}>
-                <PDText style={styles.sectionTitle}>Units</PDText>
+                <PDText type="default" style={styles.sectionTitle}>
+                    Units
+                </PDText>
                 <View style={styles.listItemContainer}>
-                    <PDText style={styles.unitsTitle}>Pool Volume</PDText>
+                    <PDText type="default" style={styles.unitsTitle}>
+                        Pool Volume
+                    </PDText>
                     <CycleButton
                         styles={styles.unitsButton}
                         title={unitsText}
@@ -110,10 +114,11 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
                     />
                 </View>
                 <View style={styles.addScoopSectionHeader}>
-                    <PDText style={styles.sectionTitle}>Scoops</PDText>
+                    <PDText type="default" style={styles.sectionTitle}>
+                        Scoops
+                    </PDText>
                     <TouchableScale
                         style={styles.addScoopButtonContainer}
-                        underlayColor={'#F8F8F8'}
                         activeScale={0.97}
                         onPress={handleAddScoopPressed}
                         hitSlop={{ top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop }}>
@@ -122,10 +127,14 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
                 </View>
                 {getScoops()}
 
-                <PDText style={styles.sectionTitle}>{isUnlocked ? 'Subscription' : 'Unlock'}</PDText>
+                <PDText type="default" style={styles.sectionTitle}>
+                    {isUnlocked ? 'Subscription' : 'Unlock'}
+                </PDText>
                 <Upgrade style={styles.upgradeContainer} onPress={handleUpgradePressed} isUnlocked={isUnlocked} />
-                <PDText style={styles.sectionTitle}>Data Export</PDText>
-                <PDText style={styles.forumDetails}>
+                <PDText type="default" style={styles.sectionTitle}>
+                    Data Export
+                </PDText>
+                <PDText type="default" style={styles.forumDetails}>
                     This will create a .csv file with all of the history for all of your pools.
                 </PDText>
                 <BoringButton
@@ -134,8 +143,12 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
                     onPress={handleDataButtonPressed}
                     title="Export as CSV"
                 />
-                <PDText style={styles.sectionTitle}>Feedback?</PDText>
-                <PDText style={styles.forumDetails}>I'd love to hear it in in the forum!</PDText>
+                <PDText type="default" style={styles.sectionTitle}>
+                    Feedback?
+                </PDText>
+                <PDText type="default" style={styles.forumDetails}>
+                    I'd love to hear it in in the forum!
+                </PDText>
                 <BoringButton
                     containerStyles={styles.dataButton}
                     textStyles={styles.dataButtonText}

@@ -28,14 +28,14 @@ export class ChartService {
                 };
                 if (
                     idsToGraph.filter((g) => {
-                        return g.title == graphable.title && g.id == graphable.id;
-                    }).length == 0
+                        return g.title === graphable.title && g.id === graphable.id;
+                    }).length === 0
                 ) {
                     idsToGraph.push(graphable);
                 } else {
                     // update the ideal range:
                     const i = idsToGraph.findIndex((g) => {
-                        return g.title == graphable.title && g.id == graphable.id;
+                        return g.title === graphable.title && g.id === graphable.id;
                     });
                     idsToGraph[i].idealMin = reading.idealMin || null;
                     idsToGraph[i].idealMax = reading.idealMax || null;
@@ -50,8 +50,8 @@ export class ChartService {
                 };
                 if (
                     idsToGraph.filter((g) => {
-                        return g.title == graphable.title && g.id == graphable.id;
-                    }).length == 0
+                        return g.title === graphable.title && g.id === graphable.id;
+                    }).length === 0
                 ) {
                     idsToGraph.push(graphable);
                 }

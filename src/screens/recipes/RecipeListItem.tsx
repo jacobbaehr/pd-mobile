@@ -21,10 +21,15 @@ export class RecipeListItem extends React.Component<RecipeListItemProps, {}> {
         return (
             <TouchableScale style={styles.content} onPress={this.handleButtonPressed} activeScale={0.98}>
                 <View style={{ flex: 1 }}>
-                    <PDText style={styles.recipeNameText}>
-                        {recipe.name} <PDText style={styles.recipeIdText}>({recipe.id})</PDText>
+                    <PDText type="default" style={styles.recipeNameText}>
+                        {recipe.name}{' '}
+                        <PDText type="default" style={styles.recipeIdText}>
+                            ({recipe.id})
+                        </PDText>
                     </PDText>
-                    <PDText style={styles.recipeDescriptionText}>{recipe.desc} </PDText>
+                    <PDText type="default" style={styles.recipeDescriptionText}>
+                        {recipe.desc}{' '}
+                    </PDText>
                 </View>
             </TouchableScale>
         );

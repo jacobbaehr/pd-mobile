@@ -53,13 +53,17 @@ const PoolListFooterNonEmptyComponent: React.FunctionComponent<PoolListFooterNon
         <View style={styles.container}>
             <View style={styles.topRow}>
                 <TouchableHighlight
-                    underlayColor={'transparent'}
                     onPressIn={() => setIsChangeButtonPressed(true)}
                     onPressOut={() => setIsChangeButtonPressed(false)}
                     onPress={props.pressedUpgrade}>
-                    <PDText style={changeButtonStyles}>Unlock</PDText>
+                    <PDText type="default" style={changeButtonStyles}>
+                        Unlock
+                    </PDText>
                 </TouchableHighlight>
-                <PDText style={styles.changeRecipeIntro}> to add more pools.</PDText>
+                <PDText type="default" style={styles.changeRecipeIntro}>
+                    {' '}
+                    to add more pools.
+                </PDText>
             </View>
         </View>
     );

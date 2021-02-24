@@ -26,9 +26,15 @@ export const Upgrade: React.FunctionComponent<UpgradeProps> = (props) => {
             </View>
             <Conditional condition={!props.isUnlocked}>
                 <View style={styles.textContainer}>
-                    <PDText style={styles.onlineBackupText}>+ Charts</PDText>
-                    <PDText style={styles.onlineBackupText}>+ Unlimited Pools</PDText>
-                    <PDText style={styles.onlineBackupText}>+ Less than $2 / month</PDText>
+                    <PDText type={'bodySemiBold'} style={styles.onlineBackupText}>
+                        + Charts
+                    </PDText>
+                    <PDText type={'bodySemiBold'} style={styles.onlineBackupText}>
+                        + Unlimited Pools
+                    </PDText>
+                    <PDText type={'bodySemiBold'} style={styles.onlineBackupText}>
+                        + Less than $2 / month
+                    </PDText>
                 </View>
             </Conditional>
             <BoringButton
@@ -68,9 +74,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     onlineBackupText: {
+        // TODO: move color into the theme
         opacity: 0.6,
-        fontWeight: '600',
-        fontSize: 16,
         marginBottom: 4,
     },
     plusButton: {

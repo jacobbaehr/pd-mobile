@@ -24,7 +24,9 @@ export const ChoosyButton: React.FunctionComponent<ChoosyButtonProps> = (props: 
             activeScale={0.96}
             onPress={handleButtonPress}
             disabled={props.disabled}>
-            <PDText style={[styles.text, props.textStyles]}>{props.title}</PDText>
+            <PDText type="default" style={[styles.text, props.textStyles]}>
+                {props.title}
+            </PDText>
         </TouchableScale>
     );
 };
@@ -40,6 +42,7 @@ const styles = StyleSheet.create({
     text: {
         color: '#1E6BFF',
         textAlign: 'center',
+        // TOOD: use theme-specific spacing & fonts
         margin: '.5%',
         fontSize: 18,
         fontWeight: '600',

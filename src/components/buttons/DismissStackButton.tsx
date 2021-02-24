@@ -12,7 +12,7 @@ export interface DismissStackButtonProps {
 export const DismissStackButton: React.FunctionComponent<DismissStackButtonProps> = (props) => {
     return (
         <View style={styles.container}>
-            <TouchableScale underlayColor={'transparent'} activeScale={0.97} onPress={props.handleBackPressed}>
+            <TouchableScale activeScale={0.97} onPress={props.handleBackPressed}>
                 <Image style={styles.backButtonImage} source={images.closeIcon} width={21} height={21} />
             </TouchableScale>
         </View>

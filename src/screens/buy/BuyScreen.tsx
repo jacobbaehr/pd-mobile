@@ -129,12 +129,18 @@ const BuyComponent: React.FunctionComponent<BuyScreenProps> = (props) => {
             <BuyHeader goBack={handleGoBack} />
             <ScrollView style={[styles.scrollView, dynamicInsets]}>
                 <View style={styles.flexRow}>
-                    <PDText style={styles.title}>Unlock</PDText>
-                    <PDText style={styles.price}>$20</PDText>
+                    <PDText type={'heading'} color={'white'}>
+                        Unlock
+                    </PDText>
+                    <PDText type={'heading'} style={styles.price}>
+                        $20
+                    </PDText>
                 </View>
                 <View style={styles.underline} />
                 <View style={styles.flexRow}>
-                    <PDText style={styles.annually}>annually</PDText>
+                    <PDText type={'bodyRegular'} style={styles.annually}>
+                        annually
+                    </PDText>
                 </View>
                 <View style={[styles.flexRow, styles.reasonTop]}>
                     <Image
@@ -144,7 +150,9 @@ const BuyComponent: React.FunctionComponent<BuyScreenProps> = (props) => {
                         height={27}
                         resizeMode={'contain'}
                     />
-                    <PDText style={styles.reasonText}>Charts</PDText>
+                    <PDText type={'bodyRegular'} style={styles.reasonText}>
+                        Charts
+                    </PDText>
                 </View>
                 <View style={[styles.flexRow, styles.reasonTop]}>
                     <Image
@@ -154,12 +162,16 @@ const BuyComponent: React.FunctionComponent<BuyScreenProps> = (props) => {
                         height={27}
                         resizeMode={'contain'}
                     />
-                    <PDText style={styles.reasonText}>Unlimited Pools</PDText>
+                    <PDText type={'bodyRegular'} style={styles.reasonText}>
+                        Unlimited Pools
+                    </PDText>
                 </View>
                 <View pointerEvents={isLoading ? 'none' : 'auto'} style={{ opacity: isLoading ? 0.6 : 1 }}>
                     {getButtons()}
                 </View>
-                <PDText style={styles.lifeStory}>{lifeStory}</PDText>
+                <PDText type={'bodyRegular'} style={styles.lifeStory}>
+                    {lifeStory}
+                </PDText>
                 <View style={dynamicInsets} />
             </ScrollView>
         </SafeAreaView>
@@ -182,17 +194,10 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
     },
-    title: {
-        color: 'white',
-        fontWeight: '700',
-        fontSize: 28,
-    },
     price: {
         color: '#02CFFF',
         alignSelf: 'flex-end',
         marginLeft: 'auto',
-        fontWeight: '700',
-        fontSize: 28,
     },
     underline: {
         backgroundColor: '#343434',

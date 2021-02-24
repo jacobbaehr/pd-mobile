@@ -256,19 +256,25 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
         <SafeAreaView style={{ display: 'flex', flex: 1, backgroundColor: '#FFFFFF' }}>
             <View style={styles.header}>
                 <View style={styles.headerLeft}>
-                    <PDText style={styles.title}>{headerTitle}</PDText>
+                    <PDText type="default" style={styles.title}>
+                        {headerTitle}
+                    </PDText>
                 </View>
                 <CloseButton onPress={handleClosePressed} containerStyle={styles.closeButton} />
             </View>
             <KeyboardAwareScrollView style={{ flex: 1, backgroundColor: '#F4F7FF' }}>
-                <PDText style={styles.sectionTitle}>Chemical</PDText>
+                <PDText type="default" style={styles.sectionTitle}>
+                    Chemical
+                </PDText>
                 <ChoosyButton
                     title={chemButtonTitle}
                     onPress={() => showChemPicker(treatments)}
                     styles={styles.chemButton}
                     textStyles={styles.chemButtonText}
                 />
-                <PDText style={styles.sectionTitle}>Size</PDText>
+                <PDText type="default" style={styles.sectionTitle}>
+                    Size
+                </PDText>
                 <View style={styles.bubbleContainer}>
                     <TextInput
                         style={styles.textInput}

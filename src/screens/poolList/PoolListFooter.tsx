@@ -23,7 +23,9 @@ export const PoolListFooter: React.FunctionComponent<PoolListFooterProps> = (pro
     }
     return (
         <View>
-            <PDText style={styles.bottomText}>Tap the + icon above to get started.</PDText>
+            <PDText type="default" style={styles.bottomText}>
+                Tap the + icon above to get started.
+            </PDText>
             <Image style={imageStyles} source={images.poolListEmpty} width={imageWidth} height={imageHeight} />
         </View>
     );

@@ -1,4 +1,3 @@
-import { Color } from 'csstype';
 import * as React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -81,7 +80,7 @@ const PoolHistoryComponent: React.FunctionComponent<PoolHistoryProps> = (props) 
 
 export const PoolHistoryScreen = connect(mapStateToProps)(PoolHistoryComponent);
 
-const titleGradientColors: Color[] = ['#00C6FF', '#0072FF'];
+const titleGradientColors: string[] = ['#00C6FF', '#0072FF'];
 
 const styles = StyleSheet.create({
     scrollView: {

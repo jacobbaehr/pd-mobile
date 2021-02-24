@@ -36,9 +36,13 @@ const ReadingListHeaderComponent: React.FunctionComponent<ReadingListHeaderProps
     return (
         <View style={styles.container}>
             <BackButton title={props.pool.name} onPress={props.handleBackPress} color={'readingsBlue'} />
-            <PDText style={styles.gradientText}>Readings</PDText>
+            <PDText type="default" style={styles.gradientText}>
+                Readings
+            </PDText>
             <PDProgressBar progress={props.percentComplete} foregroundColor={'#3910E8'} style={styles.progressBar} />
-            <PDText style={styles.detailsText}>{detailsText}</PDText>
+            <PDText type="default" style={styles.detailsText}>
+                {detailsText}
+            </PDText>
         </View>
     );
 };

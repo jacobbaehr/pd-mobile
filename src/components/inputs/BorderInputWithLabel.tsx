@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, TextInputProps } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
-import { PDBox } from '../PDBox';
+import { PDView } from '../PDView';
 import { PDText } from '../PDText';
 
 interface BorderInputWithLabel extends TextInputProps {
@@ -13,14 +13,8 @@ const BorderInputWithLabel: React.FC<BorderInputWithLabel> = (props) => {
     const { label, ...restTextInputProps } = props;
 
     return (
-        <PDBox>
-            <PDText
-                variant="bodyGreyBold"
-                lineHeight={21}
-                fontStyle="normal"
-                letterSpacing={0.5}
-                color="grey"
-                textTransform="uppercase">
+        <PDView>
+            <PDText type="bodyGreyBold" color="grey">
                 {label}
             </PDText>
             <TextInput
@@ -29,7 +23,7 @@ const BorderInputWithLabel: React.FC<BorderInputWithLabel> = (props) => {
                 blurOnSubmit
                 {...restTextInputProps}
             />
-        </PDBox>
+        </PDView>
     );
 };
 
