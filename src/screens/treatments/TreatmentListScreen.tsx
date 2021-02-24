@@ -1,38 +1,39 @@
 import * as React from 'react';
-import { StyleSheet, View, SafeAreaView, InputAccessoryView, Keyboard, LayoutAnimation } from 'react-native';
+import { InputAccessoryView, Keyboard, LayoutAnimation, SafeAreaView, StyleSheet, View } from 'react-native';
+import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
+import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import { connect } from 'react-redux';
-import { StackNavigationProp } from '@react-navigation/stack';
-
+import { BoringButton } from '~/components/buttons/BoringButton';
+import { PlatformSpecific } from '~/components/PlatformSpecific';
+import { useRecipeHook } from '~/hooks/RealmPoolHook';
+import { DeviceSettings } from '~/models/DeviceSettings';
+import { LogEntry } from '~/models/logs/LogEntry';
 import { ReadingEntry } from '~/models/logs/ReadingEntry';
 import { Pool } from '~/models/Pool';
+import { EffectiveTargetRange } from '~/models/recipe/TargetRange';
+import { DryChemicalUnits, Units, WetChemicalUnits } from '~/models/TreatmentUnits';
+import { PDNavParams } from '~/navigator/shared';
 import { AppState, dispatch } from '~/redux/AppState';
+import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
+import { updatePickerState } from '~/redux/picker/Actions';
+import { PickerState } from '~/redux/picker/PickerState';
 import { Database } from '~/repository/Database';
 import { CalculationService } from '~/services/CalculationService';
-import { LogEntry } from '~/models/logs/LogEntry';
-import { useNavigation } from '@react-navigation/native';
-import WebView, { WebViewMessageEvent } from 'react-native-webview';
-import { TreatmentListHeader } from './TreatmentListHeader';
-import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
-import { BoringButton } from '~/components/buttons/BoringButton';
-import { Haptic } from '~/services/HapticService';
-import { TreatmentListItem } from './TreatmentListItem';
-import { Util } from '~/services/Util';
-import { Converter } from '../../services/TreatmentUnitsService';
-import { PDPickerRouteProps } from '../picker/PickerScreen';
-import { DeviceSettings } from '~/models/DeviceSettings';
-import { DeviceSettingsService } from '~/services/DeviceSettingsService';
-import { PickerState } from '~/redux/picker/PickerState';
-import { updatePickerState } from '~/redux/picker/Actions';
-import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
-import { TreatmentListHelpers, TreatmentState } from './TreatmentListHelpers';
-import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
-import { RecipeService } from '~/services/RecipeService';
-import { PlatformSpecific } from '~/components/PlatformSpecific';
 import { Config } from '~/services/Config';
+import { DeviceSettingsService } from '~/services/DeviceSettingsService';
+import { Haptic } from '~/services/HapticService';
+import { RecipeService } from '~/services/RecipeService';
+import { Converter } from '~/services/TreatmentUnitsService';
+import { Util } from '~/services/Util';
+
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+import { PDPickerRouteProps } from '../picker/PickerScreen';
 import { TreatmentListFooter } from './TreatmentListFooter';
-import { DryChemicalUnits, WetChemicalUnits, Units } from '~/models/TreatmentUnits';
-import { EffectiveTargetRange } from '~/models/recipe/TargetRange';
-import { PDNavParams } from '~/navigator/shared';
+import { TreatmentListHeader } from './TreatmentListHeader';
+import { TreatmentListHelpers, TreatmentState } from './TreatmentListHelpers';
+import { TreatmentListItem } from './TreatmentListItem';
 
 interface TreatmentListScreenProps {
     navigation: StackNavigationProp<PDNavParams, 'TreatmentList'>;

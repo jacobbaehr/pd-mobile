@@ -4,6 +4,8 @@ import { FlatList } from 'react-native-gesture-handler';
 import SafeAreaView from 'react-native-safe-area-view';
 import { useSelector } from 'react-redux';
 import { PDText } from '~/components/PDText';
+import { PDSpacing } from '~/components/PDTheme';
+import { useRecipeHook } from '~/hooks/RealmPoolHook';
 import { Pool } from '~/models/Pool';
 import { TargetRange } from '~/models/recipe/TargetRange';
 import { PDCardNavigatorParams } from '~/navigator/PDCardNavigator';
@@ -12,10 +14,8 @@ import { RecipeService } from '~/services/RecipeService';
 
 import { RouteProp, useRoute } from '@react-navigation/native';
 
-import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
 import CustomTargetsHeader from './CustomTargetsHeader';
 import CustomTargetsItem from './CustomTargetsItem';
-import { PDSpacing } from '~/components/PDTheme';
 
 const CustomTargetsScreen = () => {
     const selectedPool = useSelector<AppState>((state) => state.selectedPool) as Pool;

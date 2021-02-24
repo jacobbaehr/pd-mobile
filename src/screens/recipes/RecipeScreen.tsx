@@ -1,22 +1,22 @@
+import { format } from 'date-fns';
 import * as React from 'react';
-import { View, StyleSheet, SafeAreaView, ScrollView, TouchableHighlight, Linking } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { Linking, SafeAreaView, ScrollView, StyleSheet, TouchableHighlight, View } from 'react-native';
 import { connect } from 'react-redux';
-
-import { PDCardNavigatorParams } from '~/navigator/PDCardNavigator';
-import { AppState, dispatch } from '~/redux/AppState';
+import { BoringButton } from '~/components/buttons/BoringButton';
+import { PDText } from '~/components/PDText';
+import { useRecipeHook } from '~/hooks/RealmPoolHook';
 import { Pool } from '~/models/Pool';
+import { PDCardNavigatorParams } from '~/navigator/PDCardNavigator';
+import { PDNavParams } from '~/navigator/shared';
+import { AppState, dispatch } from '~/redux/AppState';
+import { updatePool } from '~/redux/selectedPool/Actions';
+import { Config } from '~/services/Config';
+import { RS } from '~/services/RecipeUtil';
+
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import { RecipeScreenHeader } from './RecipeScreenHeader';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import { BoringButton } from '~/components/buttons/BoringButton';
-import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
-import { RS } from '~/services/RecipeUtil';
-import { PDText } from '~/components/PDText';
-import { Config } from '~/services/Config';
-import { updatePool } from '~/redux/selectedPool/Actions';
-import { format } from 'date-fns';
-import { PDNavParams } from '~/navigator/shared';
 
 interface RecipeScreenProps {
     pool: Pool;

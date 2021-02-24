@@ -6,16 +6,16 @@ import { useSelector } from 'react-redux';
 import { images } from '~/assets/images';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { PDText } from '~/components/PDText';
+import { useRealmPoolHistoryHook, useRecipeHook } from '~/hooks/RealmPoolHook';
 import { Pool } from '~/models/Pool';
+import { PDNavParams } from '~/navigator/shared';
 import { AppState } from '~/redux/AppState';
 import { getCustomTargetsBySelectedPool } from '~/redux/selectedPool/Selectors';
 import { RecipeService } from '~/services/RecipeService';
 
 import { useNavigation } from '@react-navigation/native';
-
-import { useRealmPoolHistoryHook, useRecipeHook } from '../poolList/hooks/RealmPoolHook';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { PDNavParams } from '~/navigator/shared';
+
 /**
  * Displays info about the recipe & customizations in the SectionList on the pool details screen.
  */

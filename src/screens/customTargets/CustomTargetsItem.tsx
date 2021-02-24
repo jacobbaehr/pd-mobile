@@ -4,16 +4,15 @@ import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { TextButton } from '~/components/buttons/TextButton';
 import BorderInputWithLabel from '~/components/inputs/BorderInputWithLabel';
-import { PDView } from '~/components/PDView';
 import { PDText } from '~/components/PDText';
+import { PDSpacing } from '~/components/PDTheme';
+import { PDView } from '~/components/PDView';
+import { useRealmPoolTargetRange } from '~/hooks/RealmPoolHook';
 import { Pool } from '~/models/Pool';
 import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
 import { TargetRange } from '~/models/recipe/TargetRange';
 import { AppState } from '~/redux/AppState';
 import { Database } from '~/repository/Database';
-
-import { useRealmPoolTargetRange } from '../poolList/hooks/RealmPoolHook';
-import { PDSpacing } from '~/components/PDTheme';
 
 /**
  *  List Item for Custom Targets by Defaults values from each waterType.

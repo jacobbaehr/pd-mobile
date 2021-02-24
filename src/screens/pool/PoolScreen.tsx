@@ -7,27 +7,27 @@ import { connect } from 'react-redux';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { ChartCard } from '~/components/charts/ChartCard';
 import { PDText } from '~/components/PDText';
+import { useRealmPoolHistoryHook, useRecipeHook } from '~/hooks/RealmPoolHook';
 import { DeviceSettings } from '~/models/DeviceSettings';
+import { LogEntry } from '~/models/logs/LogEntry';
 import { Pool } from '~/models/Pool';
+import { PDNavParams } from '~/navigator/shared';
 import { AppState } from '~/redux/AppState';
 import { Database } from '~/repository/Database';
 import { ChartService } from '~/services/ChartService';
 import { DS } from '~/services/DSUtil';
+import { EmailService } from '~/services/EmailService';
 import { ExportService } from '~/services/ExportService';
 import { Haptic } from '~/services/HapticService';
 import { RecipeService } from '~/services/RecipeService';
 import { Util } from '~/services/Util';
 
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-import { useRealmPoolHistoryHook, useRecipeHook } from '../poolList/hooks/RealmPoolHook';
 import { PoolHeaderView } from './PoolHeaderView';
 import { PoolHistoryListItem } from './PoolHistoryListItem';
 import PoolServiceConfigSection from './PoolServiceConfigSection';
-import { EmailService } from '~/services/EmailService';
-import { LogEntry } from '~/models/logs/LogEntry';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { PDNavParams } from '~/navigator/shared';
 
 interface PoolScreenProps {
     // The id of the selected pool, if any

@@ -1,33 +1,33 @@
 import * as React from 'react';
 import {
-    View,
-    StyleSheet,
-    SectionListData,
-    SafeAreaView,
-    LayoutAnimation,
     InputAccessoryView,
     Keyboard,
+    LayoutAnimation,
+    SafeAreaView,
+    SectionListData,
+    StyleSheet,
+    View,
 } from 'react-native';
 import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
-
-import { AppState, dispatch } from '~/redux/AppState';
-import { Pool } from '~/models/Pool';
-
-import { ReadingListItem, ReadingState } from './ReadingListItem';
-import { ReadingListHeader } from './ReadingListHeader';
-import { useNavigation } from '@react-navigation/native';
-import { Haptic } from '~/services/HapticService';
-import { Util } from '~/services/Util';
 import { BoringButton } from '~/components/buttons/BoringButton';
-import { ReadingListFooter } from './ReadingListFooter';
-import { recordInput, clearReadings } from '~/redux/readingEntries/Actions';
-import { useRecipeHook } from '../poolList/hooks/RealmPoolHook';
-import { RecipeService } from '~/services/RecipeService';
-import { Config } from '~/services/Config';
 import { PlatformSpecific } from '~/components/PlatformSpecific';
+import { useRecipeHook } from '~/hooks/RealmPoolHook';
+import { Pool } from '~/models/Pool';
 import { PDNavParams } from '~/navigator/shared';
+import { AppState, dispatch } from '~/redux/AppState';
+import { clearReadings, recordInput } from '~/redux/readingEntries/Actions';
+import { Config } from '~/services/Config';
+import { Haptic } from '~/services/HapticService';
+import { RecipeService } from '~/services/RecipeService';
+import { Util } from '~/services/Util';
+
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+import { ReadingListFooter } from './ReadingListFooter';
+import { ReadingListHeader } from './ReadingListHeader';
+import { ReadingListItem, ReadingState } from './ReadingListItem';
 
 interface ReadingListScreenProps {
     navigation: StackNavigationProp<PDNavParams, 'ReadingList'>;

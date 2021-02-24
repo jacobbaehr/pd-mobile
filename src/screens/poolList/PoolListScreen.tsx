@@ -1,24 +1,24 @@
 import * as React from 'react';
-import { Image, SectionList, StyleSheet, View, ViewStyle, Alert } from 'react-native';
+import { Alert, Image, SectionList, StyleSheet, View, ViewStyle } from 'react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
-
 import { images } from '~/assets/images';
 import { PDText } from '~/components/PDText';
+import { useRealmPoolsHook } from '~/hooks/RealmPoolHook';
+import { DeviceSettings } from '~/models/DeviceSettings';
 import { Pool } from '~/models/Pool';
+import { PDNavParams } from '~/navigator/shared';
+import { AppState, dispatch } from '~/redux/AppState';
 import { selectPool } from '~/redux/selectedPool/Actions';
-import { dispatch, AppState } from '~/redux/AppState';
+import { DS } from '~/services/DSUtil';
+
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import { PoolListFooter } from './PoolListFooter';
 import { PoolListItem } from './PoolListItem';
-import { useRealmPoolsHook } from './hooks/RealmPoolHook';
-import { useNavigation } from '@react-navigation/native';
-import { DeviceSettings } from '~/models/DeviceSettings';
-import { DS } from '~/services/DSUtil';
-import { PDNavParams } from '~/navigator/shared';
 
 interface PoolListScreenProps {
     // The id of the selected pool, if any
