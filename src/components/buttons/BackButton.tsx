@@ -41,7 +41,6 @@ export class BackButton extends React.Component<BackButtonProps, {}> {
             <View style={styles.backButtonOuterContainer}>
                 <TouchableScale
                     style={styles.backButtonInnerContainer}
-                    underlayColor={'#F8F8F8'}
                     activeScale={0.97}
                     onPress={this.props.onPress}
                     hitSlop={{ top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop }}

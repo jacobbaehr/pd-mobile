@@ -1,47 +1,103 @@
 import * as React from 'react';
-import { TextProps as RnTextProps, TextStyle } from 'react-native';
-import { Theme } from '~/theme';
+import { StyleSheet, Text, TextProps } from 'react-native';
+import { useTheme } from '~/components/PDTheme';
 
-import {
-    ColorProps,
-    createText,
-    OpacityProps,
-    PositionProps,
-    TextProps,
-    TextShadowProps,
-    TypographyProps,
-    VisibleProps,
-} from '@shopify/restyle';
+type PDTextType =
+    | 'default'
+    | 'tooltip'
+    | 'button'
+    | 'bodyRegular'
+    | 'bodyBold'
+    | 'bodySemiBold'
+    | 'bodyMedium'
+    | 'bodyGreyBold'
+    | 'subHeading'
+    | 'heading';
 
-const Text = createText<Theme>();
-
-type PDText = ColorProps<Theme> &
-    OpacityProps<Theme> &
-    VisibleProps<Theme> &
-    TypographyProps<Theme> &
-    TextShadowProps<Theme> &
-    TextProps<Theme> &
-    RnTextProps &
-    PositionProps<Theme>;
-
-interface PDTextProps extends PDText {
-    scale?: { scale: boolean; scaleLines: number };
-    style?: TextStyle;
+interface PDTextProps extends TextProps {
+    type: PDTextType;
 }
 
 export const PDText: React.FC<PDTextProps> = (props) => {
-    const { scale, children, ...restProps } = props;
+    // The "style" below is possible because PDTextProps extends TextProps.
+    // Similarly, "...restProps" is a catch-all so that any other Text props will be passed along...
+    const { children, style, ...restProps } = props;
+    const theme = useTheme();
 
-    let adjustsFontSizeToFit = false;
-    let numberOfLines;
-    if (scale !== undefined) {
-        adjustsFontSizeToFit = scale.scale;
-        numberOfLines = scale.scaleLines;
-    }
+    /// Default styles are derived from the "style" of text (from our design system, expressed via the prop)
+    const defaultStyles = styles[props.type];
+    /// The default color is applied based on the active PDTheme object
+    const colorStylesFromTheme = { color: theme.white };
+    /// Any custom TextStyle properties are also applied at the end, via the "style" prop:
+    const textStyles = StyleSheet.flatten([defaultStyles, colorStylesFromTheme, style]);
 
     return (
-        <Text adjustsFontSizeToFit={adjustsFontSizeToFit} numberOfLines={numberOfLines} {...restProps}>
+        <Text style={textStyles} {...restProps}>
             {children}
         </Text>
     );
 };
+
+const styles = StyleSheet.create({
+    default: {
+        fontFamily: 'Poppins-Regular',
+        fontWeight: '600',
+    },
+    tooltip: {
+        fontFamily: 'Poppins-Medium',
+        fontStyle: 'normal',
+        lineHeight: 21,
+        fontSize: 14,
+    },
+    button: {
+        fontFamily: 'Poppins-Bold',
+        fontStyle: 'normal',
+        lineHeight: 21,
+        fontSize: 14,
+    },
+    bodyRegular: {
+        fontFamily: 'Poppins-Regular',
+        fontStyle: 'normal',
+        lineHeight: 24,
+        fontSize: 16,
+    },
+    bodyBold: {
+        fontFamily: 'Poppins-Bold',
+        fontStyle: 'normal',
+        lineHeight: 24,
+        fontSize: 16,
+    },
+    bodySemiBold: {
+        fontFamily: 'Poppins-SemiBold',
+        fontStyle: 'normal',
+        lineHeight: 24,
+        fontSize: 16,
+    },
+    bodyMedium: {
+        fontFamily: 'Poppins-Medium',
+        fontStyle: 'normal',
+        lineHeight: 24,
+        fontSize: 16,
+    },
+    bodyGreyBold: {
+        fontFamily: 'Poppins-Bold',
+        fontStyle: 'normal',
+        lineHeight: 21,
+        fontSize: 14,
+        letterSpacing: 0.5,
+        textTransform: 'uppercase',
+    },
+    subHeading: {
+        fontFamily: 'Poppins-Bold',
+        fontStyle: 'normal',
+        lineHeight: 27,
+        fontSize: 18,
+    },
+    heading: {
+        fontFamily: 'Poppins-Regular',
+        fontWeight: 'bold',
+        fontStyle: 'normal',
+        lineHeight: 36,
+        fontSize: 24,
+    },
+});
