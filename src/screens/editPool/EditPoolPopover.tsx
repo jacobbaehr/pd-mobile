@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { CloseButton } from '../../components/buttons/CloseButton';
 import { StyleSheet } from 'react-native';
 import { PDNavParams } from '~/navigator/shared';
+import { PDView } from '~/components/PDView';
 
 interface EditPoolPopoverProps {
     navigation: StackNavigationProp<PDNavParams>;
@@ -14,10 +14,10 @@ export const EditPoolPopover: React.FunctionComponent<EditPoolPopoverProps> = ()
     const navigation = useNavigation();
 
     return (
-        <View style={styles.container}>
+        <PDView style={styles.container}>
             <CloseButton onPress={() => navigation.goBack()} containerStyle={styles.closeButton} />
-            <View style={styles.content}>{/* Screen content goes here */}</View>
-        </View>
+            <PDView style={styles.content}>{/* Screen content goes here */}</PDView>
+        </PDView>
     );
 };
 

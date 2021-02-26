@@ -3,7 +3,8 @@ import { RecipeKey } from '~/models/recipe/RecipeKey';
 import { TargetRange } from '~/models/recipe/TargetRange';
 import { BuyScreen } from '~/screens/buy/BuyScreen';
 import CustomTargetsScreen from '~/screens/customTargets/CustomTargetsScreen';
-import { EditPoolScreen } from '~/screens/editPool/EditPoolScreen';
+// TODO: change this back to EditPoolScreen when the  new edit pool screen is fully functional
+import { EditPoolScreen } from '~/screens/editPool/EditPoolScreenOld';
 
 import { PoolScreen } from '~/screens/pool/PoolScreen';
 import { PoolListScreen } from '~/screens/poolList/PoolListScreen';
