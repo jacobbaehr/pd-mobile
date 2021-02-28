@@ -100,8 +100,6 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
             </View>,
         ];
     }
-    console.log('Reading Entries: ', JSON.stringify(props.logEntry.readingEntries));
-    console.log('Treatment Entries: ', JSON.stringify(props.logEntry.treatmentEntries));
 
     const handleButtonPressed = () => {
         props.handleCellSelected(props.logEntry.objectId);

@@ -21,13 +21,13 @@ const CustomTargetsItem: React.FC<TargetRange> = (props) => {
     const { name, description, defaults } = props;
     const pool = useSelector<AppState>((state) => state.selectedPool) as Pool;
     const loadedCustomTarget = useRealmPoolTargetRange(pool.objectId, props.var) ?? ({} as TargetRangeOverride);
-    const { control, handleSubmit, setValue, errors, formState } = useForm<TargetRange>({
+    const { control, handleSubmit, setValue, formState } = useForm<TargetRange>({
         defaultValues: props,
         mode: 'all',
     });
     const { isDirty } = formState;
 
-    const hasErrors = Object.keys(errors).length >= 1;
+    const hasErrors = Object.keys(formState.errors).length >= 1;
 
     const defaultMin = defaults[0]?.min ?? 0;
     const defaultMax = defaults[0]?.max ?? 0;
@@ -83,7 +83,7 @@ const CustomTargetsItem: React.FC<TargetRange> = (props) => {
                                     isOverrides('min') ? loadedCustomTarget?.min.toString() : defaultMin.toString()
                                 }
                                 placeholderTextColor={isOverrides('min') ? '#1E6BFF' : '#BBBBBB'}
-                                onChangeText={onChange}
+                                onChangeText={(text) => onChange({ target: { value: text } })}
                                 value={value}
                                 onBlur={handleBlurred}
                                 keyboardType="numeric"

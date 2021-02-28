@@ -50,7 +50,7 @@ const PoolServiceConfigSection = () => {
                 if (i === 0) {
                     acm += `${name}`;
                 } else if (i === lastIndex) {
-                    acm += `and ${name}`;
+                    acm += ` and ${name}`;
                 } else {
                     acm += `, ${name} `;
                 }
@@ -67,12 +67,12 @@ const PoolServiceConfigSection = () => {
         <View style={styles.container}>
             <View>
                 <PDText type="default" style={styles.title}>
-                    Configuration Service
+                    Service Config
                 </PDText>
                 <View>
                     <View>
                         <PDText type="default" style={styles.subTitle}>
-                            {recipe?.name}
+                            Recipe
                         </PDText>
                         <TouchableOpacity onPress={navigateToRecipes}>
                             <View style={styles.row}>

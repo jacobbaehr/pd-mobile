@@ -8,8 +8,7 @@
         "start": "npx react-native start",
         "test": "jest",
         "lint": "eslint . --ext .ts,.tsx",
-        "apollo-dev": "npx apollo codegen:generate --endpoint https://dev-api.pooldash.com/graphql --target typescript --tagName=gql --outputFlat src/services/gql/generated --globalTypesFile /_garbage.txt",
-        "apollo-prod": "npx apollo codegen:generate --endpoint https://dev-api.pooldash.com/graphql --target typescript --tagName=gql --outputFlat src/services/gql/generated --globalTypesFile /_garbage.txt"
+        "generate": "npx apollo codegen:generate --endpoint https://dev-api.pooldash.com/graphql --target typescript --tagName=gql --outputFlat src/services/gql/generated --globalTypesFile /_garbage.txt"
     },
     "dependencies": {
         "@apollo/react-hooks": "^3.1.5",

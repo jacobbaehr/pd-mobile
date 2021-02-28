@@ -5,6 +5,12 @@ import { Button } from '~/components/buttons/Button';
 import { Pool } from '~/models/Pool';
 
 import { useNavigation } from '@react-navigation/native';
+import { PDText } from '~/components/PDText';
+import { Util } from '~/services/Util';
+import { useSelector } from 'react-redux';
+import { AppState } from '~/redux/AppState';
+import { DeviceSettings } from '~/models/DeviceSettings';
+import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 
 interface PoolHeaderViewExternalProps {
     pool: Pool | null;
@@ -13,6 +19,7 @@ interface PoolHeaderViewExternalProps {
 export const PoolHeaderView: React.FC<PoolHeaderViewExternalProps> = (props) => {
     const { pool } = props;
     const { navigate, goBack } = useNavigation();
+    const deviceSettings = useSelector<AppState>((state) => state.deviceSettings) as DeviceSettings;
 
     const handlePressedEdit = () => {
         navigate('EditPool');
@@ -24,6 +31,9 @@ export const PoolHeaderView: React.FC<PoolHeaderViewExternalProps> = (props) => 
     if (!pool) {
         return <></>;
     }
+
+    const volumeDisplay = Util.getDisplayVolume(pool.gallons, deviceSettings);
+    const detailsText = `${getDisplayForWaterType(pool.waterType)} | ${volumeDisplay}`;
 
     return (
         <View style={styles.container}>
@@ -41,6 +51,11 @@ export const PoolHeaderView: React.FC<PoolHeaderViewExternalProps> = (props) => 
                     />
                 </View>
             </View>
+            <View style={styles.infoRow}>
+                <PDText type="default" style={styles.poolVolumeText}>
+                    {detailsText}
+                </PDText>
+            </View>
         </View>
     );
 };
@@ -55,6 +70,15 @@ const styles = StyleSheet.create({
     },
     navRow: {
         flexDirection: 'row',
+    },
+    infoRow: {
+        marginTop: 15,
+        marginBottom: 15,
+    },
+    poolVolumeText: {
+        color: 'rgba(0,0,0,0.6)',
+        fontSize: 18,
+        fontWeight: '600',
     },
     editButtonContainer: {
         alignSelf: 'center',

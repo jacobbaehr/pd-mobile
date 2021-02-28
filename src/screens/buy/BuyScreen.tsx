@@ -138,7 +138,7 @@ const BuyComponent: React.FunctionComponent<BuyScreenProps> = (props) => {
                 </View>
                 <View style={styles.underline} />
                 <View style={styles.flexRow}>
-                    <PDText type={'bodyRegular'} style={styles.annually}>
+                    <PDText type={'default'} style={styles.annually}>
                         annually
                     </PDText>
                 </View>
@@ -150,7 +150,7 @@ const BuyComponent: React.FunctionComponent<BuyScreenProps> = (props) => {
                         height={27}
                         resizeMode={'contain'}
                     />
-                    <PDText type={'bodyRegular'} style={styles.reasonText}>
+                    <PDText type={'default'} style={styles.reasonText}>
                         Charts
                     </PDText>
                 </View>
@@ -162,14 +162,14 @@ const BuyComponent: React.FunctionComponent<BuyScreenProps> = (props) => {
                         height={27}
                         resizeMode={'contain'}
                     />
-                    <PDText type={'bodyRegular'} style={styles.reasonText}>
+                    <PDText type={'default'} style={styles.reasonText}>
                         Unlimited Pools
                     </PDText>
                 </View>
                 <View pointerEvents={isLoading ? 'none' : 'auto'} style={{ opacity: isLoading ? 0.6 : 1 }}>
                     {getButtons()}
                 </View>
-                <PDText type={'bodyRegular'} style={styles.lifeStory}>
+                <PDText type={'default'} style={styles.lifeStory}>
                     {lifeStory}
                 </PDText>
                 <View style={dynamicInsets} />

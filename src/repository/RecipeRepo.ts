@@ -32,9 +32,17 @@ export namespace RecipeRepo {
         } catch (e) {
             return Promise.reject(e);
         }
+        const latestLocalRecipeMetas = (await loadLatestLocalRecipeKeys()).map((rk) => RS.reverseKey(rk));
+
         const promises = defaultRecipes.map((r) => {
             return new Promise<void>(async (resolve) => {
-                await RecipeRepo.saveRecipe(r);
+                /// If we've already saved the same (or later) local recipe, skip it.
+                const existingNewerRecipeMeta = latestLocalRecipeMetas.filter(
+                    (meta) => meta.id === r.id && meta.ts >= r.ts,
+                );
+                if (existingNewerRecipeMeta.length === 0) {
+                    await RecipeRepo.saveRecipe(r);
+                }
                 resolve();
             });
         });
