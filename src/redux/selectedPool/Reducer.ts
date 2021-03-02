@@ -1,18 +1,23 @@
-import { AnyAction } from 'redux';
+// import { AnyAction } from 'redux';
 
-import { Pool } from 'models/Pool';
+import { Pool } from '~/models/Pool';
 
-import { SelectPoolAction, SAVE_POOL, SELECT_POOL, UPDATE_POOL } from './Actions';
+import { createReducer } from '@reduxjs/toolkit';
 
-export const selectedPoolReducer = (previousState: Pool | null = null, action: AnyAction): Pool | null => {
-    switch (action.type) {
-        case SAVE_POOL:
-        case UPDATE_POOL:
-            return action.pool;
-        case SELECT_POOL:
-            const selectPoolAction = action as SelectPoolAction;
-            return selectPoolAction.pool;
-        default:
-            return previousState;
-    }
-};
+import { clearPool, selectPool, updatePool } from './Actions';
+
+export const selectedPoolReducer = createReducer(null as Pool | null, (builder) => {
+    builder
+        .addCase(selectPool, (state, action) => {
+            state = action.payload;
+            return state;
+        })
+        .addCase(clearPool, (state) => {
+            state = null;
+            return state;
+        })
+        .addCase(updatePool.fulfilled, (state, action) => {
+            state = action.payload;
+            return state;
+        });
+});

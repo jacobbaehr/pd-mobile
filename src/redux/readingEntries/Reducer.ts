@@ -1,28 +1,31 @@
-import { AnyAction } from 'redux';
-
 import { ReadingEntry } from '~/models/logs/ReadingEntry';
+import { clearReadings } from '~/redux/readingEntries/Actions';
 
-import { RecordReadingAction, RECORD_INPUT, CLEAR_READINGS } from './Actions';
+// import { AnyAction } from 'redux';
+import { createReducer } from '@reduxjs/toolkit';
 
-export const readingEntriesReducer = (previousState: ReadingEntry[] = [], action: AnyAction): ReadingEntry[] => {
-    switch (action.type) {
-        case RECORD_INPUT:
-            const recordReadingAction = action as RecordReadingAction;
-            const entries = previousState;
+import { recordInput } from './Actions';
+
+export const readingEntriesReducer = createReducer([] as ReadingEntry[], (builder) => {
+    builder
+        .addCase(recordInput, (state, action) => {
+            const { reading, value } = action.payload;
             let readingIsNew = true;
-            entries.forEach((r) => {
-                if (r.var === recordReadingAction.reading.var) {
-                    r.value = recordReadingAction.value;
+
+            state.forEach((r) => {
+                if (r.var === reading.var) {
+                    r.value = value;
                     readingIsNew = false;
                 }
             });
             if (readingIsNew) {
-                entries.push(ReadingEntry.make(recordReadingAction.reading, recordReadingAction.value));
+                state.push(ReadingEntry.make(reading, value));
             }
-            return entries;
-        case CLEAR_READINGS:
-            return [];
-        default:
-            return previousState;
-    }
-};
+
+            return state;
+        })
+        .addCase(clearReadings, (state) => {
+            state = [];
+            return state;
+        });
+});

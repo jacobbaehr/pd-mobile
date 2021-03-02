@@ -8,7 +8,8 @@
         "start": "npx react-native start",
         "test": "jest",
         "lint": "eslint . --ext .ts,.tsx",
-        "generate": "npx apollo codegen:generate --endpoint https://dev-api.pooldash.com/graphql --target typescript --tagName=gql --outputFlat src/services/gql/generated --globalTypesFile /_garbage.txt"
+        "generate": "npx apollo codegen:generate --endpoint https://dev-api.pooldash.com/graphql --target typescript --tagName=gql --outputFlat src/services/gql/generated --globalTypesFile /_garbage.txt",
+        "debug": "open \"rndebugger://set-debugger-loc?host=localhost&port=8081\""
     },
     "dependencies": {
         "@apollo/react-hooks": "^3.1.5",
@@ -53,9 +54,7 @@
         "react-native-vector-icons": "^6.6.0",
         "react-native-webview": "^9.0.2",
         "react-redux": "^7.2.0",
-        "realm": "^6.1.5",
-        "redux": "^4.0.5",
-        "redux-thunk": "^2.3.0"
+        "realm": "^6.1.5"
     },
     "devDependencies": {
         "@babel/core": "^7.6.2",

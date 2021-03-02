@@ -3,7 +3,6 @@ import { Alert, LayoutAnimation, SectionList, SectionListData, StyleSheet, View 
 import SafeAreaView from 'react-native-safe-area-view';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
-import { connect } from 'react-redux';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { ChartCard } from '~/components/charts/ChartCard';
 import { PDText } from '~/components/PDText';
@@ -11,8 +10,8 @@ import { useRealmPoolHistoryHook, useRecipeHook } from '~/hooks/RealmPoolHook';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { LogEntry } from '~/models/logs/LogEntry';
 import { Pool } from '~/models/Pool';
-import { PDNavParams } from '~/navigator/shared';
-import { AppState } from '~/redux/AppState';
+import { PDNavigationProps } from '~/navigator/PDCardNavigator';
+import { useTypedSelector } from '~/redux/AppState';
 import { Database } from '~/repository/Database';
 import { ChartService } from '~/services/ChartService';
 import { DS } from '~/services/DSUtil';
@@ -23,60 +22,46 @@ import { RecipeService } from '~/services/RecipeService';
 import { Util } from '~/services/Util';
 
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 
 import { PoolHeaderView } from './PoolHeaderView';
 import { PoolHistoryListItem } from './PoolHistoryListItem';
 import PoolServiceConfigSection from './PoolServiceConfigSection';
 
-interface PoolScreenProps {
-    // The id of the selected pool, if any
-    selectedPool: Pool | null;
+export const PoolScreen: React.FC = () => {
+    const deviceSettings = useTypedSelector((state) => state.deviceSettings) as DeviceSettings;
+    const selectedPool = useTypedSelector((state) => state.selectedPool) as Pool;
 
-    // This is a flag that just changes whenever we save a new pool.
-    poolsLastUpdated: number;
+    const isUnlocked = DS.isSubscriptionValid(deviceSettings, Date.now());
 
-    deviceSettings: DeviceSettings;
-}
-
-const mapStateToProps = (state: AppState): PoolScreenProps => {
-    return {
-        selectedPool: state.selectedPool,
-        poolsLastUpdated: state.poolsLastUpdated,
-        deviceSettings: state.deviceSettings,
-    };
-};
-
-const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) => {
-    const isUnlocked = DS.isSubscriptionValid(props.deviceSettings, Date.now());
-
-    const { navigate } = useNavigation<StackNavigationProp<PDNavParams>>();
-    const history = useRealmPoolHistoryHook(props.selectedPool?.objectId || '');
+    const { navigate } = useNavigation<PDNavigationProps>();
+    const rawHistory = useRealmPoolHistoryHook(selectedPool?.objectId);
     const [selectedHistoryCellIds, setSelectedHistoryCellIds] = React.useState<string[]>([]);
-    const recipe = useRecipeHook(props.selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
+    const recipe = useRecipeHook(selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
     const [chartData, setChartData] = React.useState(ChartService.loadFakeData(isUnlocked));
+    const [parserHistory, setParserHistory] = React.useState<LogEntry[]>([]);
 
     React.useEffect(() => {
-        if (!props.selectedPool) {
+        if (!selectedPool) {
             return;
         }
         let chosen = ChartService.loadFakeData(isUnlocked);
 
-        if (history.length > 1) {
-            const allData = ChartService.loadChartData('1M', props.selectedPool, isUnlocked);
-            const filtered = allData.filter((x) => x.values.length >= 2);
-            if (filtered.length > 0) {
-                chosen = {
-                    ...filtered[0],
-                    interactive: false,
-                };
-            }
+        const allData = ChartService.loadChartData('1M', selectedPool, isUnlocked);
+        const filtered = allData.filter((x) => x.values.length >= 2);
+        if (filtered.length > 0) {
+            chosen = {
+                ...filtered[0],
+                interactive: false,
+            };
         }
+        let history: LogEntry[] = [];
+        rawHistory.forEach((rh) => history.push(Util.parserToObject(rh)));
+        setParserHistory(history);
         setChartData(chosen);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isUnlocked, props.poolsLastUpdated]);
+    }, [isUnlocked, rawHistory]);
 
-    if (!props.selectedPool || !recipe) {
+    if (!selectedPool || !recipe) {
         return <></>;
     }
 
@@ -144,32 +129,14 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
 
     const handleDataButtonPressed = async () => {
         try {
-            if (!props.selectedPool) {
+            if (!selectedPool) {
                 return;
             }
-            await ExportService.generateAndShareCSV(props.selectedPool);
+            await ExportService.generateAndShareCSV(selectedPool);
         } catch (e) {
             console.error(e);
         }
     };
-
-    const sections: SectionListData<any>[] = [
-        {
-            title: '',
-            data: [{ key: 'bogus_recipe' }],
-            key: 'service_section',
-        },
-        {
-            title: 'Trends',
-            data: [{ key: 'bogus_trends' }],
-            key: 'trends_section',
-        },
-        {
-            title: 'History',
-            data: history, // TODO: put the log entries here.
-            key: 'history_section',
-        },
-    ];
 
     const renderItem = (section: SectionListData<any>, item: any): JSX.Element => {
         let titleElement = (
@@ -185,7 +152,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
             contentBody = <PoolServiceConfigSection />;
         } else if (section.key === 'trends_section') {
             marginHorizontal = 18;
-            if (history.length < 1) {
+            if (parserHistory.length < 1) {
                 return <></>;
             }
             contentBody = (
@@ -196,11 +163,13 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
         } else if (section.key === 'history_section') {
             marginBottom = 6;
             marginHorizontal = 18;
-            if (history.indexOf(item) !== 0) {
+
+            if (parserHistory.indexOf(item) !== 0) {
                 titleElement = <></>;
             }
             contentBody = (
                 <PoolHistoryListItem
+                    key={item.objectId}
                     logEntry={item}
                     handleCellSelected={handleHistoryCellPressed}
                     handleDeletePressed={handleHistoryCellDeletePressed}
@@ -212,7 +181,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
 
         // We need the key here to change after a purchase to cause a re-render:
         return (
-            <View style={{ marginBottom, marginHorizontal }}>
+            <View key={`${section}-${item.objectId}`} style={{ marginBottom, marginHorizontal }}>
                 {section.key === 'service_section' || titleElement}
                 {contentBody}
             </View>
@@ -220,7 +189,7 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
     };
 
     const renderSectionFooter = (section: SectionListData<any>) => {
-        if (section.key !== 'history_section' || history.length === 0) {
+        if (section.key !== 'history_section' || parserHistory.length === 0) {
             return <></>;
         }
         return (
@@ -233,9 +202,26 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
         );
     };
 
+    const sections: SectionListData<any>[] = [
+        {
+            title: '',
+            data: [{ key: 'bogus_recipe' }],
+            key: 'service_section',
+        },
+        {
+            title: 'Trends',
+            data: [{ key: 'bogus_trends' }],
+            key: 'trends_section',
+        },
+        {
+            title: 'History',
+            data: parserHistory,
+            key: 'history_section',
+        },
+    ];
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }} forceInset={{ bottom: 'never' }}>
-            <PoolHeaderView pool={props.selectedPool} />
+            <PoolHeaderView />
             <SectionList
                 sections={sections}
                 style={styles.sectionList}
@@ -248,8 +234,6 @@ const PoolScreenComponent: React.FunctionComponent<PoolScreenProps> = (props) =>
         </SafeAreaView>
     );
 };
-
-export const PoolScreen = connect(mapStateToProps)(PoolScreenComponent);
 
 const styles = StyleSheet.create({
     sectionList: {

@@ -1,18 +1,13 @@
-import { AnyAction } from 'redux';
 import { DeviceSettings } from '~/models/DeviceSettings';
 
-export const UPDATE_DEVICE_SETTINGS = 'UPDATE_DEVICE_SETTINGS';
+import { createAction } from '@reduxjs/toolkit';
 
-export interface UpdateDeviceSettingsAction extends AnyAction {
-    deviceSettings: DeviceSettings;
-}
+import { Scoop } from '../../models/Scoop';
 
-export type UpdateDeviceSettingsActions = UpdateDeviceSettingsAction;
+export const updateDeviceSettings = createAction<DeviceSettings>('device/update-settings');
 
-// Update whether or not the user has a valid subscription
-export const updateDeviceSettings = (newSettings: DeviceSettings): UpdateDeviceSettingsAction => {
-    return {
-        type: UPDATE_DEVICE_SETTINGS,
-        deviceSettings: newSettings,
-    };
-};
+export const loadDeviceSettings = createAction<DeviceSettings>('device/load-settings');
+
+// Scoop Actions
+export const addScoop = createAction<Scoop>('scoop/add');
+export const editScoop = createAction<Scoop>('scoop/edit');

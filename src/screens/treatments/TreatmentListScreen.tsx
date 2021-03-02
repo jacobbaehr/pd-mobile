@@ -2,21 +2,18 @@ import * as React from 'react';
 import { InputAccessoryView, Keyboard, LayoutAnimation, SafeAreaView, StyleSheet, View } from 'react-native';
 import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
-import { connect } from 'react-redux';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { PlatformSpecific } from '~/components/PlatformSpecific';
 import { useRecipeHook } from '~/hooks/RealmPoolHook';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { LogEntry } from '~/models/logs/LogEntry';
-import { ReadingEntry } from '~/models/logs/ReadingEntry';
 import { Pool } from '~/models/Pool';
 import { EffectiveTargetRange } from '~/models/recipe/TargetRange';
 import { DryChemicalUnits, Units, WetChemicalUnits } from '~/models/TreatmentUnits';
 import { PDNavParams } from '~/navigator/shared';
-import { AppState, dispatch } from '~/redux/AppState';
+import { dispatch, useTypedSelector } from '~/redux/AppState';
 import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
-import { updatePickerState } from '~/redux/picker/Actions';
-import { PickerState } from '~/redux/picker/PickerState';
+import { clearPickerState } from '~/redux/picker/Actions';
 import { Database } from '~/repository/Database';
 import { CalculationService } from '~/services/CalculationService';
 import { Config } from '~/services/Config';
@@ -35,26 +32,12 @@ import { TreatmentListHeader } from './TreatmentListHeader';
 import { TreatmentListHelpers, TreatmentState } from './TreatmentListHelpers';
 import { TreatmentListItem } from './TreatmentListItem';
 
-interface TreatmentListScreenProps {
-    navigation: StackNavigationProp<PDNavParams, 'TreatmentList'>;
-    readings: ReadingEntry[];
-    pool: Pool;
-    pickerState: PickerState | null;
-    deviceSettings: DeviceSettings;
-}
-
-const mapStateToProps = (state: AppState, ownProps: TreatmentListScreenProps): TreatmentListScreenProps => {
-    return {
-        navigation: ownProps.navigation,
-        readings: state.readingEntries,
-        pool: state.selectedPool!,
-        pickerState: state.pickerState,
-        deviceSettings: state.deviceSettings,
-    };
-};
-
-const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenProps> = (props) => {
-    const recipeKey = props.pool.recipeKey || RecipeService.defaultRecipeKey;
+export const TreatmentListScreen: React.FC = () => {
+    const readings = useTypedSelector((state) => state.readingEntries);
+    const pool = useTypedSelector((state) => state.selectedPool) as Pool;
+    const pickerState = useTypedSelector((state) => state.pickerState);
+    const deviceSettings = useTypedSelector((state) => state.deviceSettings) as DeviceSettings;
+    const recipeKey = pool?.recipeKey || RecipeService.defaultRecipeKey;
     const [treatmentStates, setTreatmentStates] = React.useState<TreatmentState[]>([]);
     const [notes, setNotes] = React.useState('');
     const { goBack, navigate } = useNavigation<StackNavigationProp<PDNavParams>>();
@@ -62,7 +45,6 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
     const [concentrationTreatmentVar, updateConcentrationTreatment] = React.useState<string | null>(null);
     const recipe = useRecipeHook(recipeKey);
 
-    const deviceSettings = props.deviceSettings;
     const allScoops = deviceSettings.scoops;
 
     const keyboardAccessoryViewId = 'dedgumThisIsSomeReallyUniqueTextTreatmentListKeyboard';
@@ -70,7 +52,6 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
     // This happens on every render... whatever.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => {
-        const { pickerState } = props;
         if (
             pickerState &&
             pickerState.key === 'chem_concentration' &&
@@ -101,7 +82,7 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
                 setTreatmentStates,
             );
 
-            dispatch(updatePickerState(null));
+            dispatch(clearPickerState());
             updateConcentrationTreatment(null);
 
             if (didChange) {
@@ -118,22 +99,15 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
     if (!recipe) {
         return <View />;
     }
-    // TODO: get the effective values for the pool / recipe combo here:
-    const targets: EffectiveTargetRange[] = [];
-    const htmlString = CalculationService.getHtmlStringForLocalHermes(recipe, props.pool, props.readings, targets);
 
     const save = async () => {
         const id = Math.random().toString(36).slice(2);
         const ts = new Date().getTime();
-
         const tes = CalculationService.mapTreatmentStatesToTreatmentEntries(treatmentStates);
-        console.log('treatments: ', JSON.stringify(tes));
-        console.log('notes: ', notes);
 
-        const logEntry = LogEntry.make(id, props.pool.objectId, ts, props.readings, tes, recipeKey, notes);
-        console.log('Log: ', JSON.stringify(logEntry));
+        const logEntry = LogEntry.make(id, pool.objectId, ts, readings, tes, recipeKey, notes);
+
         await Database.saveNewLogEntry(logEntry);
-
         // Save the last-used units:
         const newDeviceSettings = Util.deepCopy(deviceSettings);
         newDeviceSettings.treatments.units = TreatmentListHelpers.getUpdatedLastUsedUnits(
@@ -142,7 +116,6 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
         );
         dispatch(updateDeviceSettings(newDeviceSettings));
         await DeviceSettingsService.saveSettings(newDeviceSettings);
-
         navigate('PoolScreen');
     };
 
@@ -351,6 +324,10 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
         goBack();
     };
 
+    // TODO: get the effective values for the pool / recipe combo here:
+    const targets: EffectiveTargetRange[] = [];
+    const htmlString = CalculationService.getHtmlStringForLocalHermes(recipe, pool, readings, targets);
+
     const sections = [{ title: 'booga', data: treatmentStates }];
     let progress = 0;
     if (recipe) {
@@ -361,7 +338,7 @@ const TreatmentListScreenComponent: React.FunctionComponent<TreatmentListScreenP
 
     return (
         <SafeAreaView style={{ display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: 'white' }}>
-            <TreatmentListHeader handleBackPress={handleBackPress} pool={props.pool} percentComplete={progress} />
+            <TreatmentListHeader handleBackPress={handleBackPress} pool={pool} percentComplete={progress} />
             <View style={styles.container}>
                 <KeyboardAwareSectionList
                     style={styles.sectionList}
@@ -460,5 +437,3 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
 });
-
-export const TreatmentListScreen = connect(mapStateToProps)(TreatmentListScreenComponent);

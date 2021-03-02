@@ -110,7 +110,10 @@ export class Database {
         try {
             // We have to delete the actual realm object
             realm.write(() => {
-                realm.delete(pool);
+                const deletedPool = realm.objectForPrimaryKey<Pool>(Pool.schema.name, pool.objectId);
+                if (deletedPool) {
+                    realm.delete(deletedPool);
+                }
             });
             return Promise.resolve();
         } catch (e) {
@@ -120,34 +123,39 @@ export class Database {
         }
     };
 
-    static deleteLogEntry = async (id: string) => {
+    static deleteLogEntry = async (logEntryId: string) => {
         const realm = Database.realm;
         try {
             // We have to delete the actual realm object
             realm.write(() => {
-                const logEntry = Database.realm
-                    .objects<LogEntry>(LogEntry.schema.name)
-                    .filtered('objectId = $0', id)[0];
-                realm.delete(logEntry);
+                const logEntry = realm.objectForPrimaryKey<LogEntry>(LogEntry.schema.name, logEntryId);
+                if (logEntry) {
+                    realm.delete(logEntry);
+                }
             });
             return Promise.resolve();
         } catch (e) {
-            console.log(e);
-            console.error('could not delete it');
             return Promise.reject(e);
         }
     };
 
-    // Very unsafely commits the provided changes to the Realm store. This is the pattern Realm makes us use,
-    // it's unfortunately not async.
-    static commitUpdates = (updates: () => void) => {
-        if (Database.realm === undefined) {
-            console.error('commitUpdates called before realm loaded');
-        }
+    static updatePool = (pool: Pool) => {
         const realm = Database.realm;
-        realm.write(() => {
-            updates();
-        });
+        try {
+            realm.write(() => {
+                const newPool = realm.objectForPrimaryKey<Pool>(Pool.schema.name, pool.objectId);
+                if (newPool) {
+                    newPool.name = pool.name;
+                    newPool.gallons = pool.gallons;
+                    newPool.recipeKey = pool.recipeKey;
+                    newPool.waterType = pool.waterType;
+                    newPool.wallType = pool.wallType;
+                }
+            });
+            return Promise.resolve();
+        } catch (error) {
+            return Promise.reject('Error updating a pool');
+        }
     };
 
     static saveNewCustomTarget = (customTarget: TargetRangeOverride) => {

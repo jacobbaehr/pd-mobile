@@ -1,10 +1,7 @@
-import { AnyAction } from 'redux';
-
 import { TreatmentEntry } from '~/models/logs/TreatmentEntry';
 
-export const outputsReducer = (previousState: TreatmentEntry[] = [], action: AnyAction): TreatmentEntry[] => {
-    switch (action.type) {
-        default:
-            return previousState;
-    }
-};
+import { createReducer } from '@reduxjs/toolkit';
+
+export const outputsReducer = createReducer([] as TreatmentEntry[], (builder) => {
+    builder.addDefaultCase((state) => state);
+});

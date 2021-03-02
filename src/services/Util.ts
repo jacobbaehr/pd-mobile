@@ -58,7 +58,7 @@ export class Util {
             return original;
         }
         const candidate = original.substr(original.length - suffix.length);
-        if (candidate == suffix) {
+        if (candidate === suffix) {
             return original.substr(0, original.length - suffix.length);
         }
         return original;
@@ -93,4 +93,14 @@ export class Util {
     static generateUUID = () => {
         return Math.random().toString(36).slice(2);
     };
+
+    // Function to parse RealmObject to Js Objects
+    static parserToObject(item: any & Realm.Object): any {
+        var object = {};
+        var properties = Object.getOwnPropertyNames(item);
+        for (var property of properties) {
+            object[property] = item[property];
+        }
+        return object;
+    }
 }

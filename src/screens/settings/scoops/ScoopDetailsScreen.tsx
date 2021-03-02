@@ -13,9 +13,10 @@ import { DeviceSettings } from '~/models/DeviceSettings';
 import { Treatment, TreatmentType } from '~/models/recipe/Treatment';
 import { Scoop } from '~/models/Scoop';
 import { DryChemicalUnits, Units, WetChemicalUnits } from '~/models/TreatmentUnits';
+import { PDNavParams } from '~/navigator/shared';
 import { AppState, dispatch } from '~/redux/AppState';
-import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
-import { updatePickerState } from '~/redux/picker/Actions';
+import { addScoop, editScoop, updateDeviceSettings } from '~/redux/deviceSettings/Actions';
+import { clearPickerState } from '~/redux/picker/Actions';
 import { PickerState } from '~/redux/picker/PickerState';
 import { PDPickerRouteProps } from '~/screens/picker/PickerScreen';
 import { DeviceSettingsService } from '~/services/DeviceSettingsService';
@@ -26,7 +27,8 @@ import { Util } from '~/services/Util';
 
 import { RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { PDNavParams } from '~/navigator/shared';
+
+import { getTreatmentWithVar, mapScoopDeviceSettings } from './ScoopDetailsUtils';
 
 export interface ScoopDetailsRouteProps {
     prevScoop: Scoop | null;
@@ -101,20 +103,19 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
         if (pickerState && pickerState.key === 'scoop_chem' && pickerState.value !== null) {
             setIsSelectingInitialTreatment(false);
             const treatmentVar = pickerState.value;
-            const newTreatment = getTreatmentWithVar(treatmentVar);
+            const newTreatment = getTreatmentWithVar(treatments, treatmentVar);
             if (!newTreatment) {
-                dispatch(updatePickerState(null));
+                dispatch(clearPickerState());
                 return;
             }
-            setTreatment(getTreatmentWithVar(treatmentVar));
+            setTreatment(getTreatmentWithVar(treatments, treatmentVar));
             // We don't _need_ to pass prevScoop stuff here, but heck, why not?
             setUnits(getUnits(newTreatment.type, prevScoop?.displayUnits));
-            dispatch(updatePickerState(null));
+            dispatch(clearPickerState());
         }
     });
 
     useFocusEffect(() => {
-        console.log('booooooo');
         if (props.pickerState && props.pickerState.key === 'nothing' && isSelectingInitialTreatment) {
             // Hacky, awful special-case to handle the user pressing the "+" button on the settings screen
             // and immediately pressing the x button on chem-selection. In that case, we just dismiss this
@@ -143,15 +144,6 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
         navigate('PickerScreen', pickerProps);
     };
 
-    const getTreatmentWithVar = (varName: string): Treatment | null => {
-        const filteredList = treatments.filter((t) => t.var === varName);
-        if (filteredList.length) {
-            return filteredList[0];
-        } else {
-            return null;
-        }
-    };
-
     const handleTextboxUpdated = (newValue: string) => {
         setTextValue(newValue);
     };
@@ -163,15 +155,13 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
             return;
         }
 
-        // We're going to modify this copy:
-        const newDeviceSettings = Util.deepCopy(props.deviceSettings);
-
         let ounces = 0;
         if (type === 'dryChemical') {
             ounces = Converter.dry(+textValue, units as DryChemicalUnits, 'ounces', null);
         } else if (type === 'liquidChemical') {
             ounces = Converter.wet(+textValue, units as WetChemicalUnits, 'ounces', null);
         }
+
         const newScoop: Scoop = {
             var: treatment.var,
             type: treatment.type,
@@ -179,20 +169,18 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
             displayValue: textValue,
             chemName: treatment.name,
             ounces,
-            guid: Math.random().toString(36).slice(2),
+            guid: Util.generateUUID(),
         };
 
+        let deviceSettings: DeviceSettings | null = null;
         if (prevScoop) {
-            const index = newDeviceSettings.scoops.findIndex((s) => s.var === prevScoop.var);
-            if (index >= 0) {
-                newDeviceSettings.scoops[index] = newScoop;
-            }
+            deviceSettings = mapScoopDeviceSettings(props.deviceSettings, newScoop, 'edit');
+            dispatch(editScoop(newScoop));
         } else {
-            newDeviceSettings.scoops.push(newScoop);
+            deviceSettings = mapScoopDeviceSettings(props.deviceSettings, newScoop, 'create');
+            dispatch(addScoop(newScoop));
         }
-        console.log('Scoop: ' + JSON.stringify(newScoop));
-        await DeviceSettingsService.saveSettings(newDeviceSettings);
-        dispatch(updateDeviceSettings(newDeviceSettings));
+        await DeviceSettingsService.saveSettings(deviceSettings);
         goBack();
     };
 
@@ -205,13 +193,6 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
         }
         setUnits(newUnits);
     };
-
-    let chemButtonTitle = 'choose';
-    if (treatment) {
-        chemButtonTitle = Util.getDisplayNameForTreatment(treatment);
-    } else if (prevScoop) {
-        chemButtonTitle = prevScoop.chemName;
-    }
 
     const handleDeletePressed = () => {
         Alert.alert(
@@ -251,6 +232,13 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
 
         return <BoringButton containerStyles={styles.deleteButton} onPress={handleDeletePressed} title="Delete" />;
     };
+
+    let chemButtonTitle = 'choose';
+    if (treatment) {
+        chemButtonTitle = Util.getDisplayNameForTreatment(treatment);
+    } else if (prevScoop) {
+        chemButtonTitle = prevScoop.chemName;
+    }
 
     return (
         <SafeAreaView style={{ display: 'flex', flex: 1, backgroundColor: '#FFFFFF' }}>

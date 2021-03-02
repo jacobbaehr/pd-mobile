@@ -1,30 +1,28 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { BackButton } from '~/components/buttons/BackButton';
 import { Button } from '~/components/buttons/Button';
-import { Pool } from '~/models/Pool';
-
-import { useNavigation } from '@react-navigation/native';
 import { PDText } from '~/components/PDText';
-import { Util } from '~/services/Util';
-import { useSelector } from 'react-redux';
-import { AppState } from '~/redux/AppState';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { getDisplayForWaterType } from '~/models/Pool/WaterType';
+import { AppState, useTypedSelector } from '~/redux/AppState';
+import { clearPool } from '~/redux/selectedPool/Actions';
+import { Util } from '~/services/Util';
 
-interface PoolHeaderViewExternalProps {
-    pool: Pool | null;
-}
+import { useNavigation } from '@react-navigation/native';
 
-export const PoolHeaderView: React.FC<PoolHeaderViewExternalProps> = (props) => {
-    const { pool } = props;
+export const PoolHeaderView: React.FC = () => {
     const { navigate, goBack } = useNavigation();
     const deviceSettings = useSelector<AppState>((state) => state.deviceSettings) as DeviceSettings;
+    const pool = useTypedSelector((state) => state.selectedPool);
+    const dispatch = useDispatch();
 
     const handlePressedEdit = () => {
         navigate('EditPool');
     };
     const handlePressedBack = () => {
+        dispatch(clearPool());
         goBack();
     };
 

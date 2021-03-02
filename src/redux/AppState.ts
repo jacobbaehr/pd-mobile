@@ -1,69 +1,58 @@
-import { applyMiddleware, combineReducers, createStore } from 'redux';
-import ReduxThunk from 'redux-thunk';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { combineReducers } from 'redux';
+import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 
-import { ReadingEntry } from '~/models/logs/ReadingEntry';
-import { TreatmentEntry } from '~/models/logs/TreatmentEntry';
-import { Pool } from '~/models/Pool';
-import { PickerState } from './picker/PickerState';
+import { configureStore } from '@reduxjs/toolkit';
 
+import { deviceSettingsReducer } from './deviceSettings/Reducer';
 import { hasValidSubscriptionReducer } from './hasValidSubscription/Reducer';
 import { outputsReducer } from './outputs/Reducer';
-import { poolsLastUpdatedReducer } from './poolsLastUpdated/Reducer';
+import { pickerStateReducer } from './picker/Reducer';
 import { readingEntriesReducer } from './readingEntries/Reducer';
 import { selectedPoolReducer } from './selectedPool/Reducer';
-import { pickerStateReducer } from './picker/Reducer';
-import { DeviceSettings } from '~/models/DeviceSettings';
-import { DeviceSettingsService } from '~/services/DeviceSettingsService';
-import { deviceSettingsReducer } from './deviceSettings/Reducer';
-
-// Describes the shape of the application redux state.
-export interface AppState {
-    // All of the readings that a user has recorded
-    readingEntries: ReadingEntry[];
-
-    // All of the outputs currently perscribed
-    outputs: TreatmentEntry[];
-
-    // The currently selected swimming pool, if any
-    selectedPool: Pool | null;
-
-    // This increments whenever we update the list of pools
-    poolsLastUpdated: number;
-
-    // Whether or not the user has a valid subscription
-    hasValidSubscription: boolean;
-
-    // The most recent value from any picker screen
-    pickerState: PickerState | null;
-
-    // The device settings:
-    deviceSettings: DeviceSettings;
-}
-
-const initialAppState: AppState = {
-    readingEntries: [],
-    outputs: [],
-    selectedPool: null,
-    poolsLastUpdated: 0,
-    hasValidSubscription: false,
-    pickerState: null,
-    deviceSettings: DeviceSettingsService.getDefaultSettings(),
-};
 
 const reducer = combineReducers({
     readingEntries: readingEntriesReducer,
     outputs: outputsReducer,
     selectedPool: selectedPoolReducer,
-    poolsLastUpdated: poolsLastUpdatedReducer,
     hasValidSubscription: hasValidSubscriptionReducer,
     pickerState: pickerStateReducer,
     deviceSettings: deviceSettingsReducer,
 });
+export type AppState = ReturnType<typeof reducer>;
 
-// apply all middleware for application
-const middleware = applyMiddleware(ReduxThunk);
+const initialAppState: AppState = {
+    readingEntries: [],
+    outputs: [],
+    selectedPool: null,
+    hasValidSubscription: false,
+    pickerState: null,
+    deviceSettings: DeviceSettingsService.getDefaultSettings(),
+};
 
-// TODO: fix as any on next line?
-export const store = createStore(reducer, initialAppState as any, middleware);
+export const store = configureStore({
+    reducer,
+    devTools: __DEV__,
+    middleware: (getDefaultMiddleware) =>
+        // TODO: We might need to keep like this, after we completely parse RealmObject on redux
+        getDefaultMiddleware({
+            immutableCheck: false,
+            serializableCheck: false,
+            thunk: true,
+        }),
+    preloadedState: initialAppState,
+});
+
+/**
+ * Global App Dispatch for useDispatch
+ * Example: const dispatch: AppDispatch = useDispatch()
+ */
+export type AppDispatch = typeof store.dispatch;
+
+// Custom hook for handle async functions.
+export const useThunkDispatch = () => useDispatch<AppDispatch>();
+
+// Custom hook for basic selectors.
+export const useTypedSelector: TypedUseSelectorHook<AppState> = useSelector;
 
 export const dispatch = store.dispatch;

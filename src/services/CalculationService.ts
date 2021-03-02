@@ -1,10 +1,12 @@
-import { ReadingEntry } from '../models/logs/ReadingEntry';
-import { TreatmentEntry } from '~/models/logs/TreatmentEntry';
-import { Recipe } from '../models/recipe/Recipe';
-import { Pool } from '../models/Pool';
 import { WebViewMessageEvent } from 'react-native-webview';
-import { TreatmentState } from '~/screens/treatments/TreatmentListHelpers';
+import { TreatmentEntry } from '~/models/logs/TreatmentEntry';
 import { EffectiveTargetRange } from '~/models/recipe/TargetRange';
+import { TreatmentState } from '~/screens/treatments/TreatmentListHelpers';
+import { Util } from '~/services/Util';
+
+import { ReadingEntry } from '../models/logs/ReadingEntry';
+import { Pool } from '../models/Pool';
+import { Recipe } from '../models/recipe/Recipe';
 
 export interface CalculationResult {
     value: number | null;
@@ -66,7 +68,7 @@ export class CalculationService {
         };`;
         const event: RecipeRunRequest = {
             recipe,
-            pool,
+            pool: Util.parserToObject(pool),
             readings: inputs,
             custom: targets,
         };

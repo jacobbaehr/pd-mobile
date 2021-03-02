@@ -1,14 +1,16 @@
-import { AnyAction } from 'redux';
+import { createReducer } from '@reduxjs/toolkit';
 
-import { UpdatePickerStateAction, UPDATE_PICKER_STATE } from './Actions';
+import { clearPickerState, updatePickerState } from './Actions';
 import { PickerState } from './PickerState';
 
-export const pickerStateReducer = (previousState: PickerState | null = null, action: AnyAction): PickerState | null => {
-    switch (action.type) {
-        case UPDATE_PICKER_STATE:
-            const updatePickerStateAction = action as UpdatePickerStateAction;
-            return updatePickerStateAction.pickerState;
-        default:
-            return previousState;
-    }
-};
+export const pickerStateReducer = createReducer(null as PickerState | null, (builder) => {
+    builder
+        .addCase(updatePickerState, (state, action) => {
+            state = action.payload;
+            return state;
+        })
+        .addCase(clearPickerState, (state) => {
+            state = null;
+            return state;
+        });
+});

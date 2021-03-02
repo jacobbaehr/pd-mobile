@@ -1,14 +1,16 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, SectionList } from 'react-native';
+import { SectionList, StyleSheet, Text, View } from 'react-native';
 import { BackButton } from '~/components/buttons/BackButton';
-import { Pool } from '~/models/Pool';
-import { PickerState } from '~/redux/picker/PickerState';
-import { DeviceSettings } from '~/models/DeviceSettings';
-import { PDNavParams } from '~/navigator/shared';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
 import { MenuItemButton } from '~/components/buttons/MenuItemButton';
 import { PDText } from '~/components/PDText';
+import { DeviceSettings } from '~/models/DeviceSettings';
+import { Pool } from '~/models/Pool';
+import { PDNavParams } from '~/navigator/shared';
+import { PickerState } from '~/redux/picker/PickerState';
+
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+
 import { editPoolSectionInfo } from './SectionInfo';
 
 interface EditPoolScreenProps {

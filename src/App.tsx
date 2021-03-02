@@ -1,15 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
+import { PDRootNavigator } from '~/navigator/PDRootNavigator';
+import { loadDeviceSettings } from '~/redux/deviceSettings/Actions';
+
 import { ApolloProvider } from '@apollo/react-hooks';
 
-import { PDRootNavigator } from '~/navigator/PDRootNavigator';
+import { DeviceSettings } from './models/DeviceSettings';
+import { dispatch } from './redux/AppState';
 import { Database } from './repository/Database';
 import { RecipeRepo } from './repository/RecipeRepo';
 import { DeviceSettingsService } from './services/DeviceSettingsService';
-import { DeviceSettings } from './models/DeviceSettings';
-import { dispatch } from './redux/AppState';
-import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
 import { getApolloClient } from './services/gql/Client';
 import { IAP } from './services/IAP';
 import { RecipeService } from './services/RecipeService';
@@ -37,7 +38,7 @@ export const AppComponent: React.FunctionComponent<AppProps> = () => {
     }, []);
     React.useEffect(() => {
         DeviceSettingsService.getSettings().then((settings: DeviceSettings) => {
-            dispatch(updateDeviceSettings(settings));
+            dispatch(loadDeviceSettings(settings));
             setAreDeviceSettingsLoaded(true);
         });
     }, []);

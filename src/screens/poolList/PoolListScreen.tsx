@@ -3,48 +3,36 @@ import { Alert, Image, SectionList, StyleSheet, View, ViewStyle } from 'react-na
 import { useSafeArea } from 'react-native-safe-area-context';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
-import { connect } from 'react-redux';
 import { images } from '~/assets/images';
 import { PDText } from '~/components/PDText';
 import { useRealmPoolsHook } from '~/hooks/RealmPoolHook';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { Pool } from '~/models/Pool';
-import { PDNavParams } from '~/navigator/shared';
-import { AppState, dispatch } from '~/redux/AppState';
-import { selectPool } from '~/redux/selectedPool/Actions';
+import { PDNavigationProps } from '~/navigator/PDCardNavigator';
+import { dispatch, useTypedSelector } from '~/redux/AppState';
+import { clearPool, selectPool } from '~/redux/selectedPool/Actions';
 import { DS } from '~/services/DSUtil';
+import { Util } from '~/services/Util';
 
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 
 import { PoolListFooter } from './PoolListFooter';
 import { PoolListItem } from './PoolListItem';
 
-interface PoolListScreenProps {
-    // The id of the selected pool, if any
-    selectedPool: Pool | null;
-
-    // This is a flag that just changes whenever we save a new pool.
-    poolsLastUpdated: number;
-
-    deviceSettings: DeviceSettings;
-}
-
-const mapStateToProps = (state: AppState): PoolListScreenProps => {
-    return {
-        selectedPool: state.selectedPool,
-        poolsLastUpdated: state.poolsLastUpdated,
-        deviceSettings: state.deviceSettings,
-    };
-};
-
-const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (props) => {
-    const pools = useRealmPoolsHook();
-    const { navigate } = useNavigation<StackNavigationProp<PDNavParams, 'PoolList'>>();
+export const PoolListScreen: React.FC = () => {
+    const rawPools = useRealmPoolsHook();
+    const { navigate } = useNavigation<PDNavigationProps>();
+    const deviceSettings = useTypedSelector((state) => state.deviceSettings) as DeviceSettings;
+    const [pools, setPools] = React.useState<Pool[]>([]);
     const insets = useSafeArea();
 
-    const handlePoolSelected = async (pool: Pool): Promise<void> => {
-        console.log('selected: ', pool);
+    React.useEffect(() => {
+        let parserPool: Pool[] = [];
+        rawPools.forEach((pr) => parserPool.push(Util.parserToObject(pr)));
+        setPools(parserPool);
+    }, [rawPools]);
+
+    const handlePoolSelected = async (pool: Pool) => {
         dispatch(selectPool(pool));
         navigate('PoolScreen');
     };
@@ -70,9 +58,9 @@ const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (p
     };
 
     const handleAddPoolPressed = async () => {
-        const hasUpgraded = DS.isSubscriptionValid(props.deviceSettings, Date.now());
+        const hasUpgraded = DS.isSubscriptionValid(deviceSettings, Date.now());
         if (hasUpgraded || pools.length === 0) {
-            dispatch(selectPool(null));
+            dispatch(clearPool());
             navigate('CreatePool');
         } else {
             promptUpgrade();
@@ -128,8 +116,6 @@ const PoolListScreenComponent: React.FunctionComponent<PoolListScreenProps> = (p
     );
 };
 
-export const PoolListScreen = connect(mapStateToProps)(PoolListScreenComponent);
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -137,19 +123,16 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     header: {
-        display: 'flex',
         flexDirection: 'row',
         backgroundColor: 'white',
         borderBottomColor: '#F0F0F0',
         borderBottomWidth: 2,
     },
     headerLeft: {
-        display: 'flex',
         flexDirection: 'row',
         flex: 1,
     },
     headerRight: {
-        display: 'flex',
         flexDirection: 'column',
     },
     editStyle: {

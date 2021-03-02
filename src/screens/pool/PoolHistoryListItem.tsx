@@ -1,13 +1,12 @@
+import { format } from 'date-fns';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { format } from 'date-fns';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
-
-import { LogEntry } from '~/models/logs/LogEntry';
-import { PDText } from '~/components/PDText';
-import { Util } from '~/services/Util';
 import { BoringButton } from '~/components/buttons/BoringButton';
+import { PDText } from '~/components/PDText';
+import { LogEntry } from '~/models/logs/LogEntry';
+import { Util } from '~/services/Util';
 
 interface PoolHistoryListItemProps {
     logEntry: LogEntry;
