@@ -13,6 +13,7 @@ import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
 import { TargetRange } from '~/models/recipe/TargetRange';
 import { AppState } from '~/redux/AppState';
 import { Database } from '~/repository/Database';
+import { Util } from '~/services/Util';
 
 /**
  *  List Item for Custom Targets by Defaults values from each waterType.
@@ -20,7 +21,8 @@ import { Database } from '~/repository/Database';
 const CustomTargetsItem: React.FC<TargetRange> = (props) => {
     const { name, description, defaults } = props;
     const pool = useSelector<AppState>((state) => state.selectedPool) as Pool;
-    const loadedCustomTarget = useRealmPoolTargetRange(pool.objectId, props.var) ?? ({} as TargetRangeOverride);
+    const targetRanges = useRealmPoolTargetRange(pool.objectId);
+    const localTargetRange = Util.firstOrNull(targetRanges);
     const { control, handleSubmit, setValue, formState } = useForm<TargetRange>({
         defaultValues: props,
         mode: 'all',
@@ -32,7 +34,7 @@ const CustomTargetsItem: React.FC<TargetRange> = (props) => {
     const defaultMin = defaults[0]?.min ?? 0;
     const defaultMax = defaults[0]?.max ?? 0;
 
-    const isOverrides = (key: 'min' | 'max') => Boolean(loadedCustomTarget[key]);
+    const isOverrides = (key: 'min' | 'max') => localTargetRange && Boolean(localTargetRange[key]);
 
     const handleResetValue = () => {
         setValue('defaults', props.defaults);
@@ -40,7 +42,7 @@ const CustomTargetsItem: React.FC<TargetRange> = (props) => {
 
     const handleBlurred = handleSubmit(async (values) => {
         const mapDefaultCustomTargets = {
-            objectId: loadedCustomTarget.objectId,
+            objectId: localTargetRange?.objectId ?? '',
             min: props.defaults[0].min,
             max: props.defaults[0].max,
             poolId: pool.objectId,
@@ -80,7 +82,7 @@ const CustomTargetsItem: React.FC<TargetRange> = (props) => {
                             <BorderInputWithLabel
                                 label="min"
                                 placeholder={
-                                    isOverrides('min') ? loadedCustomTarget?.min.toString() : defaultMin.toString()
+                                    isOverrides('min') ? localTargetRange?.min.toString() : defaultMin.toString()
                                 }
                                 placeholderTextColor={isOverrides('min') ? '#1E6BFF' : '#BBBBBB'}
                                 onChangeText={(text) => onChange({ target: { value: text } })}
@@ -101,7 +103,7 @@ const CustomTargetsItem: React.FC<TargetRange> = (props) => {
                             <BorderInputWithLabel
                                 label="max"
                                 placeholder={
-                                    isOverrides('max') ? loadedCustomTarget?.max.toString() : defaultMax.toString()
+                                    isOverrides('max') ? localTargetRange?.max.toString() : defaultMax.toString()
                                 }
                                 placeholderTextColor={isOverrides('max') ? '#1E6BFF' : '#BBBBBB'}
                                 onChangeText={onChange}

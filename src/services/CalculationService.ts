@@ -2,7 +2,6 @@ import { WebViewMessageEvent } from 'react-native-webview';
 import { TreatmentEntry } from '~/models/logs/TreatmentEntry';
 import { EffectiveTargetRange } from '~/models/recipe/TargetRange';
 import { TreatmentState } from '~/screens/treatments/TreatmentListHelpers';
-import { Util } from '~/services/Util';
 
 import { ReadingEntry } from '../models/logs/ReadingEntry';
 import { Pool } from '../models/Pool';
@@ -68,7 +67,7 @@ export class CalculationService {
         };`;
         const event: RecipeRunRequest = {
             recipe,
-            pool: Util.parserToObject(pool),
+            pool,
             readings: inputs,
             custom: targets,
         };
@@ -82,7 +81,6 @@ export class CalculationService {
     };
 
     static getTreatmentEntriesFromWebviewMessage = (event: WebViewMessageEvent, recipe: Recipe): TreatmentEntry[] => {
-        console.log(event.nativeEvent.data);
         const results = JSON.parse(event.nativeEvent.data) as CalculationResult[];
         const tes: TreatmentEntry[] = [];
         results

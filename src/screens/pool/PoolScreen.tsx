@@ -34,11 +34,10 @@ export const PoolScreen: React.FC = () => {
     const isUnlocked = DS.isSubscriptionValid(deviceSettings, Date.now());
 
     const { navigate } = useNavigation<PDNavigationProps>();
-    const rawHistory = useRealmPoolHistoryHook(selectedPool?.objectId);
+    const history = useRealmPoolHistoryHook(selectedPool?.objectId);
     const [selectedHistoryCellIds, setSelectedHistoryCellIds] = React.useState<string[]>([]);
     const recipe = useRecipeHook(selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
     const [chartData, setChartData] = React.useState(ChartService.loadFakeData(isUnlocked));
-    const [parserHistory, setParserHistory] = React.useState<LogEntry[]>([]);
 
     React.useEffect(() => {
         if (!selectedPool) {
@@ -54,12 +53,9 @@ export const PoolScreen: React.FC = () => {
                 interactive: false,
             };
         }
-        let history: LogEntry[] = [];
-        rawHistory.forEach((rh) => history.push(Util.parserToObject(rh)));
-        setParserHistory(history);
         setChartData(chosen);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isUnlocked, rawHistory]);
+    }, [isUnlocked, history]);
 
     if (!selectedPool || !recipe) {
         return <></>;
@@ -152,7 +148,7 @@ export const PoolScreen: React.FC = () => {
             contentBody = <PoolServiceConfigSection />;
         } else if (section.key === 'trends_section') {
             marginHorizontal = 18;
-            if (parserHistory.length < 1) {
+            if (history.length < 1) {
                 return <></>;
             }
             contentBody = (
@@ -164,7 +160,7 @@ export const PoolScreen: React.FC = () => {
             marginBottom = 6;
             marginHorizontal = 18;
 
-            if (parserHistory.indexOf(item) !== 0) {
+            if (history.indexOf(item) !== 0) {
                 titleElement = <></>;
             }
             contentBody = (
@@ -189,7 +185,7 @@ export const PoolScreen: React.FC = () => {
     };
 
     const renderSectionFooter = (section: SectionListData<any>) => {
-        if (section.key !== 'history_section' || parserHistory.length === 0) {
+        if (section.key !== 'history_section' || history.length === 0) {
             return <></>;
         }
         return (
@@ -215,7 +211,7 @@ export const PoolScreen: React.FC = () => {
         },
         {
             title: 'History',
-            data: parserHistory,
+            data: history,
             key: 'history_section',
         },
     ];

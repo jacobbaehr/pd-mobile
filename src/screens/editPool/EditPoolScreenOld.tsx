@@ -4,7 +4,7 @@ import { DeviceSettings } from '~/models/DeviceSettings';
 import { Pool } from '~/models/Pool';
 import { wallTypeOptions, WallTypeValue } from '~/models/Pool/WallType';
 import { waterTypeOptions, WaterTypeValue } from '~/models/Pool/WaterType';
-import { dispatch, useTypedSelector } from '~/redux/AppState';
+import { dispatch, useThunkDispatch, useTypedSelector } from '~/redux/AppState';
 import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
 import { clearPickerState } from '~/redux/picker/Actions';
 import { clearPool, saveNewPool, updatePool } from '~/redux/selectedPool/Actions';
@@ -27,6 +27,7 @@ export const EditPoolScreen: React.FC = () => {
     const [waterType, updateWaterType] = React.useState(pool?.waterType || 'salt_water');
     const [wallType, updateWallType] = React.useState(pool?.wallType || 'vinyl');
     const [volumeText, updateVolumeText] = React.useState(getInitialVolumeText(deviceSettings.units, pool?.gallons));
+    const dispatchThunk = useThunkDispatch();
 
     // This happens on every render... whatever.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -90,9 +91,9 @@ export const EditPoolScreen: React.FC = () => {
             gallons = Util.litersToGallons(volume);
         }
         if (pool) {
-            dispatch(
+            dispatchThunk(
                 updatePool({
-                    ...pool,
+                    objectId: pool.objectId,
                     name,
                     wallType,
                     waterType,
@@ -100,8 +101,8 @@ export const EditPoolScreen: React.FC = () => {
                 }),
             );
         } else {
-            const newPool = Pool.make(name, gallons, waterType, wallType);
-            dispatch(saveNewPool(newPool));
+            const newPool = Pool.make({ name, gallons, waterType, wallType });
+            dispatchThunk(saveNewPool(newPool));
         }
 
         goBack();

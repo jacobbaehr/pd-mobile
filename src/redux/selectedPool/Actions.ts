@@ -5,9 +5,7 @@ import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const saveNewPool = createAsyncThunk('pool/save', (pool: Pool) => {
     Database.saveNewPool(pool);
-    return {
-        payload: pool,
-    };
+    return pool;
 });
 
 export const updatePool = createAsyncThunk('pool/update', (pool: Pool) => {

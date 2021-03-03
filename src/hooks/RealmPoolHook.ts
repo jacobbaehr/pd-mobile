@@ -12,22 +12,24 @@ import { RecipeService } from '~/services/RecipeService';
 
 import { useApolloClient } from '@apollo/react-hooks';
 
-export const useRealmPoolsHook = (): Realm.Collection<Pool> => {
-    const [data, setData] = useState({
-        data: Database.loadPools(),
-        a: Date.now(),
+import { RealmUtil } from '../services/RealmUtil';
+
+export const useRealmPoolsHook = (): Pool[] => {
+    const [data, setData] = useState<Pool[]>(() => {
+        const realmPools = Database.loadPools();
+        const parserData = RealmUtil.poolToPojo(realmPools);
+        return parserData;
     });
 
     // This runs around the time when ComponentDidMount used to be called
     useEffect(() => {
         const handleChange = (newData: Realm.Collection<Pool>) => {
-            setData({
-                data: newData,
-                // The date is here to trigger a rerender on each change (the list is shallow-compared)
-                a: Date.now(),
-            });
+            const parserData = RealmUtil.poolToPojo(newData);
+            setData(parserData);
         };
+
         const dataQuery = Database.loadPools();
+
         dataQuery.addListener(handleChange);
 
         // This will run sort-of like componentWillUnmount or whatever that lifecycle method was called
@@ -36,25 +38,26 @@ export const useRealmPoolsHook = (): Realm.Collection<Pool> => {
         };
     }, []);
 
-    return data.data; // this hook will return only the data from realm
+    return data; // this hook will return only the data from realm
 };
 
-export const useRealmPoolHistoryHook = (poolId: string): Realm.Collection<LogEntry> => {
-    const [data, setData] = useState({
-        data: Database.loadLogEntriesForPool(poolId, null, true),
-        a: Date.now(),
+export const useRealmPoolHistoryHook = (poolId: string): LogEntry[] => {
+    const [data, setData] = useState<LogEntry[]>(() => {
+        const reamlLogEntry = Database.loadLogEntriesForPool(poolId, null, true);
+        const parserData = RealmUtil.logEntryToPojo(reamlLogEntry);
+        return parserData;
     });
 
     // This runs around the time when ComponentDidMount used to be called
     useEffect(() => {
         const handleChange = (newData: Realm.Collection<LogEntry>) => {
-            setData({
-                data: newData,
-                // The date is here to trigger a rerender on each change (the list is shallow-compared)
-                a: Date.now(),
-            });
+            const parserData = RealmUtil.logEntryToPojo(newData);
+
+            setData(parserData);
         };
+
         const dataQuery = Database.loadLogEntriesForPool(poolId, null, true);
+
         dataQuery.addListener(handleChange);
 
         // This will run sort-of like componentWillUnmount or whatever that lifecycle method was called
@@ -63,7 +66,7 @@ export const useRealmPoolHistoryHook = (poolId: string): Realm.Collection<LogEnt
         };
     }, [poolId]);
 
-    return data.data; // this hook will return only the data from realm
+    return data; // this hook will return only the data from realm
 };
 
 // WARNING: this is susceptible to race-conditions (if you request a remote recipe, and then a local one, the remote one might finish last & stomp the second call).
@@ -87,18 +90,18 @@ export const useRecipeHook = (recipeKey: RecipeKey): Recipe | null => {
     return recipe;
 };
 
-export const useRealmPoolTargetRange = (poolId: string, variable: string): TargetRangeOverride | undefined => {
-    const [data, setData] = useState({
-        data: Database.loadCustomTargets(poolId),
-        a: Date.now(),
+export const useRealmPoolTargetRange = (poolId: string): TargetRangeOverride[] => {
+    const [data, setData] = useState<TargetRangeOverride[]>(() => {
+        const realmCustomTarget = Database.loadCustomTargets(poolId);
+        const parserData = RealmUtil.customTargetToPojo(realmCustomTarget);
+        return parserData;
     });
 
     useEffect(() => {
         const handleChange = (newData: Realm.Collection<TargetRangeOverride>) => {
-            setData({
-                data: newData,
-                a: Date.now(),
-            });
+            const parserData = RealmUtil.customTargetToPojo(newData);
+
+            setData(parserData);
         };
         const dataQuery = Database.loadCustomTargets(poolId);
         dataQuery.addListener(handleChange);
@@ -108,8 +111,6 @@ export const useRealmPoolTargetRange = (poolId: string, variable: string): Targe
             dataQuery.removeAllListeners();
         };
     }, [poolId]);
-    //TODO: Sebas: find better way to match with the current Custom target. Could be the objectId?
-    const getCurrentTargeRange = data.data.find((ct) => ct.var === variable);
 
-    return getCurrentTargeRange;
+    return data;
 };

@@ -2,6 +2,15 @@ import { RecipeKey } from '../recipe/RecipeKey';
 import { WallTypeValue } from './WallType';
 import { WaterTypeValue } from './WaterType';
 
+type EntryPool = {
+    name: string;
+    gallons: number;
+    waterType: WaterTypeValue;
+    wallType: WallTypeValue;
+    objectId?: string;
+    recipeKey?: RecipeKey;
+};
+
 /**
  * Represents a swimming pool (duh).
  */
@@ -38,24 +47,17 @@ export class PoolV0 {
         },
     };
 
-    static make(
-        name: string,
-        gallons: number,
-        waterType: WaterTypeValue,
-        wallType: WallTypeValue,
-        objectId?: string,
-        recipeKey?: RecipeKey,
-    ): PoolV0 {
+    static make(newPool: EntryPool): PoolV0 {
         const pool = new PoolV0();
-        pool.name = name;
-        pool.gallons = gallons;
-        pool.waterType = waterType;
-        pool.recipeKey = recipeKey;
-        pool.wallType = wallType;
+        pool.name = newPool.name;
+        pool.gallons = newPool.gallons;
+        pool.waterType = newPool.waterType;
+        pool.recipeKey = newPool.recipeKey;
+        pool.wallType = newPool.wallType;
 
         // what the heck is this??? is the edit logic busted?
-        if (objectId) {
-            pool.objectId = objectId;
+        if (newPool.objectId) {
+            pool.objectId = newPool.objectId;
         }
         return pool;
     }

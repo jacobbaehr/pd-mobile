@@ -143,13 +143,13 @@ export class Database {
         const realm = Database.realm;
         try {
             realm.write(() => {
-                const newPool = realm.objectForPrimaryKey<Pool>(Pool.schema.name, pool.objectId);
-                if (newPool) {
-                    newPool.name = pool.name;
-                    newPool.gallons = pool.gallons;
-                    newPool.recipeKey = pool.recipeKey;
-                    newPool.waterType = pool.waterType;
-                    newPool.wallType = pool.wallType;
+                const existingPool = realm.objectForPrimaryKey<Pool>(Pool.schema.name, pool.objectId);
+                if (existingPool) {
+                    existingPool.name = pool.name;
+                    existingPool.gallons = pool.gallons;
+                    existingPool.recipeKey = pool.recipeKey;
+                    existingPool.waterType = pool.waterType;
+                    existingPool.wallType = pool.wallType;
                 }
             });
             return Promise.resolve();

@@ -1,39 +1,27 @@
 import { format } from 'date-fns';
 import * as React from 'react';
 import { Linking, SafeAreaView, ScrollView, StyleSheet, TouchableHighlight, View } from 'react-native';
-import { connect } from 'react-redux';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { PDText } from '~/components/PDText';
 import { useRecipeHook } from '~/hooks/RealmPoolHook';
 import { Pool } from '~/models/Pool';
-import { PDCardNavigatorParams } from '~/navigator/PDCardNavigator';
-import { PDNavParams } from '~/navigator/shared';
-import { AppState, dispatch } from '~/redux/AppState';
+import { PDCardNavigatorParams, PDNavigationProps } from '~/navigator/PDCardNavigator';
+import { useThunkDispatch, useTypedSelector } from '~/redux/AppState';
 import { updatePool } from '~/redux/selectedPool/Actions';
 import { Config } from '~/services/Config';
 import { RS } from '~/services/RecipeUtil';
 
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 
 import { RecipeScreenHeader } from './RecipeScreenHeader';
 
-interface RecipeScreenProps {
-    pool: Pool;
-}
-
-const mapStateToProps = (state: AppState, ownProps: RecipeScreenProps): RecipeScreenProps => {
-    return {
-        ...ownProps,
-        pool: state.selectedPool!,
-    };
-};
-
-const RecipeScreenComponent: React.FunctionComponent<RecipeScreenProps> = (props) => {
-    const { navigate, goBack } = useNavigation<StackNavigationProp<PDNavParams, 'RecipeDetails'>>();
+export const RecipeScreen: React.FC = () => {
+    const { navigate, goBack } = useNavigation<PDNavigationProps>();
     const { params } = useRoute<RouteProp<PDCardNavigatorParams, 'RecipeDetails'>>();
+    const pool = useTypedSelector((state) => state.selectedPool) as Pool;
     const recipe = useRecipeHook(params.recipeKey);
     const [isWebButtonPressed, setIsWebButtonPressed] = React.useState(false);
+    const dispatchThunk = useThunkDispatch();
 
     if (!recipe) {
         return <></>;
@@ -46,16 +34,11 @@ const RecipeScreenComponent: React.FunctionComponent<RecipeScreenProps> = (props
     };
 
     const handleSelectRecipePressed = () => {
-        dispatch(
-            updatePool(props.pool, (p) => {
-                p.recipeKey = RS.getKey(recipe);
-            }),
-        );
+        dispatchThunk(updatePool({ ...pool, recipeKey: RS.getKey(recipe) }));
         navigate(params.prevScreen);
     };
 
     const handleViewDetailsPressed = () => {
-        console.log('aaahhh');
         Linking.openURL(`${Config.web_app_url}/recipe/${meta.id}/edit`);
     };
 
@@ -121,8 +104,6 @@ const RecipeScreenComponent: React.FunctionComponent<RecipeScreenProps> = (props
         </SafeAreaView>
     );
 };
-
-export const RecipeScreen = connect(mapStateToProps)(RecipeScreenComponent);
 
 const styles = StyleSheet.create({
     container: {

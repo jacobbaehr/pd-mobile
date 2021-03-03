@@ -12,7 +12,6 @@ import { PDNavigationProps } from '~/navigator/PDCardNavigator';
 import { dispatch, useTypedSelector } from '~/redux/AppState';
 import { clearPool, selectPool } from '~/redux/selectedPool/Actions';
 import { DS } from '~/services/DSUtil';
-import { Util } from '~/services/Util';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -20,17 +19,10 @@ import { PoolListFooter } from './PoolListFooter';
 import { PoolListItem } from './PoolListItem';
 
 export const PoolListScreen: React.FC = () => {
-    const rawPools = useRealmPoolsHook();
+    const pools = useRealmPoolsHook();
     const { navigate } = useNavigation<PDNavigationProps>();
     const deviceSettings = useTypedSelector((state) => state.deviceSettings) as DeviceSettings;
-    const [pools, setPools] = React.useState<Pool[]>([]);
     const insets = useSafeArea();
-
-    React.useEffect(() => {
-        let parserPool: Pool[] = [];
-        rawPools.forEach((pr) => parserPool.push(Util.parserToObject(pr)));
-        setPools(parserPool);
-    }, [rawPools]);
 
     const handlePoolSelected = async (pool: Pool) => {
         dispatch(selectPool(pool));

@@ -1,14 +1,15 @@
-import { Recipe } from '~/models/recipe/Recipe';
-import { RecipeRepo } from '~/repository/RecipeRepo';
-import { RecipeKey } from '~/models/recipe/RecipeKey';
-import { RecipeAPI } from './gql/RecipeAPI';
-import ApolloClient from 'apollo-client';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
-import { Database } from '~/repository/Database';
-import { RS } from './RecipeUtil';
+import ApolloClient from 'apollo-client';
+import { Recipe } from '~/models/recipe/Recipe';
+import { RecipeKey } from '~/models/recipe/RecipeKey';
 // TODO: move this to a screen or something? Feels like breaking the chain-of-command to put it here:
 import { dispatch } from '~/redux/AppState';
 import { updatePool } from '~/redux/selectedPool/Actions';
+import { Database } from '~/repository/Database';
+import { RecipeRepo } from '~/repository/RecipeRepo';
+
+import { RecipeAPI } from './gql/RecipeAPI';
+import { RS } from './RecipeUtil';
 
 export class RecipeService {
     static defaultRecipeKey = 'vast_argument_756|1593550871334';
@@ -52,7 +53,7 @@ export class RecipeService {
     static updateAllLocalRecipes = async (client: ApolloClient<NormalizedCacheObject>): Promise<void> => {
         // First, update all the local recipes
         const oldLocalRecipeKeys = await RecipeRepo.loadLatestLocalRecipeKeys();
-        // TODONT: batch these api calls?
+        // TODO: batch these api calls?
         const updateEach = oldLocalRecipeKeys.map((key) => RecipeService.getLatestRecipeVersion(key, client));
         await Promise.all(updateEach);
 
@@ -61,32 +62,25 @@ export class RecipeService {
 
         // Then, iterate over all the pools & update them to the latest keys:
         const allPools = Database.loadPools();
-        console.log(`Pools: ${allPools.length}`);
-        console.log(`${allPools.map((p) => p.recipeKey)}`);
-        const outdatedPools = allPools.filter((p) => !!p.recipeKey && updatedKeys.indexOf(p.recipeKey) < 0);
 
-        console.log(`Outdated Pools: ${outdatedPools.length}`);
+        const outdatedPools = allPools.filter((p) => !!p.recipeKey && updatedKeys.indexOf(p.recipeKey) < 0);
 
         const updatedInfos = updatedKeys.map((key) => RS.reverseKey(key));
 
         outdatedPools.forEach((pool) => {
             const oldKey = pool.recipeKey;
-            console.log('a');
+
             if (!oldKey) {
                 return;
             }
-            console.log('b');
+
             const oldRecipeId = RS.reverseKey(oldKey).id;
             const newInfo = updatedInfos.find((info) => info.id === oldRecipeId);
             if (!newInfo) {
                 return;
             }
-            console.log('c');
-            dispatch(
-                updatePool(pool, (p) => {
-                    p.recipeKey = RS.getKey(newInfo);
-                }),
-            );
+
+            dispatch(updatePool({ ...pool, recipeKey: RS.getKey(newInfo) }));
         });
     };
 }

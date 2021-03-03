@@ -94,13 +94,34 @@ export class Util {
         return Math.random().toString(36).slice(2);
     };
 
-    // Function to parse RealmObject to Js Objects
-    static parserToObject(item: any & Realm.Object): any {
-        var object = {};
-        var properties = Object.getOwnPropertyNames(item);
-        for (var property of properties) {
-            object[property] = item[property];
+    static firstOrNull<T>(list: T[]): T | null {
+        if (list.length > 0) {
+            return list[0];
         }
-        return object;
+        return null;
     }
+    //#region
+    /**
+     *
+     * The main reason for this function is about to integrate the Realms Objects or Collections
+     * and redux, not update the store unless it is a POJO.
+     *
+     */
+    static toPojo = <T>(fields: string[], rawEntity: T): T => {
+        const parserEntity: T = {} as T;
+        fields.forEach((field) => (parserEntity[field] = rawEntity[field]));
+        return parserEntity;
+    };
+
+    static toArrayPojo = <T>(entityProps: string[], realmObjects: Realm.Collection<T>): T[] => {
+        const parseData: T[] = [];
+
+        realmObjects.forEach((ro) => {
+            const poolPojo = Util.toPojo<T>(entityProps, ro);
+            parseData.push(poolPojo);
+        });
+
+        return parseData;
+        //#endregion
+    };
 }

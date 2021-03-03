@@ -34,10 +34,9 @@ export const store = configureStore({
     reducer,
     devTools: __DEV__,
     middleware: (getDefaultMiddleware) =>
-        // TODO: We might need to keep like this, after we completely parse RealmObject on redux
         getDefaultMiddleware({
-            immutableCheck: false,
-            serializableCheck: false,
+            immutableCheck: true,
+            serializableCheck: true,
             thunk: true,
         }),
     preloadedState: initialAppState,
