@@ -4,7 +4,6 @@ import { BuyScreen } from '~/screens/buy/BuyScreen';
 import CustomTargetsScreen from '~/screens/customTargets/CustomTargetsScreen';
 // TODO: change this back to EditPoolScreen when the  new edit pool screen is fully functional
 import { EditPoolScreen } from '~/screens/editPool/EditPoolScreenOld';
-
 import { PoolScreen } from '~/screens/pool/PoolScreen';
 import { PoolListScreen } from '~/screens/poolList/PoolListScreen';
 import { ReadingListScreen } from '~/screens/readings/ReadingListScreen';
@@ -14,7 +13,7 @@ import { SettingsScreen } from '~/screens/settings/SettingsScreen';
 import { TreatmentListScreen } from '~/screens/treatments/TreatmentListScreen';
 import { PoolHistoryScreen } from '~/screens/trends/PoolHistoryScreen';
 
-import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
 // This defines the navigation params accepted by each possible screen in PDCardNavigator
 export type PDCardNavigatorParams = {
@@ -31,8 +30,6 @@ export type PDCardNavigatorParams = {
     Buy: undefined;
     CustomTargets: undefined;
 };
-
-export type PDNavigationProps = StackNavigationProp<PDCardNavigatorParams>;
 
 const CardStack = createStackNavigator<PDCardNavigatorParams>();
 
