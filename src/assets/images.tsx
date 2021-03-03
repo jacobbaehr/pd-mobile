@@ -1,3 +1,11 @@
+import React from 'react';
+import { CommonPathProps } from 'react-native-svg';
+
+import IconRectangle from './images/shapes/icon-rectangle.svg';
+import IconCircle from './images/shapes/icon_circle.svg';
+import IconOval from './images/shapes/icon_other.svg';
+import IconOther from './images/shapes/icon_oval.svg';
+
 /** */
 export const images = {
     back: require('./images/back.png'),
@@ -40,4 +48,11 @@ export const images = {
     importIcon: require('~/assets/images/icon-import.png'),
     deleteIcon: require('~/assets/images/icon-delete.png'),
     menuChevronIcon: require('~/assets/images/icon-menu-chevron.png'),
+};
+
+export const Svgs = {
+    IconCircle: (props: CommonPathProps): JSX.Element => <IconCircle {...props} />,
+    IconRectangle: (props: CommonPathProps): JSX.Element => <IconRectangle {...props} />,
+    IconOval: (props: CommonPathProps): JSX.Element => <IconOval {...props} />,
+    IconOther: (props: CommonPathProps): JSX.Element => <IconOther {...props} />,
 };
