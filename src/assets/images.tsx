@@ -1,10 +1,10 @@
 import React from 'react';
 import { CommonPathProps } from 'react-native-svg';
 
-import IconRectangle from './images/shapes/icon-rectangle.svg';
 import IconCircle from './images/shapes/icon_circle.svg';
 import IconOval from './images/shapes/icon_other.svg';
 import IconOther from './images/shapes/icon_oval.svg';
+import IconRectangle from './images/shapes/icon_rectangle.svg';
 
 /** */
 export const images = {
