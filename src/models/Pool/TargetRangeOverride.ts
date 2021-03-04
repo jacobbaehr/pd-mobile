@@ -1,17 +1,13 @@
 import { Util } from '~/services/Util';
 
-type EntryDefaultCustomTargets = {
+type TargetRangeOverrideMakeParams = {
     min: number;
     max: number;
     poolId: string;
     var: string;
-    objectId: string;
+    objectId: string | null;
 };
 
-type EntryValuesCustomTargets = {
-    min: number;
-    max: number;
-};
 export class TargetRangeOverride {
     // The id of this object
     objectId!: string;
@@ -41,13 +37,15 @@ export class TargetRangeOverride {
         },
     };
 
-    static make(customTarget: EntryDefaultCustomTargets, values: EntryValuesCustomTargets): TargetRangeOverride {
-        let newCustomTarget = new TargetRangeOverride();
-        newCustomTarget.objectId = customTarget?.objectId ?? Util.generateUUID();
-        newCustomTarget.poolId = customTarget.poolId;
-        newCustomTarget.var = customTarget.var;
-        newCustomTarget.min = values.min;
-        newCustomTarget.max = values.max;
-        return newCustomTarget;
+    static make(input: TargetRangeOverrideMakeParams): TargetRangeOverride {
+        let result = new TargetRangeOverride();
+
+        result.objectId = input.objectId ?? Util.generateUUID();
+        result.poolId = input.poolId;
+        result.var = input.var;
+        result.min = input.min;
+        result.max = input.max;
+
+        return result;
     }
 }

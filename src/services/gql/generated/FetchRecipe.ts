@@ -45,21 +45,6 @@ export interface FetchRecipe_recipeVersion_custom {
     defaults: FetchRecipe_recipeVersion_custom_defaults[];
 }
 
-export interface FetchRecipe_recipeVersion_custom_defaults {
-    __typename: 'DefaultRange';
-    waterType: string | null;
-    min: number;
-    max: number;
-}
-
-export interface FetchRecipe_recipeVersion_custom {
-    __typename: 'TargetRange';
-    name: string;
-    var: string;
-    description: string | null;
-    defaults: FetchRecipe_recipeVersion_custom_defaults[];
-}
-
 export interface FetchRecipe_recipeVersion {
     __typename: 'Recipe';
     id: string;

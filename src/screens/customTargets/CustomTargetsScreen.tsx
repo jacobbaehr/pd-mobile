@@ -8,11 +8,8 @@ import { PDSpacing } from '~/components/PDTheme';
 import { useRecipeHook } from '~/hooks/RealmPoolHook';
 import { Pool } from '~/models/Pool';
 import { TargetRange } from '~/models/recipe/TargetRange';
-import { PDCardNavigatorParams } from '~/navigator/PDCardNavigator';
 import { AppState } from '~/redux/AppState';
 import { RecipeService } from '~/services/RecipeService';
-
-import { RouteProp, useRoute } from '@react-navigation/native';
 
 import CustomTargetsHeader from './CustomTargetsHeader';
 import CustomTargetsItem from './CustomTargetsItem';
@@ -20,22 +17,23 @@ import CustomTargetsItem from './CustomTargetsItem';
 const CustomTargetsScreen = () => {
     const selectedPool = useSelector<AppState>((state) => state.selectedPool) as Pool;
     const recipe = useRecipeHook(selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
-    const { params } = useRoute<RouteProp<PDCardNavigatorParams, 'CustomTargets'>>();
+
+    const targets = recipe?.custom ?? [];
 
     return (
-        <SafeAreaView style={styles.safeArea}>
+        <SafeAreaView style={ styles.safeArea }>
             <CustomTargetsHeader />
             <FlatList
-                data={params?.customTargets || ([] as TargetRange[])}
-                renderItem={({ item }) => <CustomTargetsItem {...item} />}
-                keyExtractor={(item: TargetRange) => item.var}
-                ListHeaderComponent={() => (
-                    <PDText type="subHeading" color="greyDarker" style={styles.recipeName}>
-                        {recipe?.name}
+                data={ targets }
+                renderItem={ ({ item }: { item: TargetRange }) => <CustomTargetsItem tr={ item } /> }
+                keyExtractor={ (item: TargetRange) => item.var }
+                ListHeaderComponent={ () => (
+                    <PDText type="subHeading" color="greyDarker" style={ styles.recipeName }>
+                        {recipe?.name }
                     </PDText>
-                )}
-                style={styles.container}
-                contentContainerStyle={styles.content}
+                ) }
+                style={ styles.container }
+                contentContainerStyle={ styles.content }
                 automaticallyAdjustContentInsets
             />
         </SafeAreaView>

@@ -15,7 +15,7 @@ import { getApolloClient } from './services/gql/Client';
 import { IAP } from './services/IAP';
 import { RecipeService } from './services/RecipeService';
 
-interface AppProps extends DispatchProp<any> {}
+interface AppProps extends DispatchProp<any> { }
 
 export const AppComponent: React.FunctionComponent<AppProps> = () => {
     const [isDatabaseLoaded, setIsDatabaseLoaded] = React.useState(false);
@@ -62,7 +62,7 @@ export const AppComponent: React.FunctionComponent<AppProps> = () => {
     }
 
     return (
-        <ApolloProvider client={apolloClient}>
+        <ApolloProvider client={ apolloClient }>
             <PDRootNavigator />
         </ApolloProvider>
     );

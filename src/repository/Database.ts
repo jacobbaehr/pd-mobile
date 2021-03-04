@@ -1,4 +1,4 @@
-import Realm, { UpdateMode } from 'realm';
+import Realm from 'realm';
 import { LogEntry } from '~/models/logs/LogEntry';
 import { Pool } from '~/models/Pool';
 import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
@@ -158,9 +158,17 @@ export class Database {
         }
     };
 
-    static saveNewCustomTarget = (customTarget: TargetRangeOverride) => {
+    static saveNewCustomTarget = async (customTarget: TargetRangeOverride) => {
         const realm = Database.realm;
         try {
+            // Delete previous values (if any)
+            realm.write(() => {
+                const previousOverrides = Database.realm
+                    .objects<TargetRangeOverride>(TargetRangeOverride.schema.name)
+                    .filtered('poolId = $0 AND var = $1', customTarget.poolId, customTarget.var);
+                realm.delete(previousOverrides);
+            });
+            // Store some new values
             realm.write(() => {
                 realm.create<TargetRangeOverride>(
                     TargetRangeOverride.schema.name,
@@ -168,13 +176,12 @@ export class Database {
                         objectId: customTarget.objectId,
                         poolId: customTarget.poolId,
                         var: customTarget.var,
-                        min: +customTarget.min,
-                        max: +customTarget.max,
+                        min: customTarget.min,
+                        max: customTarget.max,
                     },
-                    UpdateMode.Modified,
+                    Realm.UpdateMode.Modified,
                 );
             });
-
             return Promise.resolve();
         } catch (error) {
             return Promise.reject('Error saving a customTarget');
@@ -186,5 +193,18 @@ export class Database {
         const query = `poolId = "${poolId}"`;
         const data = realm.objects<TargetRangeOverride>(TargetRangeOverride.schema.name).filtered(query);
         return data;
+    };
+
+    static deleteCustomTarget = (customTarget: TargetRangeOverride) => {
+        const realm = Database.realm;
+        try {
+            // We have to delete the actual realm object
+            realm.write(() => {
+                realm.delete(customTarget);
+            });
+            return Promise.resolve();
+        } catch (e) {
+            return Promise.reject(e);
+        }
     };
 }

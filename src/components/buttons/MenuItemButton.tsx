@@ -18,28 +18,28 @@ export const MenuItemButton = (props: MenuItemButtonProps) => {
     const navigation = useNavigation();
     return (
         <Pressable
-            onPress={() => {
+            onPress={ () => {
                 navigation.navigate(props.onPressRoute);
-            }}
-            style={({ pressed }) => [
+            } }
+            style={ ({ pressed }) => [
                 {
                     backgroundColor: pressed ? '#EDEDED' : 'white',
                     borderRadius: 14,
                 },
-            ]}>
-            <PDView style={styles.container}>
-                <Image style={styles.icon} source={props.image} />
+            ] }>
+            <PDView style={ styles.container }>
+                <Image style={ styles.icon } source={ props.image } />
                 <PDText
-                    style={{ fontFamily: 'Poppins', fontWeight: '600', fontSize: 16, color: props.titleColor }}
+                    style={ { fontFamily: 'Poppins', fontWeight: '600', fontSize: 16, color: props.titleColor } }
                     type="default">
-                    {props.title}
+                    { props.title }
                 </PDText>
                 <PDText
-                    style={{ fontFamily: 'Poppins', fontWeight: '600', fontSize: 16, color: props.valueColor }}
+                    style={ { fontFamily: 'Poppins', fontWeight: '600', fontSize: 16, color: props.valueColor } }
                     type="default">
-                    {props.value}
+                    { props.value }
                 </PDText>
-                <Image style={styles.arrow} source={images.menuChevronIcon} />
+                <Image style={ styles.arrow } source={ images.menuChevronIcon } />
             </PDView>
         </Pressable>
     );

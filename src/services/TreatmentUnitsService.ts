@@ -78,6 +78,7 @@ export class Converter {
                 break;
             case 'liters':
                 prevToOunces = 33.814;
+                break;
             case 'scoops':
                 prevToOunces = scoop?.ounces ?? 1;
         }
@@ -140,7 +141,7 @@ export class Converter {
         if (!s) {
             return 'ounces';
         }
-        if (Converter.allWetUnits.some((x) => `${x}` == s)) {
+        if (Converter.allWetUnits.some((x) => `${x}` === s)) {
             return s as WetChemicalUnits;
         } else {
             return 'ounces';
@@ -152,7 +153,7 @@ export class Converter {
         if (!s) {
             return 'ounces';
         }
-        if (Converter.allDryUnits.some((x) => `${x}` == s)) {
+        if (Converter.allDryUnits.some((x) => `${x}` === s)) {
             return s as DryChemicalUnits;
         } else {
             return 'ounces';

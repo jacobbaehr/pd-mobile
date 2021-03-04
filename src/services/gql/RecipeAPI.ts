@@ -27,7 +27,7 @@ export class RecipeAPI {
             }
         `;
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        return useQuery<ListRecipes>(query, { fetchPolicy: 'no-cache' });
+        return useQuery<ListRecipes>(query);
     };
 
     static fetchRecipe = async (key: RecipeKey, client: ApolloClient<NormalizedCacheObject>): Promise<Recipe> => {
@@ -78,7 +78,6 @@ export class RecipeAPI {
         const result = await client.query<FetchRecipe, FetchRecipeVariables>({
             query,
             variables,
-            fetchPolicy: 'no-cache',
         });
         if (result.data) {
             return RecipeTransformer.fromAPI(result.data.recipeVersion);
@@ -104,7 +103,6 @@ export class RecipeAPI {
         const result = await client.query<FetchLatestRecipeMeta, FetchLatestRecipeMetaVariables>({
             query,
             variables,
-            fetchPolicy: 'no-cache',
         });
         if (!result.data) {
             return Promise.reject('Recipe meta not found on server');

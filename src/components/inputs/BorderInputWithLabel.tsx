@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet, TextInputProps } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { StyleSheet, TextInputProps, TextInput } from 'react-native';
 
 import { PDView } from '../PDView';
 import { PDText } from '../PDText';
@@ -15,13 +14,13 @@ const BorderInputWithLabel: React.FC<BorderInputWithLabel> = (props) => {
     return (
         <PDView>
             <PDText type="bodyGreyBold" color="grey">
-                {label}
+                { label }
             </PDText>
             <TextInput
-                style={[styles.textInput, props.style]}
+                style={ [styles.textInput, props.style] }
                 placeholderTextColor="#BBBBBB"
                 blurOnSubmit
-                {...restTextInputProps}
+                { ...restTextInputProps }
             />
         </PDView>
     );

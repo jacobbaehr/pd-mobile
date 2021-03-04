@@ -13,6 +13,7 @@ import { RecipeService } from '~/services/RecipeService';
 import { useApolloClient } from '@apollo/react-hooks';
 
 import { RealmUtil } from '../services/RealmUtil';
+import { Util } from '~/services/Util';
 
 export const useRealmPoolsHook = (): Pool[] => {
     const [data, setData] = useState<Pool[]>(() => {
@@ -90,7 +91,7 @@ export const useRecipeHook = (recipeKey: RecipeKey): Recipe | null => {
     return recipe;
 };
 
-export const useRealmPoolTargetRange = (poolId: string): TargetRangeOverride[] => {
+export const useRealmPoolTargetRange = (poolId: string, variable: string): TargetRangeOverride | null => {
     const [data, setData] = useState<TargetRangeOverride[]>(() => {
         const realmCustomTarget = Database.loadCustomTargets(poolId);
         const parserData = RealmUtil.customTargetToPojo(realmCustomTarget);
@@ -112,5 +113,5 @@ export const useRealmPoolTargetRange = (poolId: string): TargetRangeOverride[] =
         };
     }, [poolId]);
 
-    return data;
+    return Util.firstOrNull(data.filter((ct) => ct.var === variable));
 };

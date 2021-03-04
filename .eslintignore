@@ -4,3 +4,4 @@ node_modules
 *.yml
 Pods
 ./src/assets
+./src/services/gql/generated/*

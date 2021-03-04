@@ -1,10 +1,10 @@
-import { DeviceSettings } from '~/models/DeviceSettings';
-
 import { createReducer } from '@reduxjs/toolkit';
 
 import { addScoop, editScoop, loadDeviceSettings, updateDeviceSettings } from './Actions';
+import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 
-export const deviceSettingsReducer = createReducer(null as DeviceSettings | null, (builder) => {
+// TODO: @sebas, use either this initial state, or the one passed in AppState.tsx
+export const deviceSettingsReducer = createReducer(DeviceSettingsService.getDefaultSettings(), (builder) => {
     builder
         .addCase(updateDeviceSettings, (state, action) => {
             state = action.payload;

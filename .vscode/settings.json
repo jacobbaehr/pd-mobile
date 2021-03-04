@@ -1,5 +1,8 @@
 {
     "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
     "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
     "editor.detectIndentation": false,
     "editor.wordWrapColumn": 120,

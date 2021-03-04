@@ -100,7 +100,7 @@ export class Util {
         }
         return null;
     }
-    //#region
+
     /**
      *
      * The main reason for this function is about to integrate the Realms Objects or Collections
@@ -122,6 +122,5 @@ export class Util {
         });
 
         return parseData;
-        //#endregion
     };
 }

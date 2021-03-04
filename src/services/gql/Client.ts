@@ -10,6 +10,7 @@ export const getApolloClient = () => {
             uri: Config.gql_url,
             credentials: 'include',
         }),
+        defaultOptions: { query: { fetchPolicy: 'no-cache' } },
     });
     return apolloClient;
 };
