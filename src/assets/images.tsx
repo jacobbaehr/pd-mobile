@@ -1,9 +1,14 @@
 import React from 'react';
-import { CommonPathProps } from 'react-native-svg';
+import { SvgProps } from 'react-native-svg';
+import { PDColor } from '~/components/PDTheme';
 
+// General Icons
+import IconBack from './images/icons/icon_back.svg';
+import IconForward from './images/icons/icon_forward.svg';
+// Volumen Estimator
 import IconCircle from './images/shapes/icon_circle.svg';
-import IconOval from './images/shapes/icon_other.svg';
-import IconOther from './images/shapes/icon_oval.svg';
+import IconOther from './images/shapes/icon_other.svg';
+import IconOval from './images/shapes/icon_oval.svg';
 import IconRectangle from './images/shapes/icon_rectangle.svg';
 
 /** */
@@ -50,9 +55,15 @@ export const images = {
     menuChevronIcon: require('~/assets/images/icon-menu-chevron.png'),
 };
 
-export const Svgs = {
-    IconCircle: (props: CommonPathProps): JSX.Element => <IconCircle {...props} />,
-    IconRectangle: (props: CommonPathProps): JSX.Element => <IconRectangle {...props} />,
-    IconOval: (props: CommonPathProps): JSX.Element => <IconOval {...props} />,
-    IconOther: (props: CommonPathProps): JSX.Element => <IconOther {...props} />,
+interface OverrideSvgProps extends SvgProps {
+    fill: string | PDColor;
+}
+
+export const SVG = {
+    IconCircle: (props: OverrideSvgProps): JSX.Element => <IconCircle {...props} />,
+    IconRectangle: (props: OverrideSvgProps): JSX.Element => <IconRectangle {...props} />,
+    IconOval: (props: OverrideSvgProps): JSX.Element => <IconOval {...props} />,
+    IconOther: (props: OverrideSvgProps): JSX.Element => <IconOther {...props} />,
+    IconCircleBack: (props: OverrideSvgProps): JSX.Element => <IconBack {...props} />,
+    IconForward: (props: OverrideSvgProps): JSX.Element => <IconForward {...props} />,
 };
