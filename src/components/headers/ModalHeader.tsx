@@ -11,15 +11,15 @@ const ModalHeader: React.FC = (props) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.leftContainer}>
+            <View>
                 <TouchableScale>
                     <SVG.IconCircleBack fill={'black'} />
                 </TouchableScale>
             </View>
-            <View style={styles.centerContainer}>
+            <View>
                 <PDText type="subHeading">{children}</PDText>
             </View>
-            <View style={styles.rightContainer} />
+            <View />
         </View>
     );
 };
@@ -35,7 +35,4 @@ const styles = StyleSheet.create({
         maxHeight: 80,
         marginHorizontal: PDSpacing.lg,
     },
-    leftContainer: {},
-    rightContainer: {},
-    centerContainer: {},
 });
