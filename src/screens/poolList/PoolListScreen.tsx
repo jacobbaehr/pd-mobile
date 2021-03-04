@@ -8,7 +8,7 @@ import { PDText } from '~/components/PDText';
 import { useRealmPoolsHook } from '~/hooks/RealmPoolHook';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { Pool } from '~/models/Pool';
-import { PDNavigationProps } from '~/navigator/PDCardNavigator';
+import { PDStackNavigationProps } from '~/navigator/shared';
 import { dispatch, useTypedSelector } from '~/redux/AppState';
 import { clearPool, selectPool } from '~/redux/selectedPool/Actions';
 import { DS } from '~/services/DSUtil';
@@ -20,7 +20,7 @@ import { PoolListItem } from './PoolListItem';
 
 export const PoolListScreen: React.FC = () => {
     const pools = useRealmPoolsHook();
-    const { navigate } = useNavigation<PDNavigationProps>();
+    const { navigate } = useNavigation<PDStackNavigationProps>();
     const deviceSettings = useTypedSelector((state) => state.deviceSettings) as DeviceSettings;
     const insets = useSafeArea();
 

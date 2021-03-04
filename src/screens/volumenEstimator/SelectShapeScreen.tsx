@@ -1,0 +1,134 @@
+import React from 'react';
+import { ListRenderItem, StyleSheet, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import { SVG } from '~/assets/images';
+import ModalHeader from '~/components/headers/ModalHeader';
+import { PDText } from '~/components/PDText';
+import { PDSpacing } from '~/components/PDTheme';
+
+type Shape = {
+    id: string;
+    label: string;
+    icon: string;
+};
+
+const SelectShapeScreen = () => {
+    const shapes: Shape[] = [
+        {
+            id: 'rectangle',
+            label: 'Rectangle',
+            icon: 'IconRectangle',
+        },
+        {
+            id: 'circle',
+            label: 'Circle',
+            icon: 'IconCircle',
+        },
+        {
+            id: 'oval',
+            label: 'Oval',
+            icon: 'IconOval',
+        },
+        {
+            id: 'other',
+            label: 'Other',
+            icon: 'IconOther',
+        },
+    ];
+
+    const renderItem: ListRenderItem<Shape> = ({ item }) => {
+        const Icon = SVG[item.icon];
+        return (
+            <View style={styles.itemContainer}>
+                <View style={styles.itemInnerContainer}>
+                    <Icon width={32} height={32} />
+                    <View style={styles.itemTextContainer}>
+                        <PDText style={styles.itemLabelText}>{item.label}</PDText>
+                    </View>
+                </View>
+                <View style={styles.itemIconContainer}>
+                    <SVG.IconForward fill="#BBBBBB" width={18} height={18} />
+                </View>
+            </View>
+        );
+    };
+
+    const HeaderList = () => {
+        return (
+            <PDText type="bodyBold" style={styles.headerText}>
+                Choose pool Shape
+            </PDText>
+        );
+    };
+
+    return (
+        <View style={styles.container}>
+            <ModalHeader>Volumen Estimator</ModalHeader>
+            <View style={styles.content}>
+                <View>
+                    <PDText type="bodyRegular" color="greyDarker" style={styles.description} numberOfLines={2}>
+                        Don’t know your pool’s volume? Tap “Use Volume Estimator” below.
+                    </PDText>
+                </View>
+                <FlatList
+                    data={shapes}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id}
+                    ListHeaderComponent={HeaderList}
+                    ListHeaderComponentStyle={styles.headerContainer}
+                />
+            </View>
+        </View>
+    );
+};
+
+export default SelectShapeScreen;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#FFFFFF',
+    },
+    content: {
+        paddingHorizontal: PDSpacing.lg,
+    },
+    headerText: {
+        textTransform: 'uppercase',
+        textAlign: 'left',
+        color: '#737373',
+        lineHeight: 21,
+        letterSpacing: 0.5,
+    },
+    headerContainer: {
+        marginTop: PDSpacing.sm,
+        marginBottom: PDSpacing.sm,
+    },
+    description: {
+        color: '#737373',
+        textAlign: 'center',
+    },
+    itemContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#FAFAFA',
+        borderRadius: 14,
+        marginBottom: PDSpacing.sm,
+        padding: PDSpacing.sm,
+    },
+    itemLabelText: {
+        fontSize: 16,
+        color: '#000',
+        fontFamily: 'Poppins-SemiBold',
+        lineHeight: 24,
+        textAlign: 'left',
+        textAlignVertical: 'center',
+    },
+    itemInnerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    itemTextContainer: {
+        marginLeft: PDSpacing.sm,
+    },
+});

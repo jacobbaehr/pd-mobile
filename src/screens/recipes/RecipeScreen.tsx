@@ -5,7 +5,8 @@ import { BoringButton } from '~/components/buttons/BoringButton';
 import { PDText } from '~/components/PDText';
 import { useRecipeHook } from '~/hooks/RealmPoolHook';
 import { Pool } from '~/models/Pool';
-import { PDCardNavigatorParams, PDNavigationProps } from '~/navigator/PDCardNavigator';
+import { PDCardNavigatorParams } from '~/navigator/PDCardNavigator';
+import { PDStackNavigationProps } from '~/navigator/shared';
 import { useThunkDispatch, useTypedSelector } from '~/redux/AppState';
 import { updatePool } from '~/redux/selectedPool/Actions';
 import { Config } from '~/services/Config';
@@ -16,7 +17,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { RecipeScreenHeader } from './RecipeScreenHeader';
 
 export const RecipeScreen: React.FC = () => {
-    const { navigate, goBack } = useNavigation<PDNavigationProps>();
+    const { navigate, goBack } = useNavigation<PDStackNavigationProps>();
     const { params } = useRoute<RouteProp<PDCardNavigatorParams, 'RecipeDetails'>>();
     const pool = useTypedSelector((state) => state.selectedPool) as Pool;
     const recipe = useRecipeHook(params.recipeKey);

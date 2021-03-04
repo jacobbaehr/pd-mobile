@@ -10,7 +10,7 @@ import { useRealmPoolHistoryHook, useRecipeHook } from '~/hooks/RealmPoolHook';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { LogEntry } from '~/models/logs/LogEntry';
 import { Pool } from '~/models/Pool';
-import { PDNavigationProps } from '~/navigator/PDCardNavigator';
+import { PDStackNavigationProps } from '~/navigator/shared';
 import { useTypedSelector } from '~/redux/AppState';
 import { Database } from '~/repository/Database';
 import { ChartService } from '~/services/ChartService';
@@ -33,7 +33,7 @@ export const PoolScreen: React.FC = () => {
 
     const isUnlocked = DS.isSubscriptionValid(deviceSettings, Date.now());
 
-    const { navigate } = useNavigation<PDNavigationProps>();
+    const { navigate } = useNavigation<PDStackNavigationProps>();
     const history = useRealmPoolHistoryHook(selectedPool?.objectId);
     const [selectedHistoryCellIds, setSelectedHistoryCellIds] = React.useState<string[]>([]);
     const recipe = useRecipeHook(selectedPool?.recipeKey || RecipeService.defaultRecipeKey);

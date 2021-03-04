@@ -48,7 +48,7 @@
         "react-native-share": "^4.0.4",
         "react-native-slider": "^0.11.0",
         "react-native-super-grid": "^3.1.2",
-        "react-native-svg": "^12.0.3",
+        "react-native-svg": "^12.1.0",
         "react-native-touchable-scale": "^2.1.1",
         "react-native-vector-icons": "^6.6.0",
         "react-native-webview": "^9.0.2",
@@ -80,6 +80,7 @@
         "lint-staged": "^10.5.3",
         "metro-react-native-babel-preset": "^0.58.0",
         "prettier": "^2.0.2",
+        "react-native-svg-transformer": "^0.14.3",
         "react-test-renderer": "16.11.0",
         "typescript": "^3.8.3"
     }
