@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet, TextInputProps, TextInput } from 'react-native';
+import { StyleSheet, TextInput, TextInputProps } from 'react-native';
 
-import { PDView } from '../PDView';
 import { PDText } from '../PDText';
+import { PDView } from '../PDView';
 
 interface BorderInputWithLabel extends TextInputProps {
     label: string;
@@ -14,13 +14,13 @@ const BorderInputWithLabel: React.FC<BorderInputWithLabel> = (props) => {
     return (
         <PDView>
             <PDText type="bodyGreyBold" color="grey">
-                { label }
+                {label}
             </PDText>
             <TextInput
-                style={ [styles.textInput, props.style] }
+                style={StyleSheet.flatten([styles.textInput, props.style])}
                 placeholderTextColor="#BBBBBB"
                 blurOnSubmit
-                { ...restTextInputProps }
+                {...restTextInputProps}
             />
         </PDView>
     );

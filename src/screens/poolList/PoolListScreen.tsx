@@ -5,6 +5,7 @@ import { useSafeArea } from 'react-native-safe-area-context';
 import TouchableScale from 'react-native-touchable-scale';
 import { images } from '~/assets/images';
 import { PDText } from '~/components/PDText';
+import { PDSpacing } from '~/components/PDTheme';
 import { useRealmPoolsHook } from '~/hooks/RealmPoolHook';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { Pool } from '~/models/Pool';
@@ -65,6 +66,9 @@ export const PoolListScreen: React.FC = () => {
     const handleUpgradePressed = () => {
         navigate('Buy');
     };
+    const handleVolumenPressed = () => {
+        navigate('PDVolumesNavigator');
+    };
 
     const isEmpty = pools.length === 0;
     const dynamicContainerStyles: ViewStyle = {
@@ -91,6 +95,13 @@ export const PoolListScreen: React.FC = () => {
                         <Image style={styles.plusButtonImage} source={images.plusButton} width={38} height={38} />
                     </TouchableScale>
                 </View>
+            </View>
+            <View style={{ justifyContent: 'center', alignItems: 'center', margin: PDSpacing.md }}>
+                <TouchableScale
+                    style={{ justifyContent: 'center', alignItems: 'center' }}
+                    onPress={handleVolumenPressed}>
+                    <PDText type="heading">press me </PDText>
+                </TouchableScale>
             </View>
             <SectionList
                 style={styles.sectionList}

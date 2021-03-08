@@ -6,7 +6,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 export type PDVolumesParams = {
     SelectShape: undefined;
-    EntryShape: undefined;
+    EntryShape: {
+        shape: string;
+    };
 };
 
 const VolumesStackNavigator = createStackNavigator<PDVolumesParams>();

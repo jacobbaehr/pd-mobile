@@ -15,19 +15,19 @@ type PDTextType =
     | 'heading';
 
 interface PDTextProps extends TextProps {
-    type: PDTextType;
+    type?: PDTextType;
     color?: PDColor;
 }
 
 /// PDTheme-compliant wrapper for the Text component. Stick to the theme & avoid using the style prop too often.
-export const PDText: React.FC<PDTextProps> = (props) => {
+const BaseText: React.FC<PDTextProps> = (props) => {
     // The "style" below is possible because PDTextProps extends TextProps.
     // Similarly, "...restProps" is a catch-all so that any other Text props will be passed along...
     const { children, style, ...restProps } = props;
     const theme = useTheme();
 
     /// Default styles are derived from the "style" of text (from our design system, expressed via the prop)
-    const defaultStyles = styles[props.type];
+    const defaultStyles = props.type && styles[props.type];
     /// The default color is applied based on the active PDTheme object
     const color = props.color !== undefined ? theme[props.color] : theme.black;
     const colorStylesFromTheme = { color };
@@ -40,6 +40,13 @@ export const PDText: React.FC<PDTextProps> = (props) => {
         </Text>
     );
 };
+
+BaseText.defaultProps = {
+    type: 'default',
+    color: 'black',
+};
+
+export const PDText = BaseText;
 
 const styles = StyleSheet.create({
     default: {

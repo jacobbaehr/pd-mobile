@@ -1,6 +1,5 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { combineReducers } from 'redux';
-import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 
 import { configureStore } from '@reduxjs/toolkit';
 
@@ -21,15 +20,6 @@ const reducer = combineReducers({
 });
 export type AppState = ReturnType<typeof reducer>;
 
-const initialAppState: AppState = {
-    readingEntries: [],
-    outputs: [],
-    selectedPool: null,
-    hasValidSubscription: false,
-    pickerState: null,
-    deviceSettings: DeviceSettingsService.getDefaultSettings(),
-};
-
 export const store = configureStore({
     reducer,
     devTools: __DEV__,
@@ -39,7 +29,6 @@ export const store = configureStore({
             serializableCheck: true,
             thunk: true,
         }),
-    preloadedState: initialAppState,
 });
 
 /**

@@ -1,10 +1,13 @@
 import React from 'react';
 import { ListRenderItem, StyleSheet, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { SVG } from '~/assets/images';
 import ModalHeader from '~/components/headers/ModalHeader';
 import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
+import { PDStackNavigationProps } from '~/navigator/shared';
+
+import { useNavigation } from '@react-navigation/core';
 
 type Shape = {
     id: string;
@@ -12,44 +15,50 @@ type Shape = {
     icon: string;
 };
 
+const shapes: Shape[] = [
+    {
+        id: 'rectangle',
+        label: 'Rectangle',
+        icon: 'IconRectangle',
+    },
+    {
+        id: 'circle',
+        label: 'Circle',
+        icon: 'IconCircle',
+    },
+    {
+        id: 'oval',
+        label: 'Oval',
+        icon: 'IconOval',
+    },
+    {
+        id: 'other',
+        label: 'Other',
+        icon: 'IconOther',
+    },
+];
+
 const SelectShapeScreen = () => {
-    const shapes: Shape[] = [
-        {
-            id: 'rectangle',
-            label: 'Rectangle',
-            icon: 'IconRectangle',
-        },
-        {
-            id: 'circle',
-            label: 'Circle',
-            icon: 'IconCircle',
-        },
-        {
-            id: 'oval',
-            label: 'Oval',
-            icon: 'IconOval',
-        },
-        {
-            id: 'other',
-            label: 'Other',
-            icon: 'IconOther',
-        },
-    ];
+    const navigation = useNavigation<PDStackNavigationProps>();
+
+    const handlePressedShape = (shape: string) => {
+        navigation.push('EntryShape', { shape });
+    };
 
     const renderItem: ListRenderItem<Shape> = ({ item }) => {
         const Icon = SVG[item.icon];
         return (
-            <View style={styles.itemContainer}>
+            <TouchableOpacity style={styles.itemContainer} onPress={() => handlePressedShape(item.id)}>
                 <View style={styles.itemInnerContainer}>
                     <Icon width={32} height={32} />
                     <View style={styles.itemTextContainer}>
                         <PDText style={styles.itemLabelText}>{item.label}</PDText>
                     </View>
                 </View>
-                <View style={styles.itemIconContainer}>
+                <View>
                     <SVG.IconForward fill="#BBBBBB" width={18} height={18} />
                 </View>
-            </View>
+            </TouchableOpacity>
         );
     };
 

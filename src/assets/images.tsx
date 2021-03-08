@@ -5,8 +5,10 @@ import { PDColor } from '~/components/PDTheme';
 // General Icons
 import IconBack from './images/icons/icon_back.svg';
 import IconForward from './images/icons/icon_forward.svg';
+import Rectangle from './images/shapes/big_rectangle.svg';
 // Volumen Estimator
 import IconCircle from './images/shapes/icon_circle.svg';
+import IconEstimator from './images/shapes/icon_estimator.svg';
 import IconOther from './images/shapes/icon_other.svg';
 import IconOval from './images/shapes/icon_oval.svg';
 import IconRectangle from './images/shapes/icon_rectangle.svg';
@@ -56,7 +58,7 @@ export const images = {
 };
 
 interface OverrideSvgProps extends SvgProps {
-    fill: string | PDColor;
+    fill?: string | PDColor;
 }
 
 export const SVG = {
@@ -66,4 +68,6 @@ export const SVG = {
     IconOther: (props: OverrideSvgProps): JSX.Element => <IconOther {...props} />,
     IconCircleBack: (props: OverrideSvgProps): JSX.Element => <IconBack {...props} />,
     IconForward: (props: OverrideSvgProps): JSX.Element => <IconForward {...props} />,
+    Rectangle: (props: OverrideSvgProps): JSX.Element => <Rectangle {...props} />,
+    IconEstimator: (props: OverrideSvgProps): JSX.Element => <IconEstimator {...props} />,
 };

@@ -6,13 +6,20 @@ export interface PDTheme {
     black: string;
     grey: string;
     greyDarker: string;
-    red: string;
     blurredRed: string;
+    blurredBlue: string;
+    pink: string;
+    red: string;
+    orange: string;
+    green: string;
+    teal: string;
+    blue: string;
+    purple: string;
 }
 
 /// Represents all the possible colors in the app. We'll probably change these names soon --
 /// for instance, in night mode, 'white' will actually be black & vice-versa... so that's a bad name.
-export type PDColor = 'white' | 'black' | 'grey' | 'greyDarker' | 'red' | 'blurredRed';
+export type PDColor = keyof PDTheme;
 
 /// Defines some constants for margins / padding / etc...
 export const PDSpacing = {
@@ -26,10 +33,17 @@ export const PDSpacing = {
 export const lightTheme: PDTheme = {
     white: '#FFFFFF',
     black: '#000000',
-    grey: '#BBBBBB',
-    red: '#F90000',
+    grey: '#737373',
     blurredRed: '#F9000010',
+    blurredBlue: '#1E6BFF10',
     greyDarker: '#262626',
+    pink: '#FF0073',
+    red: '#F90000',
+    orange: '#FF7502',
+    green: '#00B25C',
+    teal: '#00AEA0',
+    blue: '#1E6BFF',
+    purple: '#B21FF1',
 };
 
 /// This is fake, don't use it yet:
@@ -37,9 +51,16 @@ export const darkTheme: PDTheme = {
     white: '#FFFFFF',
     black: '#000000',
     grey: '#BBBBBB',
-    red: '#F90000',
     blurredRed: '#F9000010',
+    blurredBlue: '#1E6BFF10',
     greyDarker: '#262626',
+    pink: '#FF0073',
+    red: '#F90000',
+    orange: '#FF7502',
+    green: '#00B25C',
+    teal: '#00AEA0',
+    blue: '#1E6BFF',
+    purple: '#B21FF1',
 };
 
 export const PDThemeContext = React.createContext<PDTheme>(lightTheme);
