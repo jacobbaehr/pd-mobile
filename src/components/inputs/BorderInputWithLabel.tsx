@@ -1,27 +1,26 @@
 import React from 'react';
-import { StyleSheet, TextInput, TextInputProps } from 'react-native';
+import { StyleSheet, TextInput, TextInputProps, TextStyle } from 'react-native';
 
 import { PDText } from '../PDText';
 import { PDView } from '../PDView';
 
 interface BorderInputWithLabel extends TextInputProps {
     label: string;
+    labelStyleProps?: TextStyle;
+    textInputStyleProps?: TextStyle;
 }
 
 const BorderInputWithLabel: React.FC<BorderInputWithLabel> = (props) => {
-    const { label, ...restTextInputProps } = props;
+    const { label, labelStyleProps, textInputStyleProps, ...restTextInputProps } = props;
+    const defaultStyle = { ...styles.textInput, ...textInputStyleProps };
+    console.log(defaultStyle);
 
     return (
         <PDView>
-            <PDText type="bodyGreyBold" color="grey">
+            <PDText type="bodyGreyBold" color="grey" style={labelStyleProps}>
                 {label}
             </PDText>
-            <TextInput
-                style={StyleSheet.flatten([styles.textInput, props.style])}
-                placeholderTextColor="#BBBBBB"
-                blurOnSubmit
-                {...restTextInputProps}
-            />
+            <TextInput style={defaultStyle} placeholderTextColor="#BBBBBB" blurOnSubmit {...restTextInputProps} />
         </PDView>
     );
 };

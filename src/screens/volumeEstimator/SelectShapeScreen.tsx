@@ -9,40 +9,13 @@ import { PDStackNavigationProps } from '~/navigator/shared';
 
 import { useNavigation } from '@react-navigation/core';
 
-type Shape = {
-    id: string;
-    label: string;
-    icon: string;
-};
-
-const shapes: Shape[] = [
-    {
-        id: 'rectangle',
-        label: 'Rectangle',
-        icon: 'IconRectangle',
-    },
-    {
-        id: 'circle',
-        label: 'Circle',
-        icon: 'IconCircle',
-    },
-    {
-        id: 'oval',
-        label: 'Oval',
-        icon: 'IconOval',
-    },
-    {
-        id: 'other',
-        label: 'Other',
-        icon: 'IconOther',
-    },
-];
+import { Shape, ShapeId, shapes } from './VolumeEstimatorHelpers';
 
 const SelectShapeScreen = () => {
     const navigation = useNavigation<PDStackNavigationProps>();
 
-    const handlePressedShape = (shape: string) => {
-        navigation.push('EntryShape', { shape });
+    const handlePressedShape = (shapeId: ShapeId) => {
+        navigation.push('EntryShape', { shapeId });
     };
 
     const renderItem: ListRenderItem<Shape> = ({ item }) => {
@@ -72,7 +45,7 @@ const SelectShapeScreen = () => {
 
     return (
         <View style={styles.container}>
-            <ModalHeader>Volumen Estimator</ModalHeader>
+            <ModalHeader>Volume Estimator</ModalHeader>
             <View style={styles.content}>
                 <View>
                     <PDText type="bodyRegular" color="greyDarker" style={styles.description} numberOfLines={2}>

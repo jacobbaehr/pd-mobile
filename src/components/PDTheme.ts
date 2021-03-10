@@ -6,8 +6,17 @@ export interface PDTheme {
     black: string;
     grey: string;
     greyDarker: string;
+
+    // Blurred Colors
     blurredRed: string;
     blurredBlue: string;
+    blurredOrange: string;
+    blurredPurple: string;
+    blurredTeal: string;
+    blurredPink: string;
+    blurredGreen: string;
+
+    // Main Colors
     pink: string;
     red: string;
     orange: string;
@@ -34,9 +43,14 @@ export const lightTheme: PDTheme = {
     white: '#FFFFFF',
     black: '#000000',
     grey: '#737373',
+    greyDarker: '#262626',
     blurredRed: '#F9000010',
     blurredBlue: '#1E6BFF10',
-    greyDarker: '#262626',
+    blurredOrange: '#FF750210',
+    blurredPurple: '#B21FF110',
+    blurredTeal: '#00AEA010',
+    blurredPink: '#FF007310',
+    blurredGreen: '#00B25C10',
     pink: '#FF0073',
     red: '#F90000',
     orange: '#FF7502',
@@ -51,9 +65,14 @@ export const darkTheme: PDTheme = {
     white: '#FFFFFF',
     black: '#000000',
     grey: '#BBBBBB',
+    greyDarker: '#262626',
     blurredRed: '#F9000010',
     blurredBlue: '#1E6BFF10',
-    greyDarker: '#262626',
+    blurredOrange: '#FF750210',
+    blurredPurple: '#B21FF110',
+    blurredTeal: '#00AEA010',
+    blurredPink: '#FF007310',
+    blurredGreen: '#00B25C10',
     pink: '#FF0073',
     red: '#F90000',
     orange: '#FF7502',

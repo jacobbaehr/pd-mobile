@@ -1,13 +1,17 @@
 import React from 'react';
-import EntryShapeScreen from '~/screens/volumenEstimator/EntryShapeScreen';
-import SelectShapeScreen from '~/screens/volumenEstimator/SelectShapeScreen';
+import EntryShapeScreen from '~/screens/volumeEstimator/EntryShapeScreen';
+import SelectShapeScreen from '~/screens/volumeEstimator/SelectShapeScreen';
+import { ShapeId } from '~/screens/volumeEstimator/VolumeEstimatorHelpers';
 
+import { RouteProp } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+
+export type EstimateRoute = RouteProp<PDVolumesParams, 'EntryShape'>;
 
 export type PDVolumesParams = {
     SelectShape: undefined;
     EntryShape: {
-        shape: string;
+        shapeId: ShapeId;
     };
 };
 

@@ -66,7 +66,7 @@ export const PoolListScreen: React.FC = () => {
     const handleUpgradePressed = () => {
         navigate('Buy');
     };
-    const handleVolumenPressed = () => {
+    const handleVolumePressed = () => {
         navigate('PDVolumesNavigator');
     };
 
@@ -99,7 +99,7 @@ export const PoolListScreen: React.FC = () => {
             <View style={{ justifyContent: 'center', alignItems: 'center', margin: PDSpacing.md }}>
                 <TouchableScale
                     style={{ justifyContent: 'center', alignItems: 'center' }}
-                    onPress={handleVolumenPressed}>
+                    onPress={handleVolumePressed}>
                     <PDText type="heading">press me </PDText>
                 </TouchableScale>
             </View>

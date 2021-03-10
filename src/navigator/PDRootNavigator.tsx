@@ -2,12 +2,14 @@ import React from 'react';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 import { EditPoolPopover } from '~/screens/editPool/EditPoolPopover';
 import { PDPickerRouteProps, PickerScreen } from '~/screens/picker/PickerScreen';
-import { ScoopDetailsRouteProps, ScoopDetailsScreen } from '~/screens/settings/scoops/ScoopDetailsScreen';
+import {
+    ScoopDetailsRouteProps, ScoopDetailsScreen
+} from '~/screens/settings/scoops/ScoopDetailsScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
 
 import { PDCardNavigator } from './PDCardNavigator';
-import { PDVolumesNavigator } from './PDVolumesNavigator';
+import { PDVolumesNavigator } from './PDVolumeNavigator';
 
 // This defines the navigation params accepted by each possible screen in PDRootNavigator
 export type PDRootNavigatorParams = {

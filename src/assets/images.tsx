@@ -5,8 +5,11 @@ import { PDColor } from '~/components/PDTheme';
 // General Icons
 import IconBack from './images/icons/icon_back.svg';
 import IconForward from './images/icons/icon_forward.svg';
+import Circle from './images/shapes/big_circle.svg';
+import Other from './images/shapes/big_other.svg';
+import Oval from './images/shapes/big_oval.svg';
 import Rectangle from './images/shapes/big_rectangle.svg';
-// Volumen Estimator
+// Volume Estimator
 import IconCircle from './images/shapes/icon_circle.svg';
 import IconEstimator from './images/shapes/icon_estimator.svg';
 import IconOther from './images/shapes/icon_other.svg';
@@ -69,5 +72,8 @@ export const SVG = {
     IconCircleBack: (props: OverrideSvgProps): JSX.Element => <IconBack {...props} />,
     IconForward: (props: OverrideSvgProps): JSX.Element => <IconForward {...props} />,
     Rectangle: (props: OverrideSvgProps): JSX.Element => <Rectangle {...props} />,
+    Oval: (props: OverrideSvgProps): JSX.Element => <Oval {...props} />,
+    Circle: (props: OverrideSvgProps): JSX.Element => <Circle {...props} />,
+    Other: (props: OverrideSvgProps): JSX.Element => <Other {...props} />,
     IconEstimator: (props: OverrideSvgProps): JSX.Element => <IconEstimator {...props} />,
 };
