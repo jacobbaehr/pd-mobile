@@ -35,8 +35,8 @@ const BaseText: React.FC<PDTextProps> = (props) => {
     const textStyles = StyleSheet.flatten([defaultStyles, colorStylesFromTheme, style]);
 
     return (
-        <Text style={textStyles} {...restProps}>
-            {children}
+        <Text style={ textStyles } { ...restProps }>
+            {children }
         </Text>
     );
 };

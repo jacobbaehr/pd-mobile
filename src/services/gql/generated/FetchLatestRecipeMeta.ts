@@ -8,14 +8,16 @@
 // ====================================================
 
 export interface FetchLatestRecipeMeta_latestPublishedMeta {
-    __typename: 'RecipeMeta';
-    ts: number;
+  __typename: "RecipeMeta";
+  id: string;
+  ts: number;
+  appVersion: string;
 }
 
 export interface FetchLatestRecipeMeta {
-    latestPublishedMeta: FetchLatestRecipeMeta_latestPublishedMeta;
+  latestPublishedMeta: FetchLatestRecipeMeta_latestPublishedMeta;
 }
 
 export interface FetchLatestRecipeMetaVariables {
-    id: string;
+  id: string;
 }

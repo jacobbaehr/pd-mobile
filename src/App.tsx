@@ -27,13 +27,11 @@ export const AppComponent: React.FunctionComponent<AppProps> = () => {
     React.useEffect(() => {
         Database.prepare().finally(() => {
             setIsDatabaseLoaded(true);
-            tryUpdatingLocalRecipes();
         });
     }, []);
     React.useEffect(() => {
         RecipeRepo.savePreloadedRecipes().finally(() => {
             setAreRecipesPreloaded(true);
-            tryUpdatingLocalRecipes();
         });
     }, []);
     React.useEffect(() => {
@@ -47,14 +45,15 @@ export const AppComponent: React.FunctionComponent<AppProps> = () => {
         IAP.configureOnLaunch();
     }, []);
 
-    const tryUpdatingLocalRecipes = () => {
+    // Only do this after recipes are preloaded & the database is ready to go
+    React.useEffect(() => {
         if (isDatabaseLoaded && areRecipesPreloaded) {
             // Also, update all local recipes... but don't wait on this.
             // NOTE: this is an async operation that we're not await-ing on. This is on purpose.
             // We don't want to block app-start on any network calls
             RecipeService.updateAllLocalRecipes(apolloClient);
         }
-    };
+    }, [isDatabaseLoaded, areRecipesPreloaded]);
 
     const isAppReady = isDatabaseLoaded && areRecipesPreloaded && areDeviceSettingsLoaded;
     if (!isAppReady) {

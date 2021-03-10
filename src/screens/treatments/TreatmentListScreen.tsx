@@ -4,11 +4,10 @@ import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-vie
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { PlatformSpecific } from '~/components/PlatformSpecific';
-import { useRecipeHook } from '~/hooks/RealmPoolHook';
+import { useRealmPoolTargetRangesForPool, useRecipeHook } from '~/hooks/RealmPoolHook';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { LogEntry } from '~/models/logs/LogEntry';
 import { Pool } from '~/models/Pool';
-import { EffectiveTargetRange } from '~/models/recipe/TargetRange';
 import { DryChemicalUnits, Units, WetChemicalUnits } from '~/models/TreatmentUnits';
 import { PDNavParams } from '~/navigator/shared';
 import { dispatch, useTypedSelector } from '~/redux/AppState';
@@ -31,6 +30,7 @@ import { TreatmentListFooter } from './TreatmentListFooter';
 import { TreatmentListHeader } from './TreatmentListHeader';
 import { TreatmentListHelpers, TreatmentState } from './TreatmentListHelpers';
 import { TreatmentListItem } from './TreatmentListItem';
+import { TargetsHelper } from '../customTargets/TargetHelper';
 
 export const TreatmentListScreen: React.FC = () => {
     const readings = useTypedSelector((state) => state.readingEntries);
@@ -44,6 +44,7 @@ export const TreatmentListScreen: React.FC = () => {
     // I hate this... it's dirty. We should move this into the picker screen maybe?
     const [concentrationTreatmentVar, updateConcentrationTreatment] = React.useState<string | null>(null);
     const recipe = useRecipeHook(recipeKey);
+    const targetRangeOverridesForPool = useRealmPoolTargetRangesForPool(pool.objectId);
 
     const allScoops = deviceSettings.scoops;
 
@@ -324,8 +325,7 @@ export const TreatmentListScreen: React.FC = () => {
         goBack();
     };
 
-    // TODO: get the effective values for the pool / recipe combo here:
-    const targets: EffectiveTargetRange[] = [];
+    const targets = TargetsHelper.resolveRangesForPool(recipe, pool.waterType, targetRangeOverridesForPool);
     const htmlString = CalculationService.getHtmlStringForLocalHermes(recipe, pool, readings, targets);
 
     const sections = [{ title: 'booga', data: treatmentStates }];
@@ -337,46 +337,46 @@ export const TreatmentListScreen: React.FC = () => {
     }
 
     return (
-        <SafeAreaView style={{ display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: 'white' }}>
-            <TreatmentListHeader handleBackPress={handleBackPress} pool={pool} percentComplete={progress} />
-            <View style={styles.container}>
+        <SafeAreaView style={ { display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: 'white' } }>
+            <TreatmentListHeader handleBackPress={ handleBackPress } pool={ pool } percentComplete={ progress } />
+            <View style={ styles.container }>
                 <KeyboardAwareSectionList
-                    style={styles.sectionList}
-                    keyboardDismissMode={'interactive'}
-                    keyboardShouldPersistTaps={'handled'}
-                    renderItem={({ item }) => (
+                    style={ styles.sectionList }
+                    keyboardDismissMode={ 'interactive' }
+                    keyboardShouldPersistTaps={ 'handled' }
+                    renderItem={ ({ item }) => (
                         <TreatmentListItem
-                            treatmentState={item}
-                            onTextboxUpdated={handleTextUpdated}
-                            onTextboxFinished={handleTextFinishedEditing}
-                            handleUnitsButtonPressed={handleUnitsButtonPressed}
-                            handleIconPressed={handleIconPressed}
-                            handleTreatmentNameButtonPressed={handleTreatmentNameButtonPressed}
-                            inputAccessoryId={keyboardAccessoryViewId}
+                            treatmentState={ item }
+                            onTextboxUpdated={ handleTextUpdated }
+                            onTextboxFinished={ handleTextFinishedEditing }
+                            handleUnitsButtonPressed={ handleUnitsButtonPressed }
+                            handleIconPressed={ handleIconPressed }
+                            handleTreatmentNameButtonPressed={ handleTreatmentNameButtonPressed }
+                            inputAccessoryId={ keyboardAccessoryViewId }
                         />
-                    )}
-                    sections={sections}
-                    keyExtractor={(item) => item.treatment.var}
-                    contentInsetAdjustmentBehavior={'always'}
-                    stickySectionHeadersEnabled={false}
-                    canCancelContentTouches={true}
-                    renderSectionFooter={() => <TreatmentListFooter text={notes} updatedText={setNotes} />}
+                    ) }
+                    sections={ sections }
+                    keyExtractor={ (item) => item.treatment.var }
+                    contentInsetAdjustmentBehavior={ 'always' }
+                    stickySectionHeadersEnabled={ false }
+                    canCancelContentTouches={ true }
+                    renderSectionFooter={ () => <TreatmentListFooter text={ notes } updatedText={ setNotes } /> }
                 />
-                <WebView containerStyle={styles.webview} onMessage={onMessage} source={{ html: htmlString }} />
-                <View style={styles.bottomButtonContainer}>
-                    <BoringButton containerStyles={styles.button} onPress={save} title="Save" />
+                <WebView containerStyle={ styles.webview } onMessage={ onMessage } source={ { html: htmlString } } />
+                <View style={ styles.bottomButtonContainer }>
+                    <BoringButton containerStyles={ styles.button } onPress={ save } title="Save" />
                 </View>
             </View>
-            <PlatformSpecific include={['ios']}>
-                <InputAccessoryView nativeID={keyboardAccessoryViewId}>
-                    <View style={styles.keyboardAccessoryContainer}>
+            <PlatformSpecific include={ ['ios'] }>
+                <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
+                    <View style={ styles.keyboardAccessoryContainer }>
                         <BoringButton
-                            containerStyles={styles.keyboardAccessoryButton}
-                            textStyles={styles.keyboardAccessoryButtonText}
-                            onPress={() => {
+                            containerStyles={ styles.keyboardAccessoryButton }
+                            textStyles={ styles.keyboardAccessoryButtonText }
+                            onPress={ () => {
                                 Keyboard.dismiss();
                                 Haptic.light();
-                            }}
+                            } }
                             title="Done Typing"
                         />
                     </View>

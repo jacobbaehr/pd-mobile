@@ -12,6 +12,7 @@ import { FetchLatestRecipeMeta, FetchLatestRecipeMetaVariables } from './generat
 import { FetchRecipe, FetchRecipeVariables } from './generated/FetchRecipe';
 import { ListRecipes } from './generated/ListRecipes';
 import { RecipeTransformer } from './RecipeTransformer';
+import { RecipeMeta } from '~/models/recipe/RecipeMeta';
 
 export class RecipeAPI {
     static useRecipeList = (): QueryResult<ListRecipes> => {
@@ -85,15 +86,17 @@ export class RecipeAPI {
         return Promise.reject('');
     };
 
-    /// Runs a cheap query to fetch the metadata of the most recent version for a particular recipe, and returns the latest key.
-    static fetchLatestKeyForRecipe = async (
+    /// Runs a cheap query to fetch _some_ of the metadata of the most recent version for a particular recipe (see the Omit fields)
+    static fetchLatestMetaForRecipe = async (
         key: RecipeKey,
         client: ApolloClient<NormalizedCacheObject>,
-    ): Promise<RecipeKey> => {
+    ): Promise<Omit<RecipeMeta, 'desc' | 'name'>> => {
         const query = gql`
             query FetchLatestRecipeMeta($id: String!) {
                 latestPublishedMeta(id: $id) {
                     ts
+                    appVersion
+                    id
                 }
             }
         `;
@@ -109,6 +112,7 @@ export class RecipeAPI {
         }
         console.log('fetching latest for key: ' + key);
         console.log('result: ' + result.data.latestPublishedMeta.ts);
-        return RS.getKey({ id: variables.id, ts: result.data.latestPublishedMeta.ts });
+
+        return result.data.latestPublishedMeta;
     };
 }

@@ -96,13 +96,13 @@ export const PoolListScreen: React.FC = () => {
                     </TouchableScale>
                 </View>
             </View>
-            <View style={{ justifyContent: 'center', alignItems: 'center', margin: PDSpacing.md }}>
+            {/* <View style={{ justifyContent: 'center', alignItems: 'center', margin: PDSpacing.md }}>
                 <TouchableScale
                     style={{ justifyContent: 'center', alignItems: 'center' }}
                     onPress={handleVolumePressed}>
                     <PDText type="heading">press me </PDText>
                 </TouchableScale>
-            </View>
+            </View> */}
             <SectionList
                 style={styles.sectionList}
                 renderItem={({ item }) => <PoolListItem pool={item} onPoolSelected={handlePoolSelected} />}

@@ -8,14 +8,14 @@
 // ====================================================
 
 export interface ListRecipes_listRecipes {
-    __typename: 'RecipeMeta';
-    id: string;
-    name: string;
-    desc: string;
-    ts: number;
-    appVersion: string;
+  __typename: "RecipeMeta";
+  id: string;
+  name: string;
+  desc: string;
+  ts: number;
+  appVersion: string;
 }
 
 export interface ListRecipes {
-    listRecipes: ListRecipes_listRecipes[];
+  listRecipes: ListRecipes_listRecipes[];
 }

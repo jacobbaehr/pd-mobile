@@ -1,6 +1,7 @@
 import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
 import { WaterTypeValue } from '~/models/Pool/WaterType';
-import { TargetRange } from '~/models/recipe/TargetRange';
+import { Recipe } from '~/models/recipe/Recipe';
+import { EffectiveTargetRange, TargetRange } from '~/models/recipe/TargetRange';
 import { Util } from '~/services/Util';
 
 
@@ -10,6 +11,20 @@ export interface MinMax {
 }
 
 export namespace TargetsHelper {
+
+    export const resolveRangesForPool = (
+        recipe: Recipe,
+        poolWallType: WaterTypeValue,
+        localOverridesForPool: TargetRangeOverride[],
+    ): EffectiveTargetRange[] => {
+        return recipe.custom.map(tr => {
+            const localOverride = Util.firstOrNull(localOverridesForPool.filter(local => local.var === tr.var));
+            return {
+                ...resolveMinMax(tr, poolWallType, localOverride),
+                var: tr.var,
+            };
+        });
+    }
 
     export const resolveMinMax = (
         targetRange: TargetRange,

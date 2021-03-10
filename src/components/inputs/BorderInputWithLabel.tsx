@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
         minWidth: '49%',
         height: 34,
         fontSize: 16,
-        lineHeight: 24,
         fontStyle: 'normal',
         fontWeight: '600',
         color: '#1E6BFF',

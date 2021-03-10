@@ -154,6 +154,7 @@ export class Database {
             });
             return Promise.resolve();
         } catch (error) {
+            console.error(error);
             return Promise.reject('Error updating a pool');
         }
     };
@@ -200,7 +201,10 @@ export class Database {
         try {
             // We have to delete the actual realm object
             realm.write(() => {
-                realm.delete(customTarget);
+                const previousOverrides = Database.realm
+                    .objects<TargetRangeOverride>(TargetRangeOverride.schema.name)
+                    .filtered('poolId = $0 AND var = $1', customTarget.poolId, customTarget.var);
+                realm.delete(previousOverrides);
             });
             return Promise.resolve();
         } catch (e) {

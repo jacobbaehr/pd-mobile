@@ -91,7 +91,8 @@ export const useRecipeHook = (recipeKey: RecipeKey): Recipe | null => {
     return recipe;
 };
 
-export const useRealmPoolTargetRange = (poolId: string, variable: string): TargetRangeOverride | null => {
+/// This pulls all target range overrides for a given pool
+export const useRealmPoolTargetRangesForPool = (poolId: string): TargetRangeOverride[] => {
     const [data, setData] = useState<TargetRangeOverride[]>(() => {
         const realmCustomTarget = Database.loadCustomTargets(poolId);
         const parserData = RealmUtil.customTargetToPojo(realmCustomTarget);
@@ -113,5 +114,11 @@ export const useRealmPoolTargetRange = (poolId: string, variable: string): Targe
         };
     }, [poolId]);
 
+    return data;
+};
+
+/// This pulls a single target range override for a given pool & variable.
+export const useRealmPoolTargetRange = (poolId: string, variable: string): TargetRangeOverride | null => {
+    const data = useRealmPoolTargetRangesForPool(poolId);
     return Util.firstOrNull(data.filter((ct) => ct.var === variable));
 };
