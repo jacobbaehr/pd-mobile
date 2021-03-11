@@ -20,7 +20,10 @@ export namespace RecipeRepo {
 
         const fileData = await RNFS.readFile(filePath, 'utf8');
         const recipe: Recipe = JSON.parse(fileData);
-        // TODO: validate recipe object here
+
+        /// some old recipes might not have the "custom" property, so we default it
+        /// to an empty array:
+        recipe.custom = recipe.custom || [];
 
         return recipe;
     };
