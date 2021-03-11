@@ -32,7 +32,7 @@ export interface FetchRecipe_recipeVersion_treatments {
 
 export interface FetchRecipe_recipeVersion_custom_defaults {
   __typename: "DefaultRange";
-  waterType: string | null;
+  wallType: string | null;
   min: number;
   max: number;
 }

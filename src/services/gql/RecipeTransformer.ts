@@ -1,4 +1,4 @@
-import { WaterTypeValue } from '~/models/Pool/WaterType';
+import { WallTypeValue } from '~/models/Pool/WallType';
 import { Reading, ReadingType } from '~/models/recipe/Reading';
 import { Recipe } from '~/models/recipe/Recipe';
 import { Treatment, TreatmentType } from '~/models/recipe/Treatment';
@@ -21,7 +21,7 @@ export class RecipeTransformer {
                 ...c,
                 defaults: c.defaults.map((d) => ({
                     ...d,
-                    waterType: d.waterType as WaterTypeValue,
+                    wallType: d.wallType as WallTypeValue,
                 })),
             })),
         };

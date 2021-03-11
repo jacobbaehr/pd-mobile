@@ -72,23 +72,7 @@ export const big3: Recipe = {
             var: 'fc',
             name: 'Chlorine',
             description: 'example',
-            defaults: [
-                {
-                    waterType: 'ozone',
-                    min: 0.2,
-                    max: 0.4,
-                },
-                {
-                    waterType: 'salt_water',
-                    min: 3.0,
-                    max: 4.0,
-                },
-                {
-                    waterType: null,
-                    min: 3.0,
-                    max: 4.1,
-                },
-            ],
+            defaults: [],
         },
     ],
 };

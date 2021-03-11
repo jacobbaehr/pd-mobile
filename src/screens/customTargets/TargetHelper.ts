@@ -1,5 +1,5 @@
 import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
-import { WaterTypeValue } from '~/models/Pool/WaterType';
+import { WallTypeValue } from '~/models/Pool/WallType';
 import { Recipe } from '~/models/recipe/Recipe';
 import { EffectiveTargetRange, TargetRange } from '~/models/recipe/TargetRange';
 import { Util } from '~/services/Util';
@@ -14,7 +14,7 @@ export namespace TargetsHelper {
 
     export const resolveRangesForPool = (
         recipe: Recipe,
-        poolWallType: WaterTypeValue,
+        poolWallType: WallTypeValue,
         localOverridesForPool: TargetRangeOverride[],
     ): EffectiveTargetRange[] => {
         return recipe.custom.map(tr => {
@@ -24,11 +24,11 @@ export namespace TargetsHelper {
                 var: tr.var,
             };
         });
-    }
+    };
 
     export const resolveMinMax = (
         targetRange: TargetRange,
-        poolWallType: WaterTypeValue,        // TODO: change to walltype
+        poolWallType: WallTypeValue,
         locallySavedOverride: TargetRangeOverride | null,
     ): MinMax => {
 
@@ -41,7 +41,7 @@ export namespace TargetsHelper {
         }
 
         /// Second, try to find a default on the recipe for this pool's wall-type
-        const recipeDefaultRangeForWallType = Util.firstOrNull(targetRange.defaults.filter(d => d.waterType === poolWallType));
+        const recipeDefaultRangeForWallType = Util.firstOrNull(targetRange.defaults.filter(d => d.wallType === poolWallType));
         if (recipeDefaultRangeForWallType) {
             return {
                 min: recipeDefaultRangeForWallType.min,
@@ -50,7 +50,7 @@ export namespace TargetsHelper {
         }
 
         /// Lastly, try to find a default on the recipe with a null wall-type
-        const recipeDefaultRange = Util.firstOrNull(targetRange.defaults.filter(d => d.waterType === null));
+        const recipeDefaultRange = Util.firstOrNull(targetRange.defaults.filter(d => d.wallType === null));
         if (recipeDefaultRange) {
             return {
                 min: recipeDefaultRange.min,

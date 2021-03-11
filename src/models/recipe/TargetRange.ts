@@ -1,4 +1,4 @@
-import { WaterTypeValue } from '../Pool/WaterType';
+import { WallTypeValue } from '../Pool/WallType';
 
 /**
  * Represents a target-range configuration that authors allow end-users to modify locally.
@@ -20,8 +20,8 @@ export interface TargetRange {
  * A waterType of null implies that it is the default, for all non-specified water types.
  */
 export interface DefaultRange {
-    /// If this matches a pool's water-type, then this value will be the default for that pool.
-    waterType: WaterTypeValue | null;
+    /// If this matches a pool's wall-type, then this value will be the default for that pool.
+    wallType: WallTypeValue | null;
     /// range min
     min: number;
     /// range max

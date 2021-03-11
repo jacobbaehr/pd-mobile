@@ -5,7 +5,6 @@ import { useSafeArea } from 'react-native-safe-area-context';
 import TouchableScale from 'react-native-touchable-scale';
 import { images } from '~/assets/images';
 import { PDText } from '~/components/PDText';
-import { PDSpacing } from '~/components/PDTheme';
 import { useRealmPoolsHook } from '~/hooks/RealmPoolHook';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { Pool } from '~/models/Pool';
@@ -66,9 +65,9 @@ export const PoolListScreen: React.FC = () => {
     const handleUpgradePressed = () => {
         navigate('Buy');
     };
-    const handleVolumePressed = () => {
-        navigate('PDVolumesNavigator');
-    };
+    // const handleVolumePressed = () => {
+    //     navigate('PDVolumesNavigator');
+    // };
 
     const isEmpty = pools.length === 0;
     const dynamicContainerStyles: ViewStyle = {

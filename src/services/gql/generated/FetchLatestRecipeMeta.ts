@@ -9,9 +9,9 @@
 
 export interface FetchLatestRecipeMeta_latestPublishedMeta {
   __typename: "RecipeMeta";
-  id: string;
   ts: number;
   appVersion: string;
+  id: string;
 }
 
 export interface FetchLatestRecipeMeta {

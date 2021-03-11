@@ -13,7 +13,7 @@ export const getCustomTargetsBySelectedPool = createSelector([getSelectedPoolAnd
     const customTargets =
         recipe?.custom?.map((customTarget) => ({
             ...customTarget,
-            defaults: customTarget.defaults.filter((cs) => cs.waterType === pool?.waterType),
+            defaults: customTarget.defaults.filter((cs) => cs.wallType === pool?.wallType),
         })) ?? [];
 
     return customTargets as TargetRange[];

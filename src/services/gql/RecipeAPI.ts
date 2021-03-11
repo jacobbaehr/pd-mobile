@@ -66,7 +66,7 @@ export class RecipeAPI {
                         var
                         description
                         defaults {
-                            waterType
+                            wallType
                             min
                             max
                         }

@@ -325,7 +325,7 @@ export const TreatmentListScreen: React.FC = () => {
         goBack();
     };
 
-    const targets = TargetsHelper.resolveRangesForPool(recipe, pool.waterType, targetRangeOverridesForPool);
+    const targets = TargetsHelper.resolveRangesForPool(recipe, pool.wallType, targetRangeOverridesForPool);
     const htmlString = CalculationService.getHtmlStringForLocalHermes(recipe, pool, readings, targets);
 
     const sections = [{ title: 'booga', data: treatmentStates }];

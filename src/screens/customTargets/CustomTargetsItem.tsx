@@ -25,15 +25,15 @@ interface TargetFormFields {
 }
 
 /**
- *  List Item for Custom Targets by Defaults values from each waterType.
+ *  List Item for Custom Targets by Defaults values from each wallType.
  */
 const CustomTargetsItem: React.FC<CustomTargetsItemProps> = ({ tr }) => {
     const pool = useSelector<AppState>((state) => state.selectedPool) as Pool;
     const locallySavedOverride = useRealmPoolTargetRange(pool.objectId, tr.var);     // ?? ({} as TargetRangeOverride);
 
     // The min & max will sometimes be equal to the defaults, but we need to determine both for the sake of comparison
-    const recipeDefaults = TargetsHelper.resolveMinMax(tr, pool.waterType, null);
-    const { min, max } = TargetsHelper.resolveMinMax(tr, pool.waterType, locallySavedOverride);
+    const recipeDefaults = TargetsHelper.resolveMinMax(tr, pool.wallType, null);
+    const { min, max } = TargetsHelper.resolveMinMax(tr, pool.wallType, locallySavedOverride);
 
     // We use empty-strings for defaults (to show the placeholder)
     const [formValues, setFormValues] = React.useState<TargetFormFields>({
@@ -51,7 +51,7 @@ const CustomTargetsItem: React.FC<CustomTargetsItemProps> = ({ tr }) => {
             return recipeDefaults.min === min;
         }
         return recipeDefaults.max === max;
-    }
+    };
 
     const reset = () => {
         if (locallySavedOverride) {
@@ -83,13 +83,13 @@ const CustomTargetsItem: React.FC<CustomTargetsItemProps> = ({ tr }) => {
         const newFormValues = Util.deepCopy(formValues);
         newFormValues[fieldName] = newValue;
         setFormValues(newFormValues);
-    }
+    };
 
     const handleBlur = () => {
         if (isValid) {
             save();
         }
-    }
+    };
 
     const enableResetButton = !isDefault('min') || !isDefault('max');
 
