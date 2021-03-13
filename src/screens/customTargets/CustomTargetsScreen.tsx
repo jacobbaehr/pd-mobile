@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 import SafeAreaView from 'react-native-safe-area-view';
 import { useSelector } from 'react-redux';
 import { PDText } from '~/components/PDText';
@@ -21,9 +21,11 @@ const CustomTargetsScreen = () => {
     const targets = recipe?.custom ?? [];
 
     return (
-        <SafeAreaView style={ styles.safeArea }>
+        <SafeAreaView forceInset={{ bottom: 'never' }} style={ styles.safeArea } >
             <CustomTargetsHeader />
-            <FlatList
+            <KeyboardAwareFlatList
+                keyboardDismissMode={ 'interactive' }
+                keyboardShouldPersistTaps={ 'handled' }
                 data={ targets }
                 renderItem={ ({ item }: { item: TargetRange }) => <CustomTargetsItem tr={ item } /> }
                 keyExtractor={ (item: TargetRange) => item.var }
