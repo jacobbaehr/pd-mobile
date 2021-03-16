@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import BorderInputWithLabel from '~/components/inputs/BorderInputWithLabel';
 import { useTheme } from '~/components/PDTheme';
 import { useVolumeEstimator } from '~/hooks/useVolumeEstimator';
-import { EstimateRoute } from '~/navigator/PDVolumeNavigator';
+import { EstimateRoute } from '~/navigator/PDVolumesNavigator';
 
 import { useRoute } from '@react-navigation/native';
 

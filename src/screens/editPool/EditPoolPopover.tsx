@@ -1,39 +1,71 @@
 import * as React from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { CloseButton } from '../../components/buttons/CloseButton';
-import { StyleSheet } from 'react-native';
-import { PDNavParams } from '~/navigator/shared';
-import { PDView } from '~/components/PDView';
+import { RouteProp } from '@react-navigation/native';
 
-interface EditPoolPopoverProps {
-    navigation: StackNavigationProp<PDNavParams>;
+import { editPopoverContent } from './PopoverContent';
+import { useRoute } from '@react-navigation/native';
+import { PDRootNavigatorParams } from '~/navigator/PDRootNavigator';
+import { EditPoolPropertyWrapper } from './EditPoolPropertyWrapper';
+
+export interface HeaderInfo {
+    id: string;
+    title: string;
+    description: string;
 }
 
-export const EditPoolPopover: React.FunctionComponent<EditPoolPopoverProps> = () => {
-    const navigation = useNavigation();
-
-    return (
-        <PDView style={styles.container}>
-            <CloseButton onPress={() => navigation.goBack()} containerStyle={styles.closeButton} />
-            <PDView style={styles.content}>{/* Screen content goes here */}</PDView>
-        </PDView>
-    );
+export const popoverProps = {
+    name: {
+        id: 'name',
+        title: 'Edit Pool Name',
+        description: 'Choose a name that best describes your pool',
+    },
+    waterType: {
+        id: 'waterType',
+        title: 'Edit Water Type',
+        description: 'Splash!',
+    },
+    volume: {
+        id: 'volume',
+        title: 'Edit Pool Volume',
+        description: 'Don\'t know your pool\'s volume? Tap "Use Volume Estimator" below.',
+    },
+    wallType: {
+        id: 'wallType',
+        title: 'Edit Wall Type',
+        description: 'Crunch!',
+    },
+    recipe: {
+        id: 'recipe',
+        title: '',
+        description: '',
+    },
+    customTargets: {
+        id: 'customTargets',
+        title: '',
+        description: '',
+    },
+    importData: {
+        id: 'importData',
+        title: '',
+        description: '',
+    },
+    deletePool: {
+        id: 'deletePool',
+        title: '',
+        description: '',
+    },
 };
 
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: 'white',
-        display: 'flex',
-        height: '100%',
-        width: '100%',
-    },
-    content: {
-        backgroundColor: 'white',
-    },
-    closeButton: {
-        alignSelf: 'flex-end',
-        right: 16,
-        top: 24,
-    },
-});
+export const EditPoolPopover = () => {
+    const route = useRoute<RouteProp<PDRootNavigatorParams, 'EditPoolPopover'>>();
+    const { headerInfo } = route.params;
+
+    //TODO: Rename THIS To content
+    //rename editpopovercontent to something re-function
+    const content = editPopoverContent[headerInfo.id]();
+
+    return (
+        <EditPoolPropertyWrapper title={headerInfo.title} description={headerInfo.description}>
+            {content}
+        </EditPoolPropertyWrapper>
+    );
+};

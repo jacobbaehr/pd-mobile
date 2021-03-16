@@ -4,6 +4,7 @@ import { PDColor, useTheme } from './PDTheme';
 
 interface PDViewProps extends ViewProps {
     bgColor?: PDColor;
+    opacity?: number;
 }
 
 /// Wrapper around View component that allows some custom theming

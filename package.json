@@ -40,6 +40,7 @@
         "react-native-haptic-feedback": "^1.10.0",
         "react-native-keyboard-aware-scroll-view": "^0.9.2",
         "react-native-linear-gradient": "^2.5.6",
+        "react-native-modal": "^11.7.0",
         "react-native-purchases": "^3.3.1",
         "react-native-reanimated": "^1.9.0",
         "react-native-safe-area-context": "^0.7.3",

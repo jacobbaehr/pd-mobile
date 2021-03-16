@@ -19,4 +19,20 @@ export const selectPool = createAction('pool/select', (pool: Pool) => {
     };
 });
 
+export const deletePool = createAsyncThunk('pool/delete', (pool: Pool) => {
+    Database.deletePool(pool);
+});
+
 export const clearPool = createAction('pool/clear');
+
+// const handleUpdateExitingPool = () => {
+//     const dispatch = useThunkDispatch();
+//     const rawgPool: Partial<Pool> = {
+//         name: 'Pair Promgin',
+//         objectId: '123123',
+//     };
+
+//     const exisitngPool = Pool.make(rawgPool);
+
+//     disaptch(updatePool(exisitngPool));
+// };

@@ -1,8 +1,12 @@
 import React, { useContext, useState } from 'react';
 
 import {
-    AllShapes, CircleMeasurements, OtherMeasurements, OvalMeasurements, RectangleMeasurements,
-    ShapeId
+    AllShapes,
+    CircleMeasurements,
+    OtherMeasurements,
+    OvalMeasurements,
+    RectangleMeasurements,
+    ShapeId,
 } from '../screens/volumeEstimator/VolumeEstimatorHelpers';
 
 interface EntryShape {

@@ -37,7 +37,7 @@ interface ReadingListScreenProps {
 const mapStateToProps = (state: AppState, ownProps: ReadingListScreenProps): ReadingListScreenProps => {
     return {
         navigation: ownProps.navigation,
-        pool: state.selectedPool!
+        pool: state.selectedPool!,
     };
 };
 
@@ -197,49 +197,49 @@ const ReadingListScreenComponent: React.FunctionComponent<ReadingListScreenProps
         progress = readingStates.length === 0 ? 1 : completed.length / readingStates.length;
     }
     return (
-        <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } }>
-            <View style={ styles.container }>
-                <ReadingListHeader handleBackPress={ handleBackPressed } pool={ props.pool } percentComplete={ progress } />
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+            <View style={styles.container}>
+                <ReadingListHeader handleBackPress={handleBackPressed} pool={props.pool} percentComplete={progress} />
                 <KeyboardAwareSectionList
-                    style={ styles.sectionList }
-                    scrollEnabled={ !isSliding }
-                    keyboardDismissMode={ 'interactive' }
-                    keyboardShouldPersistTaps={ 'handled' }
-                    renderItem={ ({ item }) => (
+                    style={styles.sectionList}
+                    scrollEnabled={!isSliding}
+                    keyboardDismissMode={'interactive'}
+                    keyboardShouldPersistTaps={'handled'}
+                    renderItem={({ item }) => (
                         <ReadingListItem
-                            readingState={ item }
-                            onTextboxUpdated={ handleTextboxUpdated }
-                            onTextboxFinished={ handleTextboxDismissed }
-                            onSlidingStart={ handleSlidingStarted }
-                            onSlidingComplete={ handleSlidingStopped }
-                            onSliderUpdatedValue={ handleSliderUpdatedValue }
-                            handleIconPressed={ handleIconPressed }
-                            inputAccessoryId={ keyboardAccessoryViewId }
+                            readingState={item}
+                            onTextboxUpdated={handleTextboxUpdated}
+                            onTextboxFinished={handleTextboxDismissed}
+                            onSlidingStart={handleSlidingStarted}
+                            onSlidingComplete={handleSlidingStopped}
+                            onSliderUpdatedValue={handleSliderUpdatedValue}
+                            handleIconPressed={handleIconPressed}
+                            inputAccessoryId={keyboardAccessoryViewId}
                         />
-                    ) }
-                    sections={ sections }
-                    keyExtractor={ (item) => item.reading.var }
-                    contentInsetAdjustmentBehavior={ 'always' }
-                    stickySectionHeadersEnabled={ false }
-                    canCancelContentTouches={ true }
-                    renderSectionFooter={ () => (
-                        <ReadingListFooter recipe={ recipe || null } pressedChangeRecipe={ handleChangeRecipePressed } />
-                    ) }
+                    )}
+                    sections={sections}
+                    keyExtractor={(item) => item.reading.var}
+                    contentInsetAdjustmentBehavior={'always'}
+                    stickySectionHeadersEnabled={false}
+                    canCancelContentTouches={true}
+                    renderSectionFooter={() => (
+                        <ReadingListFooter recipe={recipe || null} pressedChangeRecipe={handleChangeRecipePressed} />
+                    )}
                 />
-                <View style={ styles.bottomButtonContainer }>
-                    <BoringButton containerStyles={ styles.button } onPress={ handleCalculatePressed } title="Calculate" />
+                <View style={styles.bottomButtonContainer}>
+                    <BoringButton containerStyles={styles.button} onPress={handleCalculatePressed} title="Calculate" />
                 </View>
             </View>
-            <PlatformSpecific include={ ['ios'] }>
-                <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
-                    <View style={ styles.keyboardAccessoryContainer }>
+            <PlatformSpecific include={['ios']}>
+                <InputAccessoryView nativeID={keyboardAccessoryViewId}>
+                    <View style={styles.keyboardAccessoryContainer}>
                         <BoringButton
-                            containerStyles={ styles.keyboardAccessoryButton }
-                            textStyles={ styles.keyboardAccessoryButtonText }
-                            onPress={ () => {
+                            containerStyles={styles.keyboardAccessoryButton}
+                            textStyles={styles.keyboardAccessoryButtonText}
+                            onPress={() => {
                                 Keyboard.dismiss();
                                 Haptic.light();
-                            } }
+                            }}
                             title="Done Typing"
                         />
                     </View>

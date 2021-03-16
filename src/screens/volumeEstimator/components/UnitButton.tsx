@@ -4,7 +4,7 @@ import { CycleButton } from '~/components/buttons/CycleButton';
 import { PDText } from '~/components/PDText';
 import { useTheme } from '~/components/PDTheme';
 import { useVolumeEstimator } from '~/hooks/useVolumeEstimator';
-import { EstimateRoute } from '~/navigator/PDVolumeNavigator';
+import { EstimateRoute } from '~/navigator/PDVolumesNavigator';
 
 import { useRoute } from '@react-navigation/native';
 

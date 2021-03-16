@@ -1,13 +1,15 @@
+import { PDTheme } from '~/components/PDTheme';
 import { ImageSourcePropType } from 'react-native';
 import { images } from '~/assets/images';
 
-interface EditPoolMenuItem {
-    name: string;
-    titleColor: string | undefined;
+export interface EditPoolMenuItem {
+    title: string;
+    titleColor: keyof PDTheme;
     image: ImageSourcePropType;
     value: string;
-    valueColor: string;
-    onPressRoute: string; //TODO: Find type that is for a valid route
+    valueColor: keyof PDTheme;
+    onPressRoute: any; //TODO: find valid route type,
+    id: string;
 }
 
 interface EditPoolSectionInfo {
@@ -20,36 +22,40 @@ export const editPoolSectionInfo: EditPoolSectionInfo[] = [
         headerText: 'BASIC INFORMATION',
         data: [
             {
-                name: 'Name: ',
+                title: 'Name: ',
                 titleColor: 'black',
-                image: images.nameIcon,
+                image: images.titleIcon,
                 value: 'Pool of the soul',
-                valueColor: '#1E6BFF',
+                valueColor: 'blue',
                 onPressRoute: 'EditPoolPopover',
+                id: 'name',
             },
             {
-                name: 'Water Type: ',
+                title: 'Water Type: ',
                 titleColor: 'black',
                 image: images.waterTypeIcon,
                 value: 'Salt Water',
-                valueColor: '#00B25C',
+                valueColor: 'green',
                 onPressRoute: 'EditPoolPopover',
+                id: 'waterType',
             },
             {
-                name: 'Volume: ',
+                title: 'Volume: ',
                 titleColor: 'black',
                 image: images.volumeIcon,
                 value: '1,000 Gallons',
-                valueColor: '#FF0073',
+                valueColor: 'pink',
                 onPressRoute: 'EditPoolPopover',
+                id: 'volume',
             },
             {
-                name: 'Wall Type: ',
+                title: 'Wall Type: ',
                 titleColor: 'black',
                 image: images.wallTypeIcon,
                 value: 'Vinyl',
-                valueColor: '#B21FF1',
+                valueColor: 'purple',
                 onPressRoute: 'EditPoolPopover',
+                id: 'wallType',
             },
         ],
     },
@@ -57,20 +63,22 @@ export const editPoolSectionInfo: EditPoolSectionInfo[] = [
         headerText: 'SERVICE CONFIGURATION',
         data: [
             {
-                name: 'Recipe: ',
+                title: 'Recipe: ',
                 titleColor: 'black',
                 image: images.recipeIcon,
                 value: 'Weekend Warrior',
-                valueColor: '#FF7502',
-                onPressRoute: 'EditPoolPopover',
+                valueColor: 'orange',
+                onPressRoute: 'RecipeList',
+                id: 'recipe',
             },
             {
-                name: 'Custom Targets: ',
+                title: 'Custom Targets: ',
                 titleColor: 'black',
                 image: images.targetsIcon,
                 value: '3 Selected',
-                valueColor: '#00AEA0',
-                onPressRoute: 'EditPoolPopover',
+                valueColor: 'teal',
+                onPressRoute: 'CustomTargets',
+                id: 'customTargets',
             },
         ],
     },
@@ -78,28 +86,22 @@ export const editPoolSectionInfo: EditPoolSectionInfo[] = [
         headerText: 'ADDITIONAL ACTIONS',
         data: [
             {
-                name: 'Export Data',
+                title: 'Export Data',
                 titleColor: 'black',
                 image: images.exportIcon,
                 value: '',
                 valueColor: 'red',
-                onPressRoute: 'EditPoolPopover',
+                onPressRoute: 'Export',
+                id: 'exportData',
             },
             {
-                name: 'Import Data',
-                titleColor: 'black',
-                image: images.importIcon,
-                value: '',
-                valueColor: 'red',
-                onPressRoute: 'EditPoolPopover',
-            },
-            {
-                name: 'Delete Pool',
+                title: 'Delete Pool',
                 titleColor: 'red',
                 image: images.deleteIcon,
                 value: '',
                 valueColor: 'red',
-                onPressRoute: 'EditPoolPopover',
+                onPressRoute: 'DeletePool',
+                id: 'deletePool',
             },
         ],
     },

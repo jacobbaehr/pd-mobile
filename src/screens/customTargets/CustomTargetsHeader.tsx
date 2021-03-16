@@ -15,10 +15,10 @@ const CustomTargetsHeader: React.FC = () => {
     };
 
     return (
-        <PDView style={ styles.container } bgColor="white">
-            <BackButton title="" onPress={ handlePressedBack } scale={ { scale: true, scaleLines: 2 } } />
-            <PDView style={ styles.titleContainer }>
-                <PDText type="heading" color="black" style={ styles.text }>
+        <PDView style={styles.container} bgColor="white">
+            <BackButton title="" onPress={handlePressedBack} scale={{ scale: true, scaleLines: 2 }} />
+            <PDView style={styles.titleContainer}>
+                <PDText type="heading" color="black" style={styles.text}>
                     Custom Targets
                 </PDText>
             </PDView>
@@ -48,6 +48,6 @@ const styles = StyleSheet.create({
         right: estimatedUpperBoundBackButtonTotalWidth,
     },
     text: {
-        textAlign: 'center'
-    }
+        textAlign: 'center',
+    },
 });

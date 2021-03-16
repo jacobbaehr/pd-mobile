@@ -12,6 +12,8 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { editPoolSectionInfo } from './SectionInfo';
+import { DeletePool } from './DeletePool';
+import { useModal } from '~/hooks/useModal';
 
 interface EditPoolScreenProps {
     navigation: StackNavigationProp<PDNavParams, 'EditPool'>;
@@ -26,6 +28,7 @@ const ListHeader = () => {
 
 export const EditPoolScreen: React.FunctionComponent<EditPoolScreenProps> = () => {
     const navigation = useNavigation();
+    const { visible, toggleVisible } = useModal();
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -39,7 +42,6 @@ export const EditPoolScreen: React.FunctionComponent<EditPoolScreenProps> = () =
             </View>
             {/* Container for scrollable list on screen */}
             <View style={styles.listContainer}>
-                {/* This is a list of sections which each include a header and a list of menu items */}
                 <SectionList
                     sections={editPoolSectionInfo}
                     renderSectionHeader={({ section: { headerText } }) => (
@@ -47,29 +49,34 @@ export const EditPoolScreen: React.FunctionComponent<EditPoolScreenProps> = () =
                             {headerText}
                         </PDText>
                     )}
-                    renderItem={({ item }) => {
+                    renderItem={({ item, index, section }) => {
                         return (
                             <MenuItemButton
-                                title={item.name}
-                                titleColor={item.titleColor}
-                                image={item.image}
-                                onPressRoute={item.onPressRoute}
-                                value={item.value}
-                                valueColor={item.valueColor}
+                                {...item}
+                                index={index}
+                                sectionLength={section.data.length}
+                                visible={visible}
+                                toggleVisible={toggleVisible}
                             />
                         );
                     }}
                     ListHeaderComponent={ListHeader}
-                    keyExtractor={(item, index) => item.name + index}
+                    keyExtractor={(item, index) => item.title + index}
                     stickySectionHeadersEnabled={false}
                     contentContainerStyle={styles.list}
                 />
             </View>
+            <DeletePool visible={visible} toggleVisible={toggleVisible} />
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    fakeButton: {
+        height: 50,
+        width: '100%',
+        backgroundColor: 'red',
+    },
     container: {
         height: '100%',
         width: '100%',

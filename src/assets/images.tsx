@@ -15,6 +15,8 @@ import IconEstimator from './images/shapes/icon_estimator.svg';
 import IconOther from './images/shapes/icon_other.svg';
 import IconOval from './images/shapes/icon_oval.svg';
 import IconRectangle from './images/shapes/icon_rectangle.svg';
+import IconCheckmark from './images/shapes/icon_checkmark.svg';
+import IconDelete from './images/shapes/icon_delete.svg';
 
 /** */
 export const images = {
@@ -48,7 +50,7 @@ export const images = {
     trends: require('./images/trends.png'),
     pools3: require('./images/pools_3.png'),
     coolDog: require('~/assets/images/dog_in_hat.png'),
-    nameIcon: require('~/assets/images/icon-name.png'),
+    titleIcon: require('~/assets/images/icon-name.png'),
     waterTypeIcon: require('~/assets/images/icon-water-type.png'),
     volumeIcon: require('~/assets/images/icon-volume.png'),
     wallTypeIcon: require('~/assets/images/icon-wall-type.png'),
@@ -76,4 +78,6 @@ export const SVG = {
     Circle: (props: OverrideSvgProps): JSX.Element => <Circle {...props} />,
     Other: (props: OverrideSvgProps): JSX.Element => <Other {...props} />,
     IconEstimator: (props: OverrideSvgProps): JSX.Element => <IconEstimator {...props} />,
+    IconCheckmark: (props: OverrideSvgProps): JSX.Element => <IconCheckmark {...props} />,
+    IconDelete: (props: OverrideSvgProps): JSX.Element => <IconDelete {...props} />,
 };

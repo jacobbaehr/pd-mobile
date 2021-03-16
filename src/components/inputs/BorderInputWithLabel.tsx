@@ -13,7 +13,7 @@ interface BorderInputWithLabel extends TextInputProps {
 const BorderInputWithLabel: React.FC<BorderInputWithLabel> = (props) => {
     const { label, labelStyleProps, textInputStyleProps, ...restTextInputProps } = props;
     const defaultStyle = { ...styles.textInput, ...textInputStyleProps };
-    console.log(defaultStyle);
+    // console.log(defaultStyle);
 
     return (
         <PDView>
