@@ -1,7 +1,5 @@
 import * as React from 'react';
-import {
-    InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet
-} from 'react-native';
+import { InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet } from 'react-native';
 import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { ScreenHeader } from '~/components/headers/ScreenHeader';
@@ -21,9 +19,10 @@ import { Util } from '~/services/Util';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { ReadingConfigureService } from './ReadingConfigureService';
 import { ReadingListFooter } from './ReadingListFooter';
 import { ReadingListItem, ReadingState } from './ReadingListItem';
+import { ReadingListStickyHeader } from './ReadingListStickyHeader';
+import { ReadingListScrollableHeader } from './ReadingListScrollableHeader';
 
 export const ReadingListScreen: React.FC = () => {
     const [isSliding, setIsSliding] = React.useState(false);
@@ -173,8 +172,13 @@ export const ReadingListScreen: React.FC = () => {
         Haptic.light();
     };
 
-    // Really, we shouldn't be using a sectionlist, because there's only 1 section
-    let sections: SectionListData<ReadingState>[] = [{ data: readingStates }];
+    // The first section is just a dummy header thing to enable some fancy scrolling behavior
+    let sections: SectionListData<ReadingState>[] = [
+        // dummy header
+        { data: [], isHeader: true },
+        // actual readings
+        { data: readingStates, isHeader: false },
+    ];
 
     let completed: ReadingState[] = [];
     if (recipe) {
@@ -185,8 +189,6 @@ export const ReadingListScreen: React.FC = () => {
             <ScreenHeader hasBackButton hasAddButton={false}>
                 Readings
             </ScreenHeader>
-            {/* <ReadingListHeader handleBackPress={handleBackPressed} pool={pool} percentComplete={progress} /> */}
-
             <PDView style={styles.container} bgColor="white">
                 <KeyboardAwareSectionList
                     style={StyleSheet.flatten([styles.sectionList, { backgroundColor: theme.blurredBlue }])}
@@ -208,17 +210,34 @@ export const ReadingListScreen: React.FC = () => {
                     sections={sections}
                     keyExtractor={(item) => item.reading.var}
                     contentInsetAdjustmentBehavior={'always'}
-                    stickySectionHeadersEnabled={false}
+                    stickySectionHeadersEnabled={true}
                     canCancelContentTouches={true}
-                    renderSectionFooter={() => (
-                        <ReadingListFooter recipe={recipe || null} pressedChangeRecipe={handleChangeRecipePressed} />
-                    )}
-                    renderSectionHeader={() => (
-                        <ReadingConfigureService
-                            completedLength={completed.length}
-                            missingLength={readingStates.length}
-                        />
-                    )}
+                    renderSectionFooter={({ section }) => {
+                        if (section.isHeader) {
+                            // This can't be a header without moving strangely during overscroll on iOS with sticky
+                            // headers enabled... so, it's rendered as a section-footer.
+                            return <ReadingListScrollableHeader />;
+                        } else {
+                            return (
+                                <ReadingListFooter
+                                    recipe={recipe || null}
+                                    pressedChangeRecipe={handleChangeRecipePressed}
+                                />
+                            );
+                        }
+                    }}
+                    renderSectionHeader={({ section }) => {
+                        if (section.isHeader) {
+                            return <></>;
+                        } else {
+                            return (
+                                <ReadingListStickyHeader
+                                    completedLength={completed.length}
+                                    missingLength={readingStates.length}
+                                />
+                            );
+                        }
+                    }}
                 />
                 <PDView style={styles.bottomButtonContainer} bgColor="white">
                     <BoringButton
@@ -253,7 +272,6 @@ const styles = StyleSheet.create({
     },
     sectionList: {
         flex: 1,
-        paddingTop: 12,
     },
     bottomButtonContainer: {
         borderTopColor: '#F0F0F0',
