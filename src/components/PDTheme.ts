@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 /// For now, this is all colors, named after day-mode:
 export interface PDTheme {
     white: string;
@@ -80,22 +81,3 @@ export const darkTheme: PDTheme = {
 };
 export const PDThemeContext = React.createContext<PDTheme>(lightTheme);
 export const useTheme = () => React.useContext(PDThemeContext);
-// These are so darn convenient to keep here for reference when refactoring:
-// const palette = {
-//     pink: '#FF0073',
-//     red: '#F90000',
-//     orange: '#FF7502',
-//     green: '#00B25C',
-//     teal: '#00AEA0',
-//     blue: '#1E6BFF',
-//     purple: '#B21FF1',
-//     white: '#ffffff',
-//     lightWhite: '#FAFAFA',
-//     black: '#000000',
-//     greyLighter: '#F5F5F5',
-//     greyLight: '#EDEDED',
-//     grey: '#BBBBBB',
-//     greyDark: '#8C8C8C',
-//     greyDarker: '#262626',
-//     blurredRed: '#F9000010',
-// };

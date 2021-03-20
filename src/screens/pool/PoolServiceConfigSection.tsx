@@ -62,50 +62,50 @@ const PoolServiceConfigSection = () => {
         history.length > 0 ? `Last Serviced: ${formatDistanceStrict(history[0].ts, Date.now())} ago` : '';
 
     return (
-        <View style={ styles.container }>
+        <View style={styles.container}>
             <View>
-                <PDText type="default" style={ styles.title }>
+                <PDText type="default" style={styles.title}>
                     Service Config
                 </PDText>
                 <View>
                     <View>
-                        <PDText type="default" style={ styles.subTitle }>
+                        <PDText type="default" style={styles.subTitle}>
                             Recipe
                         </PDText>
-                        <TouchableOpacity onPress={ navigateToRecipes }>
-                            <View style={ styles.row }>
-                                <Text style={ styles.buttonResults } numberOfLines={ 1 } ellipsizeMode="tail">
-                                    { recipe?.name }
+                        <TouchableOpacity onPress={navigateToRecipes}>
+                            <View style={styles.row}>
+                                <Text style={styles.buttonResults} numberOfLines={1} ellipsizeMode="tail">
+                                    {recipe?.name}
                                 </Text>
-                                <Image source={ images.rightArrow } height={ 21 } width={ 22 } style={ styles.arrowImage } />
+                                <Image source={images.rightArrow} height={21} width={22} style={styles.arrowImage} />
                             </View>
                         </TouchableOpacity>
                     </View>
-                    { isEmptyCustom || (
+                    {isEmptyCustom || (
                         <View>
-                            <PDText type="default" style={ styles.subTitle }>
+                            <PDText type="default" style={styles.subTitle}>
                                 Custom Targets
                             </PDText>
-                            <TouchableOpacity onPress={ navigateToCustomTargets }>
-                                <View style={ styles.row }>
-                                    <Text style={ styles.buttonResults } numberOfLines={ 1 } ellipsizeMode="tail">
-                                        { getCustomTargets() }
+                            <TouchableOpacity onPress={navigateToCustomTargets}>
+                                <View style={styles.row}>
+                                    <Text style={styles.buttonResults} numberOfLines={1} ellipsizeMode="tail">
+                                        {getCustomTargets()}
                                     </Text>
                                     <Image
-                                        source={ images.rightArrow }
-                                        height={ 21 }
-                                        width={ 22 }
-                                        style={ styles.arrowImage }
+                                        source={images.rightArrow}
+                                        height={21}
+                                        width={22}
+                                        style={styles.arrowImage}
                                     />
                                 </View>
                             </TouchableOpacity>
                         </View>
-                    ) }
+                    )}
                 </View>
             </View>
-            <BoringButton title="Start Service" onPress={ navigateToReadings } containerStyles={ styles.buttonContainer } />
-            <PDText type="default" style={ styles.lastUpdateText }>
-                { lastTimeUpdate() }
+            <BoringButton title="Start Service" onPress={navigateToReadings} containerStyles={styles.buttonContainer} />
+            <PDText type="default" style={styles.lastUpdateText}>
+                {lastTimeUpdate()}
             </PDText>
         </View>
     );

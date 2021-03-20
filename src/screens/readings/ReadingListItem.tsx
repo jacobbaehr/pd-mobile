@@ -7,6 +7,7 @@ import Slider from 'react-native-slider';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
 import { images } from '~/assets/images';
+import { lightTheme } from '~/components/PDTheme';
 
 import { PDText } from '../../components/PDText';
 import { Reading } from '../../models/recipe/Reading';
@@ -88,12 +89,9 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
                 <View style={styles.content}>
                     <View style={styles.topRow}>
                         <Image style={styles.circleImage} source={leftImageSource} width={28} height={28} />
-
-                        <PDText type="default" style={styles.readingName}>
+                        <PDText style={styles.readingName}>
                             {r.name}
-                            <PDText type="default" style={styles.readingUnits}>
-                                {readingUnitsText}
-                            </PDText>
+                            <PDText style={styles.readingUnits}>{readingUnitsText}</PDText>
                         </PDText>
                         <TextInput
                             style={textInputStyles}
@@ -111,7 +109,7 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
                         maximumValue={r.sliderMax}
                         minimumTrackTintColor="#E3E3E3"
                         maximumTrackTintColor="#E3E3E3"
-                        thumbImage={images.sliderThumbSmall}
+                        thumbImage={images.sliderThumbBlue}
                         onSlidingStart={onSliderStart}
                         onSlidingComplete={onSliderEnd}
                         onValueChange={(value: number) => props.onSliderUpdatedValue(r.var, value)}
@@ -180,7 +178,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#F8F8F8',
         borderRadius: 6,
-        color: '#3910E8',
+        color: lightTheme.blue,
         fontFamily: 'Poppins-Regular',
         fontWeight: '600',
         fontSize: 22,

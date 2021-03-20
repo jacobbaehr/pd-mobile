@@ -5,11 +5,10 @@ export class Util {
     static getDisplayVolume = (gallons: number, settings: DeviceSettings): string => {
         switch (settings.units) {
             case 'us':
-                return `${gallons.toLocaleString(undefined, { maximumFractionDigits: 0 })} Gallons`;
+                return `${Util.abbreviate(gallons)} Gallons`;
             case 'metric':
-                return `${Util.gallonsToLiters(gallons).toLocaleString(undefined, {
-                    maximumFractionDigits: 0,
-                })} Liters`;
+                const castingToLiter = Util.gallonsToLiters(gallons);
+                return `${Util.abbreviate(castingToLiter)} Liters`;
         }
     };
 
@@ -122,5 +121,12 @@ export class Util {
         });
 
         return parseData;
+    };
+
+    static abbreviate = (volume: number): string => {
+        if (volume < 1000) {
+            return volume.toFixed(0);
+        }
+        return `${(volume / 1000).toFixed(0)}K`;
     };
 }

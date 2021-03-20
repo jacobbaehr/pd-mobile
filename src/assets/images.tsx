@@ -2,21 +2,23 @@ import React from 'react';
 import { SvgProps } from 'react-native-svg';
 import { PDColor } from '~/components/PDTheme';
 
+import IconCircleAdd from './images/icons/icon_add.svg';
 // General Icons
 import IconBack from './images/icons/icon_back.svg';
 import IconForward from './images/icons/icon_forward.svg';
+import IconInformation from './images/icons/icon_information.svg';
 import Circle from './images/shapes/big_circle.svg';
 import Other from './images/shapes/big_other.svg';
 import Oval from './images/shapes/big_oval.svg';
 import Rectangle from './images/shapes/big_rectangle.svg';
+import IconCheckmark from './images/shapes/icon_checkmark.svg';
 // Volume Estimator
 import IconCircle from './images/shapes/icon_circle.svg';
+import IconDelete from './images/shapes/icon_delete.svg';
 import IconEstimator from './images/shapes/icon_estimator.svg';
 import IconOther from './images/shapes/icon_other.svg';
 import IconOval from './images/shapes/icon_oval.svg';
 import IconRectangle from './images/shapes/icon_rectangle.svg';
-import IconCheckmark from './images/shapes/icon_checkmark.svg';
-import IconDelete from './images/shapes/icon_delete.svg';
 
 /** */
 export const images = {
@@ -80,4 +82,6 @@ export const SVG = {
     IconEstimator: (props: OverrideSvgProps): JSX.Element => <IconEstimator {...props} />,
     IconCheckmark: (props: OverrideSvgProps): JSX.Element => <IconCheckmark {...props} />,
     IconDelete: (props: OverrideSvgProps): JSX.Element => <IconDelete {...props} />,
+    IconCircleAdd: (props: OverrideSvgProps): JSX.Element => <IconCircleAdd {...props} />,
+    IconInformation: (props: OverrideSvgProps): JSX.Element => <IconInformation {...props} />,
 };

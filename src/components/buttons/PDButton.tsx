@@ -1,19 +1,41 @@
 import React from 'react';
-import { TouchableOpacity, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, ViewProps } from 'react-native';
+import TouchableScale from 'react-native-touchable-scale';
 
 import { PDText } from '../PDText';
+import { PDColor, useTheme } from '../PDTheme';
+import { PDView } from '../PDView';
 
-interface ButtonProps extends ViewStyle {
+interface ButtonProps extends ViewProps {
     onPress: () => void;
     label: string;
+    textStyle: StyleProp<TextStyle>;
+    bgColor?: PDColor;
 }
 
-export const Button: React.FC<ButtonProps> = ({ onPress, label, ...rest }) => {
+export const PDButton: React.FC<ButtonProps> = (props) => {
+    const { onPress, children, style, textStyle, ...rest } = props;
+    const theme = useTheme();
+
+    const backgroundColor = props.bgColor !== undefined ? theme[props.bgColor] : 'transparent';
+    const colorStylesFromTheme = { backgroundColor };
+
+    const viewStyles = StyleSheet.flatten([colorStylesFromTheme, style]);
+
+    const hitSlop = 5;
+
+    const touchableProps = {
+        activeScale: 0.97,
+        hitSlop: { top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop },
+    };
+
     return (
-        <TouchableOpacity onPress={onPress}>
-            <View {...rest}>
-                <PDText type="subHeading">{label}</PDText>
-            </View>
-        </TouchableOpacity>
+        <TouchableScale {...touchableProps} onPress={onPress}>
+            <PDView style={viewStyles} {...rest}>
+                <PDText type="subHeading" style={textStyle}>
+                    {children}
+                </PDText>
+            </PDView>
+        </TouchableScale>
     );
 };

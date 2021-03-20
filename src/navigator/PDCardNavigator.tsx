@@ -4,7 +4,7 @@ import { BuyScreen } from '~/screens/buy/BuyScreen';
 import CustomTargetsScreen from '~/screens/customTargets/CustomTargetsScreen';
 // TODO: change this back to EditPoolScreen when the  new edit pool screen is fully functional
 import { EditPoolScreen } from '~/screens/editPool/EditPoolScreen';
-
+import { EditPoolScreen as EditPoolScreenOld } from '~/screens/editPool/EditPoolScreenOld';
 import { PoolScreen } from '~/screens/pool/PoolScreen';
 import { PoolListScreen } from '~/screens/poolList/PoolListScreen';
 import { ReadingListScreen } from '~/screens/readings/ReadingListScreen';
@@ -25,7 +25,7 @@ export type PDCardNavigatorParams = {
     ReadingList: undefined;
     TreatmentList: undefined;
     Settings: undefined;
-    RecipeList: { prevScreen: 'ReadingList' | 'PoolScreen' | 'EditPoolScreen'};
+    RecipeList: { prevScreen: 'ReadingList' | 'PoolScreen' | 'EditPoolScreen' };
     RecipeDetails: { recipeKey: RecipeKey; prevScreen: 'ReadingList' | 'PoolScreen' | 'EditPoolScreen' };
     PoolHistory: undefined;
     Buy: undefined;
@@ -37,19 +37,19 @@ const CardStack = createStackNavigator<PDCardNavigatorParams>();
 export const PDCardNavigator = (): JSX.Element => {
     return (
         <CardStack.Navigator headerMode="none" mode="card">
-            <CardStack.Screen name="PoolList" component={ PoolListScreen } />
-            <CardStack.Screen name="CreatePool" component={ EditPoolScreen } />
-            <CardStack.Screen name="PoolScreen" component={ PoolScreen } />
-            <CardStack.Screen name="EditPool" component={ EditPoolScreen } />
-            <CardStack.Screen name="ReadingList" component={ ReadingListScreen } />
-            <CardStack.Screen name="TreatmentList" component={ TreatmentListScreen } />
-            <CardStack.Screen name="RecipeList" component={ RecipeListScreen } />
-            <CardStack.Screen name="RecipeDetails" component={ RecipeScreen } />
-            <CardStack.Screen name="PoolHistory" component={ PoolHistoryScreen } />
-            <CardStack.Screen name="Settings" component={ SettingsScreen } />
-            <CardStack.Screen name="Buy" component={ BuyScreen } />
-            <CardStack.Screen name="CustomTargets" component={ CustomTargetsScreen } />
-            {/* <Stack.Screen name="PurchasePro" component={ PurchaseProStack } /> */ }
+            <CardStack.Screen name="PoolList" component={PoolListScreen} />
+            <CardStack.Screen name="CreatePool" component={EditPoolScreenOld} />
+            <CardStack.Screen name="PoolScreen" component={PoolScreen} />
+            <CardStack.Screen name="EditPool" component={EditPoolScreen} />
+            <CardStack.Screen name="ReadingList" component={ReadingListScreen} />
+            <CardStack.Screen name="TreatmentList" component={TreatmentListScreen} />
+            <CardStack.Screen name="RecipeList" component={RecipeListScreen} />
+            <CardStack.Screen name="RecipeDetails" component={RecipeScreen} />
+            <CardStack.Screen name="PoolHistory" component={PoolHistoryScreen} />
+            <CardStack.Screen name="Settings" component={SettingsScreen} />
+            <CardStack.Screen name="Buy" component={BuyScreen} />
+            <CardStack.Screen name="CustomTargets" component={CustomTargetsScreen} />
+            {/* <Stack.Screen name="PurchasePro" component={ PurchaseProStack } /> */}
         </CardStack.Navigator>
     );
 };
