@@ -10,18 +10,67 @@ import { useNavigation } from '@react-navigation/native';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { useState } from 'react';
 import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
+import { useThunkDispatch, useTypedSelector } from '~/redux/AppState';
+import { Pool } from '~/models/Pool';
+import { updatePool } from '~/redux/selectedPool/Actions';
+import { DeviceSettings } from '~/models/DeviceSettings';
+import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
+import { DeviceSettingsService } from '~/services/DeviceSettingsService';
+import { Util } from '~/services/Util';
 
 export const EditVolume = () => {
+    const selectedPool = useTypedSelector((state) => state.selectedPool) as Pool;
+    const deviceSettings = useTypedSelector((state) => state.deviceSettings) as DeviceSettings;
+    const [volume, setVolume] = useState(() => {
+        return deviceSettings.units === 'us' ? selectedPool.gallons : Util.gallonsToLiters(selectedPool.gallons);
+    });
+    const [buttonDisabled, setButtonDisabled] = useState(true);
+    const dispatch = useThunkDispatch();
+
     const navigation = useNavigation<PDStackNavigationProps>();
     const keyboardAccessoryViewId = 'keyboardaccessoryidpooleditscreen2';
 
-    const handleKeyboardPressed = () => {
+    const getUnitsFromDeviceSettings = () => {
+        let result;
+        if (deviceSettings.units === 'us') {
+            result = 'Gallons';
+        } else {
+            result = 'Liters';
+        }
+        return result;
+    };
+
+    const [units, setUnits] = useState(getUnitsFromDeviceSettings());
+
+    const getUnitSystemForDeviceSettings = (): 'us' | 'metric' => {
+        let result: 'metric' | 'us';
+        if (units === 'Gallons') {
+            result = 'us';
+        } else {
+            result = 'metric';
+        }
+        return result;
+    };
+
+    const handleOnPressSaveButton = () => {
+        const rawPool: Pool = { ...selectedPool, gallons: units === 'Gallons' ? volume : Util.litersToGallons(volume) };
+
+        const existingPool = Pool.make(rawPool);
+        dispatch(updatePool(existingPool));
+
+        const newSettings: DeviceSettings = {
+            ...deviceSettings,
+            units: getUnitSystemForDeviceSettings(),
+        };
+        dispatch(updateDeviceSettings(newSettings));
+        DeviceSettingsService.saveSettings(newSettings);
+
         navigation.goBack();
     };
 
-    const [buttonDisabled, setButtonDisabled] = useState(true);
-
-    const textChanged = (text: string) => {
+    const handleTextChanged = (text: string) => {
+        let input = Number(text);
+        setVolume(input);
         if (text === '') {
             setButtonDisabled(true);
         } else {
@@ -29,29 +78,32 @@ export const EditVolume = () => {
         }
     };
 
-    const [units, setUnits] = useState('Gallons');
-
-    const unitButtonPressed = () => {
+    const handleUnitButtonPressed = () => {
+        setButtonDisabled(false);
         if (units === 'Gallons') {
             setUnits('Liters');
+            setVolume(Util.gallonsToLiters(volume));
         } else {
             setUnits('Gallons');
+            setVolume(Util.litersToGallons(volume));
         }
     };
 
-    const estimatorButtonPressed = () => {
-        navigation.navigate('PDVolumesNavigator');
+    const handleEstimatorButtonPressed = () => {
+        navigation.push('PDVolumesNavigator');
     };
 
     return (
         <PDView>
             <PDView style={styles.inputContainer}>
                 <BorderInputWithLabel
+                    value={volume.toFixed(0)}
                     placeholder="Pool Volume"
                     label="Volume"
                     style={styles.textInput}
-                    onChangeText={textChanged}
+                    onChangeText={handleTextChanged}
                     autoFocus
+                    keyboardType="number-pad"
                     inputAccessoryViewID={keyboardAccessoryViewId}
                 />
                 <PDView>
@@ -63,14 +115,14 @@ export const EditVolume = () => {
                         textStyles={styles.unitButtonText}
                         textColor="pink"
                         title={units}
-                        onPress={unitButtonPressed}
+                        onPress={handleUnitButtonPressed}
                     />
                 </PDView>
             </PDView>
             <PDText type="default" style={styles.notSure}>
                 NOT SURE?
             </PDText>
-            <ButtonWithChildren onPress={estimatorButtonPressed}>
+            <ButtonWithChildren onPress={handleEstimatorButtonPressed}>
                 <PDView style={styles.estimatorButtonContainer}>
                     <SVG.IconEstimator width={16} height={16} fill="#000000" />
                     <PDText style={styles.estimatorButtonText}> Use Volume Estimator</PDText>
@@ -87,7 +139,7 @@ export const EditVolume = () => {
                             textStyles={styles.saveText}
                             textColor={buttonDisabled ? 'black' : 'white'}
                             title="Save"
-                            onPress={handleKeyboardPressed}
+                            onPress={handleOnPressSaveButton}
                             disabled={buttonDisabled}
                         />
                     </PDView>

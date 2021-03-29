@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
@@ -7,8 +8,23 @@ import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
 import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
+import { Pool } from '~/models/Pool';
+import { PDStackNavigationProps } from '~/navigator/shared';
+import { useThunkDispatch, useTypedSelector } from '~/redux/AppState';
+import { deletePool } from '~/redux/selectedPool/Actions';
 
 export const DeletePool = ({ visible, toggleVisible }) => {
+    const selectedPool = useTypedSelector((state) => state.selectedPool) as Pool;
+    const navigation = useNavigation<PDStackNavigationProps>();
+    const dispatch = useThunkDispatch();
+
+    const onPressDelete = () => {
+        toggleVisible();
+        navigation.navigate('PoolList');
+
+        dispatch(deletePool(selectedPool));
+    };
+
     return (
         <PDView style={styles.modalContainer}>
             <Modal isVisible={visible}>
@@ -19,15 +35,15 @@ export const DeletePool = ({ visible, toggleVisible }) => {
                         </PDText>
                         <PDView style={styles.warning}>
                             <PDText type="bodyRegular" color="red" style={styles.warningText}>
-                                Continuing will permanently delete poolName. This cannot be undone.
+                                Continuing will permanently delete {selectedPool?.name}. This cannot be undone.
                             </PDText>
                         </PDView>
                         <ButtonWithChildren
                             // title="Delete PoolName's Pool"
-                            onPress={toggleVisible}>
+                            onPress={onPressDelete}>
                             <PDView style={styles.deleteButton}>
                                 <SVG.IconDelete width={16} height={16} fill="white" />
-                                <PDText style={styles.deleteButtonText}> Delete Poolname</PDText>
+                                <PDText style={styles.deleteButtonText}> Delete {selectedPool?.name}</PDText>
                             </PDView>
                         </ButtonWithChildren>
                         <Button

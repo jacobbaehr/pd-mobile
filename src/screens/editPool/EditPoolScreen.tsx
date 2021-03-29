@@ -5,30 +5,28 @@ import { MenuItemButton } from '~/components/buttons/MenuItemButton';
 import { PDText } from '~/components/PDText';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { Pool } from '~/models/Pool';
-import { PDNavParams } from '~/navigator/shared';
-import { PickerState } from '~/redux/picker/PickerState';
+import { PDStackNavigationProps } from '~/navigator/shared';
 
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 
-import { editPoolSectionInfo } from './SectionInfo';
 import { DeletePool } from './DeletePool';
 import { useModal } from '~/hooks/useModal';
 
-interface EditPoolScreenProps {
-    navigation: StackNavigationProp<PDNavParams, 'EditPool'>;
-    selectedPool: Pool | null;
-    pickerState: PickerState | null;
-    deviceSettings: DeviceSettings;
-}
+import { useTypedSelector } from '~/redux/AppState';
+import { EditPoolSectionInfo, usePoolSectionInfo } from './EditPoolSectionInfo';
 
 const ListHeader = () => {
     return <View style={styles.listHeader} />;
 };
 
-export const EditPoolScreen: React.FunctionComponent<EditPoolScreenProps> = () => {
-    const navigation = useNavigation();
+export const EditPoolScreen: React.FunctionComponent = () => {
+    const navigation = useNavigation<PDStackNavigationProps>();
+
     const { visible, toggleVisible } = useModal();
+    const selectedPool = useTypedSelector((state) => state.selectedPool) as Pool;
+    const deviceSettings = useTypedSelector((state) => state.deviceSettings) as DeviceSettings;
+    const editPoolSectionInfo: EditPoolSectionInfo[] = usePoolSectionInfo(selectedPool, deviceSettings, toggleVisible);
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -44,9 +42,9 @@ export const EditPoolScreen: React.FunctionComponent<EditPoolScreenProps> = () =
             <View style={styles.listContainer}>
                 <SectionList
                     sections={editPoolSectionInfo}
-                    renderSectionHeader={({ section: { headerText } }) => (
+                    renderSectionHeader={({ section: { title } }) => (
                         <PDText type="default" style={styles.sectionHeaderText}>
-                            {headerText}
+                            {title}
                         </PDText>
                     )}
                     renderItem={({ item, index, section }) => {
@@ -55,13 +53,12 @@ export const EditPoolScreen: React.FunctionComponent<EditPoolScreenProps> = () =
                                 {...item}
                                 index={index}
                                 sectionLength={section.data.length}
-                                visible={visible}
                                 toggleVisible={toggleVisible}
                             />
                         );
                     }}
                     ListHeaderComponent={ListHeader}
-                    keyExtractor={(item, index) => item.title + index}
+                    keyExtractor={(item, index) => item.id + index}
                     stickySectionHeadersEnabled={false}
                     contentContainerStyle={styles.list}
                 />

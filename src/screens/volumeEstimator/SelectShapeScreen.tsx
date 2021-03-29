@@ -22,11 +22,13 @@ const SelectShapeScreen = () => {
         const Icon = SVG[item.icon];
         return (
             <TouchableOpacity style={styles.itemContainer} onPress={() => handlePressedShape(item.id)}>
-                <View style={ styles.itemContainer } />
+                <View style={styles.itemContainer} />
                 <View style={styles.itemInnerContainer}>
                     <Icon width={32} height={32} />
                     <View style={styles.itemTextContainer}>
-                    <PDText type={ 'default' } style={ styles.itemLabelText }>{ item.label }</PDText>
+                        <PDText type={'default'} style={styles.itemLabelText}>
+                            {item.label}
+                        </PDText>
                     </View>
                 </View>
                 <SVG.IconForward fill="#BBBBBB" width={18} height={18} />
@@ -37,7 +39,7 @@ const SelectShapeScreen = () => {
 
     const HeaderList = () => {
         return (
-            <PDText type="bodyBold" style={ styles.headerText }>
+            <PDText type="bodyBold" style={styles.headerText}>
                 Choose pool Shape
             </PDText>
         );
@@ -48,16 +50,16 @@ const SelectShapeScreen = () => {
             <ModalHeader>Volume Estimator</ModalHeader>
             <View style={styles.content}>
                 <View>
-                    <PDText type="bodyRegular" color="greyDarker" style={ styles.description } numberOfLines={ 2 }>
+                    <PDText type="bodyRegular" color="greyDarker" style={styles.description} numberOfLines={2}>
                         Don’t know your pool’s volume? Tap “Use Volume Estimator” below.
                     </PDText>
                 </View>
                 <FlatList
-                    data={ shapes }
-                    renderItem={ renderItem }
-                    keyExtractor={ (item) => item.id }
-                    ListHeaderComponent={ HeaderList }
-                    ListHeaderComponentStyle={ styles.headerContainer }
+                    data={shapes}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id}
+                    ListHeaderComponent={HeaderList}
+                    ListHeaderComponentStyle={styles.headerContainer}
                 />
             </View>
         </View>

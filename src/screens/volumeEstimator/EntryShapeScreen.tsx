@@ -3,7 +3,7 @@ import { KeyboardAvoidingView, StyleSheet, useWindowDimensions, View } from 'rea
 import { SVG } from '~/assets/images';
 import ModalHeader from '~/components/headers/ModalHeader';
 import { useTheme } from '~/components/PDTheme';
-import { EstimateRoute } from '~/navigator/PDVolumesNavigator';
+import { EstimateRoute } from '~/navigator/PDVolumeNavigator';
 
 import { useRoute } from '@react-navigation/native';
 

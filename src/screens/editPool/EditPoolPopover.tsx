@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteProp } from '@react-navigation/native';
 
-import { editPopoverContent } from './PopoverContent';
+import { editPopoverContentResolverFunction } from './PopoverContent';
 import { useRoute } from '@react-navigation/native';
 import { PDRootNavigatorParams } from '~/navigator/PDRootNavigator';
 import { EditPoolPropertyWrapper } from './EditPoolPropertyWrapper';
@@ -23,35 +23,27 @@ export const popoverProps = {
         title: 'Edit Water Type',
         description: 'Splash!',
     },
-    volume: {
-        id: 'volume',
+    gallons: {
+        id: 'gallons',
         title: 'Edit Pool Volume',
         description: 'Don\'t know your pool\'s volume? Tap "Use Volume Estimator" below.',
     },
     wallType: {
         id: 'wallType',
         title: 'Edit Wall Type',
-        description: 'Crunch!',
+        description: 'Choose a Wall Type',
     },
     recipe: {
         id: 'recipe',
-        title: '',
-        description: '',
     },
     customTargets: {
         id: 'customTargets',
-        title: '',
-        description: '',
     },
     importData: {
         id: 'importData',
-        title: '',
-        description: '',
     },
     deletePool: {
         id: 'deletePool',
-        title: '',
-        description: '',
     },
 };
 
@@ -59,9 +51,7 @@ export const EditPoolPopover = () => {
     const route = useRoute<RouteProp<PDRootNavigatorParams, 'EditPoolPopover'>>();
     const { headerInfo } = route.params;
 
-    //TODO: Rename THIS To content
-    //rename editpopovercontent to something re-function
-    const content = editPopoverContent[headerInfo.id]();
+    const content = editPopoverContentResolverFunction[headerInfo.id]();
 
     return (
         <EditPoolPropertyWrapper title={headerInfo.title} description={headerInfo.description}>

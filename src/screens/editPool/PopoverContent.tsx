@@ -4,18 +4,16 @@ import { EditVolume } from './EditVolume';
 import { EditWallType } from './EditWallType';
 import { EditWaterType } from './EditWaterType';
 
-
-
 interface PopoverContent {
     name: () => JSX.Element;
     waterType: () => JSX.Element;
-    volume: () => JSX.Element;
+    gallons: () => JSX.Element;
     wallType: () => JSX.Element;
 }
 
-export const editPopoverContent: PopoverContent = {
+export const editPopoverContentResolverFunction: PopoverContent = {
     name: () => <EditName />,
     waterType: () => <EditWaterType />,
-    volume: () => <EditVolume />,
+    gallons: () => <EditVolume />,
     wallType: () => <EditWallType />,
 };

@@ -2,46 +2,59 @@ import React, { useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { PDView } from '~/components/PDView';
 import { Button } from '~/components/buttons/Button';
-import { waterTypeOptions } from '~/models/Pool/WaterType';
+import { waterTypeOptions, WaterTypeValue } from '~/models/Pool/WaterType';
 import { SVG } from '~/assets/images';
-import { MenuItem } from '~/components/buttons/MenuItemButton';
-import {lightTheme} from '~/components/PDTheme';
+import { lightTheme } from '~/components/PDTheme';
 import { useNavigation } from '@react-navigation/native';
 import { PDStackNavigationProps } from '~/navigator/shared';
-
+import { useThunkDispatch, useTypedSelector } from '~/redux/AppState';
+import { Pool } from '~/models/Pool';
+import { updatePool } from '~/redux/selectedPool/Actions';
 
 export const EditWaterType = () => {
+    const selectedPool = useTypedSelector((state) => state.selectedPool) as Pool;
+    const [waterType, setWaterType] = useState(selectedPool.waterType ?? 'chlorine');
+    const dispatch = useThunkDispatch();
     const navigation = useNavigation<PDStackNavigationProps>();
-    //default is chlorine right now
-    const [selected, setSelected] = useState('chlorine');
 
-    const buttonSelected = (menuItem: MenuItem) => {
-        setSelected(menuItem);
+    const handleButtonSelected = (menuItem: WaterTypeValue) => {
+        setWaterType(menuItem);
+
+        const rawPool: Pool = {
+            ...selectedPool,
+            waterType: menuItem,
+        };
+
+        const existingPool = Pool.make(rawPool);
+        dispatch(updatePool(existingPool));
 
         setTimeout(() => {
             navigation.goBack();
         }, 300);
-
     };
-
-    //if value == selected, then render selected styles
 
     return (
         <PDView>
-
             <FlatList
-                data={ waterTypeOptions }
-                renderItem={ ({ item }) => (
-                    <PDView style={ selected === item.value ? styles.selectedButtonContainer : styles.buttonContainer }>
-                        <Button textStyles={ selected === item.value ? styles.selectedText : styles.unselectedText } title={ item.display } onPress={ () => { buttonSelected(item.value); } } />
-                        { selected === item.value ? <SVG.IconCheckmark width={ 24 } height={ 24 } fill="white" style={ styles.checkmark } /> : null }
+                data={waterTypeOptions}
+                renderItem={({ item }) => (
+                    <PDView style={waterType === item.value ? styles.selectedButtonContainer : styles.buttonContainer}>
+                        <Button
+                            textStyles={waterType === item.value ? styles.selectedText : styles.unselectedText}
+                            title={item.display}
+                            onPress={() => {
+                                handleButtonSelected(item.value);
+                            }}
+                        />
+                        {waterType === item.value ? (
+                            <SVG.IconCheckmark width={24} height={24} fill="white" style={styles.checkmark} />
+                        ) : null}
                     </PDView>
-                ) }
-                keyExtractor={ (item) => item.value }
-                ItemSeparatorComponent={ () => <PDView style={ styles.separator } /> }
-                contentContainerStyle={ styles.list }
+                )}
+                keyExtractor={(item) => item.value}
+                ItemSeparatorComponent={() => <PDView style={styles.separator} />}
+                contentContainerStyle={styles.list}
             />
-
         </PDView>
     );
 };

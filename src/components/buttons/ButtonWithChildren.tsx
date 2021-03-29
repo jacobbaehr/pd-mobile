@@ -2,6 +2,7 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
+import { PDColor } from '../PDTheme';
 
 interface ButtonProps {
     onPress: () => void;
@@ -10,32 +11,30 @@ interface ButtonProps {
 
     textStyles?: any;
 
-    textColor?: any;
+    textColor?: PDColor;
 
     disabled?: boolean;
 
     hitSlop?: number;
 }
 
-export class ButtonWithChildren extends React.Component<ButtonProps, {}> {
-    handleButtonPress = () => {
-        this.props.onPress();
+export const ButtonWithChildren: React.FunctionComponent<ButtonProps> = (props) => {
+    const handleButtonPress = () => {
+        props.onPress();
     };
 
-    render() {
-        const slop = this.props.hitSlop || 0;
-        return (
-            <TouchableScale
-                style={[styles.container, this.props.styles]}
-                onPress={this.handleButtonPress}
-                disabled={this.props.disabled}
-                activeScale={0.97}
-                hitSlop={{ top: slop, left: slop, bottom: slop, right: slop }}>
-                {this.props.children}
-            </TouchableScale>
-        );
-    }
-}
+    const slop = props.hitSlop || 0;
+    return (
+        <TouchableScale
+            style={[styles.container, props.styles]}
+            onPress={handleButtonPress}
+            disabled={props.disabled}
+            activeScale={0.97}
+            hitSlop={{ top: slop, left: slop, bottom: slop, right: slop }}>
+            {props.children}
+        </TouchableScale>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {},

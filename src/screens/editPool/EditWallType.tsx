@@ -2,20 +2,31 @@ import React, { useState } from 'react';
 import { PDView } from '~/components/PDView';
 import { Button } from '~/components/buttons/Button';
 import { FlatList, StyleSheet } from 'react-native';
-import { wallTypeOptions } from '~/models/Pool/WallType';
+import { wallTypeOptions, WallTypeValue } from '~/models/Pool/WallType';
 import { SVG } from '~/assets/images';
 import { useNavigation } from '@react-navigation/native';
 import { PDStackNavigationProps } from '~/navigator/shared';
-import { MenuItem } from '~/components/buttons/MenuItemButton';
+import { useThunkDispatch, useTypedSelector } from '~/redux/AppState';
+import { Pool } from '~/models/Pool';
+import { updatePool } from '~/redux/selectedPool/Actions';
 
 export const EditWallType = () => {
+    const selectedPool = useTypedSelector((state) => state.selectedPool) as Pool;
+    const [wallType, setWallType] = useState(selectedPool.wallType ?? 'vinyl');
+
+    const dispatch = useThunkDispatch();
     const navigation = useNavigation<PDStackNavigationProps>();
 
-    //default for now is vinyl
-    const [selected, setSelected] = useState('vinyl');
+    const handleButtonSelected = (menuItem: WallTypeValue) => {
+        setWallType(menuItem);
 
-    const buttonSelected = (menuItem: MenuItem) => {
-        setSelected(menuItem);
+        const rawPool: Pool = {
+            ...selectedPool,
+            wallType: menuItem,
+        };
+
+        const existingPool = Pool.make(rawPool);
+        dispatch(updatePool(existingPool));
 
         setTimeout(() => {
             navigation.goBack();
@@ -27,15 +38,15 @@ export const EditWallType = () => {
             <FlatList
                 data={wallTypeOptions}
                 renderItem={({ item }) => (
-                    <PDView style={selected === item.value ? styles.selectedButtonContainer : styles.buttonContainer}>
+                    <PDView style={wallType === item.value ? styles.selectedButtonContainer : styles.buttonContainer}>
                         <Button
-                            textStyles={selected === item.value ? styles.selectedText : styles.unselectedText}
+                            textStyles={wallType === item.value ? styles.selectedText : styles.unselectedText}
                             title={item.display}
                             onPress={() => {
-                                buttonSelected(item.value);
+                                handleButtonSelected(item.value);
                             }}
                         />
-                        {selected === item.value ? (
+                        {wallType === item.value ? (
                             <SVG.IconCheckmark width={24} height={24} fill="white" style={styles.checkmark} />
                         ) : null}
                     </PDView>

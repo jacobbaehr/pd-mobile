@@ -29,7 +29,7 @@ interface TargetFormFields {
  */
 const CustomTargetsItem: React.FC<CustomTargetsItemProps> = ({ tr }) => {
     const pool = useSelector<AppState>((state) => state.selectedPool) as Pool;
-    const locallySavedOverride = useRealmPoolTargetRange(pool.objectId, tr.var);     // ?? ({} as TargetRangeOverride);
+    const locallySavedOverride = useRealmPoolTargetRange(pool.objectId, tr.var); // ?? ({} as TargetRangeOverride);
 
     // The min & max will sometimes be equal to the defaults, but we need to determine both for the sake of comparison
     const recipeDefaults = TargetsHelper.resolveMinMax(tr, pool.wallType, null);
@@ -37,13 +37,13 @@ const CustomTargetsItem: React.FC<CustomTargetsItemProps> = ({ tr }) => {
 
     // We use empty-strings for defaults (to show the placeholder)
     const [formValues, setFormValues] = React.useState<TargetFormFields>({
-        min: (min === recipeDefaults.min) ? '' : `${min}`,
-        max: (max === recipeDefaults.max) ? '' : `${max}`,
+        min: min === recipeDefaults.min ? '' : `${min}`,
+        max: max === recipeDefaults.max ? '' : `${max}`,
     });
 
     // Check for errors:
-    const effectiveMinValue = (formValues.min.length) ? +formValues.min : recipeDefaults.min;
-    const effectiveMaxValue = (formValues.max.length) ? +formValues.max : recipeDefaults.max;
+    const effectiveMinValue = formValues.min.length ? +formValues.min : recipeDefaults.min;
+    const effectiveMaxValue = formValues.max.length ? +formValues.max : recipeDefaults.max;
     const isValid = effectiveMaxValue >= effectiveMinValue;
 
     const isDefault = (field: 'min' | 'max'): Boolean => {
@@ -68,7 +68,7 @@ const CustomTargetsItem: React.FC<CustomTargetsItemProps> = ({ tr }) => {
         }
 
         const newLocalOverride = {
-            objectId: locallySavedOverride?.objectId ?? null,   /// If this is null, the DB should create a new object
+            objectId: locallySavedOverride?.objectId ?? null, /// If this is null, the DB should create a new object
             min: formValues.min.length ? +formValues.min : recipeDefaults.min,
             max: formValues.max.length ? +formValues.max : recipeDefaults.max,
             poolId: pool.objectId,
@@ -94,50 +94,50 @@ const CustomTargetsItem: React.FC<CustomTargetsItemProps> = ({ tr }) => {
     const enableResetButton = !isDefault('min') || !isDefault('max');
 
     return (
-        <PDView style={ styles.container } bgColor="white">
-            <PDView style={ styles.topRow }>
+        <PDView style={styles.container} bgColor="white">
+            <PDView style={styles.topRow}>
                 <PDText type="bodyMedium" color="black">
-                    { tr.name }
+                    {tr.name}
                 </PDText>
                 <TextButton
                     text="Reset"
-                    onPress={ reset }
-                    disabled={ !enableResetButton }
-                    containerStyles={ styles.buttonContainer }
-                    textStyles={ [styles.buttonText, enableResetButton && styles.activeButton] }
+                    onPress={reset}
+                    disabled={!enableResetButton}
+                    containerStyles={styles.buttonContainer}
+                    textStyles={[styles.buttonText, enableResetButton && styles.activeButton]}
                 />
             </PDView>
             <PDView>
-                <PDView style={ styles.inputRow }>
+                <PDView style={styles.inputRow}>
                     <BorderInputWithLabel
                         label="min"
-                        placeholder={ `${recipeDefaults.min}` }
-                        placeholderTextColor={ '#BBBBBB' }
-                        onChangeText={ (text) => handleTextChange('min', text) }
-                        value={ formValues.min }
+                        placeholder={`${recipeDefaults.min}`}
+                        placeholderTextColor={'#BBBBBB'}
+                        onChangeText={(text) => handleTextChange('min', text)}
+                        value={formValues.min}
                         keyboardType="numeric"
-                        onBlur={ handleBlur }
+                        onBlur={handleBlur}
                     />
                     <BorderInputWithLabel
                         label="max"
-                        placeholder={ `${recipeDefaults.max}` }
-                        placeholderTextColor={ '#BBBBBB' }
-                        onChangeText={ (text) => handleTextChange('max', text) }
-                        value={ formValues.max }
+                        placeholder={`${recipeDefaults.max}`}
+                        placeholderTextColor={'#BBBBBB'}
+                        onChangeText={(text) => handleTextChange('max', text)}
+                        value={formValues.max}
                         keyboardType="numeric"
-                        onBlur={ handleBlur }
+                        onBlur={handleBlur}
                     />
                 </PDView>
-                { !isValid && (
-                    <PDView bgColor="blurredRed" style={ styles.errorContainer }>
+                {!isValid && (
+                    <PDView bgColor="blurredRed" style={styles.errorContainer}>
                         <PDText type="bodyBold" color="red">
                             Your target’s min value cannot greater than the max value
                         </PDText>
                     </PDView>
-                ) }
+                )}
                 <PDView>
-                    <PDText numberOfLines={ 3 } type="bodyRegular" color="grey">
-                        { tr.description }
+                    <PDText numberOfLines={3} type="bodyRegular" color="grey">
+                        {tr.description}
                     </PDText>
                 </PDView>
             </PDView>

@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import TouchableScale from 'react-native-touchable-scale';
 
 import { PDText } from '~/components/PDText';
-
+import { PDColor } from '../PDTheme';
 
 interface ButtonProps {
     title: string;
@@ -15,7 +15,7 @@ interface ButtonProps {
 
     textStyles?: any;
 
-    textColor?: any;
+    textColor?: PDColor;
 
     disabled?: boolean;
 
@@ -38,7 +38,7 @@ export class Button extends React.Component<ButtonProps, {}> {
                 hitSlop={{ top: slop, left: slop, bottom: slop, right: slop }}>
                 <PDText
                     type="default"
-                    color={this.props.textColor ? this.props.textColor : 'white'}
+                    color={this.props.textColor ?? 'white'}
                     style={this.props.textStyles ? this.props.textStyles : styles.text}>
                     {this.props.title}
                 </PDText>

@@ -1,6 +1,5 @@
 import { Pool } from '~/models/Pool';
 import { Database } from '~/repository/Database';
-
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const saveNewPool = createAsyncThunk('pool/save', (pool: Pool) => {
@@ -24,15 +23,3 @@ export const deletePool = createAsyncThunk('pool/delete', (pool: Pool) => {
 });
 
 export const clearPool = createAction('pool/clear');
-
-// const handleUpdateExitingPool = () => {
-//     const dispatch = useThunkDispatch();
-//     const rawgPool: Partial<Pool> = {
-//         name: 'Pair Promgin',
-//         objectId: '123123',
-//     };
-
-//     const exisitngPool = Pool.make(rawgPool);
-
-//     disaptch(updatePool(exisitngPool));
-// };

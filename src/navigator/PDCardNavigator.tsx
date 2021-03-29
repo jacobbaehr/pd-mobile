@@ -2,7 +2,6 @@ import * as React from 'react';
 import { RecipeKey } from '~/models/recipe/RecipeKey';
 import { BuyScreen } from '~/screens/buy/BuyScreen';
 import CustomTargetsScreen from '~/screens/customTargets/CustomTargetsScreen';
-// TODO: change this back to EditPoolScreen when the  new edit pool screen is fully functional
 import { EditPoolScreen } from '~/screens/editPool/EditPoolScreen';
 import { EditPoolScreen as EditPoolScreenOld } from '~/screens/editPool/EditPoolScreenOld';
 import { PoolScreen } from '~/screens/pool/PoolScreen';
@@ -25,8 +24,8 @@ export type PDCardNavigatorParams = {
     ReadingList: undefined;
     TreatmentList: undefined;
     Settings: undefined;
-    RecipeList: { prevScreen: 'ReadingList' | 'PoolScreen' | 'EditPoolScreen' };
-    RecipeDetails: { recipeKey: RecipeKey; prevScreen: 'ReadingList' | 'PoolScreen' | 'EditPoolScreen' };
+    RecipeList: { prevScreen: 'ReadingList' | 'PoolScreen' | 'EditPool' };
+    RecipeDetails: { recipeKey: RecipeKey; prevScreen: 'ReadingList' | 'PoolScreen' | 'EditPool' };
     PoolHistory: undefined;
     Buy: undefined;
     CustomTargets: undefined;

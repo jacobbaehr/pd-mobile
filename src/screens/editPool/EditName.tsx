@@ -5,41 +5,37 @@ import BorderInputWithLabel from '~/components/inputs/BorderInputWithLabel';
 import { Button } from '~/components/buttons/Button';
 import { useNavigation } from '@react-navigation/native';
 import { PDStackNavigationProps } from '~/navigator/shared';
-import { useTypedSelector } from '~/redux/AppState';
-// import { selectPool, updatePool } from '~/redux/selectedPool/Actions';
-// import { Pool } from '~/models/Pool';
+import { useThunkDispatch, useTypedSelector } from '~/redux/AppState';
+import { updatePool } from '~/redux/selectedPool/Actions';
+import { Pool } from '~/models/Pool';
 
 export const EditName = () => {
+    const dispatch = useThunkDispatch();
     const navigation = useNavigation<PDStackNavigationProps>();
     const keyboardAccessoryViewId = 'keyboardaccessoryidpooleditscreen1';
-    const selectedPool = useTypedSelector((state) => state.selectedPool);
-
+    const selectedPool = useTypedSelector((state) => state.selectedPool) as Pool;
+    const [name, setName] = useState(selectedPool?.name ?? '');
     const goBack = () => {
         navigation.goBack();
     };
 
     const handleOnPressSaveButton = () => {
+        const rawPool: Pool = { ...selectedPool, name };
+
+        const existingPool = Pool.make(rawPool);
+        dispatch(updatePool(existingPool));
+
         goBack();
-
-        // const rawPool: Pool = { ...selectPool, name: { name } };
-
-        // const existingPool = Pool.make(rawPool);
-        // dispatch(updatePool(existingPool));
     };
 
-    const [name, setName] = useState(selectedPool?.name ? selectedPool?.name : '');
-
-    //save button state
     const [buttonDisabled, setButtonDisabled] = useState(true);
 
     const textChanged = (text: string) => {
         setName(text);
         if (text === '') {
             setButtonDisabled(true);
-            // setButtonState({ color: 'greyLight', textColor: 'black', disabled: true, opacity: 0.3 });
         } else {
             setButtonDisabled(false);
-            // setButtonState({ color: 'blue', textColor: 'white', disabled: false, opacity: 1 });
         }
     };
 
