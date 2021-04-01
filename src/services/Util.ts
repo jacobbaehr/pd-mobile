@@ -129,4 +129,8 @@ export class Util {
         }
         return `${(volume / 1000).toFixed(0)}K`;
     };
+
+    static generateTimestamp = () => {
+        return new Date().getTime();
+    };
 }

@@ -1,11 +1,16 @@
 import * as React from 'react';
-import { InputAccessoryView, Keyboard, LayoutAnimation, SafeAreaView, StyleSheet, View } from 'react-native';
+import {
+    InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet, View
+} from 'react-native';
 import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import { BoringButton } from '~/components/buttons/BoringButton';
+import { ScreenHeader } from '~/components/headers/ScreenHeader';
+import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { PlatformSpecific } from '~/components/PlatformSpecific';
+import { ServiceNonStickyHeader } from '~/components/services/ServiceNonStickyHeader';
+import { ServiceStickyHeaderList } from '~/components/services/ServiceStickyHeaderList';
 import { useRealmPoolTargetRangesForPool, useRecipeHook } from '~/hooks/RealmPoolHook';
-import { DeviceSettings } from '~/models/DeviceSettings';
 import { LogEntry } from '~/models/logs/LogEntry';
 import { Pool } from '~/models/Pool';
 import { DryChemicalUnits, Units, WetChemicalUnits } from '~/models/TreatmentUnits';
@@ -25,22 +30,21 @@ import { Util } from '~/services/Util';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import { TargetsHelper } from '../customTargets/TargetHelper';
 import { PDPickerRouteProps } from '../picker/PickerScreen';
 import { TreatmentListFooter } from './TreatmentListFooter';
-import { TreatmentListHeader } from './TreatmentListHeader';
 import { TreatmentListHelpers, TreatmentState } from './TreatmentListHelpers';
 import { TreatmentListItem } from './TreatmentListItem';
-import { TargetsHelper } from '../customTargets/TargetHelper';
 
 export const TreatmentListScreen: React.FC = () => {
     const readings = useTypedSelector((state) => state.readingEntries);
     const pool = useTypedSelector((state) => state.selectedPool) as Pool;
     const pickerState = useTypedSelector((state) => state.pickerState);
-    const deviceSettings = useTypedSelector((state) => state.deviceSettings) as DeviceSettings;
+    const deviceSettings = useTypedSelector((state) => state.deviceSettings);
     const recipeKey = pool?.recipeKey || RecipeService.defaultRecipeKey;
     const [treatmentStates, setTreatmentStates] = React.useState<TreatmentState[]>([]);
     const [notes, setNotes] = React.useState('');
-    const { goBack, navigate } = useNavigation<StackNavigationProp<PDNavParams>>();
+    const { navigate } = useNavigation<StackNavigationProp<PDNavParams>>();
     // I hate this... it's dirty. We should move this into the picker screen maybe?
     const [concentrationTreatmentVar, updateConcentrationTreatment] = React.useState<string | null>(null);
     const recipe = useRecipeHook(recipeKey);
@@ -76,6 +80,7 @@ export const TreatmentListScreen: React.FC = () => {
                 ts.concentration = newConcentration;
                 return true;
             };
+
             const didChange = TreatmentListHelpers.updateTreatmentState(
                 concentrationTreatmentVar,
                 treatmentModification,
@@ -102,8 +107,8 @@ export const TreatmentListScreen: React.FC = () => {
     }
 
     const save = async () => {
-        const id = Math.random().toString(36).slice(2);
-        const ts = new Date().getTime();
+        const id = Util.generateUUID();
+        const ts = Util.generateTimestamp();
         const tes = CalculationService.mapTreatmentStatesToTreatmentEntries(treatmentStates);
 
         const logEntry = LogEntry.make(id, pool.objectId, ts, readings, tes, recipeKey, notes);
@@ -146,14 +151,9 @@ export const TreatmentListScreen: React.FC = () => {
                 console.log('a');
 
                 if (scoop) {
-                    console.log('b');
                     // If we have a saved scoop, start with that:
-                    units = 'scoops';
                     if (t.type === 'dryChemical') {
-                        console.log('c');
                         value = Converter.dry(value, 'ounces', 'scoops', scoop);
-                        console.log('value: ' + value);
-                        console.log(JSON.stringify(scoop));
                     } else if (t.type === 'liquidChemical') {
                         value = Converter.wet(value, 'ounces', 'scoops', scoop);
                     }
@@ -321,51 +321,74 @@ export const TreatmentListScreen: React.FC = () => {
         navigate('PickerScreen', pickerProps);
     };
 
-    const handleBackPress = () => {
-        goBack();
-    };
-
     const targets = TargetsHelper.resolveRangesForPool(recipe, pool.wallType, targetRangeOverridesForPool);
     const htmlString = CalculationService.getHtmlStringForLocalHermes(recipe, pool, readings, targets);
 
-    const sections = [{ title: 'booga', data: treatmentStates }];
-    let progress = 0;
+    const sections: SectionListData<TreatmentState>[] = [
+        {
+            data: [],
+            isHeader: true,
+        },
+        {
+            data: treatmentStates,
+            isHeader: false,
+        },
+    ];
+
+    let completed: TreatmentState[] = [];
+    let countedTreatmentStates: TreatmentState[] = [];
     if (recipe) {
-        const countedTreatmentStates = treatmentStates.filter((ts) => ts.treatment.type !== 'calculation');
-        const completed = countedTreatmentStates.filter((ts) => ts.isOn);
-        progress = countedTreatmentStates.length === 0 ? 0 : completed.length / countedTreatmentStates.length;
+        countedTreatmentStates = treatmentStates.filter((ts) => ts.treatment.type !== 'calculation');
+        completed = countedTreatmentStates.filter((ts) => ts.isOn);
     }
 
     return (
-        <SafeAreaView style={{ display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: 'white' }}>
-            <TreatmentListHeader handleBackPress={handleBackPress} pool={pool} percentComplete={progress} />
-            <View style={styles.container}>
-                <KeyboardAwareSectionList
-                    style={styles.sectionList}
-                    keyboardDismissMode={'interactive'}
-                    keyboardShouldPersistTaps={'handled'}
-                    renderItem={({ item }) => (
-                        <TreatmentListItem
-                            treatmentState={item}
-                            onTextboxUpdated={handleTextUpdated}
-                            onTextboxFinished={handleTextFinishedEditing}
-                            handleUnitsButtonPressed={handleUnitsButtonPressed}
-                            handleIconPressed={handleIconPressed}
-                            handleTreatmentNameButtonPressed={handleTreatmentNameButtonPressed}
-                            inputAccessoryId={keyboardAccessoryViewId}
-                        />
-                    )}
-                    sections={sections}
-                    keyExtractor={(item) => item.treatment.var}
-                    contentInsetAdjustmentBehavior={'always'}
-                    stickySectionHeadersEnabled={false}
-                    canCancelContentTouches={true}
-                    renderSectionFooter={() => <TreatmentListFooter text={notes} updatedText={setNotes} />}
-                />
-                <WebView containerStyle={styles.webview} onMessage={onMessage} source={{ html: htmlString }} />
-                <View style={styles.bottomButtonContainer}>
-                    <BoringButton containerStyles={styles.button} onPress={save} title="Save" />
-                </View>
+        <PDSafeAreaView bgColor="white">
+            <ScreenHeader color="purple">Treatments</ScreenHeader>
+            <KeyboardAwareSectionList
+                style={styles.sectionList}
+                keyboardDismissMode="interactive"
+                keyboardShouldPersistTaps="handled"
+                renderItem={({ item }) => (
+                    <TreatmentListItem
+                        treatmentState={item}
+                        onTextboxUpdated={handleTextUpdated}
+                        onTextboxFinished={handleTextFinishedEditing}
+                        handleUnitsButtonPressed={handleUnitsButtonPressed}
+                        handleIconPressed={handleIconPressed}
+                        handleTreatmentNameButtonPressed={handleTreatmentNameButtonPressed}
+                        inputAccessoryId={keyboardAccessoryViewId}
+                    />
+                )}
+                sections={sections}
+                keyExtractor={(item) => item.treatment.var}
+                contentInsetAdjustmentBehavior="always"
+                canCancelContentTouches
+                stickySectionHeadersEnabled
+                renderSectionHeader={({ section }) => {
+                    if (section.isHeader) {
+                        return <ServiceNonStickyHeader />;
+                    } else {
+                        return (
+                            <ServiceStickyHeaderList
+                                completedLength={completed.length}
+                                missingLength={countedTreatmentStates.length}
+                                color="purple"
+                            />
+                        );
+                    }
+                }}
+                renderSectionFooter={({ section }) => {
+                    if (section.isHeader) {
+                        return <></>;
+                    } else {
+                        return <TreatmentListFooter text={notes} updatedText={setNotes} />;
+                    }
+                }}
+            />
+            <WebView containerStyle={styles.webview} onMessage={onMessage} source={{ html: htmlString }} />
+            <View style={styles.bottomButtonContainer}>
+                <BoringButton containerStyles={styles.button} onPress={save} title="Save" />
             </View>
             <PlatformSpecific include={['ios']}>
                 <InputAccessoryView nativeID={keyboardAccessoryViewId}>
@@ -382,19 +405,14 @@ export const TreatmentListScreen: React.FC = () => {
                     </View>
                 </InputAccessoryView>
             </PlatformSpecific>
-        </SafeAreaView>
+        </PDSafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'transparent',
-    },
     sectionList: {
         flex: 1,
-        backgroundColor: '#F5F3FF',
-        paddingTop: 12,
+        backgroundColor: '#B21FF105',
     },
     webview: {
         backgroundColor: 'red',

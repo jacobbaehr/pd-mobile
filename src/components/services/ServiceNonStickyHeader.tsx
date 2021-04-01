@@ -9,9 +9,8 @@ import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { useTypedSelector } from '~/redux/AppState';
 import { Util } from '~/services/Util';
 
-
 /// The reading list header is partially scrollable -- this is the part that disappears under the navbar:
-export const ReadingListScrollableHeader: React.FC<{}> = () => {
+export const ServiceNonStickyHeader: React.FC<{}> = () => {
     const theme = useTheme();
     const pool = useTypedSelector((state) => state.selectedPool) as Pool;
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);

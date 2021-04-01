@@ -4,7 +4,7 @@ module.exports = {
         es6: true,
         'jest/globals': true,
     },
-    extends: '@react-native-community/eslint-config',
+    extends: ['@react-native-community/eslint-config', 'prettier/react'],
     parser: '@typescript-eslint/parser',
     plugins: ['@typescript-eslint'],
     rules: {
@@ -12,6 +12,15 @@ module.exports = {
         'prettier/prettier': 0,
         'eslint-comments/no-unlimited-disable': 0,
         'eslint-comments/no-unused-disable': 0,
-        'object-curly-spacing': 0,
+        'object-curly-spacing': ['error', 'always'],
+        'react/jsx-curly-spacing': [
+            2,
+            {
+                when: 'always',
+                spacing: {
+                    objectLiterals: 'always',
+                },
+            },
+        ],
     },
 };

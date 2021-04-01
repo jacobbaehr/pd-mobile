@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet } from 'react-native';
+import {
+    InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet
+} from 'react-native';
 import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { ScreenHeader } from '~/components/headers/ScreenHeader';
@@ -7,6 +9,8 @@ import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { PlatformSpecific } from '~/components/PlatformSpecific';
+import { ServiceNonStickyHeader } from '~/components/services/ServiceNonStickyHeader';
+import { ServiceStickyHeaderList } from '~/components/services/ServiceStickyHeaderList';
 import { useRecipeHook } from '~/hooks/RealmPoolHook';
 import { Pool } from '~/models/Pool';
 import { PDStackNavigationProps } from '~/navigator/shared';
@@ -21,8 +25,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import { ReadingListFooter } from './ReadingListFooter';
 import { ReadingListItem, ReadingState } from './ReadingListItem';
-import { ReadingListStickyHeader } from './ReadingListStickyHeader';
-import { ReadingListScrollableHeader } from './ReadingListScrollableHeader';
 
 export const ReadingListScreen: React.FC = () => {
     const [isSliding, setIsSliding] = React.useState(false);
@@ -186,9 +188,7 @@ export const ReadingListScreen: React.FC = () => {
     }
     return (
         <PDSafeAreaView style={{ flex: 1 }} bgColor="white">
-            <ScreenHeader hasBackButton hasAddButton={false}>
-                Readings
-            </ScreenHeader>
+            <ScreenHeader color="blue">Readings</ScreenHeader>
             <PDView style={styles.container} bgColor="white">
                 <KeyboardAwareSectionList
                     style={StyleSheet.flatten([styles.sectionList, { backgroundColor: theme.blurredBlue }])}
@@ -209,14 +209,12 @@ export const ReadingListScreen: React.FC = () => {
                     )}
                     sections={sections}
                     keyExtractor={(item) => item.reading.var}
-                    contentInsetAdjustmentBehavior={'always'}
+                    contentInsetAdjustmentBehavior="always"
                     stickySectionHeadersEnabled={true}
                     canCancelContentTouches={true}
                     renderSectionFooter={({ section }) => {
                         if (section.isHeader) {
-                            // This can't be a header without moving strangely during overscroll on iOS with sticky
-                            // headers enabled... so, it's rendered as a section-footer.
-                            return <ReadingListScrollableHeader />;
+                            return <></>;
                         } else {
                             return (
                                 <ReadingListFooter
@@ -228,12 +226,13 @@ export const ReadingListScreen: React.FC = () => {
                     }}
                     renderSectionHeader={({ section }) => {
                         if (section.isHeader) {
-                            return <></>;
+                            return <ServiceNonStickyHeader />;
                         } else {
                             return (
-                                <ReadingListStickyHeader
+                                <ServiceStickyHeaderList
                                     completedLength={completed.length}
                                     missingLength={readingStates.length}
+                                    color="blue"
                                 />
                             );
                         }

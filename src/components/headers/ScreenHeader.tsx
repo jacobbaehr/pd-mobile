@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import TouchableScale from 'react-native-touchable-scale';
 import { SVG } from '~/assets/images';
 import { PDText } from '~/components/PDText';
-import { PDSpacing, useTheme } from '~/components/PDTheme';
+import { PDColor, PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 
 import { useNavigation } from '@react-navigation/native';
@@ -12,10 +12,11 @@ interface ScreenHeaderProps {
     hasBackButton?: boolean;
     hasAddButton?: boolean;
     handlePressedAdd?: () => void;
+    color?: PDColor;
 }
 export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
     const { goBack } = useNavigation();
-    const { children, hasAddButton, hasBackButton, handlePressedAdd } = props;
+    const { children, hasAddButton = false, hasBackButton = true, handlePressedAdd, color = 'black' } = props;
     const theme = useTheme();
 
     const handlePressedBack = () => {
@@ -29,12 +30,14 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
         hitSlop: { top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop },
     };
 
+    const svgColor = theme[color];
+
     return (
         <PDView style={styles.container} bgColor="white">
             <PDView style={styles.sideContainer}>
                 {hasBackButton && (
                     <TouchableScale {...touchableProps} onPress={handlePressedBack}>
-                        <SVG.IconCircleBack fill={theme.blue} />
+                        <SVG.IconCircleBack fill={svgColor} />
                     </TouchableScale>
                 )}
             </PDView>
@@ -46,17 +49,12 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
             <PDView style={styles.sideContainer}>
                 {hasAddButton && (
                     <TouchableScale {...touchableProps} onPress={handlePressedAdd}>
-                        <SVG.IconCircleAdd fill={theme.blue} />
+                        <SVG.IconCircleAdd fill={svgColor} />
                     </TouchableScale>
                 )}
             </PDView>
         </PDView>
     );
-};
-
-ScreenHeader.defaultProps = {
-    hasBackButton: false,
-    hasAddButton: false,
 };
 
 const styles = StyleSheet.create({

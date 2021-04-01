@@ -1,5 +1,5 @@
 {
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": false,
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
     },
@@ -7,5 +7,6 @@
     "editor.wordWrapColumn": 120,
     "javascript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": true,
     "typescript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": true,
-    "editor.detectIndentation": false
+    "editor.detectIndentation": false,
+    "prettier.configPath": "./.prettierrc.js"
 }

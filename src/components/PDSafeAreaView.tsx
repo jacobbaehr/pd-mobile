@@ -15,7 +15,7 @@ export const PDSafeAreaView: React.FC<PDSafeAreaViewProps> = (props) => {
     const backgroundColor = props.bgColor !== undefined ? theme[props.bgColor] : 'transparent';
     const colorStylesFromTheme = { backgroundColor };
 
-    const SafeAreaViewStyles = StyleSheet.flatten([colorStylesFromTheme, style]);
+    const SafeAreaViewStyles = StyleSheet.flatten([{ flex: 1 }, colorStylesFromTheme, style]);
 
     return (
         <SafeAreaView style={SafeAreaViewStyles} {...restProps}>
