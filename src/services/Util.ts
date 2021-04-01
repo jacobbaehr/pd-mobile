@@ -1,25 +1,6 @@
 import base64 from 'react-native-base64';
-import { DeviceSettings } from '~/models/DeviceSettings';
 
 export class Util {
-    static getDisplayVolume = (gallons: number, settings: DeviceSettings): string => {
-        switch (settings.units) {
-            case 'us':
-                return `${Util.abbreviate(gallons)} Gallons`;
-            case 'metric':
-                const castingToLiter = Util.gallonsToLiters(gallons);
-                return `${Util.abbreviate(castingToLiter)} Liters`;
-        }
-    };
-
-    static gallonsToLiters = (gallons: number): number => {
-        return gallons * 3.78541;
-    };
-
-    static litersToGallons = (liters: number): number => {
-        return liters / 3.78541;
-    };
-
     static deepCopy = <T>(target: T): T => {
         if (target === null) {
             return target;

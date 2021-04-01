@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet, View,
+    InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet, View
 } from 'react-native';
 import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
@@ -148,7 +148,6 @@ export const TreatmentListScreen: React.FC = () => {
                 let units: Units = 'ounces';
                 let value = ounces;
                 const scoop = TreatmentListHelpers.getScoopForTreatment(t.var, allScoops);
-                console.log('a');
 
                 if (scoop) {
                     // If we have a saved scoop, start with that:

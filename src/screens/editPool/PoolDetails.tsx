@@ -1,25 +1,24 @@
 import * as React from 'react';
-import { StyleSheet, View, InputAccessoryView } from 'react-native';
+import { InputAccessoryView, StyleSheet, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
+import SafeAreaView from 'react-native-safe-area-view';
 import { BoringButton } from '~/components/buttons/BoringButton';
+import { ChoosyButton } from '~/components/buttons/ChoosyButton';
+import { CycleButton } from '~/components/buttons/CycleButton';
 import { PDText } from '~/components/PDText';
+import { PlatformSpecific } from '~/components/PlatformSpecific';
+import { Focusable, TextInputWithTitle } from '~/components/TextInputWithTitle';
+import { getDisplayForPoolValue, PoolUnit } from '~/models/Pool/PoolUnit';
+import { getDisplayForWallType, WallTypeValue } from '~/models/Pool/WallType';
+import { getDisplayForWaterType, WaterTypeValue } from '~/models/Pool/WaterType';
 
 import { EditListHeader } from '../poolList/PoolDetailsHeader';
-import { TextInputWithTitle, Focusable } from '~/components/TextInputWithTitle';
-import { ChoosyButton } from '~/components/buttons/ChoosyButton';
-import { WaterTypeValue, getDisplayForWaterType } from '~/models/Pool/WaterType';
-import { CycleButton } from '~/components/buttons/CycleButton';
-import { getDisplayForVolumeValue, VolumeUnits } from '~/models/Pool/VolumeUnits';
-import { WallTypeValue, getDisplayForWallType } from '~/models/Pool/WallType';
-import { PlatformSpecific } from '~/components/PlatformSpecific';
-import SafeAreaView from 'react-native-safe-area-view';
 
 interface PoolDetailProps {
     name: string;
     waterType: WaterTypeValue;
     wallType: WallTypeValue;
-    volumeUnits: VolumeUnits;
+    poolUnit: PoolUnit;
     volumeText: string;
     originalPoolName: string;
     updateVolume: (text: string) => void;
@@ -36,8 +35,7 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
     const { originalPoolName, goBack, rightButtonAction } = props;
     const waterTypeDisplay = getDisplayForWaterType(props.waterType);
     const wallTypeDisplay = getDisplayForWallType(props.wallType);
-    const volumeUnitsDisplay = getDisplayForVolumeValue(props.volumeUnits);
-
+    let poolUnitDisplay = getDisplayForPoolValue(props.poolUnit);
     const nameRef = React.useRef<Focusable>(null);
     const volumeRef = React.useRef<Focusable>(null);
 
@@ -63,7 +61,7 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
                     <View style={ styles.listContainer }>
                         <TextInputWithTitle
                             titleText="Name"
-                            onTextChanged={ (s) => props.updateName(s) }
+                            onTextChanged={ props.updateName }
                             titleTextStyles={ styles.poolNameLabel }
                             inputStyles={ styles.textInput }
                             autoCapitalize="words"
@@ -80,7 +78,7 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
                     <View style={ [styles.listContainer, styles.volumeContainer] }>
                         <TextInputWithTitle
                             titleText="Volume"
-                            onTextChanged={ (s) => props.updateVolume(s) }
+                            onTextChanged={ props.updateVolume }
                             titleTextStyles={ styles.poolNameLabel }
                             subtitleTextStyles={ styles.poolNameSubLabel }
                             inputStyles={ styles.textInput }
@@ -95,7 +93,7 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
                         />
                         <View style={ styles.volumeUnitsButtonWrapper }>
                             <CycleButton
-                                title={ volumeUnitsDisplay || '' }
+                                title={ poolUnitDisplay || '' }
                                 onPress={ props.pressedUnitsButton }
                                 styles={ styles.volumeUnitsButton }
                                 textStyles={ styles.typeButtonText }

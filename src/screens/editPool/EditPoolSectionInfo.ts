@@ -1,16 +1,18 @@
-import { defaultRecipe } from './../../repository/recipes/Default';
-import { useRecipeHook } from './../../hooks/RealmPoolHook';
-import { DeviceSettings } from './../../models/DeviceSettings';
-import { PDStackNavigationProps } from '~/navigator/shared';
-import { useNavigation } from '@react-navigation/native';
-import { Pool } from '~/models/Pool';
-import { PDTheme } from '~/components/PDTheme';
 import { ImageSourcePropType } from 'react-native';
 import { images } from '~/assets/images';
-import { ExportService } from '~/services/ExportService';
-import { getDisplayForWaterType } from '~/models/Pool/WaterType';
-import { Util } from '~/services/Util';
+import { PDTheme } from '~/components/PDTheme';
+import { useRecipeHook } from '~/hooks/RealmPoolHook';
+import { DeviceSettings } from '~/models/DeviceSettings';
+import { Pool } from '~/models/Pool';
 import { getDisplayForWallType } from '~/models/Pool/WallType';
+import { getDisplayForWaterType } from '~/models/Pool/WaterType';
+import { PDStackNavigationProps } from '~/navigator/shared';
+import { defaultRecipe } from '~/repository/recipes/Default';
+import { ExportService } from '~/services/ExportService';
+import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
+
+import { useNavigation } from '@react-navigation/native';
+
 import { HeaderInfo, popoverProps } from './EditPoolPopover';
 
 export type MenuItemId =
@@ -68,11 +70,7 @@ export const usePoolSectionInfo = (
     };
 
     const handleExportButtonPressed = async () => {
-        try {
-            await ExportService.generateAndShareCSV(pool);
-        } catch (e) {
-            console.error(e);
-        }
+        await ExportService.generateAndShareCSV(pool);
     };
 
     const handleDeletePressed = () => {
@@ -102,7 +100,7 @@ export const usePoolSectionInfo = (
                 {
                     label: 'Volume: ',
                     image: images.volumeIcon,
-                    value: Util.getDisplayVolume(pool?.gallons, deviceSettings),
+                    value: VolumeUnitsUtil.getDisplayVolume(pool?.gallons, deviceSettings),
                     valueColor: 'pink',
                     onPress: () => handleNavigateToPopover('gallons'),
                     id: 'gallons',

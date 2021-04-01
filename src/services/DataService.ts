@@ -1,6 +1,8 @@
 import { LogEntry } from '~/models/logs/LogEntry';
 import { Pool } from '~/models/Pool';
 import { Database } from '~/repository/Database';
+
+import { ConversionUtil } from './ConversionsUtil';
 import { Util } from './Util';
 
 export namespace DataService {
@@ -31,7 +33,7 @@ export namespace DataService {
             ${pool.name},\
             ${pool.gallons},\
             gallons,\
-            ${Util.gallonsToLiters(pool.gallons)},\
+            ${ConversionUtil.usGallonsToLiters(pool.gallons)},\
             liters,\
             ${pool.waterType},\
             ${pool.wallType},\

@@ -1,47 +1,36 @@
 import * as React from 'react';
-import { StyleSheet, View, Linking, ViewStyle, Image } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { connect } from 'react-redux';
+import { Image, Linking, StyleSheet, View, ViewStyle } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import SafeAreaView, { useSafeArea } from 'react-native-safe-area-view';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
-
-import { dispatch, AppState } from '~/redux/AppState';
-
-import { useNavigation } from '@react-navigation/native';
-import { PDText } from '~/components/PDText';
-import { DeviceSettings } from '~/models/DeviceSettings';
-import { SettingsHeader } from './SettingsHeader';
-import { ScrollView } from 'react-native-gesture-handler';
-import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
-import { CycleButton } from '~/components/buttons/CycleButton';
-import { Config } from '~/services/Config';
-import { BoringButton } from '~/components/buttons/BoringButton';
-import { Upgrade } from '~/components/Upgrade';
-import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 import { images } from '~/assets/images';
-import { Haptic } from '~/services/HapticService';
-import { ScoopListItem } from './scoops/ScoopListItem';
+import { BoringButton } from '~/components/buttons/BoringButton';
+import { CycleButton } from '~/components/buttons/CycleButton';
+import { PDText } from '~/components/PDText';
+import { Upgrade } from '~/components/Upgrade';
+import { DeviceSettings } from '~/models/DeviceSettings';
+import { getDisplayForPoolValue } from '~/models/Pool/PoolUnit';
 import { Scoop } from '~/models/Scoop';
+import { PDStackNavigationProps } from '~/navigator/shared';
+import { dispatch, useTypedSelector } from '~/redux/AppState';
+import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
+import { Config } from '~/services/Config';
+import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 import { DS } from '~/services/DSUtil';
 import { ExportService } from '~/services/ExportService';
-import { PDNavParams } from '~/navigator/shared';
+import { Haptic } from '~/services/HapticService';
+import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
-interface SettingsProps {
-    deviceSettings: DeviceSettings;
-}
+import { useNavigation } from '@react-navigation/native';
 
-const mapStateToProps = (state: AppState, ownProps: SettingsProps): SettingsProps => {
-    return {
-        ...ownProps,
-        deviceSettings: state.deviceSettings,
-    };
-};
+import { ScoopListItem } from './scoops/ScoopListItem';
+import { SettingsHeader } from './SettingsHeader';
 
-const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
-    const { goBack, navigate } = useNavigation<StackNavigationProp<PDNavParams, 'Settings'>>();
+export const SettingsScreen: React.FC = () => {
+    const { goBack, navigate } = useNavigation<PDStackNavigationProps>();
     const insets = useSafeArea();
-    const ds = props.deviceSettings;
+    const ds = useTypedSelector((state) => state.deviceSettings);
     const isUnlocked = DS.isSubscriptionValid(ds, Date.now());
 
     const handleGoBack = () => {
@@ -49,7 +38,7 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
     };
 
     const handlePressedUnits = () => {
-        const newUnits = ds.units === 'metric' ? 'us' : 'metric';
+        const newUnits = VolumeUnitsUtil.getNextUnitValue(ds.units);
         const newSettings: DeviceSettings = {
             ...ds,
             units: newUnits,
@@ -57,7 +46,6 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
         dispatch(updateDeviceSettings(newSettings));
         DeviceSettingsService.saveSettings(newSettings);
     };
-    const unitsText = ds.units === 'metric' ? 'Metric' : 'US';
 
     const handleUpgradePressed = () => {
         navigate('Buy');
@@ -85,7 +73,7 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
     };
 
     const getScoops = () => {
-        return props.deviceSettings.scoops.map((scoop) => (
+        return ds.scoops.map((scoop) => (
             <ScoopListItem scoop={ scoop } handlePressedScoop={ handlePressedScoop } key={ scoop.guid } />
         ));
     };
@@ -95,6 +83,8 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
     };
 
     const hitSlop = 5;
+    const unitsText = getDisplayForPoolValue(ds.units) as string;
+
     return (
         <SafeAreaView forceInset={ { bottom: 'never' } } style={ styles.safeAreaContainer }>
             <SettingsHeader goBack={ handleGoBack } />
@@ -160,7 +150,6 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
         </SafeAreaView>
     );
 };
-export const SettingsScreen = connect(mapStateToProps)(SettingsComponent);
 
 const styles = StyleSheet.create({
     safeAreaContainer: {

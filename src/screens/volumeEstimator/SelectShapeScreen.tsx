@@ -22,7 +22,6 @@ const SelectShapeScreen = () => {
         const Icon = SVG[item.icon];
         return (
             <TouchableOpacity style={ styles.itemContainer } onPress={ () => handlePressedShape(item.id) }>
-                <View style={ styles.itemContainer } />
                 <View style={ styles.itemInnerContainer }>
                     <Icon width={ 32 } height={ 32 } />
                     <View style={ styles.itemTextContainer }>
@@ -32,7 +31,6 @@ const SelectShapeScreen = () => {
                     </View>
                 </View>
                 <SVG.IconForward fill="#BBBBBB" width={ 18 } height={ 18 } />
-                <View />
             </TouchableOpacity>
         );
     };

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Alert, Keyboard } from 'react-native';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { Pool } from '~/models/Pool';
+import { PoolUnit, PoolUnitOptions } from '~/models/Pool/PoolUnit';
 import { wallTypeOptions, WallTypeValue } from '~/models/Pool/WallType';
 import { waterTypeOptions, WaterTypeValue } from '~/models/Pool/WaterType';
 import { dispatch, useThunkDispatch, useTypedSelector } from '~/redux/AppState';
@@ -10,6 +11,7 @@ import { clearPickerState } from '~/redux/picker/Actions';
 import { clearPool, saveNewPool, updatePool } from '~/redux/selectedPool/Actions';
 import { Database } from '~/repository/Database';
 import { PoolDetails } from '~/screens/editPool/PoolDetails';
+import { ConversionUtil } from '~/services/ConversionsUtil';
 import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 import { Haptic } from '~/services/HapticService';
 import { Util } from '~/services/Util';
@@ -18,15 +20,28 @@ import { useNavigation } from '@react-navigation/native';
 
 import { PDPickerRouteProps } from '../picker/PickerScreen';
 
+const getInitialVolumeText = (units: PoolUnit, gallons: number) => {
+    if (units === 'us') {
+        return gallons?.toFixed(0);
+    } else if (units === 'imperial') {
+        return ConversionUtil.usGallonsToImpGallon(gallons).toFixed(0);
+    } else {
+        return ConversionUtil.usGallonsToLiters(gallons).toFixed(0);
+    }
+};
+
 export const EditPoolScreen: React.FC = () => {
     const pool = useTypedSelector((state) => state.selectedPool);
-    const deviceSettings = useTypedSelector((state) => state.deviceSettings) as DeviceSettings;
+    const deviceSettings = useTypedSelector((state) => state.deviceSettings);
     const pickerState = useTypedSelector((state) => state.pickerState);
     const originalSelectedPoolName = pool?.name;
     const [name, updateName] = React.useState(pool?.name || '');
     const [waterType, updateWaterType] = React.useState(pool?.waterType || 'salt_water');
     const [wallType, updateWallType] = React.useState(pool?.wallType || 'vinyl');
-    const [volumeText, updateVolumeText] = React.useState(getInitialVolumeText(deviceSettings.units, pool?.gallons));
+    const [unit, setUnit] = React.useState<PoolUnit>(deviceSettings.units);
+    const [volumeText, updateVolumeText] = React.useState(
+        getInitialVolumeText(deviceSettings.units, pool?.gallons ?? 0),
+    );
     const dispatchThunk = useThunkDispatch();
 
     // This happens on every render... whatever.
@@ -39,6 +54,11 @@ export const EditPoolScreen: React.FC = () => {
         } else if (pickerState && pickerState.key === 'wall_type' && pickerState.value !== null) {
             const selectedType = pickerState.value as WallTypeValue;
             updateWallType(selectedType);
+            dispatch(clearPickerState());
+        } else if (pickerState && pickerState.key === 'unit' && pickerState.value !== null) {
+            const selectedType = pickerState.value as PoolUnit;
+            setUnit(selectedType);
+            updateDeviceSettingsUnits(selectedType);
             dispatch(clearPickerState());
         }
     });
@@ -77,6 +97,18 @@ export const EditPoolScreen: React.FC = () => {
         navigate('PoolList');
     };
 
+    const getUSGallonsFromVolumeText = (): number => {
+        // Always save gallons, so convert from liters if necessary
+        let volume = +volumeText;
+        let gallons = volume;
+        if (unit === 'metric') {
+            gallons = Util.litersToGallons(volume);
+        } else if (unit === 'imperial') {
+            gallons = ConversionUtil.impGallonToUsGallon(volume);
+        }
+        return gallons;
+    };
+
     const handleSaveButtonPressed = () => {
         Haptic.light();
         let volume = +volumeText;
@@ -86,10 +118,8 @@ export const EditPoolScreen: React.FC = () => {
         }
 
         // Always save gallons, so convert from liters if necessary
-        let gallons = volume;
-        if (deviceSettings.units === 'metric') {
-            gallons = Util.litersToGallons(volume);
-        }
+        const gallons = getUSGallonsFromVolumeText();
+
         if (pool) {
             dispatchThunk(
                 updatePool({
@@ -106,6 +136,15 @@ export const EditPoolScreen: React.FC = () => {
         }
 
         goBack();
+    };
+
+    const updateDeviceSettingsUnits = (selectedUnit: PoolUnit) => {
+        const newSettings: DeviceSettings = {
+            ...deviceSettings,
+            units: selectedUnit,
+        };
+        dispatch(updateDeviceSettings(newSettings));
+        DeviceSettingsService.saveSettings(newSettings);
     };
 
     const handlePressedWaterTypeButton = () => {
@@ -133,33 +172,24 @@ export const EditPoolScreen: React.FC = () => {
     };
 
     const handlePressedUnitsButton = () => {
-        // Switch the units around
-        let deviceUnits = deviceSettings.units;
-        if (deviceUnits === 'metric') {
-            deviceUnits = 'us';
-        } else {
-            deviceUnits = 'metric';
-        }
-
-        // Save it & tell everybody to update accordingly
-        const newSettings = {
-            ...deviceSettings,
-            units: deviceUnits,
+        const pickerProps: PDPickerRouteProps = {
+            title: 'Change Units',
+            subtitle: '',
+            items: PoolUnitOptions.map((pu) => ({ name: pu.display, value: pu.value })),
+            pickerKey: 'unit',
+            prevSelection: unit,
         };
-        DeviceSettingsService.saveSettings(newSettings);
-        dispatch(updateDeviceSettings(newSettings));
+        navigate('PickerScreen', pickerProps);
     };
 
     const deleteButtonAction = pool ? handleDeletePoolPressed : null;
-
-    const volumeUnits = deviceSettings.units === 'us' ? 'gallons' : 'liters';
 
     return (
         <PoolDetails
             originalPoolName={ originalSelectedPoolName ?? '' }
             name={ name }
             volumeText={ volumeText }
-            volumeUnits={ volumeUnits }
+            poolUnit={ unit }
             waterType={ waterType }
             wallType={ wallType }
             goBack={ goBack }
@@ -172,17 +202,4 @@ export const EditPoolScreen: React.FC = () => {
             handleSavePoolPressed={ handleSaveButtonPressed }
         />
     );
-};
-
-const getInitialVolumeText = (units: string, pool: number | undefined) => {
-    if (units === 'us') {
-        return `${pool?.toFixed(0) || ''}`;
-    } else {
-        if (pool !== undefined) {
-            const liters = Util.gallonsToLiters(pool).toFixed(0);
-            return `${liters}`;
-        } else {
-            return '';
-        }
-    }
 };

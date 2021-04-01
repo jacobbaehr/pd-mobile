@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Alert, LayoutAnimation, SectionList, SectionListData, StyleSheet, View } from 'react-native';
+import {
+    Alert, LayoutAnimation, SectionList, SectionListData, StyleSheet, View
+} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';

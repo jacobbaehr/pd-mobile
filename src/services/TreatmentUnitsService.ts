@@ -1,5 +1,6 @@
 import { Scoop } from '~/models/Scoop';
-import { WetChemicalUnits, DryChemicalUnits } from '~/models/TreatmentUnits';
+import { DryChemicalUnits, WetChemicalUnits } from '~/models/TreatmentUnits';
+
 import { Util } from './Util';
 
 /// Honestly, the way I handle scoops here is kinda stupid. Oh well, here's how it works:
@@ -14,7 +15,6 @@ export class Converter {
         if (scoop) {
             allDryUnits.unshift('scoops');
         }
-        console.log(JSON.stringify(allDryUnits));
         let index = allDryUnits.indexOf(prevUnits);
         index = (index + 1) % allDryUnits.length;
         return allDryUnits[index];

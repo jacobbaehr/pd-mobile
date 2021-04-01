@@ -8,7 +8,7 @@ import { DeviceSettings } from '~/models/DeviceSettings';
 import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { AppState, useTypedSelector } from '~/redux/AppState';
 import { clearPool } from '~/redux/selectedPool/Actions';
-import { Util } from '~/services/Util';
+import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -30,7 +30,7 @@ export const PoolHeaderView: React.FC = () => {
         return <></>;
     }
 
-    const volumeDisplay = Util.getDisplayVolume(pool.gallons, deviceSettings);
+    const volumeDisplay = VolumeUnitsUtil.getDisplayVolume(pool.gallons, deviceSettings);
     const detailsText = `${getDisplayForWaterType(pool.waterType)} | ${volumeDisplay}`;
 
     return (

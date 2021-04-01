@@ -2,14 +2,13 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
-
-import { Pool } from '~/models/Pool';
+import { connect } from 'react-redux';
 import { PDText } from '~/components/PDText';
+import { DeviceSettings } from '~/models/DeviceSettings';
+import { Pool } from '~/models/Pool';
 import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { AppState } from '~/redux/AppState';
-import { DeviceSettings } from '~/models/DeviceSettings';
-import { connect } from 'react-redux';
-import { Util } from '~/services/Util';
+import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
 interface PoolListItemInternalProps {
     deviceSettings: DeviceSettings;
@@ -33,7 +32,7 @@ const PoolListComponent: React.FunctionComponent<PoolListItemProps> = (props) =>
     };
 
     const pool = props.pool;
-    const volumeDisplay = Util.getDisplayVolume(pool.gallons, props.deviceSettings);
+    const volumeDisplay = VolumeUnitsUtil.getDisplayVolume(pool.gallons, props.deviceSettings);
 
     return (
         <TouchableScale style={ styles.container } onPress={ handleButtonPressed } activeScale={ 0.99 }>
