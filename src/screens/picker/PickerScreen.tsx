@@ -62,13 +62,13 @@ export const PickerScreen: React.FunctionComponent<PickerScreenProps> = (props: 
         if (items !== undefined) {
             return (
                 <SectionList
-                    style={{ flex: 1, paddingTop: 20 }}
-                    renderItem={({ item }) => (
-                        <PickerRow item={item} onSelect={handleButtonPress} isSelected={prevSelection === item.value} />
-                    )}
-                    sections={[{ data: items }]}
-                    keyExtractor={(item) => item.value}
-                    overScrollMode={'always'}
+                    style={ { flex: 1, paddingTop: 20 } }
+                    renderItem={ ({ item }) => (
+                        <PickerRow item={ item } onSelect={ handleButtonPress } isSelected={ prevSelection === item.value } />
+                    ) }
+                    sections={ [{ data: items }] }
+                    keyExtractor={ (item) => item.value }
+                    overScrollMode={ 'always' }
                 />
             );
         }
@@ -107,41 +107,41 @@ export const PickerScreen: React.FunctionComponent<PickerScreenProps> = (props: 
         };
 
         return (
-            <View style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
-                <KeyboardAwareScrollView style={{ flex: 1, backgroundColor: '#F4F7FF' }} scrollEnabled={!isSliding}>
+            <View style={ { flex: 1, display: 'flex', justifyContent: 'flex-start' } }>
+                <KeyboardAwareScrollView style={ { flex: 1, backgroundColor: '#F4F7FF' } } scrollEnabled={ !isSliding }>
                     <PickerSlider
-                        sliderState={{ value: textValue }}
-                        onSlidingStart={() => {
+                        sliderState={ { value: textValue } }
+                        onSlidingStart={ () => {
                             setIsSliding(true);
-                        }}
-                        onSlidingComplete={() => {
+                        } }
+                        onSlidingComplete={ () => {
                             setIsSliding(false);
-                        }}
-                        onSliderUpdatedValue={handleSliderChanged}
-                        onTextboxUpdated={handleTextboxUpdated}
-                        onTextboxFinished={handleTextboxDismissed}
+                        } }
+                        onSliderUpdatedValue={ handleSliderChanged }
+                        onTextboxUpdated={ handleTextboxUpdated }
+                        onTextboxFinished={ handleTextboxDismissed }
                     />
                 </KeyboardAwareScrollView>
-                <View style={{ backgroundColor: 'white' }}>
-                    <BoringButton containerStyles={styles.saveButton} onPress={handleSavePressed} title="Save" />
+                <View style={ { backgroundColor: 'white' } }>
+                    <BoringButton containerStyles={ styles.saveButton } onPress={ handleSavePressed } title="Save" />
                 </View>
             </View>
         );
     };
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <View style={styles.headerLeft}>
-                        <PDText type="default" style={[styles.title, styles.titleTop]}>
+        <SafeAreaView style={ { flex: 1, backgroundColor: '#FFFFFF' } }>
+            <View style={ styles.container }>
+                <View style={ styles.header }>
+                    <View style={ styles.headerLeft }>
+                        <PDText type="default" style={ [styles.title, styles.titleTop] }>
                             {title}
                         </PDText>
-                        <PDText type="default" style={[styles.title, styles.titleBottom]}>
+                        <PDText type="default" style={ [styles.title, styles.titleBottom] }>
                             {subtitle}
                         </PDText>
                     </View>
-                    <CloseButton onPress={handleClosePressed} containerStyle={styles.closeButton} />
+                    <CloseButton onPress={ handleClosePressed } containerStyle={ styles.closeButton } />
                 </View>
                 {getContent()}
             </View>

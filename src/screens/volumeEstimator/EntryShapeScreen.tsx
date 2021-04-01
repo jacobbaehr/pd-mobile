@@ -29,11 +29,11 @@ const EntryShapeScreen = () => {
     const EntryShape = getElementByShapeId(params.shapeId);
 
     return (
-        <View style={styles.container}>
+        <View style={ styles.container }>
             <ModalHeader>Volume Estimator</ModalHeader>
-            <KeyboardAvoidingView behavior="padding" style={styles.content}>
-                <View style={StyleSheet.flatten([styles.shapeContainer, { backgroundColor: primaryBlurredColor }])}>
-                    <ShapeSVG width={width} height={height * 0.25} />
+            <KeyboardAvoidingView behavior="padding" style={ styles.content }>
+                <View style={ StyleSheet.flatten([styles.shapeContainer, { backgroundColor: primaryBlurredColor }]) }>
+                    <ShapeSVG width={ width } height={ height * 0.25 } />
                 </View>
                 <UnitButton />
                 <EntryShape />

@@ -25,19 +25,19 @@ export const PDRootNavigator = (): JSX.Element => {
     return (
         <NavigationContainer>
             <RootStack.Navigator
-                screenOptions={{
+                screenOptions={ {
                     stackPresentation: 'formSheet',
                     headerShown: false,
-                }}>
-                <RootStack.Screen name="PDCardNavigator" component={PDCardNavigator} />
+                } }>
+                <RootStack.Screen name="PDCardNavigator" component={ PDCardNavigator } />
                 <RootStack.Screen
                     name="PickerScreen"
-                    component={PickerScreen}
-                    options={{ stackPresentation: 'fullScreenModal' }}
+                    component={ PickerScreen }
+                    options={ { stackPresentation: 'fullScreenModal' } }
                 />
-                <RootStack.Screen name="ScoopDetails" component={ScoopDetailsScreen} />
-                <RootStack.Screen name="EditPoolPopover" component={EditPoolPopover} />
-                <RootStack.Screen name="PDVolumesNavigator" component={PDVolumesNavigator} />
+                <RootStack.Screen name="ScoopDetails" component={ ScoopDetailsScreen } />
+                <RootStack.Screen name="EditPoolPopover" component={ EditPoolPopover } />
+                <RootStack.Screen name="PDVolumesNavigator" component={ PDVolumesNavigator } />
             </RootStack.Navigator>
         </NavigationContainer>
     );

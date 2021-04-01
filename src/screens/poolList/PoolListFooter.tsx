@@ -19,14 +19,14 @@ export const PoolListFooter: React.FunctionComponent<PoolListFooterProps> = (pro
         width: imageWidth,
     };
     if (!props.isEmpty) {
-        return <PoolListFooterNonEmpty pressedUpgrade={props.handlePressedUpgrade} />;
+        return <PoolListFooterNonEmpty pressedUpgrade={ props.handlePressedUpgrade } />;
     }
     return (
         <View>
-            <PDText type="default" style={styles.bottomText}>
+            <PDText type="default" style={ styles.bottomText }>
                 Tap the + icon above to get started.
             </PDText>
-            <Image style={imageStyles} source={images.poolListEmpty} width={imageWidth} height={imageHeight} />
+            <Image style={ imageStyles } source={ images.poolListEmpty } width={ imageWidth } height={ imageHeight } />
         </View>
     );
 };

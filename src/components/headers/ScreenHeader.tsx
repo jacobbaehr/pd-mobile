@@ -33,23 +33,23 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
     const svgColor = theme[color];
 
     return (
-        <PDView style={styles.container} bgColor="white">
-            <PDView style={styles.sideContainer}>
+        <PDView style={ styles.container } bgColor="white">
+            <PDView style={ styles.sideContainer }>
                 {hasBackButton && (
-                    <TouchableScale {...touchableProps} onPress={handlePressedBack}>
-                        <SVG.IconCircleBack fill={svgColor} />
+                    <TouchableScale { ...touchableProps } onPress={ handlePressedBack }>
+                        <SVG.IconCircleBack fill={ svgColor } />
                     </TouchableScale>
                 )}
             </PDView>
-            <PDView style={styles.centerContainer}>
-                <PDText type="heading" color="black" style={styles.text}>
+            <PDView style={ styles.centerContainer }>
+                <PDText type="heading" color="black" style={ styles.text }>
                     {children}
                 </PDText>
             </PDView>
-            <PDView style={styles.sideContainer}>
+            <PDView style={ styles.sideContainer }>
                 {hasAddButton && (
-                    <TouchableScale {...touchableProps} onPress={handlePressedAdd}>
-                        <SVG.IconCircleAdd fill={svgColor} />
+                    <TouchableScale { ...touchableProps } onPress={ handlePressedAdd }>
+                        <SVG.IconCircleAdd fill={ svgColor } />
                     </TouchableScale>
                 )}
             </PDView>

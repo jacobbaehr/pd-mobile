@@ -53,7 +53,7 @@ export class ChartCard extends React.PureComponent<ChartCardProps, ChartCardStat
         const last = this.props.viewModel.timestamps[this.props.viewModel.timestamps.length - 1];
         const dateFormat = 'MMM';
         return [this.formatTimestamp(first, dateFormat), this.formatTimestamp(last, dateFormat)].map((range) => (
-            <Text style={styles.labelText} key={count++}>
+            <Text style={ styles.labelText } key={ count++ }>
                 {range}
             </Text>
         ));
@@ -87,31 +87,31 @@ export class ChartCard extends React.PureComponent<ChartCardProps, ChartCardStat
             Platform.OS === 'android' ? 'file:///android_asset/charts/Charts.html' : './web.bundle/Charts.html';
 
         return (
-            <View style={[styles.container, this.props.containerStyles]}>
-                <Text style={styles.title}>{this.props.viewModel.title}</Text>
-                <View style={styles.chartContainer}>
+            <View style={ [styles.container, this.props.containerStyles] }>
+                <Text style={ styles.title }>{this.props.viewModel.title}</Text>
+                <View style={ styles.chartContainer }>
                     <View
-                        style={styles.chartWebViewContainer}
-                        pointerEvents={this.props.viewModel.interactive ? 'auto' : 'none'}>
+                        style={ styles.chartWebViewContainer }
+                        pointerEvents={ this.props.viewModel.interactive ? 'auto' : 'none' }>
                         <WebView
-                            ref={(ref) => {
+                            ref={ (ref) => {
                                 this.webView = ref;
-                            }}
-                            onLoadEnd={this.onChartsLoaded}
-                            originWhitelist={['*']}
-                            source={{ uri: chartPath }}
-                            scrollEnabled={false}
-                            style={styles.chartWebView}
+                            } }
+                            onLoadEnd={ this.onChartsLoaded }
+                            originWhitelist={ ['*'] }
+                            source={ { uri: chartPath } }
+                            scrollEnabled={ false }
+                            style={ styles.chartWebView }
                         />
                     </View>
-                    <View style={styles.labelContainer}>{this.getDateLabels()}</View>
+                    <View style={ styles.labelContainer }>{this.getDateLabels()}</View>
                 </View>
                 {this.props.children}
-                <Animated.View style={[styles.overlay, { opacity: this.state.overlayOpacity }]} pointerEvents={'none'}>
+                <Animated.View style={ [styles.overlay, { opacity: this.state.overlayOpacity }] } pointerEvents={ 'none' }>
                     <Upgrade
-                        style={styles.upgradeContainer}
-                        onPress={() => {}}
-                        isUnlocked={this.props.viewModel.isUnlocked}
+                        style={ styles.upgradeContainer }
+                        onPress={ () => {} }
+                        isUnlocked={ this.props.viewModel.isUnlocked }
                     />
                 </Animated.View>
             </View>

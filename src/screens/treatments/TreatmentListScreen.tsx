@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet, View
+    InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet, View,
 } from 'react-native';
 import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
@@ -346,60 +346,60 @@ export const TreatmentListScreen: React.FC = () => {
         <PDSafeAreaView bgColor="white">
             <ScreenHeader color="purple">Treatments</ScreenHeader>
             <KeyboardAwareSectionList
-                style={styles.sectionList}
+                style={ styles.sectionList }
                 keyboardDismissMode="interactive"
                 keyboardShouldPersistTaps="handled"
-                renderItem={({ item }) => (
+                renderItem={ ({ item }) => (
                     <TreatmentListItem
-                        treatmentState={item}
-                        onTextboxUpdated={handleTextUpdated}
-                        onTextboxFinished={handleTextFinishedEditing}
-                        handleUnitsButtonPressed={handleUnitsButtonPressed}
-                        handleIconPressed={handleIconPressed}
-                        handleTreatmentNameButtonPressed={handleTreatmentNameButtonPressed}
-                        inputAccessoryId={keyboardAccessoryViewId}
+                        treatmentState={ item }
+                        onTextboxUpdated={ handleTextUpdated }
+                        onTextboxFinished={ handleTextFinishedEditing }
+                        handleUnitsButtonPressed={ handleUnitsButtonPressed }
+                        handleIconPressed={ handleIconPressed }
+                        handleTreatmentNameButtonPressed={ handleTreatmentNameButtonPressed }
+                        inputAccessoryId={ keyboardAccessoryViewId }
                     />
-                )}
-                sections={sections}
-                keyExtractor={(item) => item.treatment.var}
+                ) }
+                sections={ sections }
+                keyExtractor={ (item) => item.treatment.var }
                 contentInsetAdjustmentBehavior="always"
                 canCancelContentTouches
                 stickySectionHeadersEnabled
-                renderSectionHeader={({ section }) => {
+                renderSectionHeader={ ({ section }) => {
                     if (section.isHeader) {
                         return <ServiceNonStickyHeader />;
                     } else {
                         return (
                             <ServiceStickyHeaderList
-                                completedLength={completed.length}
-                                missingLength={countedTreatmentStates.length}
+                                completedLength={ completed.length }
+                                missingLength={ countedTreatmentStates.length }
                                 color="purple"
                             />
                         );
                     }
-                }}
-                renderSectionFooter={({ section }) => {
+                } }
+                renderSectionFooter={ ({ section }) => {
                     if (section.isHeader) {
                         return <></>;
                     } else {
-                        return <TreatmentListFooter text={notes} updatedText={setNotes} />;
+                        return <TreatmentListFooter text={ notes } updatedText={ setNotes } />;
                     }
-                }}
+                } }
             />
-            <WebView containerStyle={styles.webview} onMessage={onMessage} source={{ html: htmlString }} />
-            <View style={styles.bottomButtonContainer}>
-                <BoringButton containerStyles={styles.button} onPress={save} title="Save" />
+            <WebView containerStyle={ styles.webview } onMessage={ onMessage } source={ { html: htmlString } } />
+            <View style={ styles.bottomButtonContainer }>
+                <BoringButton containerStyles={ styles.button } onPress={ save } title="Save" />
             </View>
-            <PlatformSpecific include={['ios']}>
-                <InputAccessoryView nativeID={keyboardAccessoryViewId}>
-                    <View style={styles.keyboardAccessoryContainer}>
+            <PlatformSpecific include={ ['ios'] }>
+                <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
+                    <View style={ styles.keyboardAccessoryContainer }>
                         <BoringButton
-                            containerStyles={styles.keyboardAccessoryButton}
-                            textStyles={styles.keyboardAccessoryButtonText}
-                            onPress={() => {
+                            containerStyles={ styles.keyboardAccessoryButton }
+                            textStyles={ styles.keyboardAccessoryButtonText }
+                            onPress={ () => {
                                 Keyboard.dismiss();
                                 Haptic.light();
-                            }}
+                            } }
                             title="Done Typing"
                         />
                     </View>

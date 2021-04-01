@@ -55,24 +55,24 @@ const PoolHistoryComponent: React.FunctionComponent<PoolHistoryProps> = (props) 
     const poolTitle = selectedPool ? selectedPool.name : '';
 
     const charts = chartData.map((vm) => {
-        return <ChartCard key={vm.masterId + dateRange} viewModel={vm} containerStyles={styles.chartCard} />;
+        return <ChartCard key={ vm.masterId + dateRange } viewModel={ vm } containerStyles={ styles.chartCard } />;
     });
 
     return (
-        <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }} forceInset={{ bottom: 'never' }}>
-            <View style={styles.header}>
-                <BackButton title={poolTitle} onPress={handleBackPress} />
-                <PDGradientText style={styles.gradientText} colors={titleGradientColors}>
+        <SafeAreaView style={ { backgroundColor: 'white', flex: 1 } } forceInset={ { bottom: 'never' } }>
+            <View style={ styles.header }>
+                <BackButton title={ poolTitle } onPress={ handleBackPress } />
+                <PDGradientText style={ styles.gradientText } colors={ titleGradientColors }>
                     History
                 </PDGradientText>
                 <DateRangeSelector
-                    onRangeUpdated={onRangeChanged}
-                    dateRange={dateRanges}
-                    currentDateRange={dateRange}
+                    onRangeUpdated={ onRangeChanged }
+                    dateRange={ dateRanges }
+                    currentDateRange={ dateRange }
                 />
             </View>
-            <ScrollView style={styles.scrollView} contentInset={{ bottom: insets.bottom }}>
-                <View style={styles.chartContainer}>{charts}</View>
+            <ScrollView style={ styles.scrollView } contentInset={ { bottom: insets.bottom } }>
+                <View style={ styles.chartContainer }>{charts}</View>
             </ScrollView>
         </SafeAreaView>
     );

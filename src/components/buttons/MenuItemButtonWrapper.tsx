@@ -24,19 +24,19 @@ export const MenuItemButtonWrapper = (props: MenuItemButtonProps) => {
 
     return (
         <Pressable
-            onPress={props.onPress}
-            style={({ pressed }) => {
+            onPress={ props.onPress }
+            style={ ({ pressed }) => {
                 return getWrapperStyles(pressed);
-            }}>
-            <PDView style={styles.container}>
-                <Image style={styles.icon} source={props.image} />
-                <PDText color={props.id === 'delete' ? 'red' : 'black'} type="bodySemiBold">
+            } }>
+            <PDView style={ styles.container }>
+                <Image style={ styles.icon } source={ props.image } />
+                <PDText color={ props.id === 'delete' ? 'red' : 'black' } type="bodySemiBold">
                     {props.label}
                 </PDText>
-                <PDText color={props.valueColor} type="bodySemiBold">
+                <PDText color={ props.valueColor } type="bodySemiBold">
                     {props.value}
                 </PDText>
-                <Image style={styles.arrow} source={images.menuChevronIcon} />
+                <Image style={ styles.arrow } source={ images.menuChevronIcon } />
             </PDView>
         </Pressable>
     );

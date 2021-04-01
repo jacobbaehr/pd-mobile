@@ -7,7 +7,7 @@ export interface SeparatorLineProps {
 
 /** */
 export const SeparatorLine: React.FunctionComponent<SeparatorLineProps> = (props: SeparatorLineProps) => {
-    return <View style={[styles.line, props.lineStyles]} />;
+    return <View style={ [styles.line, props.lineStyles] } />;
 };
 
 const styles = StyleSheet.create({

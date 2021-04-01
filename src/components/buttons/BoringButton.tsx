@@ -21,11 +21,11 @@ export class BoringButton extends React.Component<ButtonProps> {
     render() {
         return (
             <TouchableScale
-                style={[styles.container, this.props.containerStyles]}
-                onPress={this.handleButtonPress}
-                disabled={this.props.disabled}
-                activeScale={0.96}>
-                <PDText type="default" style={[styles.text, this.props.textStyles]}>
+                style={ [styles.container, this.props.containerStyles] }
+                onPress={ this.handleButtonPress }
+                disabled={ this.props.disabled }
+                activeScale={ 0.96 }>
+                <PDText type="default" style={ [styles.text, this.props.textStyles] }>
                     {this.props.title}
                 </PDText>
             </TouchableScale>

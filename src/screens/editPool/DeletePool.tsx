@@ -26,31 +26,31 @@ export const DeletePool = ({ visible, toggleVisible }) => {
     };
 
     return (
-        <PDView style={styles.modalContainer}>
-            <Modal isVisible={visible}>
-                <PDView style={styles.modalContainer}>
-                    <PDView style={styles.modal}>
+        <PDView style={ styles.modalContainer }>
+            <Modal isVisible={ visible }>
+                <PDView style={ styles.modalContainer }>
+                    <PDView style={ styles.modal }>
                         <PDText type="subHeading" color="black">
                             Deletion Warning
                         </PDText>
-                        <PDView style={styles.warning}>
-                            <PDText type="bodyRegular" color="red" style={styles.warningText}>
+                        <PDView style={ styles.warning }>
+                            <PDText type="bodyRegular" color="red" style={ styles.warningText }>
                                 Continuing will permanently delete {selectedPool?.name}. This cannot be undone.
                             </PDText>
                         </PDView>
                         <ButtonWithChildren
                             // title="Delete PoolName's Pool"
-                            onPress={onPressDelete}>
-                            <PDView style={styles.deleteButton}>
-                                <SVG.IconDelete width={16} height={16} fill="white" />
-                                <PDText style={styles.deleteButtonText}> Delete {selectedPool?.name}</PDText>
+                            onPress={ onPressDelete }>
+                            <PDView style={ styles.deleteButton }>
+                                <SVG.IconDelete width={ 16 } height={ 16 } fill="white" />
+                                <PDText style={ styles.deleteButtonText }> Delete {selectedPool?.name}</PDText>
                             </PDView>
                         </ButtonWithChildren>
                         <Button
                             title="Cancel"
-                            onPress={toggleVisible}
-                            styles={styles.cancelButton}
-                            textStyles={styles.cancelButtonText}
+                            onPress={ toggleVisible }
+                            styles={ styles.cancelButton }
+                            textStyles={ styles.cancelButtonText }
                         />
                     </PDView>
                 </PDView>

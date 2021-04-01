@@ -17,11 +17,11 @@ export interface TextButtonProps {
 export const TextButton: React.FunctionComponent<TextButtonProps> = (props) => {
     return (
         <TouchableScale
-            style={[styles.container, props.containerStyles]}
-            onPress={props.onPress}
-            disabled={props.disabled}
-            activeScale={0.96}>
-            <PDText type="default" style={[styles.text, props.textStyles]}>
+            style={ [styles.container, props.containerStyles] }
+            onPress={ props.onPress }
+            disabled={ props.disabled }
+            activeScale={ 0.96 }>
+            <PDText type="default" style={ [styles.text, props.textStyles] }>
                 {props.text}
             </PDText>
         </TouchableScale>

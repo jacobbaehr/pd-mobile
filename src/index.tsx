@@ -15,9 +15,9 @@ const PoolDash: React.FunctionComponent<{}> = () => {
         StatusBar.setBarStyle('dark-content');
     }, []);
     return (
-        <Provider store={store}>
+        <Provider store={ store }>
             <SafeAreaProvider>
-                <PDThemeContext.Provider value={lightTheme}>
+                <PDThemeContext.Provider value={ lightTheme }>
                     <ShapeProvider>
                         <App />
                     </ShapeProvider>

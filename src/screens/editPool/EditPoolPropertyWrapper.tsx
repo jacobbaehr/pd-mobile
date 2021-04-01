@@ -19,23 +19,23 @@ export const EditPoolPropertyWrapper: React.FC<EditPoolPropertyWrapperProps> = (
     };
 
     return (
-        <PDView style={styles.container}>
-            <PDView style={styles.header}>
-                <PDView style={styles.headerRight} />
-                <PDView style={styles.titleContainer}>
-                    <PDText style={styles.title} type="default">
+        <PDView style={ styles.container }>
+            <PDView style={ styles.header }>
+                <PDView style={ styles.headerRight } />
+                <PDView style={ styles.titleContainer }>
+                    <PDText style={ styles.title } type="default">
                         {title}
                     </PDText>
                 </PDView>
-                <PDView style={styles.buttonContainer}>
-                    <CloseButton onPress={goBack} containerStyle={styles.closeButton} />
+                <PDView style={ styles.buttonContainer }>
+                    <CloseButton onPress={ goBack } containerStyle={ styles.closeButton } />
                 </PDView>
             </PDView>
-            <PDText style={styles.description} type="default">
+            <PDText style={ styles.description } type="default">
                 {description}
             </PDText>
-            <PDView style={styles.details}>{children}</PDView>
-            <PDView style={styles.content} />
+            <PDView style={ styles.details }>{children}</PDView>
+            <PDView style={ styles.content } />
         </PDView>
     );
 };

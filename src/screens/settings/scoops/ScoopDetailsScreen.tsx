@@ -230,7 +230,7 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
             return null;
         }
 
-        return <BoringButton containerStyles={styles.deleteButton} onPress={handleDeletePressed} title="Delete" />;
+        return <BoringButton containerStyles={ styles.deleteButton } onPress={ handleDeletePressed } title="Delete" />;
     };
 
     let chemButtonTitle = 'choose';
@@ -241,59 +241,59 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
     }
 
     return (
-        <SafeAreaView style={{ display: 'flex', flex: 1, backgroundColor: '#FFFFFF' }}>
-            <View style={styles.header}>
-                <View style={styles.headerLeft}>
-                    <PDText type="default" style={styles.title}>
+        <SafeAreaView style={ { display: 'flex', flex: 1, backgroundColor: '#FFFFFF' } }>
+            <View style={ styles.header }>
+                <View style={ styles.headerLeft }>
+                    <PDText type="default" style={ styles.title }>
                         {headerTitle}
                     </PDText>
                 </View>
-                <CloseButton onPress={handleClosePressed} containerStyle={styles.closeButton} />
+                <CloseButton onPress={ handleClosePressed } containerStyle={ styles.closeButton } />
             </View>
-            <KeyboardAwareScrollView style={{ flex: 1, backgroundColor: '#F4F7FF' }}>
-                <PDText type="default" style={styles.sectionTitle}>
+            <KeyboardAwareScrollView style={ { flex: 1, backgroundColor: '#F4F7FF' } }>
+                <PDText type="default" style={ styles.sectionTitle }>
                     Chemical
                 </PDText>
                 <ChoosyButton
-                    title={chemButtonTitle}
-                    onPress={() => showChemPicker(treatments)}
-                    styles={styles.chemButton}
-                    textStyles={styles.chemButtonText}
+                    title={ chemButtonTitle }
+                    onPress={ () => showChemPicker(treatments) }
+                    styles={ styles.chemButton }
+                    textStyles={ styles.chemButtonText }
                 />
-                <PDText type="default" style={styles.sectionTitle}>
+                <PDText type="default" style={ styles.sectionTitle }>
                     Size
                 </PDText>
-                <View style={styles.bubbleContainer}>
+                <View style={ styles.bubbleContainer }>
                     <TextInput
-                        style={styles.textInput}
-                        onChangeText={handleTextboxUpdated}
-                        keyboardType={'decimal-pad'}
-                        inputAccessoryViewID={keyboardAccessoryViewId}
-                        clearTextOnFocus={true}
-                        value={textValue}
+                        style={ styles.textInput }
+                        onChangeText={ handleTextboxUpdated }
+                        keyboardType={ 'decimal-pad' }
+                        inputAccessoryViewID={ keyboardAccessoryViewId }
+                        clearTextOnFocus={ true }
+                        value={ textValue }
                     />
                     <CycleButton
-                        title={pluralize(units, +(textValue || '0'))}
-                        onPress={handleUnitsPressed}
-                        styles={styles.unitsButton}
-                        textStyles={styles.unitsText}
+                        title={ pluralize(units, +(textValue || '0')) }
+                        onPress={ handleUnitsPressed }
+                        styles={ styles.unitsButton }
+                        textStyles={ styles.unitsText }
                     />
                 </View>
             </KeyboardAwareScrollView>
-            <View style={{ backgroundColor: 'white' }}>
-                <BoringButton containerStyles={styles.saveButton} onPress={handleSavePressed} title="Save" />
+            <View style={ { backgroundColor: 'white' } }>
+                <BoringButton containerStyles={ styles.saveButton } onPress={ handleSavePressed } title="Save" />
                 {getDeleteButtonOrNull()}
             </View>
-            <PlatformSpecific include={['ios']}>
-                <InputAccessoryView nativeID={keyboardAccessoryViewId}>
-                    <View style={styles.keyboardAccessoryContainer}>
+            <PlatformSpecific include={ ['ios'] }>
+                <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
+                    <View style={ styles.keyboardAccessoryContainer }>
                         <BoringButton
-                            containerStyles={styles.keyboardAccessoryButton}
-                            textStyles={styles.keyboardAccessoryButtonText}
-                            onPress={() => {
+                            containerStyles={ styles.keyboardAccessoryButton }
+                            textStyles={ styles.keyboardAccessoryButtonText }
+                            onPress={ () => {
                                 Keyboard.dismiss();
                                 Haptic.light();
-                            }}
+                            } }
                             title="Done Typing"
                         />
                     </View>

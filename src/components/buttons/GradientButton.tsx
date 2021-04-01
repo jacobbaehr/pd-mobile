@@ -26,16 +26,16 @@ export class GradientButton extends React.Component<ButtonProps, {}> {
         const gradientEnd = this.props.gradientEnd ? this.props.gradientEnd : '#FF0073';
         return (
             <TouchableScale
-                style={[styles.container, this.props.containerStyles]}
-                onPress={this.handleButtonPress}
-                disabled={this.props.disabled}
-                activeScale={0.96}>
+                style={ [styles.container, this.props.containerStyles] }
+                onPress={ this.handleButtonPress }
+                disabled={ this.props.disabled }
+                activeScale={ 0.96 }>
                 <LinearGradient
-                    colors={[gradientStart, gradientEnd]}
-                    start={{ x: -0.1, y: -0.1 }}
-                    end={{ x: 1.15, y: 1.1 }}
-                    style={styles.linearGradient}>
-                    <PDText color="white" type="default" style={styles.text}>
+                    colors={ [gradientStart, gradientEnd] }
+                    start={ { x: -0.1, y: -0.1 } }
+                    end={ { x: 1.15, y: 1.1 } }
+                    style={ styles.linearGradient }>
+                    <PDText color="white" type="default" style={ styles.text }>
                         {this.props.title}
                     </PDText>
                 </LinearGradient>

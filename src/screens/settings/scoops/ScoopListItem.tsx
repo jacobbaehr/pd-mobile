@@ -24,12 +24,12 @@ export const ScoopListItem: React.FunctionComponent<ScoopListItemProps> = (props
     )}`;
 
     return (
-        <TouchableScale onPress={handlePressed} activeScale={0.96}>
-            <View style={styles.listItemContainer}>
-                <PDText type="default" style={styles.chemNameText}>
+        <TouchableScale onPress={ handlePressed } activeScale={ 0.96 }>
+            <View style={ styles.listItemContainer }>
+                <PDText type="default" style={ styles.chemNameText }>
                     {props.scoop.chemName}
                 </PDText>
-                <PDText type="default" style={styles.unitsText}>
+                <PDText type="default" style={ styles.unitsText }>
                     {unitsText}
                 </PDText>
             </View>

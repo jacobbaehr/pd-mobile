@@ -37,11 +37,11 @@ const PoolListFooterNonEmptyComponent: React.FunctionComponent<PoolListFooterNon
         return (
             <View>
                 <Image
-                    style={styles.image}
-                    source={images.logoGreenPlus}
-                    width={imageWidth}
-                    height={imageHeight}
-                    resizeMode={'contain'}
+                    style={ styles.image }
+                    source={ images.logoGreenPlus }
+                    width={ imageWidth }
+                    height={ imageHeight }
+                    resizeMode={ 'contain' }
                 />
             </View>
         );
@@ -50,17 +50,17 @@ const PoolListFooterNonEmptyComponent: React.FunctionComponent<PoolListFooterNon
     const changeButtonStyles = isChangeButtonPressed ? styles.recipeLinkPressed : styles.recipeLinkNormal;
 
     return (
-        <View style={styles.container}>
-            <View style={styles.topRow}>
+        <View style={ styles.container }>
+            <View style={ styles.topRow }>
                 <TouchableHighlight
-                    onPressIn={() => setIsChangeButtonPressed(true)}
-                    onPressOut={() => setIsChangeButtonPressed(false)}
-                    onPress={props.pressedUpgrade}>
-                    <PDText type="default" style={changeButtonStyles}>
+                    onPressIn={ () => setIsChangeButtonPressed(true) }
+                    onPressOut={ () => setIsChangeButtonPressed(false) }
+                    onPress={ props.pressedUpgrade }>
+                    <PDText type="default" style={ changeButtonStyles }>
                         Unlock
                     </PDText>
                 </TouchableHighlight>
-                <PDText type="default" style={styles.changeRecipeIntro}>
+                <PDText type="default" style={ styles.changeRecipeIntro }>
                     {' '}
                     to add more pools.
                 </PDText>

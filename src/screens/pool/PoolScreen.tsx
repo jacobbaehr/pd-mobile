@@ -136,7 +136,7 @@ export const PoolScreen: React.FC = () => {
 
     const renderItem = (section: SectionListData<any>, item: any): JSX.Element => {
         let titleElement = (
-            <PDText type="default" style={styles.sectionTitle}>
+            <PDText type="default" style={ styles.sectionTitle }>
                 {section.title}
             </PDText>
         );
@@ -152,8 +152,8 @@ export const PoolScreen: React.FC = () => {
                 return <></>;
             }
             contentBody = (
-                <TouchableScale onPress={handleChartsPressed} activeScale={0.98} style={styles.recipeButton}>
-                    <ChartCard viewModel={chartData} containerStyles={styles.chartCard} />
+                <TouchableScale onPress={ handleChartsPressed } activeScale={ 0.98 } style={ styles.recipeButton }>
+                    <ChartCard viewModel={ chartData } containerStyles={ styles.chartCard } />
                 </TouchableScale>
             );
         } else if (section.key === 'history_section') {
@@ -165,19 +165,19 @@ export const PoolScreen: React.FC = () => {
             }
             contentBody = (
                 <PoolHistoryListItem
-                    key={item.objectId}
-                    logEntry={item}
-                    handleCellSelected={handleHistoryCellPressed}
-                    handleDeletePressed={handleHistoryCellDeletePressed}
-                    handleEmailPressed={handleHistoryCellEmailPressed}
-                    isExpanded={selectedHistoryCellIds.includes(item.objectId)}
+                    key={ item.objectId }
+                    logEntry={ item }
+                    handleCellSelected={ handleHistoryCellPressed }
+                    handleDeletePressed={ handleHistoryCellDeletePressed }
+                    handleEmailPressed={ handleHistoryCellEmailPressed }
+                    isExpanded={ selectedHistoryCellIds.includes(item.objectId) }
                 />
             );
         }
 
         // We need the key here to change after a purchase to cause a re-render:
         return (
-            <View key={`${section}-${item.objectId}`} style={{ marginBottom, marginHorizontal }}>
+            <View key={ `${section}-${item.objectId}` } style={ { marginBottom, marginHorizontal } }>
                 {section.key === 'service_section' || titleElement}
                 {contentBody}
             </View>
@@ -190,9 +190,9 @@ export const PoolScreen: React.FC = () => {
         }
         return (
             <BoringButton
-                containerStyles={styles.dataButton}
-                textStyles={styles.dataButtonText}
-                onPress={handleDataButtonPressed}
+                containerStyles={ styles.dataButton }
+                textStyles={ styles.dataButtonText }
+                onPress={ handleDataButtonPressed }
                 title="Export as CSV"
             />
         );
@@ -216,16 +216,16 @@ export const PoolScreen: React.FC = () => {
         },
     ];
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }} forceInset={{ bottom: 'never' }}>
+        <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } } forceInset={ { bottom: 'never' } }>
             <PoolHeaderView />
             <SectionList
-                sections={sections}
-                style={styles.sectionList}
-                renderItem={({ section, item }) => renderItem(section, item)}
-                contentInset={{ bottom: 34 }}
-                stickySectionHeadersEnabled={true}
-                keyExtractor={(section, item) => `${section.key}|${item}|${isUnlocked ? 'unlocked' : 'locked'}`}
-                renderSectionFooter={(info) => renderSectionFooter(info.section)}
+                sections={ sections }
+                style={ styles.sectionList }
+                renderItem={ ({ section, item }) => renderItem(section, item) }
+                contentInset={ { bottom: 34 } }
+                stickySectionHeadersEnabled={ true }
+                keyExtractor={ (section, item) => `${section.key}|${item}|${isUnlocked ? 'unlocked' : 'locked'}` }
+                renderSectionFooter={ (info) => renderSectionFooter(info.section) }
             />
         </SafeAreaView>
     );

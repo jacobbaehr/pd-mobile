@@ -19,14 +19,14 @@ export const ServiceStickyHeaderList: React.FC<ReadingListStickyHeaderProps> = (
     const progressColor = theme[color];
 
     return (
-        <PDView style={styles.container} bgColor="white">
-            <PDText type="bodyBold" color="grey" style={styles.stepsText}>
+        <PDView style={ styles.container } bgColor="white">
+            <PDText type="bodyBold" color="grey" style={ styles.stepsText }>
                 {completedLength} of {missingLength} readings completed
             </PDText>
             <PDProgressBar
-                progress={progress}
-                foregroundColor={progressColor}
-                style={{ height: 4, backgroundColor: 'rgba(0,0,0,0.2)' }}
+                progress={ progress }
+                foregroundColor={ progressColor }
+                style={ { height: 4, backgroundColor: 'rgba(0,0,0,0.2)' } }
             />
         </PDView>
     );

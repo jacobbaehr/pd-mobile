@@ -94,49 +94,49 @@ const CustomTargetsItem: React.FC<CustomTargetsItemProps> = ({ tr }) => {
     const enableResetButton = !isDefault('min') || !isDefault('max');
 
     return (
-        <PDView style={styles.container} bgColor="white">
-            <PDView style={styles.topRow}>
+        <PDView style={ styles.container } bgColor="white">
+            <PDView style={ styles.topRow }>
                 <PDText type="bodyMedium" color="black">
                     {tr.name}
                 </PDText>
                 <TextButton
                     text="Reset"
-                    onPress={reset}
-                    disabled={!enableResetButton}
-                    containerStyles={styles.buttonContainer}
-                    textStyles={[styles.buttonText, enableResetButton && styles.activeButton]}
+                    onPress={ reset }
+                    disabled={ !enableResetButton }
+                    containerStyles={ styles.buttonContainer }
+                    textStyles={ [styles.buttonText, enableResetButton && styles.activeButton] }
                 />
             </PDView>
             <PDView>
-                <PDView style={styles.inputRow}>
+                <PDView style={ styles.inputRow }>
                     <BorderInputWithLabel
                         label="min"
-                        placeholder={`${recipeDefaults.min}`}
-                        placeholderTextColor={'#BBBBBB'}
-                        onChangeText={(text) => handleTextChange('min', text)}
-                        value={formValues.min}
+                        placeholder={ `${recipeDefaults.min}` }
+                        placeholderTextColor={ '#BBBBBB' }
+                        onChangeText={ (text) => handleTextChange('min', text) }
+                        value={ formValues.min }
                         keyboardType="numeric"
-                        onBlur={handleBlur}
+                        onBlur={ handleBlur }
                     />
                     <BorderInputWithLabel
                         label="max"
-                        placeholder={`${recipeDefaults.max}`}
-                        placeholderTextColor={'#BBBBBB'}
-                        onChangeText={(text) => handleTextChange('max', text)}
-                        value={formValues.max}
+                        placeholder={ `${recipeDefaults.max}` }
+                        placeholderTextColor={ '#BBBBBB' }
+                        onChangeText={ (text) => handleTextChange('max', text) }
+                        value={ formValues.max }
                         keyboardType="numeric"
-                        onBlur={handleBlur}
+                        onBlur={ handleBlur }
                     />
                 </PDView>
                 {!isValid && (
-                    <PDView bgColor="blurredRed" style={styles.errorContainer}>
+                    <PDView bgColor="blurredRed" style={ styles.errorContainer }>
                         <PDText type="bodyBold" color="red">
                             Your target’s min value cannot greater than the max value
                         </PDText>
                     </PDView>
                 )}
                 <PDView>
-                    <PDText numberOfLines={3} type="bodyRegular" color="grey">
+                    <PDText numberOfLines={ 3 } type="bodyRegular" color="grey">
                         {tr.description}
                     </PDText>
                 </PDView>

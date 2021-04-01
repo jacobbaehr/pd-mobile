@@ -19,15 +19,15 @@ export class RecipeListItem extends React.Component<RecipeListItemProps, {}> {
     render() {
         const recipe = this.props.recipe;
         return (
-            <TouchableScale style={styles.content} onPress={this.handleButtonPressed} activeScale={0.98}>
-                <View style={{ flex: 1 }}>
-                    <PDText type="default" style={styles.recipeNameText}>
+            <TouchableScale style={ styles.content } onPress={ this.handleButtonPressed } activeScale={ 0.98 }>
+                <View style={ { flex: 1 } }>
+                    <PDText type="default" style={ styles.recipeNameText }>
                         {recipe.name}{' '}
-                        <PDText type="default" style={styles.recipeIdText}>
+                        <PDText type="default" style={ styles.recipeIdText }>
                             ({recipe.id})
                         </PDText>
                     </PDText>
-                    <PDText type="default" style={styles.recipeDescriptionText}>
+                    <PDText type="default" style={ styles.recipeDescriptionText }>
                         {recipe.desc}{' '}
                     </PDText>
                 </View>

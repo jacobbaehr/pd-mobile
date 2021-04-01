@@ -61,7 +61,7 @@ export const AppComponent: React.FunctionComponent<AppProps> = () => {
     }
 
     return (
-        <ApolloProvider client={apolloClient}>
+        <ApolloProvider client={ apolloClient }>
             <PDRootNavigator />
         </ApolloProvider>
     );

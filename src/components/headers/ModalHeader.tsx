@@ -18,9 +18,9 @@ const ModalHeader: React.FC = (props) => {
     };
 
     return (
-        <View style={styles.container}>
-            <TouchableScale onPress={goBack}>
-                <SVG.IconCircleBack fill={'black'} />
+        <View style={ styles.container }>
+            <TouchableScale onPress={ goBack }>
+                <SVG.IconCircleBack fill={ 'black' } />
             </TouchableScale>
             <PDText type="subHeading">{children}</PDText>
             <View />

@@ -21,21 +21,21 @@ const CustomTargetsScreen = () => {
     const targets = recipe?.custom ?? [];
 
     return (
-        <SafeAreaView forceInset={{ bottom: 'never' }} style={styles.safeArea}>
+        <SafeAreaView forceInset={ { bottom: 'never' } } style={ styles.safeArea }>
             <CustomTargetsHeader />
             <KeyboardAwareFlatList
-                keyboardDismissMode={'interactive'}
-                keyboardShouldPersistTaps={'handled'}
-                data={targets}
-                renderItem={({ item }: { item: TargetRange }) => <CustomTargetsItem tr={item} />}
-                keyExtractor={(item: TargetRange) => item.var}
-                ListHeaderComponent={() => (
-                    <PDText type="subHeading" color="greyDarker" style={styles.recipeName}>
+                keyboardDismissMode={ 'interactive' }
+                keyboardShouldPersistTaps={ 'handled' }
+                data={ targets }
+                renderItem={ ({ item }: { item: TargetRange }) => <CustomTargetsItem tr={ item } /> }
+                keyExtractor={ (item: TargetRange) => item.var }
+                ListHeaderComponent={ () => (
+                    <PDText type="subHeading" color="greyDarker" style={ styles.recipeName }>
                         {recipe?.name}
                     </PDText>
-                )}
-                style={styles.container}
-                contentContainerStyle={styles.content}
+                ) }
+                style={ styles.container }
+                contentContainerStyle={ styles.content }
                 automaticallyAdjustContentInsets
             />
         </SafeAreaView>

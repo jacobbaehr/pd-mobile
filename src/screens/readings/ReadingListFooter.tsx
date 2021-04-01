@@ -19,22 +19,22 @@ export const ReadingListFooter: React.FunctionComponent<ReadingListFooterProps> 
     const changeButtonStyles = isChangeButtonPressed ? styles.recipeLinkPressed : styles.recipeLinkNormal;
 
     return (
-        <View style={styles.container}>
-            <PDText type="default" style={styles.recipeNameIntroText}>
+        <View style={ styles.container }>
+            <PDText type="default" style={ styles.recipeNameIntroText }>
                 Current recipe:{' '}
-                <PDText type="default" style={styles.recipeNameText}>
+                <PDText type="default" style={ styles.recipeNameText }>
                     {props.recipe.name}
                 </PDText>
             </PDText>
-            <View style={styles.topRow}>
-                <PDText type="default" style={styles.changeRecipeIntro}>
+            <View style={ styles.topRow }>
+                <PDText type="default" style={ styles.changeRecipeIntro }>
                     Want different readings?{' '}
                 </PDText>
                 <TouchableHighlight
-                    onPressIn={() => setIsChangeButtonPressed(true)}
-                    onPressOut={() => setIsChangeButtonPressed(false)}
-                    onPress={props.pressedChangeRecipe}>
-                    <PDText type="default" style={changeButtonStyles}>
+                    onPressIn={ () => setIsChangeButtonPressed(true) }
+                    onPressOut={ () => setIsChangeButtonPressed(false) }
+                    onPress={ props.pressedChangeRecipe }>
+                    <PDText type="default" style={ changeButtonStyles }>
                         Change recipe.
                     </PDText>
                 </TouchableHighlight>

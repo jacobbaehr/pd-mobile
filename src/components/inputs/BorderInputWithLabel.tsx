@@ -17,10 +17,10 @@ const BorderInputWithLabel: React.FC<BorderInputWithLabel> = (props) => {
 
     return (
         <PDView>
-            <PDText type="bodyGreyBold" color="grey" style={labelStyleProps}>
+            <PDText type="bodyGreyBold" color="grey" style={ labelStyleProps }>
                 {label}
             </PDText>
-            <TextInput style={defaultStyle} placeholderTextColor="#BBBBBB" blurOnSubmit {...restTextInputProps} />
+            <TextInput style={ defaultStyle } placeholderTextColor="#BBBBBB" blurOnSubmit { ...restTextInputProps } />
         </PDView>
     );
 };

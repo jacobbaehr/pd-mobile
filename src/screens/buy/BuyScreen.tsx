@@ -96,26 +96,26 @@ const BuyComponent: React.FunctionComponent<BuyScreenProps> = (props) => {
         if (isPurchased) {
             return (
                 <BoringButton
-                    onPress={handleManageSubPressed}
-                    title={'Manage Subscription'}
-                    containerStyles={styles.purchaseButtonContainer}
-                    textStyles={styles.purchaseButtonText}
+                    onPress={ handleManageSubPressed }
+                    title={ 'Manage Subscription' }
+                    containerStyles={ styles.purchaseButtonContainer }
+                    textStyles={ styles.purchaseButtonText }
                 />
             );
         }
         return (
             <>
                 <BoringButton
-                    onPress={handleUpgradePressed}
-                    title={'Purchase'}
-                    containerStyles={styles.purchaseButtonContainer}
-                    textStyles={styles.purchaseButtonText}
+                    onPress={ handleUpgradePressed }
+                    title={ 'Purchase' }
+                    containerStyles={ styles.purchaseButtonContainer }
+                    textStyles={ styles.purchaseButtonText }
                 />
                 <BoringButton
-                    onPress={handleRestorePressed}
-                    title={'Restore'}
-                    containerStyles={styles.restoreButtonContainer}
-                    textStyles={styles.restoreButtonText}
+                    onPress={ handleRestorePressed }
+                    title={ 'Restore' }
+                    containerStyles={ styles.restoreButtonContainer }
+                    textStyles={ styles.restoreButtonText }
                 />
             </>
         );
@@ -125,54 +125,54 @@ const BuyComponent: React.FunctionComponent<BuyScreenProps> = (props) => {
         paddingBottom: insets.bottom,
     };
     return (
-        <SafeAreaView forceInset={{ bottom: 'never' }} style={styles.safeAreaContainer}>
-            <BuyHeader goBack={handleGoBack} />
-            <ScrollView style={[styles.scrollView, dynamicInsets]}>
-                <View style={styles.flexRow}>
-                    <PDText type={'heading'} color={'white'}>
+        <SafeAreaView forceInset={ { bottom: 'never' } } style={ styles.safeAreaContainer }>
+            <BuyHeader goBack={ handleGoBack } />
+            <ScrollView style={ [styles.scrollView, dynamicInsets] }>
+                <View style={ styles.flexRow }>
+                    <PDText type={ 'heading' } color={ 'white' }>
                         Unlock
                     </PDText>
-                    <PDText type={'heading'} style={styles.price}>
+                    <PDText type={ 'heading' } style={ styles.price }>
                         $20
                     </PDText>
                 </View>
-                <View style={styles.underline} />
-                <View style={styles.flexRow}>
-                    <PDText type={'default'} style={styles.annually}>
+                <View style={ styles.underline } />
+                <View style={ styles.flexRow }>
+                    <PDText type={ 'default' } style={ styles.annually }>
                         annually
                     </PDText>
                 </View>
-                <View style={[styles.flexRow, styles.reasonTop]}>
+                <View style={ [styles.flexRow, styles.reasonTop] }>
                     <Image
-                        style={styles.reasonIcon}
-                        source={images.trends}
-                        width={37}
-                        height={27}
-                        resizeMode={'contain'}
+                        style={ styles.reasonIcon }
+                        source={ images.trends }
+                        width={ 37 }
+                        height={ 27 }
+                        resizeMode={ 'contain' }
                     />
-                    <PDText type={'default'} style={styles.reasonText}>
+                    <PDText type={ 'default' } style={ styles.reasonText }>
                         Charts
                     </PDText>
                 </View>
-                <View style={[styles.flexRow, styles.reasonTop]}>
+                <View style={ [styles.flexRow, styles.reasonTop] }>
                     <Image
-                        style={styles.reasonIcon}
-                        source={images.pools3}
-                        width={37}
-                        height={27}
-                        resizeMode={'contain'}
+                        style={ styles.reasonIcon }
+                        source={ images.pools3 }
+                        width={ 37 }
+                        height={ 27 }
+                        resizeMode={ 'contain' }
                     />
-                    <PDText type={'default'} style={styles.reasonText}>
+                    <PDText type={ 'default' } style={ styles.reasonText }>
                         Unlimited Pools
                     </PDText>
                 </View>
-                <View pointerEvents={isLoading ? 'none' : 'auto'} style={{ opacity: isLoading ? 0.6 : 1 }}>
+                <View pointerEvents={ isLoading ? 'none' : 'auto' } style={ { opacity: isLoading ? 0.6 : 1 } }>
                     {getButtons()}
                 </View>
-                <PDText type={'default'} style={styles.lifeStory}>
+                <PDText type={ 'default' } style={ styles.lifeStory }>
                     {lifeStory}
                 </PDText>
-                <View style={dynamicInsets} />
+                <View style={ dynamicInsets } />
             </ScrollView>
         </SafeAreaView>
     );

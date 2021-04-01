@@ -156,20 +156,20 @@ export const EditPoolScreen: React.FC = () => {
 
     return (
         <PoolDetails
-            originalPoolName={originalSelectedPoolName ?? ''}
-            name={name}
-            volumeText={volumeText}
-            volumeUnits={volumeUnits}
-            waterType={waterType}
-            wallType={wallType}
-            goBack={goBack}
-            updateVolume={updateVolumeText}
-            updateName={updateName}
-            pressedWaterTypeButton={handlePressedWaterTypeButton}
-            pressedWallTypeButton={handlePressedWallTypeButton}
-            pressedUnitsButton={handlePressedUnitsButton}
-            rightButtonAction={deleteButtonAction}
-            handleSavePoolPressed={handleSaveButtonPressed}
+            originalPoolName={ originalSelectedPoolName ?? '' }
+            name={ name }
+            volumeText={ volumeText }
+            volumeUnits={ volumeUnits }
+            waterType={ waterType }
+            wallType={ wallType }
+            goBack={ goBack }
+            updateVolume={ updateVolumeText }
+            updateName={ updateName }
+            pressedWaterTypeButton={ handlePressedWaterTypeButton }
+            pressedWallTypeButton={ handlePressedWallTypeButton }
+            pressedUnitsButton={ handlePressedUnitsButton }
+            rightButtonAction={ deleteButtonAction }
+            handleSavePoolPressed={ handleSaveButtonPressed }
         />
     );
 };

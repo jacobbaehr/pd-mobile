@@ -18,11 +18,11 @@ export const ServiceNonStickyHeader: React.FC<{}> = () => {
     const detailsText = getDisplayForWaterType(pool.waterType);
 
     return (
-        <PDView style={styles.container} bgColor="white">
+        <PDView style={ styles.container } bgColor="white">
             <PDText type="subHeading">{pool.name}</PDText>
-            <PDView style={styles.row}>
-                <PDView style={styles.containerIcon}>
-                    <SVG.IconInformation fill={theme.grey} />
+            <PDView style={ styles.row }>
+                <PDView style={ styles.containerIcon }>
+                    <SVG.IconInformation fill={ theme.grey } />
                 </PDView>
                 <PDText type="bodyRegular" color="grey">
                     {volumeDisplay}, {detailsText}

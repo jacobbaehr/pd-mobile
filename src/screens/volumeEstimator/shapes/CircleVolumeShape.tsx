@@ -51,41 +51,41 @@ export const CircleVolumeShape: React.FC = () => {
 
     return (
         <View>
-            <View style={styles.fromRowOneField}>
+            <View style={ styles.fromRowOneField }>
                 <BorderInputWithLabel
-                    value={shapeValues.diameter}
-                    label={`Diameter (${unitName})`}
+                    value={ shapeValues.diameter }
+                    label={ `Diameter (${unitName})` }
                     placeholder="Diameter"
-                    onChangeText={handleChangedDiameter}
+                    onChangeText={ handleChangedDiameter }
                     keyboardType="numeric"
-                    maxLength={4}
+                    maxLength={ 4 }
                     returnKeyType="search"
                     returnKeyLabel="Next"
-                    textInputStyleProps={{ color: primaryColor }}
+                    textInputStyleProps={ { color: primaryColor } }
                 />
             </View>
-            <View style={styles.formRow}>
+            <View style={ styles.formRow }>
                 <BorderInputWithLabel
-                    value={shapeValues.deepest}
-                    label={`deepest (${unitName})`}
+                    value={ shapeValues.deepest }
+                    label={ `deepest (${unitName})` }
                     placeholder="Deepest"
-                    onChangeText={handleChangedDeepest}
+                    onChangeText={ handleChangedDeepest }
                     keyboardType="numeric"
-                    maxLength={4}
+                    maxLength={ 4 }
                     returnKeyType="next"
                     returnKeyLabel="Next"
-                    textInputStyleProps={{ color: primaryColor }}
+                    textInputStyleProps={ { color: primaryColor } }
                 />
                 <BorderInputWithLabel
-                    value={shapeValues.shallowest}
-                    label={`shallowest (${unitName})`}
+                    value={ shapeValues.shallowest }
+                    label={ `shallowest (${unitName})` }
                     placeholder="Shallowest"
-                    onChangeText={handleChangedShallowest}
+                    onChangeText={ handleChangedShallowest }
                     keyboardType="numeric"
-                    maxLength={4}
+                    maxLength={ 4 }
                     returnKeyType="done"
                     returnKeyLabel="Done"
-                    textInputStyleProps={{ color: primaryColor }}
+                    textInputStyleProps={ { color: primaryColor } }
                 />
             </View>
         </View>

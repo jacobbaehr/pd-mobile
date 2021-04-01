@@ -36,24 +36,24 @@ export const EditWallType = () => {
     return (
         <PDView>
             <FlatList
-                data={wallTypeOptions}
-                renderItem={({ item }) => (
-                    <PDView style={wallType === item.value ? styles.selectedButtonContainer : styles.buttonContainer}>
+                data={ wallTypeOptions }
+                renderItem={ ({ item }) => (
+                    <PDView style={ wallType === item.value ? styles.selectedButtonContainer : styles.buttonContainer }>
                         <Button
-                            textStyles={wallType === item.value ? styles.selectedText : styles.unselectedText}
-                            title={item.display}
-                            onPress={() => {
+                            textStyles={ wallType === item.value ? styles.selectedText : styles.unselectedText }
+                            title={ item.display }
+                            onPress={ () => {
                                 handleButtonSelected(item.value);
-                            }}
+                            } }
                         />
                         {wallType === item.value ? (
-                            <SVG.IconCheckmark width={24} height={24} fill="white" style={styles.checkmark} />
+                            <SVG.IconCheckmark width={ 24 } height={ 24 } fill="white" style={ styles.checkmark } />
                         ) : null}
                     </PDView>
-                )}
-                keyExtractor={(item) => item.value}
-                ItemSeparatorComponent={() => <PDView style={styles.separator} />}
-                contentContainerStyle={styles.list}
+                ) }
+                keyExtractor={ (item) => item.value }
+                ItemSeparatorComponent={ () => <PDView style={ styles.separator } /> }
+                contentContainerStyle={ styles.list }
             />
         </PDView>
     );

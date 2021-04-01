@@ -46,59 +46,59 @@ export const RecipeScreen: React.FC = () => {
     const webButtonStyles = isWebButtonPressed ? styles.recipeLinkPressed : styles.recipeLinkNormal;
 
     const readingList = recipe.readings.map((r) => (
-        <PDText type="default" style={styles.textBody} key={`r:${recipe.readings.indexOf(r)}`}>
+        <PDText type="default" style={ styles.textBody } key={ `r:${recipe.readings.indexOf(r)}` }>
             • {r.name}
         </PDText>
     ));
     const treatmentList = recipe.treatments.map((t) => (
-        <PDText type="default" style={styles.textBody} key={`t:${recipe.treatments.indexOf(t)}`}>
+        <PDText type="default" style={ styles.textBody } key={ `t:${recipe.treatments.indexOf(t)}` }>
             • {t.name}
         </PDText>
     ));
     const updatedText = format(recipe.ts, '• MMM d, y') + format(recipe.ts, '  //  h:mma').toLowerCase();
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
-            <View style={styles.container}>
-                <RecipeScreenHeader handleBackPress={handleBackPressed} meta={meta} />
-                <ScrollView style={styles.scrollView} contentInset={{ top: 12, bottom: 12 }}>
-                    <PDText type="default" style={styles.textTitle}>
+        <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } }>
+            <View style={ styles.container }>
+                <RecipeScreenHeader handleBackPress={ handleBackPressed } meta={ meta } />
+                <ScrollView style={ styles.scrollView } contentInset={ { top: 12, bottom: 12 } }>
+                    <PDText type="default" style={ styles.textTitle }>
                         Description
                     </PDText>
-                    <PDText type="default" style={styles.textBody}>
+                    <PDText type="default" style={ styles.textBody }>
                         {recipe.description}
                     </PDText>
-                    <PDText type="default" style={styles.textTitle}>
+                    <PDText type="default" style={ styles.textTitle }>
                         Readings
                     </PDText>
                     {readingList}
-                    <PDText type="default" style={styles.textTitle}>
+                    <PDText type="default" style={ styles.textTitle }>
                         Treatments
                     </PDText>
                     {treatmentList}
-                    <PDText type="default" style={styles.textTitle}>
+                    <PDText type="default" style={ styles.textTitle }>
                         Last Updated
                     </PDText>
-                    <PDText type="default" style={styles.textBody}>
+                    <PDText type="default" style={ styles.textBody }>
                         {updatedText}
                     </PDText>
-                    <PDText type="default" style={styles.recipeNameIntroText}>
+                    <PDText type="default" style={ styles.recipeNameIntroText }>
                         Want to see the formulas?
                     </PDText>
-                    <View style={styles.topRow}>
+                    <View style={ styles.topRow }>
                         <TouchableHighlight
-                            onPressIn={() => setIsWebButtonPressed(true)}
-                            onPressOut={() => setIsWebButtonPressed(false)}
-                            onPress={handleViewDetailsPressed}>
-                            <PDText type="default" style={webButtonStyles}>
+                            onPressIn={ () => setIsWebButtonPressed(true) }
+                            onPressOut={ () => setIsWebButtonPressed(false) }
+                            onPress={ handleViewDetailsPressed }>
+                            <PDText type="default" style={ webButtonStyles }>
                                 Open in your browser
                             </PDText>
                         </TouchableHighlight>
                     </View>
                 </ScrollView>
                 <BoringButton
-                    containerStyles={styles.button}
-                    onPress={handleSelectRecipePressed}
+                    containerStyles={ styles.button }
+                    onPress={ handleSelectRecipePressed }
                     title="Use this recipe"
                 />
             </View>

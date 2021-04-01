@@ -48,94 +48,94 @@ export const PoolDetails: React.FunctionComponent<PoolDetailProps> = (props) => 
     };
 
     return (
-        <SafeAreaView style={styles.safeArea}>
+        <SafeAreaView style={ styles.safeArea }>
             <EditListHeader
-                handleBackPress={() => goBack()}
-                buttonText={originalPoolName}
-                rightButtonAction={rightButtonAction}
+                handleBackPress={ () => goBack() }
+                buttonText={ originalPoolName }
+                rightButtonAction={ rightButtonAction }
             />
             <KeyboardAwareScrollView
-                style={styles.scrollView}
+                style={ styles.scrollView }
                 keyboardShouldPersistTaps="handled"
                 // The bottom-view here is about the size of a tab-bar, so this is close to reality:
-                viewIsInsideTabBar={true}>
+                viewIsInsideTabBar={ true }>
                 <View>
-                    <View style={styles.listContainer}>
+                    <View style={ styles.listContainer }>
                         <TextInputWithTitle
                             titleText="Name"
-                            onTextChanged={(s) => props.updateName(s)}
-                            titleTextStyles={styles.poolNameLabel}
-                            inputStyles={styles.textInput}
+                            onTextChanged={ (s) => props.updateName(s) }
+                            titleTextStyles={ styles.poolNameLabel }
+                            inputStyles={ styles.textInput }
                             autoCapitalize="words"
-                            autoCorrect={false}
+                            autoCorrect={ false }
                             keyboardType="default"
-                            value={props.name}
-                            autoFocus={false}
-                            ref={nameRef}
-                            onSubmitEditing={onNameFieldSubmit}
-                            accessoryViewId={keyboardAccessoryViewId}
-                            hitSlop={30}
+                            value={ props.name }
+                            autoFocus={ false }
+                            ref={ nameRef }
+                            onSubmitEditing={ onNameFieldSubmit }
+                            accessoryViewId={ keyboardAccessoryViewId }
+                            hitSlop={ 30 }
                         />
                     </View>
-                    <View style={[styles.listContainer, styles.volumeContainer]}>
+                    <View style={ [styles.listContainer, styles.volumeContainer] }>
                         <TextInputWithTitle
                             titleText="Volume"
-                            onTextChanged={(s) => props.updateVolume(s)}
-                            titleTextStyles={styles.poolNameLabel}
-                            subtitleTextStyles={styles.poolNameSubLabel}
-                            inputStyles={styles.textInput}
+                            onTextChanged={ (s) => props.updateVolume(s) }
+                            titleTextStyles={ styles.poolNameLabel }
+                            subtitleTextStyles={ styles.poolNameSubLabel }
+                            inputStyles={ styles.textInput }
                             autoCapitalize="sentences"
-                            autoCorrect={false}
+                            autoCorrect={ false }
                             keyboardType="number-pad"
-                            value={props.volumeText}
-                            containerStyles={styles.volumeTextContainer}
-                            ref={volumeRef}
-                            accessoryViewId={keyboardAccessoryViewId}
-                            hitSlop={30}
+                            value={ props.volumeText }
+                            containerStyles={ styles.volumeTextContainer }
+                            ref={ volumeRef }
+                            accessoryViewId={ keyboardAccessoryViewId }
+                            hitSlop={ 30 }
                         />
-                        <View style={styles.volumeUnitsButtonWrapper}>
+                        <View style={ styles.volumeUnitsButtonWrapper }>
                             <CycleButton
-                                title={volumeUnitsDisplay || ''}
-                                onPress={props.pressedUnitsButton}
-                                styles={styles.volumeUnitsButton}
-                                textStyles={styles.typeButtonText}
+                                title={ volumeUnitsDisplay || '' }
+                                onPress={ props.pressedUnitsButton }
+                                styles={ styles.volumeUnitsButton }
+                                textStyles={ styles.typeButtonText }
                             />
                         </View>
                     </View>
-                    <View style={styles.listContainer}>
-                        <PDText type="default" style={styles.waterTypeLabel}>
+                    <View style={ styles.listContainer }>
+                        <PDText type="default" style={ styles.waterTypeLabel }>
                             Water Type
                         </PDText>
                         <ChoosyButton
-                            title={waterTypeDisplay || ''}
-                            onPress={props.pressedWaterTypeButton}
-                            styles={styles.typeButton}
-                            textStyles={styles.typeButtonText}
+                            title={ waterTypeDisplay || '' }
+                            onPress={ props.pressedWaterTypeButton }
+                            styles={ styles.typeButton }
+                            textStyles={ styles.typeButtonText }
                         />
                     </View>
-                    <View style={styles.listContainer}>
-                        <PDText type="default" style={styles.waterTypeLabel}>
+                    <View style={ styles.listContainer }>
+                        <PDText type="default" style={ styles.waterTypeLabel }>
                             Wall Type
                         </PDText>
                         <ChoosyButton
-                            title={wallTypeDisplay || ''}
-                            onPress={props.pressedWallTypeButton}
-                            styles={styles.typeButton}
-                            textStyles={styles.typeButtonText}
+                            title={ wallTypeDisplay || '' }
+                            onPress={ props.pressedWallTypeButton }
+                            styles={ styles.typeButton }
+                            textStyles={ styles.typeButtonText }
                         />
                     </View>
                 </View>
             </KeyboardAwareScrollView>
-            <View style={styles.bottomButtonContainer}>
-                <BoringButton containerStyles={styles.saveButton} onPress={props.handleSavePoolPressed} title="Save" />
+            <View style={ styles.bottomButtonContainer }>
+                <BoringButton containerStyles={ styles.saveButton } onPress={ props.handleSavePoolPressed } title="Save" />
             </View>
-            <PlatformSpecific include={['ios']}>
-                <InputAccessoryView nativeID={keyboardAccessoryViewId}>
-                    <View style={styles.keyboardAccessoryContainer}>
+            <PlatformSpecific include={ ['ios'] }>
+                <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
+                    <View style={ styles.keyboardAccessoryContainer }>
                         <BoringButton
-                            containerStyles={styles.keyboardAccessoryButton}
-                            textStyles={styles.keyboardAccessoryButtonText}
-                            onPress={props.handleSavePoolPressed}
+                            containerStyles={ styles.keyboardAccessoryButton }
+                            textStyles={ styles.keyboardAccessoryButtonText }
+                            onPress={ props.handleSavePoolPressed }
                             title="Save"
                         />
                     </View>

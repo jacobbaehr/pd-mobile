@@ -36,24 +36,24 @@ export const EditWaterType = () => {
     return (
         <PDView>
             <FlatList
-                data={waterTypeOptions}
-                renderItem={({ item }) => (
-                    <PDView style={waterType === item.value ? styles.selectedButtonContainer : styles.buttonContainer}>
+                data={ waterTypeOptions }
+                renderItem={ ({ item }) => (
+                    <PDView style={ waterType === item.value ? styles.selectedButtonContainer : styles.buttonContainer }>
                         <Button
-                            textStyles={waterType === item.value ? styles.selectedText : styles.unselectedText}
-                            title={item.display}
-                            onPress={() => {
+                            textStyles={ waterType === item.value ? styles.selectedText : styles.unselectedText }
+                            title={ item.display }
+                            onPress={ () => {
                                 handleButtonSelected(item.value);
-                            }}
+                            } }
                         />
                         {waterType === item.value ? (
-                            <SVG.IconCheckmark width={24} height={24} fill="white" style={styles.checkmark} />
+                            <SVG.IconCheckmark width={ 24 } height={ 24 } fill="white" style={ styles.checkmark } />
                         ) : null}
                     </PDView>
-                )}
-                keyExtractor={(item) => item.value}
-                ItemSeparatorComponent={() => <PDView style={styles.separator} />}
-                contentContainerStyle={styles.list}
+                ) }
+                keyExtractor={ (item) => item.value }
+                ItemSeparatorComponent={ () => <PDView style={ styles.separator } /> }
+                contentContainerStyle={ styles.list }
             />
         </PDView>
     );

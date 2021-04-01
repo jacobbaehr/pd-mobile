@@ -15,21 +15,21 @@ export class EditListHeader extends React.Component<EditListHeaderProps, {}> {
             this.props.rightButtonAction !== undefined ? (
                 <View>
                     <Button
-                        title={'Delete'}
-                        onPress={() => this.props.rightButtonAction && this.props.rightButtonAction()}
-                        styles={styles.deleteButton}
-                        textStyles={styles.deleteButtonText}
+                        title={ 'Delete' }
+                        onPress={ () => this.props.rightButtonAction && this.props.rightButtonAction() }
+                        styles={ styles.deleteButton }
+                        textStyles={ styles.deleteButtonText }
                     />
                 </View>
             ) : null;
         return (
-            <View style={styles.container}>
-                <View style={styles.options}>
-                    <View style={{ width: '50%' }}>
+            <View style={ styles.container }>
+                <View style={ styles.options }>
+                    <View style={ { width: '50%' } }>
                         <BackButton
-                            title={this.props.buttonText ? this.props.buttonText : 'Create'}
-                            onPress={this.props.handleBackPress}
-                            scale={{ scale: true, scaleLines: 2 }}
+                            title={ this.props.buttonText ? this.props.buttonText : 'Create' }
+                            onPress={ this.props.handleBackPress }
+                            scale={ { scale: true, scaleLines: 2 } }
                         />
                     </View>
                     {rightButton}

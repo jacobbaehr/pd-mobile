@@ -54,8 +54,8 @@ export const ShapeProvider: React.FC = ({ children }) => {
     const [shape, setShape] = useState<EntryShape>(initialState);
 
     return (
-        <ShapeState.Provider value={shape}>
-            <ShapeDispatch.Provider value={setShape}>{children}</ShapeDispatch.Provider>
+        <ShapeState.Provider value={ shape }>
+            <ShapeDispatch.Provider value={ setShape }>{children}</ShapeDispatch.Provider>
         </ShapeState.Provider>
     );
 };

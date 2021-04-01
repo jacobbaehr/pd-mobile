@@ -42,19 +42,19 @@ const TextInputWithTitleComponent = (props: TextInputWithTitleProps, ref: React.
     }));
 
     return (
-        <View style={containerStyles}>
-            <View style={styles.titleContainer}>
-                <Text style={[styles.titleText, titleTextStyles]}>{titleText}</Text>
-                <Text style={[styles.subtitleText, subtitleTextStyles]}>{subtitleText}</Text>
+        <View style={ containerStyles }>
+            <View style={ styles.titleContainer }>
+                <Text style={ [styles.titleText, titleTextStyles] }>{titleText}</Text>
+                <Text style={ [styles.subtitleText, subtitleTextStyles] }>{subtitleText}</Text>
             </View>
             <TextInput
-                {...propsInput}
-                placeholder={placeholderText}
-                onChangeText={onTextChanged}
-                style={[styles.input, inputStyles]}
-                ref={inputRef}
-                inputAccessoryViewID={accessoryViewId}
-                hitSlop={{ top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop }}
+                { ...propsInput }
+                placeholder={ placeholderText }
+                onChangeText={ onTextChanged }
+                style={ [styles.input, inputStyles] }
+                ref={ inputRef }
+                inputAccessoryViewID={ accessoryViewId }
+                hitSlop={ { top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop } }
             />
         </View>
     );

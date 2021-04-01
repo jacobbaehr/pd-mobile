@@ -74,24 +74,24 @@ export const PoolListScreen: React.FC = () => {
         paddingTop: insets.top,
     };
     return (
-        <View style={[styles.container, dynamicContainerStyles]}>
-            <View style={styles.header}>
-                <View style={styles.headerLeft}>
-                    <TouchableScale style={styles.accountButton} activeScale={0.97} onPress={handleSettingsPressed}>
+        <View style={ [styles.container, dynamicContainerStyles] }>
+            <View style={ styles.header }>
+                <View style={ styles.headerLeft }>
+                    <TouchableScale style={ styles.accountButton } activeScale={ 0.97 } onPress={ handleSettingsPressed }>
                         <Image
-                            style={styles.accountButtonImage}
-                            source={images.gearLightButton}
-                            width={38}
-                            height={38}
+                            style={ styles.accountButtonImage }
+                            source={ images.gearLightButton }
+                            width={ 38 }
+                            height={ 38 }
                         />
                     </TouchableScale>
-                    <PDText type="default" style={styles.title}>
+                    <PDText type="default" style={ styles.title }>
                         My Pools
                     </PDText>
                 </View>
-                <View style={styles.headerRight}>
-                    <TouchableScale style={styles.plusButton} activeScale={0.97} onPress={handleAddPoolPressed}>
-                        <Image style={styles.plusButtonImage} source={images.plusButton} width={38} height={38} />
+                <View style={ styles.headerRight }>
+                    <TouchableScale style={ styles.plusButton } activeScale={ 0.97 } onPress={ handleAddPoolPressed }>
+                        <Image style={ styles.plusButtonImage } source={ images.plusButton } width={ 38 } height={ 38 } />
                     </TouchableScale>
                 </View>
             </View>
@@ -103,16 +103,16 @@ export const PoolListScreen: React.FC = () => {
                 </TouchableScale>
             </View> */}
             <SectionList
-                style={styles.sectionList}
-                renderItem={({ item }) => <PoolListItem pool={item} onPoolSelected={handlePoolSelected} />}
-                renderSectionHeader={() => null}
-                sections={[{ data: pools, title: 'Pools' }]}
-                renderSectionFooter={() => (
-                    <PoolListFooter isEmpty={isEmpty} handlePressedUpgrade={handleUpgradePressed} />
-                )}
-                keyExtractor={(item) => (item as Pool).objectId}
-                overScrollMode={'always'}
-                contentInset={{ bottom: 50 }}
+                style={ styles.sectionList }
+                renderItem={ ({ item }) => <PoolListItem pool={ item } onPoolSelected={ handlePoolSelected } /> }
+                renderSectionHeader={ () => null }
+                sections={ [{ data: pools, title: 'Pools' }] }
+                renderSectionFooter={ () => (
+                    <PoolListFooter isEmpty={ isEmpty } handlePressedUpgrade={ handleUpgradePressed } />
+                ) }
+                keyExtractor={ (item) => (item as Pool).objectId }
+                overScrollMode={ 'always' }
+                contentInset={ { bottom: 50 } }
             />
         </View>
     );

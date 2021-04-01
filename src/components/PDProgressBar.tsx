@@ -19,9 +19,9 @@ export const PDProgressBar: React.FunctionComponent<PDProgressBarProps> = (props
         flex: backgroundFlex,
     };
     return (
-        <View style={containerStyle}>
-            <View style={{ flex: foregroundFlex, backgroundColor: props.foregroundColor, borderRadius: 8 }} />
-            <View style={backgroundStyle} />
+        <View style={ containerStyle }>
+            <View style={ { flex: foregroundFlex, backgroundColor: props.foregroundColor, borderRadius: 8 } } />
+            <View style={ backgroundStyle } />
         </View>
     );
 };

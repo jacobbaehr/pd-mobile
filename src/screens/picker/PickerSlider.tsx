@@ -64,48 +64,48 @@ export const PickerSlider: React.FunctionComponent<PickerSliderProps> = (props) 
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.content}>
-                <View style={styles.topRow}>
-                    <View style={styles.topRowContent}>
+        <View style={ styles.container }>
+            <View style={ styles.content }>
+                <View style={ styles.topRow }>
+                    <View style={ styles.topRowContent }>
                         <TextInput
-                            style={styles.textInput}
-                            onChangeText={onTextChange}
-                            onEndEditing={onTextEndEditing}
-                            keyboardType={'number-pad'}
-                            inputAccessoryViewID={keyboardAccessoryViewId}
-                            value={rs.value}
+                            style={ styles.textInput }
+                            onChangeText={ onTextChange }
+                            onEndEditing={ onTextEndEditing }
+                            keyboardType={ 'number-pad' }
+                            inputAccessoryViewID={ keyboardAccessoryViewId }
+                            value={ rs.value }
                         />
-                        <PDText type="default" style={styles.unitsText}>
+                        <PDText type="default" style={ styles.unitsText }>
                             %
                         </PDText>
                     </View>
                 </View>
                 <Slider
-                    style={styles.slider}
-                    minimumValue={sliderMin}
-                    maximumValue={sliderMax}
+                    style={ styles.slider }
+                    minimumValue={ sliderMin }
+                    maximumValue={ sliderMax }
                     minimumTrackTintColor="#E3E3E3"
                     maximumTrackTintColor="#E3E3E3"
-                    thumbImage={images.sliderThumbBlue}
-                    onSlidingStart={onSliderStart}
-                    onSlidingComplete={onSliderEnd}
-                    onValueChange={(value: number) => props.onSliderUpdatedValue(value)}
-                    value={sliderValue}
-                    step={sliderStep}
-                    thumbTouchSize={{ width: 55, height: 55 }}
+                    thumbImage={ images.sliderThumbBlue }
+                    onSlidingStart={ onSliderStart }
+                    onSlidingComplete={ onSliderEnd }
+                    onValueChange={ (value: number) => props.onSliderUpdatedValue(value) }
+                    value={ sliderValue }
+                    step={ sliderStep }
+                    thumbTouchSize={ { width: 55, height: 55 } }
                 />
             </View>
-            <PlatformSpecific include={['ios']}>
-                <InputAccessoryView nativeID={keyboardAccessoryViewId}>
-                    <View style={styles.keyboardAccessoryContainer}>
+            <PlatformSpecific include={ ['ios'] }>
+                <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
+                    <View style={ styles.keyboardAccessoryContainer }>
                         <BoringButton
-                            containerStyles={styles.keyboardAccessoryButton}
-                            textStyles={styles.keyboardAccessoryButtonText}
-                            onPress={() => {
+                            containerStyles={ styles.keyboardAccessoryButton }
+                            textStyles={ styles.keyboardAccessoryButtonText }
+                            onPress={ () => {
                                 Keyboard.dismiss();
                                 Haptic.light();
-                            }}
+                            } }
                             title="Save"
                         />
                     </View>

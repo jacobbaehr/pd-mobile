@@ -22,14 +22,14 @@ export const DateRangeSelector: React.FunctionComponent<DateRangeSelectorProps> 
         let count = 0;
         return props.dateRange.map((range: DateRange) => (
             <SelectableTextButton
-                key={count++}
-                buttonText={range}
-                onPress={() => handleDateRangeChanged(range)}
-                isSelected={range === props.currentDateRange}
+                key={ count++ }
+                buttonText={ range }
+                onPress={ () => handleDateRangeChanged(range) }
+                isSelected={ range === props.currentDateRange }
             />
         ));
     };
-    return <View style={styles.container}>{getButtons()}</View>;
+    return <View style={ styles.container }>{getButtons()}</View>;
 };
 
 const styles = StyleSheet.create({

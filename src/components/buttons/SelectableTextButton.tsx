@@ -32,9 +32,9 @@ export class SelectableTextButton extends React.Component<SelectableTextButtonPr
         const buttonStyles = this.state.isSelected ? styles.selectedContainer : styles.unselectedContainer;
         const textStyles = this.state.isSelected ? styles.selectedText : styles.unselectedText;
         return (
-            <TouchableWithoutFeedback onPress={this.handleOnPress}>
-                <View style={[styles.baseContainer, buttonStyles]}>
-                    <Text style={[styles.text, textStyles]}>{this.props.buttonText}</Text>
+            <TouchableWithoutFeedback onPress={ this.handleOnPress }>
+                <View style={ [styles.baseContainer, buttonStyles] }>
+                    <Text style={ [styles.text, textStyles] }>{this.props.buttonText}</Text>
                 </View>
             </TouchableWithoutFeedback>
         );

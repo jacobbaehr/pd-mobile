@@ -10,10 +10,10 @@ export interface MenuItemButtonProps extends EditPoolMenuItem {
 export const MenuItemButton: React.FC<MenuItemButtonProps> = (props) => {
     return (
         <MenuItemButtonWrapper
-            {...props}
-            index={props.index}
-            sectionLength={props.sectionLength}
-            toggleVisible={props.toggleVisible}
+            { ...props }
+            index={ props.index }
+            sectionLength={ props.sectionLength }
+            toggleVisible={ props.toggleVisible }
         />
     );
 };

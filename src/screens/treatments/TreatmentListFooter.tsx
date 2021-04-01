@@ -10,17 +10,17 @@ interface TreatmentListFooterProps {
 
 export const TreatmentListFooter: React.FunctionComponent<TreatmentListFooterProps> = (props) => {
     return (
-        <View style={{ paddingHorizontal: 16 }}>
-            <PDText type="default" style={styles.sectionTitle}>
+        <View style={ { paddingHorizontal: 16 } }>
+            <PDText type="default" style={ styles.sectionTitle }>
                 Notes
             </PDText>
-            <View style={styles.container}>
+            <View style={ styles.container }>
                 <TextInput
-                    style={styles.text}
-                    value={props.text}
-                    onChangeText={props.updatedText}
-                    multiline={true}
-                    scrollEnabled={false}
+                    style={ styles.text }
+                    value={ props.text }
+                    onChangeText={ props.updatedText }
+                    multiline={ true }
+                    scrollEnabled={ false }
                 />
             </View>
         </View>

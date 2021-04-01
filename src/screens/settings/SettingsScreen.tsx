@@ -86,7 +86,7 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
 
     const getScoops = () => {
         return props.deviceSettings.scoops.map((scoop) => (
-            <ScoopListItem scoop={scoop} handlePressedScoop={handlePressedScoop} key={scoop.guid} />
+            <ScoopListItem scoop={ scoop } handlePressedScoop={ handlePressedScoop } key={ scoop.guid } />
         ));
     };
 
@@ -96,66 +96,66 @@ const SettingsComponent: React.FunctionComponent<SettingsProps> = (props) => {
 
     const hitSlop = 5;
     return (
-        <SafeAreaView forceInset={{ bottom: 'never' }} style={styles.safeAreaContainer}>
-            <SettingsHeader goBack={handleGoBack} />
-            <ScrollView style={styles.scrollView}>
-                <PDText type="default" style={styles.sectionTitle}>
+        <SafeAreaView forceInset={ { bottom: 'never' } } style={ styles.safeAreaContainer }>
+            <SettingsHeader goBack={ handleGoBack } />
+            <ScrollView style={ styles.scrollView }>
+                <PDText type="default" style={ styles.sectionTitle }>
                     Units
                 </PDText>
-                <View style={styles.listItemContainer}>
-                    <PDText type="default" style={styles.unitsTitle}>
+                <View style={ styles.listItemContainer }>
+                    <PDText type="default" style={ styles.unitsTitle }>
                         Pool Volume
                     </PDText>
                     <CycleButton
-                        styles={styles.unitsButton}
-                        title={unitsText}
-                        textStyles={styles.unitsButtonText}
-                        onPress={handlePressedUnits}
+                        styles={ styles.unitsButton }
+                        title={ unitsText }
+                        textStyles={ styles.unitsButtonText }
+                        onPress={ handlePressedUnits }
                     />
                 </View>
-                <View style={styles.addScoopSectionHeader}>
-                    <PDText type="default" style={styles.sectionTitle}>
+                <View style={ styles.addScoopSectionHeader }>
+                    <PDText type="default" style={ styles.sectionTitle }>
                         Scoops
                     </PDText>
                     <TouchableScale
-                        style={styles.addScoopButtonContainer}
-                        activeScale={0.97}
-                        onPress={handleAddScoopPressed}
-                        hitSlop={{ top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop }}>
-                        <Image style={styles.addScoopButtonImage} source={images.plusButton} width={32} height={32} />
+                        style={ styles.addScoopButtonContainer }
+                        activeScale={ 0.97 }
+                        onPress={ handleAddScoopPressed }
+                        hitSlop={ { top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop } }>
+                        <Image style={ styles.addScoopButtonImage } source={ images.plusButton } width={ 32 } height={ 32 } />
                     </TouchableScale>
                 </View>
                 {getScoops()}
 
-                <PDText type="default" style={styles.sectionTitle}>
+                <PDText type="default" style={ styles.sectionTitle }>
                     {isUnlocked ? 'Subscription' : 'Unlock'}
                 </PDText>
-                <Upgrade style={styles.upgradeContainer} onPress={handleUpgradePressed} isUnlocked={isUnlocked} />
-                <PDText type="default" style={styles.sectionTitle}>
+                <Upgrade style={ styles.upgradeContainer } onPress={ handleUpgradePressed } isUnlocked={ isUnlocked } />
+                <PDText type="default" style={ styles.sectionTitle }>
                     Data Export
                 </PDText>
-                <PDText type="default" style={styles.forumDetails}>
+                <PDText type="default" style={ styles.forumDetails }>
                     This will create a .csv file with all of the history for all of your pools.
                 </PDText>
                 <BoringButton
-                    containerStyles={styles.dataButton}
-                    textStyles={styles.dataButtonText}
-                    onPress={handleDataButtonPressed}
+                    containerStyles={ styles.dataButton }
+                    textStyles={ styles.dataButtonText }
+                    onPress={ handleDataButtonPressed }
                     title="Export as CSV"
                 />
-                <PDText type="default" style={styles.sectionTitle}>
+                <PDText type="default" style={ styles.sectionTitle }>
                     Feedback?
                 </PDText>
-                <PDText type="default" style={styles.forumDetails}>
+                <PDText type="default" style={ styles.forumDetails }>
                     I'd love to hear it in in the forum!
                 </PDText>
                 <BoringButton
-                    containerStyles={styles.dataButton}
-                    textStyles={styles.dataButtonText}
-                    onPress={handleForumPressed}
+                    containerStyles={ styles.dataButton }
+                    textStyles={ styles.dataButtonText }
+                    onPress={ handleForumPressed }
                     title="Open in Browser"
                 />
-                <View style={dynamicInsets} />
+                <View style={ dynamicInsets } />
             </ScrollView>
         </SafeAreaView>
     );

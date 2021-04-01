@@ -51,12 +51,12 @@ export const EstimateVolume: React.FC = () => {
 
     return (
         <>
-            <View style={StyleSheet.flatten([styles.container, { backgroundColor: primaryBlurredColor }])}>
-                <View style={styles.row}>
-                    <SVG.IconEstimator height={16} width={16} fill={primaryColor} />
+            <View style={ StyleSheet.flatten([styles.container, { backgroundColor: primaryBlurredColor }]) }>
+                <View style={ styles.row }>
+                    <SVG.IconEstimator height={ 16 } width={ 16 } fill={ primaryColor } />
                     <PDText
                         type="bodySemiBold"
-                        style={StyleSheet.flatten([styles.estimatedText, { color: primaryColor }])}>
+                        style={ StyleSheet.flatten([styles.estimatedText, { color: primaryColor }]) }>
                         Estimated volume
                     </PDText>
                 </View>
@@ -67,13 +67,13 @@ export const EstimateVolume: React.FC = () => {
             <View>
                 <TextButton
                     text="Use Estimated Volume"
-                    onPress={() => {}}
-                    disabled={!isAllFieldsCompleted}
-                    textStyles={StyleSheet.flatten([styles.buttonText, isAllFieldsCompleted && { color: '#fff' }])}
-                    containerStyles={StyleSheet.flatten([
+                    onPress={ () => {} }
+                    disabled={ !isAllFieldsCompleted }
+                    textStyles={ StyleSheet.flatten([styles.buttonText, isAllFieldsCompleted && { color: '#fff' }]) }
+                    containerStyles={ StyleSheet.flatten([
                         styles.buttonContainer,
                         isAllFieldsCompleted && { backgroundColor: primaryColor },
-                    ])}
+                    ]) }
                 />
             </View>
         </>

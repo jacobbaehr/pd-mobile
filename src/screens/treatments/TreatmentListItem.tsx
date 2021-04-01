@@ -72,62 +72,62 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
     };
 
     return (
-        <View style={styles.container}>
+        <View style={ styles.container }>
             <TouchableScale
-                onPress={() => props.handleIconPressed(t.var)}
-                activeScale={0.98}
-                disabled={t.type === 'calculation'}>
-                <View style={styles.content}>
-                    <View style={styles.topRow}>
-                        <Conditional condition={t.type === 'calculation'}>
-                            <PDText type="default" style={styles.ofLabel}>
+                onPress={ () => props.handleIconPressed(t.var) }
+                activeScale={ 0.98 }
+                disabled={ t.type === 'calculation' }>
+                <View style={ styles.content }>
+                    <View style={ styles.topRow }>
+                        <Conditional condition={ t.type === 'calculation' }>
+                            <PDText type="default" style={ styles.ofLabel }>
                                 {t.name}
                             </PDText>
                             <TextInput
-                                style={textInputStyles}
-                                onFocus={onTextBeginEditing}
-                                onChangeText={onTextChange}
-                                onEndEditing={onTextEndEditing}
-                                keyboardType={'decimal-pad'}
-                                inputAccessoryViewID={props.inputAccessoryId}
-                                value={valueText}
+                                style={ textInputStyles }
+                                onFocus={ onTextBeginEditing }
+                                onChangeText={ onTextChange }
+                                onEndEditing={ onTextEndEditing }
+                                keyboardType={ 'decimal-pad' }
+                                inputAccessoryViewID={ props.inputAccessoryId }
+                                value={ valueText }
                             />
                         </Conditional>
-                        <Conditional condition={t.type !== 'calculation'}>
-                            <Image style={styles.circleImage} source={leftImageSource} width={28} height={28} />
+                        <Conditional condition={ t.type !== 'calculation' }>
+                            <Image style={ styles.circleImage } source={ leftImageSource } width={ 28 } height={ 28 } />
 
-                            <Conditional condition={['dryChemical', 'liquidChemical'].some((x) => t.type === x)}>
-                                <PDText type="default" style={styles.addLabel}>
+                            <Conditional condition={ ['dryChemical', 'liquidChemical'].some((x) => t.type === x) }>
+                                <PDText type="default" style={ styles.addLabel }>
                                     Add
                                 </PDText>
                                 <TextInput
-                                    style={textInputStyles}
-                                    onFocus={onTextBeginEditing}
-                                    onChangeText={onTextChange}
-                                    onEndEditing={onTextEndEditing}
-                                    keyboardType={'decimal-pad'}
-                                    inputAccessoryViewID={props.inputAccessoryId}
-                                    value={valueText}
+                                    style={ textInputStyles }
+                                    onFocus={ onTextBeginEditing }
+                                    onChangeText={ onTextChange }
+                                    onEndEditing={ onTextEndEditing }
+                                    keyboardType={ 'decimal-pad' }
+                                    inputAccessoryViewID={ props.inputAccessoryId }
+                                    value={ valueText }
                                 />
                                 <CycleButton
-                                    title={pluralize(ts.units, parseFloat(valueText))}
-                                    onPress={onPressedUnitsButton}
-                                    textStyles={unitsTextStyles}
-                                    styles={styles.unitsButton}
+                                    title={ pluralize(ts.units, parseFloat(valueText)) }
+                                    onPress={ onPressedUnitsButton }
+                                    textStyles={ unitsTextStyles }
+                                    styles={ styles.unitsButton }
                                 />
-                                <PDText type="default" style={styles.ofLabel}>
+                                <PDText type="default" style={ styles.ofLabel }>
                                     of
                                 </PDText>
                                 <ChoosyButton
-                                    title={treatmentName}
-                                    onPress={onPressedTreatmentNameButton}
-                                    textStyles={treatmentNameTextStyles}
-                                    styles={styles.treatmentNameButton}
+                                    title={ treatmentName }
+                                    onPress={ onPressedTreatmentNameButton }
+                                    textStyles={ treatmentNameTextStyles }
+                                    styles={ styles.treatmentNameButton }
                                 />
                             </Conditional>
 
-                            <Conditional condition={t.type === 'task'}>
-                                <PDText type="default" style={treatmentNameTextStyles}>
+                            <Conditional condition={ t.type === 'task' }>
+                                <PDText type="default" style={ treatmentNameTextStyles }>
                                     {t.name}
                                 </PDText>
                             </Conditional>

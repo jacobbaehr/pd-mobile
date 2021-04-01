@@ -8,10 +8,10 @@ interface SettingsHeaderProps {
 
 export const SettingsHeader: React.FunctionComponent<SettingsHeaderProps> = (props) => {
     return (
-        <View style={styles.container}>
-            <View style={styles.navRow}>
-                <View style={styles.backButtonContainer}>
-                    <BackButton title={'Settings'} onPress={props.goBack} scale={{ scale: true, scaleLines: 2 }} />
+        <View style={ styles.container }>
+            <View style={ styles.navRow }>
+                <View style={ styles.backButtonContainer }>
+                    <BackButton title={ 'Settings' } onPress={ props.goBack } scale={ { scale: true, scaleLines: 2 } } />
                 </View>
             </View>
         </View>

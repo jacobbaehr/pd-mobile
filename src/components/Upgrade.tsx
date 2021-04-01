@@ -13,35 +13,35 @@ interface UpgradeProps {
 
 export const Upgrade: React.FunctionComponent<UpgradeProps> = (props) => {
     return (
-        <View style={[styles.plusContainer, props.style]}>
-            <View style={{ flexDirection: 'row', display: 'flex' }}>
-                <View style={{ flex: 1 }} />
+        <View style={ [styles.plusContainer, props.style] }>
+            <View style={ { flexDirection: 'row', display: 'flex' } }>
+                <View style={ { flex: 1 } } />
                 <Image
-                    style={styles.pdProImageStyles}
-                    source={images.logoGreenPlus}
-                    width={3000}
-                    resizeMode={'contain'}
+                    style={ styles.pdProImageStyles }
+                    source={ images.logoGreenPlus }
+                    width={ 3000 }
+                    resizeMode={ 'contain' }
                 />
-                <View style={{ flex: 1 }} />
+                <View style={ { flex: 1 } } />
             </View>
-            <Conditional condition={!props.isUnlocked}>
-                <View style={styles.textContainer}>
-                    <PDText type={'bodySemiBold'} style={styles.onlineBackupText}>
+            <Conditional condition={ !props.isUnlocked }>
+                <View style={ styles.textContainer }>
+                    <PDText type={ 'bodySemiBold' } style={ styles.onlineBackupText }>
                         + Charts
                     </PDText>
-                    <PDText type={'bodySemiBold'} style={styles.onlineBackupText}>
+                    <PDText type={ 'bodySemiBold' } style={ styles.onlineBackupText }>
                         + Unlimited Pools
                     </PDText>
-                    <PDText type={'bodySemiBold'} style={styles.onlineBackupText}>
+                    <PDText type={ 'bodySemiBold' } style={ styles.onlineBackupText }>
                         + Less than $2 / month
                     </PDText>
                 </View>
             </Conditional>
             <BoringButton
-                title={props.isUnlocked ? 'Manage' : 'Unlock'}
-                onPress={props.onPress}
-                containerStyles={styles.dataButton}
-                textStyles={styles.dataButtonText}
+                title={ props.isUnlocked ? 'Manage' : 'Unlock' }
+                onPress={ props.onPress }
+                containerStyles={ styles.dataButton }
+                textStyles={ styles.dataButtonText }
             />
         </View>
     );

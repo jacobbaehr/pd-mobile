@@ -44,23 +44,23 @@ export const EditName = () => {
             <BorderInputWithLabel
                 label="Name"
                 placeholder="Aquaman's Pool"
-                onChangeText={textChanged}
+                onChangeText={ textChanged }
                 autoFocus
-                inputAccessoryViewID={keyboardAccessoryViewId}
-                value={name}
+                inputAccessoryViewID={ keyboardAccessoryViewId }
+                value={ name }
             />
-            <InputAccessoryView nativeID={keyboardAccessoryViewId}>
-                <PDView style={styles.inputAccessoryView}>
+            <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
+                <PDView style={ styles.inputAccessoryView }>
                     <PDView
-                        bgColor={buttonDisabled ? 'greyLight' : 'blue'}
-                        opacity={buttonDisabled ? 0.3 : 1}
-                        style={styles.buttonContainer}>
+                        bgColor={ buttonDisabled ? 'greyLight' : 'blue' }
+                        opacity={ buttonDisabled ? 0.3 : 1 }
+                        style={ styles.buttonContainer }>
                         <Button
-                            textStyles={styles.text}
-                            textColor={buttonDisabled ? 'black' : 'white'}
+                            textStyles={ styles.text }
+                            textColor={ buttonDisabled ? 'black' : 'white' }
                             title="Save"
-                            onPress={handleOnPressSaveButton}
-                            disabled={buttonDisabled}
+                            onPress={ handleOnPressSaveButton }
+                            disabled={ buttonDisabled }
                         />
                     </PDView>
                 </PDView>

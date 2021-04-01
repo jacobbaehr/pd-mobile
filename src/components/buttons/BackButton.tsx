@@ -22,9 +22,9 @@ export class BackButton extends React.Component<BackButtonProps, {}> {
         return this.props.title ? (
             <PDText
                 type="default"
-                style={styles.backButtonText}
-                allowFontScaling={this.props.scale?.scale ?? false}
-                numberOfLines={this.props.scale?.scaleLines}>
+                style={ styles.backButtonText }
+                allowFontScaling={ this.props.scale?.scale ?? false }
+                numberOfLines={ this.props.scale?.scaleLines }>
                 {this.props.title}
             </PDText>
         ) : null;
@@ -42,15 +42,15 @@ export class BackButton extends React.Component<BackButtonProps, {}> {
         }
         const hitSlop = 5;
         return (
-            <View style={styles.backButtonOuterContainer}>
+            <View style={ styles.backButtonOuterContainer }>
                 <TouchableScale
-                    style={styles.backButtonInnerContainer}
-                    activeScale={0.97}
-                    onPress={this.props.onPress}
-                    hitSlop={{ top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop }}
-                    disabled={Config.isAndroid}>
-                    <PlatformSpecific exclude={['android']}>
-                        <Image style={styles.backButtonImage} source={imageSource} width={32} height={32} />
+                    style={ styles.backButtonInnerContainer }
+                    activeScale={ 0.97 }
+                    onPress={ this.props.onPress }
+                    hitSlop={ { top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop } }
+                    disabled={ Config.isAndroid }>
+                    <PlatformSpecific exclude={ ['android'] }>
+                        <Image style={ styles.backButtonImage } source={ imageSource } width={ 32 } height={ 32 } />
                     </PlatformSpecific>
                     {this.getText()}
                 </TouchableScale>

@@ -18,7 +18,7 @@ export const PDView: React.FC<PDViewProps> = (props) => {
     const viewStyles = StyleSheet.flatten([colorStylesFromTheme, style]);
 
     return (
-        <View style={viewStyles} {...restProps}>
+        <View style={ viewStyles } { ...restProps }>
             {children}
         </View>
     );

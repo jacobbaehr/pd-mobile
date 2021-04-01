@@ -34,23 +34,23 @@ export const PoolHeaderView: React.FC = () => {
     const detailsText = `${getDisplayForWaterType(pool.waterType)} | ${volumeDisplay}`;
 
     return (
-        <View style={styles.container}>
-            <View style={styles.navRow}>
-                <View style={styles.backButtonContainer}>
-                    <BackButton title={pool.name} onPress={handlePressedBack} scale={{ scale: true, scaleLines: 2 }} />
+        <View style={ styles.container }>
+            <View style={ styles.navRow }>
+                <View style={ styles.backButtonContainer }>
+                    <BackButton title={ pool.name } onPress={ handlePressedBack } scale={ { scale: true, scaleLines: 2 } } />
                 </View>
-                <View style={styles.editButtonContainer}>
+                <View style={ styles.editButtonContainer }>
                     <Button
                         title="Edit"
-                        onPress={handlePressedEdit}
-                        styles={styles.editButton}
-                        textStyles={styles.editButtonText}
-                        hitSlop={12}
+                        onPress={ handlePressedEdit }
+                        styles={ styles.editButton }
+                        textStyles={ styles.editButtonText }
+                        hitSlop={ 12 }
                     />
                 </View>
             </View>
-            <View style={styles.infoRow}>
-                <PDText type="default" style={styles.poolVolumeText}>
+            <View style={ styles.infoRow }>
+                <PDText type="default" style={ styles.poolVolumeText }>
                     {detailsText}
                 </PDText>
             </View>

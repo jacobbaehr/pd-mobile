@@ -54,7 +54,7 @@ export const EditPoolPopover = () => {
     const content = editPopoverContentResolverFunction[headerInfo.id]();
 
     return (
-        <EditPoolPropertyWrapper title={headerInfo.title} description={headerInfo.description}>
+        <EditPoolPropertyWrapper title={ headerInfo.title } description={ headerInfo.description }>
             {content}
         </EditPoolPropertyWrapper>
     );

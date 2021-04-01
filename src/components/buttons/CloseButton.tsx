@@ -12,9 +12,9 @@ interface CloseButtonProps {
 
 export const CloseButton: React.FunctionComponent<CloseButtonProps> = (props) => {
     return (
-        <View style={props.containerStyle}>
-            <TouchableScale style={styles.innerContainer} activeScale={0.97} onPress={props.onPress}>
-                <Image style={styles.image} source={images.closeBlue} width={32} height={32} />
+        <View style={ props.containerStyle }>
+            <TouchableScale style={ styles.innerContainer } activeScale={ 0.97 } onPress={ props.onPress }>
+                <Image style={ styles.image } source={ images.closeBlue } width={ 32 } height={ 32 } />
             </TouchableScale>
         </View>
     );

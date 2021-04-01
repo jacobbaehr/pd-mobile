@@ -12,9 +12,9 @@ interface RecipeListHeaderProps {
 
 export const RecipeListHeader: React.FunctionComponent<RecipeListHeaderProps> = (props) => {
     return (
-        <View style={styles.container}>
-            <BackButton title={props.pool.name} onPress={props.handleBackPress} color={'recipesGreen'} />
-            <PDText type="default" style={styles.gradientText}>
+        <View style={ styles.container }>
+            <BackButton title={ props.pool.name } onPress={ props.handleBackPress } color={ 'recipesGreen' } />
+            <PDText type="default" style={ styles.gradientText }>
                 Change Recipe
             </PDText>
         </View>

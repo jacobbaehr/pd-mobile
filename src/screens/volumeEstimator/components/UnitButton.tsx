@@ -29,7 +29,7 @@ const UnitButton: React.FC = () => {
                 <PDText type="bodyGreyBold" color="grey">
                     Unit
                 </PDText>
-                <CycleButton title={unitName} onPress={handlerPressedUnitButton} textStyles={{ color: primaryColor }} />
+                <CycleButton title={ unitName } onPress={ handlerPressedUnitButton } textStyles={ { color: primaryColor } } />
             </View>
         </View>
     );

@@ -95,52 +95,52 @@ export const EditVolume = () => {
 
     return (
         <PDView>
-            <PDView style={styles.inputContainer}>
+            <PDView style={ styles.inputContainer }>
                 <BorderInputWithLabel
-                    value={volume.toFixed(0)}
+                    value={ volume.toFixed(0) }
                     placeholder="Pool Volume"
                     label="Volume"
-                    style={styles.textInput}
-                    onChangeText={handleTextChanged}
+                    style={ styles.textInput }
+                    onChangeText={ handleTextChanged }
                     autoFocus
                     keyboardType="number-pad"
-                    inputAccessoryViewID={keyboardAccessoryViewId}
+                    inputAccessoryViewID={ keyboardAccessoryViewId }
                 />
                 <PDView>
-                    <PDText type="default" style={styles.unit}>
+                    <PDText type="default" style={ styles.unit }>
                         UNIT
                     </PDText>
                     <Button
-                        styles={styles.unitButton}
-                        textStyles={styles.unitButtonText}
+                        styles={ styles.unitButton }
+                        textStyles={ styles.unitButtonText }
                         textColor="pink"
-                        title={units}
-                        onPress={handleUnitButtonPressed}
+                        title={ units }
+                        onPress={ handleUnitButtonPressed }
                     />
                 </PDView>
             </PDView>
-            <PDText type="default" style={styles.notSure}>
+            <PDText type="default" style={ styles.notSure }>
                 NOT SURE?
             </PDText>
-            <ButtonWithChildren onPress={handleEstimatorButtonPressed}>
-                <PDView style={styles.estimatorButtonContainer}>
-                    <SVG.IconEstimator width={16} height={16} fill="#000000" />
-                    <PDText style={styles.estimatorButtonText}> Use Volume Estimator</PDText>
+            <ButtonWithChildren onPress={ handleEstimatorButtonPressed }>
+                <PDView style={ styles.estimatorButtonContainer }>
+                    <SVG.IconEstimator width={ 16 } height={ 16 } fill="#000000" />
+                    <PDText style={ styles.estimatorButtonText }> Use Volume Estimator</PDText>
                 </PDView>
             </ButtonWithChildren>
 
-            <InputAccessoryView nativeID={keyboardAccessoryViewId}>
-                <PDView style={styles.inputAccessoryView}>
+            <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
+                <PDView style={ styles.inputAccessoryView }>
                     <PDView
-                        bgColor={buttonDisabled ? 'greyLight' : 'pink'}
-                        opacity={buttonDisabled ? 0.3 : 1}
-                        style={styles.saveButtonContainer}>
+                        bgColor={ buttonDisabled ? 'greyLight' : 'pink' }
+                        opacity={ buttonDisabled ? 0.3 : 1 }
+                        style={ styles.saveButtonContainer }>
                         <Button
-                            textStyles={styles.saveText}
-                            textColor={buttonDisabled ? 'black' : 'white'}
+                            textStyles={ styles.saveText }
+                            textColor={ buttonDisabled ? 'black' : 'white' }
                             title="Save"
-                            onPress={handleOnPressSaveButton}
-                            disabled={buttonDisabled}
+                            onPress={ handleOnPressSaveButton }
+                            disabled={ buttonDisabled }
                         />
                     </PDView>
                 </PDView>

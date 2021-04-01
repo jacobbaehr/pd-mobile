@@ -97,21 +97,21 @@ const RecipeListScreenComponent: React.FunctionComponent<RecipeListScreenProps> 
     ];
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }} forceInset={{ bottom: 'never' }}>
-            <RecipeListHeader handleBackPress={handleBackPressed} pool={props.pool} />
+        <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } } forceInset={ { bottom: 'never' } }>
+            <RecipeListHeader handleBackPress={ handleBackPressed } pool={ props.pool } />
             <SectionList
-                style={styles.scrollView}
-                sections={sections}
-                renderItem={({ item }) => (
-                    <RecipeListItem recipe={item} onRecipeSelected={handleRecipeSelected} key={item.id} />
-                )}
-                renderSectionHeader={({ section: { title } }) => (
-                    <PDText type="default" style={styles.sectionTitle}>
+                style={ styles.scrollView }
+                sections={ sections }
+                renderItem={ ({ item }) => (
+                    <RecipeListItem recipe={ item } onRecipeSelected={ handleRecipeSelected } key={ item.id } />
+                ) }
+                renderSectionHeader={ ({ section: { title } }) => (
+                    <PDText type="default" style={ styles.sectionTitle }>
                         {title}
                     </PDText>
-                )}
-                contentInset={{ bottom: 34 }}
-                stickySectionHeadersEnabled={false}
+                ) }
+                contentInset={ { bottom: 34 } }
+                stickySectionHeadersEnabled={ false }
             />
         </SafeAreaView>
     );

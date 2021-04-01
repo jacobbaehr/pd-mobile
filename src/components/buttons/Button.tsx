@@ -31,15 +31,15 @@ export class Button extends React.Component<ButtonProps, {}> {
         const slop = this.props.hitSlop || 0;
         return (
             <TouchableScale
-                style={[styles.container, this.props.styles]}
-                onPress={this.handleButtonPress}
-                disabled={this.props.disabled}
-                activeScale={0.97}
-                hitSlop={{ top: slop, left: slop, bottom: slop, right: slop }}>
+                style={ [styles.container, this.props.styles] }
+                onPress={ this.handleButtonPress }
+                disabled={ this.props.disabled }
+                activeScale={ 0.97 }
+                hitSlop={ { top: slop, left: slop, bottom: slop, right: slop } }>
                 <PDText
                     type="default"
-                    color={this.props.textColor ?? 'white'}
-                    style={this.props.textStyles ? this.props.textStyles : styles.text}>
+                    color={ this.props.textColor ?? 'white' }
+                    style={ this.props.textStyles ? this.props.textStyles : styles.text }>
                     {this.props.title}
                 </PDText>
             </TouchableScale>

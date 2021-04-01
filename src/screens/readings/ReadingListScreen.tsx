@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet
+    InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet,
 } from 'react-native';
 import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
 import { BoringButton } from '~/components/buttons/BoringButton';
@@ -187,75 +187,75 @@ export const ReadingListScreen: React.FC = () => {
         completed = readingStates.filter((r) => r.isOn);
     }
     return (
-        <PDSafeAreaView style={{ flex: 1 }} bgColor="white">
+        <PDSafeAreaView style={ { flex: 1 } } bgColor="white">
             <ScreenHeader color="blue">Readings</ScreenHeader>
-            <PDView style={styles.container} bgColor="white">
+            <PDView style={ styles.container } bgColor="white">
                 <KeyboardAwareSectionList
-                    style={StyleSheet.flatten([styles.sectionList, { backgroundColor: theme.blurredBlue }])}
-                    scrollEnabled={!isSliding}
-                    keyboardDismissMode={'interactive'}
-                    keyboardShouldPersistTaps={'handled'}
-                    renderItem={({ item }) => (
+                    style={ StyleSheet.flatten([styles.sectionList, { backgroundColor: theme.blurredBlue }]) }
+                    scrollEnabled={ !isSliding }
+                    keyboardDismissMode={ 'interactive' }
+                    keyboardShouldPersistTaps={ 'handled' }
+                    renderItem={ ({ item }) => (
                         <ReadingListItem
-                            readingState={item}
-                            onTextboxUpdated={handleTextboxUpdated}
-                            onTextboxFinished={handleTextboxDismissed}
-                            onSlidingStart={handleSlidingStarted}
-                            onSlidingComplete={handleSlidingStopped}
-                            onSliderUpdatedValue={handleSliderUpdatedValue}
-                            handleIconPressed={handleIconPressed}
-                            inputAccessoryId={keyboardAccessoryViewId}
+                            readingState={ item }
+                            onTextboxUpdated={ handleTextboxUpdated }
+                            onTextboxFinished={ handleTextboxDismissed }
+                            onSlidingStart={ handleSlidingStarted }
+                            onSlidingComplete={ handleSlidingStopped }
+                            onSliderUpdatedValue={ handleSliderUpdatedValue }
+                            handleIconPressed={ handleIconPressed }
+                            inputAccessoryId={ keyboardAccessoryViewId }
                         />
-                    )}
-                    sections={sections}
-                    keyExtractor={(item) => item.reading.var}
+                    ) }
+                    sections={ sections }
+                    keyExtractor={ (item) => item.reading.var }
                     contentInsetAdjustmentBehavior="always"
-                    stickySectionHeadersEnabled={true}
-                    canCancelContentTouches={true}
-                    renderSectionFooter={({ section }) => {
+                    stickySectionHeadersEnabled={ true }
+                    canCancelContentTouches={ true }
+                    renderSectionFooter={ ({ section }) => {
                         if (section.isHeader) {
                             return <></>;
                         } else {
                             return (
                                 <ReadingListFooter
-                                    recipe={recipe || null}
-                                    pressedChangeRecipe={handleChangeRecipePressed}
+                                    recipe={ recipe || null }
+                                    pressedChangeRecipe={ handleChangeRecipePressed }
                                 />
                             );
                         }
-                    }}
-                    renderSectionHeader={({ section }) => {
+                    } }
+                    renderSectionHeader={ ({ section }) => {
                         if (section.isHeader) {
                             return <ServiceNonStickyHeader />;
                         } else {
                             return (
                                 <ServiceStickyHeaderList
-                                    completedLength={completed.length}
-                                    missingLength={readingStates.length}
+                                    completedLength={ completed.length }
+                                    missingLength={ readingStates.length }
                                     color="blue"
                                 />
                             );
                         }
-                    }}
+                    } }
                 />
-                <PDView style={styles.bottomButtonContainer} bgColor="white">
+                <PDView style={ styles.bottomButtonContainer } bgColor="white">
                     <BoringButton
-                        containerStyles={StyleSheet.flatten([styles.button, { backgroundColor: theme.blue }])}
-                        onPress={handleCalculatePressed}
+                        containerStyles={ StyleSheet.flatten([styles.button, { backgroundColor: theme.blue }]) }
+                        onPress={ handleCalculatePressed }
                         title="Calculate"
                     />
                 </PDView>
             </PDView>
-            <PlatformSpecific include={['ios']}>
-                <InputAccessoryView nativeID={keyboardAccessoryViewId}>
-                    <PDView style={styles.keyboardAccessoryContainer}>
+            <PlatformSpecific include={ ['ios'] }>
+                <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
+                    <PDView style={ styles.keyboardAccessoryContainer }>
                         <BoringButton
-                            containerStyles={StyleSheet.flatten([
+                            containerStyles={ StyleSheet.flatten([
                                 styles.keyboardAccessoryButton,
                                 { backgroundColor: theme.blue },
-                            ])}
-                            textStyles={styles.keyboardAccessoryButtonText}
-                            onPress={handleDismissedKeyboard}
+                            ]) }
+                            textStyles={ styles.keyboardAccessoryButtonText }
+                            onPress={ handleDismissedKeyboard }
                             title="Done Typing"
                         />
                     </PDView>

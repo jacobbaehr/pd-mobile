@@ -18,7 +18,7 @@ export const PDSafeAreaView: React.FC<PDSafeAreaViewProps> = (props) => {
     const SafeAreaViewStyles = StyleSheet.flatten([{ flex: 1 }, colorStylesFromTheme, style]);
 
     return (
-        <SafeAreaView style={SafeAreaViewStyles} {...restProps}>
+        <SafeAreaView style={ SafeAreaViewStyles } { ...restProps }>
             {children}
         </SafeAreaView>
     );

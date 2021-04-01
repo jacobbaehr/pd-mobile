@@ -20,11 +20,11 @@ export const ChoosyButton: React.FunctionComponent<ChoosyButtonProps> = (props: 
 
     return (
         <TouchableScale
-            style={[styles.container, props.styles]}
-            activeScale={0.96}
-            onPress={handleButtonPress}
-            disabled={props.disabled}>
-            <PDText type="default" style={[styles.text, props.textStyles]}>
+            style={ [styles.container, props.styles] }
+            activeScale={ 0.96 }
+            onPress={ handleButtonPress }
+            disabled={ props.disabled }>
+            <PDText type="default" style={ [styles.text, props.textStyles] }>
                 {props.title}
             </PDText>
         </TouchableScale>

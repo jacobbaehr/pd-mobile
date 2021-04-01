@@ -30,9 +30,9 @@ export const PDButton: React.FC<ButtonProps> = (props) => {
     };
 
     return (
-        <TouchableScale {...touchableProps} onPress={onPress}>
-            <PDView style={viewStyles} {...rest}>
-                <PDText type="subHeading" style={textStyle}>
+        <TouchableScale { ...touchableProps } onPress={ onPress }>
+            <PDView style={ viewStyles } { ...rest }>
+                <PDText type="subHeading" style={ textStyle }>
                     {children}
                 </PDText>
             </PDView>

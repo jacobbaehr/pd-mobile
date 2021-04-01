@@ -84,38 +84,38 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
     };
 
     return (
-        <View style={styles.container}>
-            <TouchableScale onPress={() => props.handleIconPressed(r.var)} activeScale={0.98}>
-                <View style={styles.content}>
-                    <View style={styles.topRow}>
-                        <Image style={styles.circleImage} source={leftImageSource} width={28} height={28} />
-                        <PDText style={styles.readingName}>
+        <View style={ styles.container }>
+            <TouchableScale onPress={ () => props.handleIconPressed(r.var) } activeScale={ 0.98 }>
+                <View style={ styles.content }>
+                    <View style={ styles.topRow }>
+                        <Image style={ styles.circleImage } source={ leftImageSource } width={ 28 } height={ 28 } />
+                        <PDText style={ styles.readingName }>
                             {r.name}
-                            <PDText style={styles.readingUnits}>{readingUnitsText}</PDText>
+                            <PDText style={ styles.readingUnits }>{readingUnitsText}</PDText>
                         </PDText>
                         <TextInput
-                            style={textInputStyles}
-                            onFocus={onTextBeginEditing}
-                            onChangeText={onTextChange}
-                            onEndEditing={onTextEndEditing}
-                            keyboardType={'decimal-pad'}
-                            inputAccessoryViewID={props.inputAccessoryId}
-                            value={rs.value}
+                            style={ textInputStyles }
+                            onFocus={ onTextBeginEditing }
+                            onChangeText={ onTextChange }
+                            onEndEditing={ onTextEndEditing }
+                            keyboardType={ 'decimal-pad' }
+                            inputAccessoryViewID={ props.inputAccessoryId }
+                            value={ rs.value }
                         />
                     </View>
                     <Slider
-                        style={styles.slider}
-                        minimumValue={r.sliderMin}
-                        maximumValue={r.sliderMax}
+                        style={ styles.slider }
+                        minimumValue={ r.sliderMin }
+                        maximumValue={ r.sliderMax }
                         minimumTrackTintColor="#E3E3E3"
                         maximumTrackTintColor="#E3E3E3"
-                        thumbImage={images.sliderThumbBlue}
-                        onSlidingStart={onSliderStart}
-                        onSlidingComplete={onSliderEnd}
-                        onValueChange={(value: number) => props.onSliderUpdatedValue(r.var, value)}
-                        value={sliderValue}
-                        step={sliderStep}
-                        thumbTouchSize={{ width: 55, height: 55 }}
+                        thumbImage={ images.sliderThumbBlue }
+                        onSlidingStart={ onSliderStart }
+                        onSlidingComplete={ onSliderEnd }
+                        onValueChange={ (value: number) => props.onSliderUpdatedValue(r.var, value) }
+                        value={ sliderValue }
+                        step={ sliderStep }
+                        thumbTouchSize={ { width: 55, height: 55 } }
                     />
                 </View>
             </TouchableScale>

@@ -26,8 +26,8 @@ export const PickerRow: React.FunctionComponent<PickerRowProps> = (props: Picker
     };
 
     return (
-        <TouchableScale style={containerStyles} onPress={handleSelection} activeScale={0.99}>
-            <PDText type="default" style={textStyles}>
+        <TouchableScale style={ containerStyles } onPress={ handleSelection } activeScale={ 0.99 }>
+            <PDText type="default" style={ textStyles }>
                 {props.item.name}
             </PDText>
         </TouchableScale>
