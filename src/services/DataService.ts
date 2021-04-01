@@ -32,9 +32,11 @@ export namespace DataService {
         let result = `\npool,\
             ${pool.name},\
             ${pool.gallons},\
-            gallons,\
+            us gallons,\
             ${ConversionUtil.usGallonsToLiters(pool.gallons)},\
             liters,\
+            ${ConversionUtil.usGallonsToImpGallon(pool.gallons)},\
+            imperial gallons,\
             ${pool.waterType},\
             ${pool.wallType},\
             ${pool.recipeKey ?? ''},\
