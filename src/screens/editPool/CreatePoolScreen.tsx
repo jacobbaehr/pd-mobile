@@ -14,7 +14,6 @@ import { PoolDetails } from '~/screens/editPool/PoolDetails';
 import { ConversionUtil } from '~/services/ConversionsUtil';
 import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 import { Haptic } from '~/services/HapticService';
-import { Util } from '~/services/Util';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -30,7 +29,7 @@ const getInitialVolumeText = (units: PoolUnit, gallons: number) => {
     }
 };
 
-export const EditPoolScreen: React.FC = () => {
+export const CreatePoolScreen: React.FC = () => {
     const pool = useTypedSelector((state) => state.selectedPool);
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
     const pickerState = useTypedSelector((state) => state.pickerState);
@@ -102,9 +101,9 @@ export const EditPoolScreen: React.FC = () => {
         let volume = +volumeText;
         let gallons = volume;
         if (unit === 'metric') {
-            gallons = Util.litersToGallons(volume);
+            gallons = ConversionUtil.litersToUsGallons(volume);
         } else if (unit === 'imperial') {
-            gallons = ConversionUtil.impGallonToUsGallon(volume);
+            gallons = ConversionUtil.impGallonsToUsGallon(volume);
         }
         return gallons;
     };

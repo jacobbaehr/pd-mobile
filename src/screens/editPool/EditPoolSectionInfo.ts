@@ -13,7 +13,7 @@ import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { HeaderInfo, popoverProps } from './EditPoolPopover';
+import { HeaderInfo, popoverProps } from './components/EditPoolPopover';
 
 export type MenuItemId =
     | 'name'

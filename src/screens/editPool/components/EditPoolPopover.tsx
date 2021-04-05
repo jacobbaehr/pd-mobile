@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteProp } from '@react-navigation/native';
 
-import { editPopoverContentResolverFunction } from './PopoverContent';
+import { editPopoverContentResolverFunction } from '../PopoverContent';
 import { useRoute } from '@react-navigation/native';
 import { PDRootNavigatorParams } from '~/navigator/PDRootNavigator';
 import { EditPoolPropertyWrapper } from './EditPoolPropertyWrapper';

@@ -68,20 +68,20 @@ interface OverrideSvgProps extends SvgProps {
     fill?: string | PDColor;
 }
 
-export const SVG = {
-    IconCircle: (props: OverrideSvgProps): JSX.Element => <IconCircle { ...props } />,
-    IconRectangle: (props: OverrideSvgProps): JSX.Element => <IconRectangle { ...props } />,
-    IconOval: (props: OverrideSvgProps): JSX.Element => <IconOval { ...props } />,
-    IconOther: (props: OverrideSvgProps): JSX.Element => <IconOther { ...props } />,
-    IconCircleBack: (props: OverrideSvgProps): JSX.Element => <IconBack { ...props } />,
-    IconForward: (props: OverrideSvgProps): JSX.Element => <IconForward { ...props } />,
-    Rectangle: (props: OverrideSvgProps): JSX.Element => <Rectangle { ...props } />,
-    Oval: (props: OverrideSvgProps): JSX.Element => <Oval { ...props } />,
-    Circle: (props: OverrideSvgProps): JSX.Element => <Circle { ...props } />,
-    Other: (props: OverrideSvgProps): JSX.Element => <Other { ...props } />,
-    IconEstimator: (props: OverrideSvgProps): JSX.Element => <IconEstimator { ...props } />,
-    IconCheckmark: (props: OverrideSvgProps): JSX.Element => <IconCheckmark { ...props } />,
-    IconDelete: (props: OverrideSvgProps): JSX.Element => <IconDelete { ...props } />,
-    IconCircleAdd: (props: OverrideSvgProps): JSX.Element => <IconCircleAdd { ...props } />,
-    IconInformation: (props: OverrideSvgProps): JSX.Element => <IconInformation { ...props } />,
+export const SVG:  Record<string, (props: OverrideSvgProps) => JSX.Element> = {
+    IconCircle: (props) => <IconCircle { ...props } />,
+    IconRectangle: (props) => <IconRectangle { ...props } />,
+    IconOval: (props) => <IconOval { ...props } />,
+    IconOther: (props) => <IconOther { ...props } />,
+    IconCircleBack: (props) => <IconBack { ...props } />,
+    IconForward: (props) => <IconForward { ...props } />,
+    Rectangle: (props) => <Rectangle { ...props } />,
+    Oval: (props) => <Oval { ...props } />,
+    Circle: (props) => <Circle { ...props } />,
+    Other: (props) => <Other { ...props } />,
+    IconEstimator: (props) => <IconEstimator { ...props } />,
+    IconCheckmark: (props) => <IconCheckmark { ...props } />,
+    IconDelete: (props) => <IconDelete { ...props } />,
+    IconCircleAdd: (props) => <IconCircleAdd { ...props } />,
+    IconInformation: (props) => <IconInformation { ...props } />,
 };

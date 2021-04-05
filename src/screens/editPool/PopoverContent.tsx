@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { EditName } from './EditName';
-import { EditVolume } from './EditVolume';
-import { EditWallType } from './EditWallType';
-import { EditWaterType } from './EditWaterType';
+import { EditName } from './components/EditName';
+import { EditVolume } from './components/EditVolume';
+import { EditWallType } from './components/EditWallType';
+import { EditWaterType } from './components/EditWaterType';
 
 interface PopoverContent {
     name: () => JSX.Element;

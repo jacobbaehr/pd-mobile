@@ -7,6 +7,7 @@ export interface PDTheme {
     grey: string;
     greyDarker: string;
     greyLight: string;
+    greyVeryLight: string,
     // Blurred Colors
     blurredRed: string;
     blurredBlue: string;
@@ -42,6 +43,7 @@ export const lightTheme: PDTheme = {
     grey: '#737373',
     greyDarker: '#262626',
     greyLight: '#EDEDED',
+    greyVeryLight: '#FAFAFA',
     blurredRed: '#F9000010',
     blurredBlue: '#1E6BFF10',
     blurredOrange: '#FF750210',
@@ -64,6 +66,7 @@ export const darkTheme: PDTheme = {
     grey: '#BBBBBB',
     greyDarker: '#262626',
     greyLight: '#EDEDED',
+    greyVeryLight: '#FAFAFA',
     blurredRed: '#F9000010',
     blurredBlue: '#1E6BFF10',
     blurredOrange: '#FF750210',

@@ -13,11 +13,23 @@ import { PDStackNavigationProps } from '~/navigator/shared';
 import { useThunkDispatch, useTypedSelector } from '~/redux/AppState';
 import { deletePool } from '~/redux/selectedPool/Actions';
 
-export const DeletePool = ({ visible, toggleVisible }) => {
+interface DeletePoolModal {
+    visible: boolean;
+    toggleVisible: () => void
+
+}
+
+
+export const DeletePool: React.FC<DeletePoolModal> = (props ) => {
+    const { visible, toggleVisible } = props;
     const selectedPool = useTypedSelector((state) => state.selectedPool) as Pool;
     const navigation = useNavigation<PDStackNavigationProps>();
     const dispatch = useThunkDispatch();
 
+    if (!visible) {
+        return null;
+
+    }
     const onPressDelete = () => {
         toggleVisible();
         navigation.navigate('PoolList');

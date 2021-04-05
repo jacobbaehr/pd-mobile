@@ -3,7 +3,7 @@ import { RecipeKey } from '~/models/recipe/RecipeKey';
 import { BuyScreen } from '~/screens/buy/BuyScreen';
 import CustomTargetsScreen from '~/screens/customTargets/CustomTargetsScreen';
 import { EditPoolScreen } from '~/screens/editPool/EditPoolScreen';
-import { EditPoolScreen as EditPoolScreenOld } from '~/screens/editPool/EditPoolScreenOld';
+import { CreatePoolScreen } from '~/screens/editPool/CreatePoolScreen';
 import { PoolScreen } from '~/screens/pool/PoolScreen';
 import { PoolListScreen } from '~/screens/poolList/PoolListScreen';
 import { ReadingListScreen } from '~/screens/readings/ReadingListScreen';
@@ -37,7 +37,7 @@ export const PDCardNavigator = (): JSX.Element => {
     return (
         <CardStack.Navigator headerMode="none" mode="card">
             <CardStack.Screen name="PoolList" component={ PoolListScreen } />
-            <CardStack.Screen name="CreatePool" component={ EditPoolScreenOld } />
+            <CardStack.Screen name="CreatePool" component={ CreatePoolScreen } />
             <CardStack.Screen name="PoolScreen" component={ PoolScreen } />
             <CardStack.Screen name="EditPool" component={ EditPoolScreen } />
             <CardStack.Screen name="ReadingList" component={ ReadingListScreen } />

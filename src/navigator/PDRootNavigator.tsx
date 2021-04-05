@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
-import { EditPoolPopover, HeaderInfo } from '~/screens/editPool/EditPoolPopover';
+import { EditPoolPopover, HeaderInfo } from '~/screens/editPool/components/EditPoolPopover';
 import { PDPickerRouteProps, PickerScreen } from '~/screens/picker/PickerScreen';
 import { ScoopDetailsRouteProps, ScoopDetailsScreen } from '~/screens/settings/scoops/ScoopDetailsScreen';
 
