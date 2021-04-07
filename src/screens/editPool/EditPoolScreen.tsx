@@ -19,7 +19,7 @@ export const EditPoolScreen: React.FunctionComponent = () => {
     const { visible, toggleVisible } = useModal();
     const selectedPool = useTypedSelector((state) => state.selectedPool) as Pool;
     const deviceSettings = useTypedSelector((state) => state.deviceSettings) as DeviceSettings;
-    const editPoolSectionInfo: EditPoolSectionInfo[] = usePoolSectionInfo(selectedPool, deviceSettings, toggleVisible);
+    const editPoolSectionInfo: EditPoolSectionInfo[] = usePoolSectionInfo( deviceSettings, toggleVisible, selectedPool);
 
     return (
         <PDSafeAreaView bgColor="white">
@@ -28,7 +28,7 @@ export const EditPoolScreen: React.FunctionComponent = () => {
                 <SectionList
                     sections={ editPoolSectionInfo }
                     renderSectionHeader={ ({ section: { title } }) => (
-                        <PDText type="bodyBold" style={ styles.sectionHeaderText }>
+                        <PDText type="bodyGreyBold" style={ styles.sectionHeaderText }>
                             {title}
                         </PDText>
                     ) }
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     },
     listContent: {
         paddingHorizontal: PDSpacing.md,
+
     },
     sectionHeaderText: {
         color: '#737373',

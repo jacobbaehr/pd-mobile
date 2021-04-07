@@ -33,7 +33,7 @@ export const MenuItemButtonWrapper = (props: MenuItemButtonProps) => {
                 <PDText color={ props.id === 'delete' ? 'red' : 'black' } type="bodySemiBold" >
                     {props.label}
                 </PDText>
-                <PDText color={ props.valueColor } type="bodySemiBold" >
+                <PDText color={ props.valueColor } type="bodySemiBold" style={ styles.value }>
                     {props.value}
                 </PDText>
                 <Image style={ styles.arrow } source={ images.menuChevronIcon } />
@@ -55,6 +55,9 @@ const styles = StyleSheet.create({
         margin: 5,
         marginRight: PDSpacing.xs,
         marginLeft: PDSpacing.xs,
+    },
+    value: {
+        flexShrink: 1,
     },
     arrow: {
         height: 32,

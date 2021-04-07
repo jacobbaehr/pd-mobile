@@ -18,6 +18,7 @@ import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
 import { useNavigation } from '@react-navigation/native';
+import { PlatformSpecific } from '~/components/PlatformSpecific';
 
 export const EditVolume = () => {
     const selectedPool = useTypedSelector((state) => state.selectedPool) as Pool;
@@ -70,7 +71,6 @@ export const EditVolume = () => {
     };
 
     const unitText = getDisplayForPoolValue(units) as string;
-
     return (
         <PDView>
             <PDView style={ styles.inputContainer }>
@@ -83,9 +83,12 @@ export const EditVolume = () => {
                     autoFocus
                     keyboardType="number-pad"
                     inputAccessoryViewID={ keyboardAccessoryViewId }
+                    returnKeyType="done"
+                    onSubmitEditing={ handleOnPressSaveButton }
+                    enablesReturnKeyAutomatically
                 />
                 <PDView>
-                    <PDText type="default" style={ styles.unit }>
+                    <PDText type="bodyGreyBold" style={ styles.unit }>
                         unit
                     </PDText>
                     <Button
@@ -97,21 +100,21 @@ export const EditVolume = () => {
                     />
                 </PDView>
             </PDView>
-            <PDText type="default" style={ styles.notSure }>
+            <PDText type="bodyGreyBold" style={ styles.notSure }>
                 not sure?
             </PDText>
             <ButtonWithChildren onPress={ handleEstimatorButtonPressed }>
                 <PDView style={ styles.estimatorButtonContainer }>
                     <SVG.IconEstimator width={ 16 } height={ 16 } fill="#000000" />
-                    <PDText style={ styles.estimatorButtonText }> Use Volume Estimator</PDText>
+                    <PDText type="subHeading"> Use Volume Estimator</PDText>
                 </PDView>
             </ButtonWithChildren>
-
+            <PlatformSpecific include={ ['ios'] }>
             <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
                 <PDView style={ styles.inputAccessoryView }>
                     <PDView
-                        bgColor={ buttonDisabled ? 'greyLight' : 'pink' }
-                        opacity={ buttonDisabled ? 0.3 : 1 }
+                        bgColor={ 'pink' }
+                        opacity={ buttonDisabled ? 0 : 1 }
                         style={ styles.saveButtonContainer }>
                         <Button
                             textStyles={ styles.saveText }
@@ -119,10 +122,12 @@ export const EditVolume = () => {
                             title="Save"
                             onPress={ handleOnPressSaveButton }
                             disabled={ buttonDisabled }
+                            styles={ styles.saveButton }
                         />
                     </PDView>
                 </PDView>
             </InputAccessoryView>
+            </PlatformSpecific>
         </PDView>
     );
 };
@@ -136,13 +141,12 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'space-around',
     },
-
     textInput: {
         borderColor: '#EDEDED',
         borderWidth: 2,
         borderRadius: 8,
-        height: 40,
-        width: 159,
+        paddingVertical: 6,
+        width: 165,
         fontFamily: 'Poppins',
         fontWeight: '600',
         fontSize: 16,
@@ -151,13 +155,10 @@ const styles = StyleSheet.create({
     },
     unit: {
         color: '#737373',
-        fontWeight: '700',
-        fontSize: 14,
-        textTransform: 'uppercase',
     },
     unitButton: {
-        height: 40,
-        width: 159,
+        paddingVertical: PDSpacing.xs,
+        paddingHorizontal: 60,
         borderRadius: 24,
         borderColor: '#EDEDED',
         borderWidth: 2,
@@ -170,15 +171,12 @@ const styles = StyleSheet.create({
     },
     notSure: {
         color: '#737373',
-        fontSize: 14,
-        fontWeight: 'bold',
         marginTop: PDSpacing.sm,
         marginBottom: PDSpacing.xs,
-        textTransform: 'uppercase',
     },
     estimatorButtonContainer: {
-        height: 40,
-        width: 327,
+        paddingHorizontal: 75,
+        paddingVertical: PDSpacing.xs,
         backgroundColor: '#EDEDED',
         borderRadius: 27.5,
         alignSelf: 'center',
@@ -186,25 +184,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
     },
-    estimatorButtonText: {
-        color: '#000000',
-        fontSize: 18,
-        fontWeight: '700',
-    },
     saveButtonContainer: {
         borderRadius: 27.5,
-        height: 40,
-        width: '90%',
         marginBottom: 24,
         justifyContent: 'center',
-        opacity: 0.3,
         alignSelf: 'center',
     },
+    saveButton: {
+        borderRadius: 27.5,
+        paddingVertical: PDSpacing.xs,
+        paddingHorizontal: 155,
+    },
     saveText: {
-        // color: '#000000',
         fontWeight: '700',
         fontSize: 18,
-
         alignSelf: 'center',
     },
 });

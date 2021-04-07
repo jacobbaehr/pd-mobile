@@ -28,7 +28,6 @@ export const DeletePool: React.FC<DeletePoolModal> = (props ) => {
 
     if (!visible) {
         return null;
-
     }
     const onPressDelete = () => {
         toggleVisible();
@@ -39,7 +38,7 @@ export const DeletePool: React.FC<DeletePoolModal> = (props ) => {
 
     return (
         <PDView style={ styles.modalContainer }>
-            <Modal isVisible={ visible }>
+            <Modal isVisible={ visible } onBackdropPress={ toggleVisible } animationOut="slideOutDown">
                 <PDView style={ styles.modalContainer }>
                     <PDView style={ styles.modal }>
                         <PDText type="subHeading" color="black">
@@ -51,7 +50,6 @@ export const DeletePool: React.FC<DeletePoolModal> = (props ) => {
                             </PDText>
                         </PDView>
                         <ButtonWithChildren
-                            // title="Delete PoolName's Pool"
                             onPress={ onPressDelete }>
                             <PDView style={ styles.deleteButton }>
                                 <SVG.IconDelete width={ 16 } height={ 16 } fill="white" />
@@ -73,43 +71,27 @@ export const DeletePool: React.FC<DeletePoolModal> = (props ) => {
 
 const styles = StyleSheet.create({
     modalContainer: {
-        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 22,
-        // backgroundColor: 'black',
-        // opacity: 0.7,
     },
     modal: {
-        height: 296,
-        width: 343,
-        margin: 20,
+        paddingHorizontal: 35,
+        paddingVertical: 25,
         backgroundColor: 'white',
         borderRadius: 24,
-        padding: 35,
         alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-        opacity: 1,
     },
     warning: {
         backgroundColor: '#FFF2F2',
         borderRadius: 8,
-        height: 96,
-        width: 295,
+        paddingHorizontal:  50,
+        paddingVertical: 10,
         marginTop: 16,
         justifyContent: 'center',
         alignItems: 'center',
     },
     warningText: {
-        opacity: 1,
-        width: '80%',
         textAlign: 'center',
     },
     deleteButton: {

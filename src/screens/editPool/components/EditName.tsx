@@ -8,6 +8,8 @@ import { PDStackNavigationProps } from '~/navigator/shared';
 import { useThunkDispatch, useTypedSelector } from '~/redux/AppState';
 import { updatePool } from '~/redux/selectedPool/Actions';
 import { Pool } from '~/models/Pool';
+import { PDSpacing } from '~/components/PDTheme';
+import { PlatformSpecific } from '~/components/PlatformSpecific';
 
 export const EditName = () => {
     const dispatch = useThunkDispatch();
@@ -23,7 +25,10 @@ export const EditName = () => {
         const rawPool: Pool = { ...selectedPool, name };
 
         const existingPool = Pool.make(rawPool);
-        dispatch(updatePool(existingPool));
+
+        if (existingPool.name !== selectedPool.name) {
+            dispatch(updatePool(existingPool));
+        }
 
         goBack();
     };
@@ -48,12 +53,16 @@ export const EditName = () => {
                 autoFocus
                 inputAccessoryViewID={ keyboardAccessoryViewId }
                 value={ name }
+                returnKeyType="done"
+                onSubmitEditing={ handleOnPressSaveButton }
+                enablesReturnKeyAutomatically
             />
+            <PlatformSpecific include={ ['ios'] }>
             <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
                 <PDView style={ styles.inputAccessoryView }>
                     <PDView
-                        bgColor={ buttonDisabled ? 'greyLight' : 'blue' }
-                        opacity={ buttonDisabled ? 0.3 : 1 }
+                        bgColor={ 'blue' }
+                        opacity={ buttonDisabled ? 0 : 1 }
                         style={ styles.buttonContainer }>
                         <Button
                             textStyles={ styles.text }
@@ -61,10 +70,12 @@ export const EditName = () => {
                             title="Save"
                             onPress={ handleOnPressSaveButton }
                             disabled={ buttonDisabled }
+                            styles={ styles.saveButton }
                         />
                     </PDView>
                 </PDView>
             </InputAccessoryView>
+            </PlatformSpecific>
         </PDView>
     );
 };
@@ -75,17 +86,19 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         borderRadius: 27.5,
-        height: 40,
         justifyContent: 'center',
-        opacity: 0.3,
-        width: '90%',
         alignSelf: 'center',
-        marginBottom: 24,
+        opacity: 0.3,
+        marginBottom: PDSpacing.lg,
+    },
+    saveButton: {
+        borderRadius: 27.5,
+        paddingHorizontal: 155,
+        paddingVertical: PDSpacing.xs,
     },
     text: {
         fontWeight: '700',
         fontSize: 18,
-
         alignSelf: 'center',
     },
 });

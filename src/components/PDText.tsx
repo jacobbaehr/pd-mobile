@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Bold',
         fontStyle: 'normal',
         lineHeight: 21,
-        fontSize: 14,
+        fontSize: 15,
         letterSpacing: 0.5,
         textTransform: 'uppercase',
     },

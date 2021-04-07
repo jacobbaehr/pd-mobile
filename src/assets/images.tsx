@@ -19,6 +19,8 @@ import IconEstimator from './images/shapes/icon_estimator.svg';
 import IconOther from './images/shapes/icon_other.svg';
 import IconOval from './images/shapes/icon_oval.svg';
 import IconRectangle from './images/shapes/icon_rectangle.svg';
+import IconCloseButton from './images/shapes/close_button.svg';
+
 
 /** */
 export const images = {
@@ -51,7 +53,6 @@ export const images = {
     incomplete: require('./images/incomplete.png'),
     trends: require('./images/trends.png'),
     pools3: require('./images/pools_3.png'),
-    coolDog: require('~/assets/images/dog_in_hat.png'),
     titleIcon: require('~/assets/images/icon-name.png'),
     waterTypeIcon: require('~/assets/images/icon-water-type.png'),
     volumeIcon: require('~/assets/images/icon-volume.png'),
@@ -69,19 +70,20 @@ interface OverrideSvgProps extends SvgProps {
 }
 
 export const SVG:  Record<string, (props: OverrideSvgProps) => JSX.Element> = {
-    IconCircle: (props) => <IconCircle { ...props } />,
-    IconRectangle: (props) => <IconRectangle { ...props } />,
-    IconOval: (props) => <IconOval { ...props } />,
-    IconOther: (props) => <IconOther { ...props } />,
-    IconCircleBack: (props) => <IconBack { ...props } />,
-    IconForward: (props) => <IconForward { ...props } />,
-    Rectangle: (props) => <Rectangle { ...props } />,
-    Oval: (props) => <Oval { ...props } />,
-    Circle: (props) => <Circle { ...props } />,
-    Other: (props) => <Other { ...props } />,
-    IconEstimator: (props) => <IconEstimator { ...props } />,
-    IconCheckmark: (props) => <IconCheckmark { ...props } />,
-    IconDelete: (props) => <IconDelete { ...props } />,
-    IconCircleAdd: (props) => <IconCircleAdd { ...props } />,
-    IconInformation: (props) => <IconInformation { ...props } />,
+        IconCircle: (props) => <IconCircle { ...props } />,
+        IconRectangle: (props) => <IconRectangle { ...props } />,
+        IconOval: (props) => <IconOval { ...props } />,
+        IconOther: (props) => <IconOther { ...props } />,
+        IconCircleBack: (props) => <IconBack { ...props } />,
+        IconForward: (props) => <IconForward { ...props } />,
+        Rectangle: (props) => <Rectangle { ...props } />,
+        Oval: (props) => <Oval { ...props } />,
+        Circle: (props) => <Circle { ...props } />,
+        Other: (props) => <Other { ...props } />,
+        IconEstimator: (props) => <IconEstimator { ...props } />,
+        IconCheckmark: (props) => <IconCheckmark { ...props } />,
+        IconDelete: (props) => <IconDelete { ...props } />,
+        IconCircleAdd: (props) => <IconCircleAdd { ...props } />,
+        IconInformation: (props) => <IconInformation { ...props } />,
+        IconCloseButton: (props)=> <IconCloseButton { ...props } />,
 };

@@ -1,10 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { CloseButton } from '~/components/buttons/CloseButton';
+import { SVG } from '~/assets/images';
 import { PDText } from '~/components/PDText';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { PDStackNavigationProps } from '~/navigator/shared';
+
 
 export interface EditPoolPropertyWrapperProps {
     title: string;
@@ -13,6 +15,7 @@ export interface EditPoolPropertyWrapperProps {
 
 export const EditPoolPropertyWrapper: React.FC<EditPoolPropertyWrapperProps> = ({ children, title, description }) => {
     const navigation = useNavigation<PDStackNavigationProps>();
+    const theme = useTheme();
 
     const goBack = () => {
         navigation.goBack();
@@ -23,19 +26,18 @@ export const EditPoolPropertyWrapper: React.FC<EditPoolPropertyWrapperProps> = (
             <PDView style={ styles.header }>
                 <PDView style={ styles.headerRight } />
                 <PDView style={ styles.titleContainer }>
-                    <PDText style={ styles.title } type="default">
+                    <PDText type="subHeading">
                         {title}
                     </PDText>
                 </PDView>
                 <PDView style={ styles.buttonContainer }>
-                    <CloseButton onPress={ goBack } containerStyle={ styles.closeButton } />
+                    <SVG.IconCloseButton style= { styles.closeButton } onPress={ goBack } fill={ theme.black }/>
                 </PDView>
             </PDView>
-            <PDText style={ styles.description } type="default">
+            <PDText style={ styles.description } type="bodyMedium">
                 {description}
             </PDText>
-            <PDView style={ styles.details }>{children}</PDView>
-            <PDView style={ styles.content } />
+            <PDView style={ styles.content }>{children}</PDView>
         </PDView>
     );
 };
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     header: {
-        height: '7%',
+        paddingVertical: PDSpacing.sm,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -61,32 +63,25 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         flex: 1,
         position: 'absolute',
-        top: 30,
-    },
-    title: {
-        fontSize: 18,
-        fontWeight: '700',
+        paddingTop: 30,
     },
     buttonContainer: {
         flex: 1,
     },
     closeButton: {
-        top: 16,
+        top: 8 ,
         right: 16,
         alignSelf: 'flex-end',
     },
     description: {
-        fontWeight: '500',
-        fontSize: 16,
         color: '#737373',
-        marginHorizontal: 80,
-        marginVertical: 32,
+        paddingVertical: PDSpacing.lg,
+        paddingHorizontal: 80,
         textAlign: 'center',
     },
     content: {
-        backgroundColor: 'white',
-    },
-    details: {
-        width: '85%',
+        width: '100%',
+        paddingHorizontal: PDSpacing.lg,
+        display: 'flex',
     },
 });

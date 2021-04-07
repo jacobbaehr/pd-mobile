@@ -42,18 +42,19 @@ export interface EditPoolSectionInfo {
 }
 
 export interface usePoolSectionInfoProps {
-    pool: Pool;
+    pool?: Pool;
     deviceSettings: DeviceSettings;
     toggleVisible: undefined;
 }
 
 export const usePoolSectionInfo = (
-    pool: Pool,
     deviceSettings: DeviceSettings,
     toggleVisible: () => void,
+    pool?: Pool,
 ): EditPoolSectionInfo[] => {
     const recipe = useRecipeHook(pool?.recipeKey ?? defaultRecipe.id);
     const navigation = useNavigation<PDStackNavigationProps>();
+    if (!pool) {return [];}
     const targetsSelected = recipe?.custom.length ?? 0;
 
     const handleNavigateToPopover = (id: MenuItemId) => {
@@ -84,7 +85,7 @@ export const usePoolSectionInfo = (
                 {
                     label: 'Name: ',
                     image: images.titleIcon,
-                    value: pool?.name,
+                    value: pool.name,
                     valueColor: 'blue',
                     onPress: () => handleNavigateToPopover('name'),
                     id: 'name',
@@ -92,7 +93,7 @@ export const usePoolSectionInfo = (
                 {
                     label: 'Water Type: ',
                     image: images.waterTypeIcon,
-                    value: getDisplayForWaterType(pool?.waterType),
+                    value: getDisplayForWaterType(pool.waterType),
                     valueColor: 'green',
                     onPress: () => handleNavigateToPopover('waterType'),
                     id: 'waterType',
@@ -100,7 +101,7 @@ export const usePoolSectionInfo = (
                 {
                     label: 'Volume: ',
                     image: images.volumeIcon,
-                    value: VolumeUnitsUtil.getDisplayVolume(pool?.gallons, deviceSettings),
+                    value: VolumeUnitsUtil.getDisplayVolume(pool.gallons, deviceSettings),
                     valueColor: 'pink',
                     onPress: () => handleNavigateToPopover('gallons'),
                     id: 'gallons',
@@ -108,7 +109,7 @@ export const usePoolSectionInfo = (
                 {
                     label: 'Wall Type: ',
                     image: images.wallTypeIcon,
-                    value: getDisplayForWallType(pool?.wallType),
+                    value: getDisplayForWallType(pool.wallType),
                     valueColor: 'purple',
                     onPress: () => handleNavigateToPopover('wallType'),
                     id: 'wallType',
