@@ -49,7 +49,7 @@ const SelectShapeScreen = () => {
             <View style={ styles.content }>
                 <View>
                     <PDText type="bodyRegular" color="greyDarker" style={ styles.description } numberOfLines={ 2 }>
-                        Don’t know your pool’s volume? Tap “Use Volume Estimator” below.
+                        Let’s approximate the volume of the pool
                     </PDText>
                 </View>
                 <FlatList
@@ -111,6 +111,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     itemTextContainer: {
-        marginLeft: PDSpacing.sm,
+        marginLeft: PDSpacing.xs,
     },
 });

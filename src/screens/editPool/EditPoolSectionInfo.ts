@@ -59,7 +59,8 @@ export const usePoolSectionInfo = (
 
     const handleNavigateToPopover = (id: MenuItemId) => {
         let headerInfo: HeaderInfo = popoverProps[id];
-        navigation.navigate('EditPoolPopover', { headerInfo });
+        // TODO: Typing Composite Navigation props.
+        navigation.navigate('PDEditPoolNavigator', { screen: 'EditPool' , params: { headerInfo } });
     };
 
     const handleNavigateToRecipeListScreen = () => {

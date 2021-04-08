@@ -1,12 +1,9 @@
 import React, { useContext, useState } from 'react';
+import { EnumPoolUnit, PoolUnit } from '~/models/Pool/PoolUnit';
 
 import {
-    AllShapes,
-    CircleMeasurements,
-    OtherMeasurements,
-    OvalMeasurements,
-    RectangleMeasurements,
-    ShapeId,
+    AllShapes, CircleMeasurements, OtherMeasurements, OvalMeasurements, RectangleMeasurements,
+    ShapeId
 } from '../screens/volumeEstimator/VolumeEstimatorHelpers';
 
 interface EntryShape {
@@ -15,7 +12,7 @@ interface EntryShape {
     other: OtherMeasurements;
     oval: OvalMeasurements;
     estimation: string;
-    unit: 'US' | 'Metric';
+    unit: PoolUnit;
 }
 
 type ShapeDispatchType = React.Dispatch<React.SetStateAction<EntryShape>>;
@@ -44,7 +41,7 @@ const initialState: EntryShape = {
         area: '',
     },
     estimation: '',
-    unit: 'US',
+    unit: EnumPoolUnit.us,
 };
 
 const ShapeState = React.createContext<EntryShape>(initialState);
@@ -72,7 +69,7 @@ export const useVolumeEstimator = (shapeId: ShapeId) => {
         dispatch({ ...shape, estimation: value });
     };
 
-    const setUnit = (value: 'US' | 'Metric') => {
+    const setUnit = (value: PoolUnit) => {
         dispatch({ ...shape, unit: value });
     };
 

@@ -67,7 +67,7 @@ export const EditVolume = () => {
     };
 
     const handleEstimatorButtonPressed = () => {
-        navigation.push('PDVolumesNavigator');
+        navigation.navigate('PDVolumesNavigator');
     };
 
     const unitText = getDisplayForPoolValue(units) as string;

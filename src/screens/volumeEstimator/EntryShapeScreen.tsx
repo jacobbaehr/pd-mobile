@@ -1,5 +1,6 @@
 import React from 'react';
-import { KeyboardAvoidingView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SVG } from '~/assets/images';
 import ModalHeader from '~/components/headers/ModalHeader';
 import { useTheme } from '~/components/PDTheme';
@@ -24,21 +25,20 @@ const EntryShapeScreen = () => {
 
     // Colors
     const primaryBlurredColor = VolumeEstimatorHelpers.getPrimaryBlurredColorByShapeId(params.shapeId, theme);
-
     // Entry Shape
     const EntryShape = getElementByShapeId(params.shapeId);
 
     return (
         <View style={ styles.container }>
             <ModalHeader>Volume Estimator</ModalHeader>
-            <KeyboardAvoidingView behavior="padding" style={ styles.content }>
+            <KeyboardAwareScrollView style={ styles.content } >
                 <View style={ StyleSheet.flatten([styles.shapeContainer, { backgroundColor: primaryBlurredColor }]) }>
                     <ShapeSVG width={ width } height={ height * 0.25 } />
                 </View>
                 <UnitButton />
                 <EntryShape />
                 <EstimateVolume />
-            </KeyboardAvoidingView>
+            </KeyboardAwareScrollView>
         </View>
     );
 };

@@ -1,4 +1,5 @@
 import { PDTheme } from '~/components/PDTheme';
+import { PoolUnit } from '~/models/Pool/PoolUnit';
 
 export interface RectangleMeasurements {
     deepest: string;
@@ -131,4 +132,22 @@ export class VolumeEstimatorHelpers {
 
         return formulas[shapeId];
     };
+
+    static getLabelForUnit = (unit: PoolUnit) : string => {
+        const label : Record<PoolUnit, string> = {
+            us: 'US',
+            metric: 'Metric',
+            imperial: 'Imperial',
+        };
+        return label[unit];
+    }
+
+    static getAbbreviationUnit = (unit: PoolUnit): string => {
+        const abbreviation : Record<PoolUnit, string> = {
+            us: 'FT',
+            metric: 'M',
+            imperial: 'FT',
+        };
+        return abbreviation[unit];
+    }
 }

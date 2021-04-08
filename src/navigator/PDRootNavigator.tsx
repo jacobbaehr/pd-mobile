@@ -1,22 +1,22 @@
 import React from 'react';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
-import { EditPoolPopover, HeaderInfo } from '~/screens/editPool/components/EditPoolPopover';
 import { PDPickerRouteProps, PickerScreen } from '~/screens/picker/PickerScreen';
-import { ScoopDetailsRouteProps, ScoopDetailsScreen } from '~/screens/settings/scoops/ScoopDetailsScreen';
+import {
+    ScoopDetailsRouteProps, ScoopDetailsScreen
+} from '~/screens/settings/scoops/ScoopDetailsScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
 
 import { PDCardNavigator } from './PDCardNavigator';
-import { PDVolumesNavigator } from './PDVolumeNavigator';
+import { PDEditPoolNavigator } from './PDEditPoolNavigator';
 
 // This defines the navigation params accepted by each possible screen in PDRootNavigator
 export type PDRootNavigatorParams = {
-    EditPoolPopover: { headerInfo: HeaderInfo };
+    PDEditPoolNavigator: undefined;
     PickerScreen: PDPickerRouteProps;
     PDCardNavigator: undefined;
     ScoopDetails: ScoopDetailsRouteProps;
     FormSheetNavigator: undefined;
-    PDVolumesNavigator: undefined;
 };
 
 const RootStack = createNativeStackNavigator<PDRootNavigatorParams>();
@@ -36,8 +36,7 @@ export const PDRootNavigator = (): JSX.Element => {
                     options={ { stackPresentation: 'fullScreenModal' } }
                 />
                 <RootStack.Screen name="ScoopDetails" component={ ScoopDetailsScreen } />
-                <RootStack.Screen name="EditPoolPopover" component={ EditPoolPopover } />
-                <RootStack.Screen name="PDVolumesNavigator" component={ PDVolumesNavigator } />
+                <RootStack.Screen name="PDEditPoolNavigator" component={ PDEditPoolNavigator } />
             </RootStack.Navigator>
         </NavigationContainer>
     );

@@ -5,6 +5,7 @@ import { PDText } from '~/components/PDText';
 import { useTheme } from '~/components/PDTheme';
 import { useVolumeEstimator } from '~/hooks/useVolumeEstimator';
 import { EstimateRoute } from '~/navigator/PDVolumeNavigator';
+import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
 import { useRoute } from '@react-navigation/native';
 
@@ -17,12 +18,14 @@ const UnitButton: React.FC = () => {
     const theme = useTheme();
 
     const handlerPressedUnitButton = () => {
-        setUnit(unit === 'US' ? 'Metric' : 'US');
+        const nextUnit = VolumeUnitsUtil.getNextUnitValue(unit);
+        setUnit(nextUnit);
     };
     const primaryColor = VolumeEstimatorHelpers.getPrimaryColorByShapeId(params.shapeId, theme);
 
     // Unit Values
-    const unitName = unit === 'US' ? 'Feet and Gallons' : 'Meters and Liters';
+    const unitName = VolumeEstimatorHelpers.getLabelForUnit(unit);
+
     return (
         <View>
             <View>

@@ -47,7 +47,8 @@ export const OtherVolumeShape: React.FC = () => {
     const handleChangedShallowest = (value: string) => {
         handleShapeValues('shallowest', value);
     };
-    const unitName = unit === 'US' ? 'FT' : 'MT';
+    const unitName = VolumeEstimatorHelpers.getAbbreviationUnit(unit);
+
 
     return (
         <View>

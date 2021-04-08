@@ -15,7 +15,7 @@ export const EstimateVolume: React.FC = () => {
     const { params } = useRoute<EstimateRoute>();
     const theme = useTheme();
     const { shape, setEstimation, estimation, unit } = useVolumeEstimator(params.shapeId);
-    const unitMetric = unit === 'US' ? 'Gallons' : 'Litters';
+    const unitMetric = VolumeEstimatorHelpers.getLabelForUnit(unit);
 
     const isAllFieldsCompleted = React.useMemo(() => {
         return VolumeEstimatorHelpers.isCompletedField(shape);
