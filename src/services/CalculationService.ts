@@ -26,15 +26,18 @@ export class CalculationService {
             const recipe = event.recipe;
             const outputs = {};
             const readings = {};
+            const skipped = [];
             recipe.readings.forEach(r => {
                 const entry = event.readings.find(x => x.var === r.var);
                 if (entry) {
                     readings[r.var] = entry.value;
                 } else {
                     readings[r.var] = r.defaultValue;
+                    skipped.push(r.var);
                 }
             });
             const inputsAsArgs = \`const r = {\${ recipe.readings.map(r => \`\${r.var}: \${readings[r.var]}\`).join(',') }};\`;
+            const skippedAsArgs = \`const s = {\${ skipped.map(v => \`\${v}: true\`).join(',') }};\`;
             const customTargetsAsArgs = \`const c = {\${event.custom.map(c => \`\${c.var}: { min: \${c.min}, max: \${c.max}}\`).join(',')}};\`;
             const poolAsArgs = \`const p = {gallons: \${event.pool.gallons}, liters: \${event.pool.liters}, wall_type: '\${event.pool.wallType}', water_type: '\${event.pool.waterType}'};\`;
             for (let i = 0; i < recipe.treatments.length; i++) {
@@ -47,6 +50,7 @@ export class CalculationService {
                     \${poolAsArgs}
                     \${previousTreatmentsAsArgs}
                     \${customTargetsAsArgs}
+                    \${skippedAsArgs}
                     \${t.formula}
                 \`;
 
