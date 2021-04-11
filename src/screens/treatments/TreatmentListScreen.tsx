@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet, View
+    InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet, View,
 } from 'react-native';
 import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
@@ -43,6 +43,7 @@ export const TreatmentListScreen: React.FC = () => {
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
     const recipeKey = pool?.recipeKey || RecipeService.defaultRecipeKey;
     const [treatmentStates, setTreatmentStates] = React.useState<TreatmentState[]>([]);
+    const [hasSelectedAnyTreatments, setHasSelectedAnyTreatments] = React.useState(false);
     const [notes, setNotes] = React.useState('');
     const { navigate } = useNavigation<StackNavigationProp<PDNavParams>>();
     // I hate this... it's dirty. We should move this into the picker screen maybe?
@@ -107,9 +108,21 @@ export const TreatmentListScreen: React.FC = () => {
     }
 
     const save = async () => {
+        const shouldSaveAllTreatments = !hasSelectedAnyTreatments;
+
+        /// setState hooks don't modify the value in the current context -- so to actually turn the treatment entries "on",
+        /// we have to do it somewhat manually (yuck, I should clean this up).
+        let finalTreatmentStates = Util.deepCopy(treatmentStates);
+        if (shouldSaveAllTreatments) {
+            finalTreatmentStates = finalTreatmentStates.map(x => ({ ...x, isOn: true }));
+
+            /// This just updates the UI so the user can sort-of see everything being selected (for a fleeting moment, anyways)
+            finalTreatmentStates.forEach(x => toggleTreatmentSelected(x.treatment.var));
+        }
+
         const id = Util.generateUUID();
         const ts = Util.generateTimestamp();
-        const tes = CalculationService.mapTreatmentStatesToTreatmentEntries(treatmentStates);
+        const tes = CalculationService.mapTreatmentStatesToTreatmentEntries(finalTreatmentStates);
 
         const logEntry = LogEntry.make(id, pool.objectId, ts, readings, tes, recipeKey, notes);
 
@@ -118,7 +131,7 @@ export const TreatmentListScreen: React.FC = () => {
         const newDeviceSettings = Util.deepCopy(deviceSettings);
         newDeviceSettings.treatments.units = TreatmentListHelpers.getUpdatedLastUsedUnits(
             newDeviceSettings.treatments.units,
-            treatmentStates,
+            finalTreatmentStates,
         );
         dispatch(updateDeviceSettings(newDeviceSettings));
         await DeviceSettingsService.saveSettings(newDeviceSettings);
@@ -201,6 +214,11 @@ export const TreatmentListScreen: React.FC = () => {
         };
         LayoutAnimation.configureNext(animationConfig);
 
+        setHasSelectedAnyTreatments(true);
+        toggleTreatmentSelected(varName);
+    };
+
+    const toggleTreatmentSelected = (varName: string) => {
         const modification = (ts: TreatmentState) => {
             ts.isOn = !ts.isOn;
             if (ts.isOn && !ts.value) {
@@ -387,7 +405,7 @@ export const TreatmentListScreen: React.FC = () => {
             />
             <WebView containerStyle={ styles.webview } onMessage={ onMessage } source={ { html: htmlString } } />
             <View style={ styles.bottomButtonContainer }>
-                <BoringButton containerStyles={ styles.button } onPress={ save } title="Save" />
+                <BoringButton containerStyles={ styles.button } onPress={ save } title={ hasSelectedAnyTreatments ? 'Save' : 'Save All' } />
             </View>
             <PlatformSpecific include={ ['ios'] }>
                 <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
