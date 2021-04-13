@@ -13,7 +13,8 @@ import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { HeaderInfo, popoverProps } from './components/EditPoolPopover';
+import { HeaderInfo } from '~/screens/pool/components/PoolPopover';
+import { editPoolPopoverProps } from '~/screens/pool/edit/EditPoolHelpers';
 
 export type MenuItemId =
     | 'name'
@@ -47,7 +48,7 @@ export interface usePoolSectionInfoProps {
     toggleVisible: undefined;
 }
 
-export const usePoolSectionInfo = (
+export const useEditPoolSectionInfo = (
     deviceSettings: DeviceSettings,
     toggleVisible: () => void,
     pool?: Pool,
@@ -58,7 +59,7 @@ export const usePoolSectionInfo = (
     const targetsSelected = recipe?.custom.length ?? 0;
 
     const handleNavigateToPopover = (id: MenuItemId) => {
-        let headerInfo: HeaderInfo = popoverProps[id];
+        let headerInfo: HeaderInfo = editPoolPopoverProps[id];
         // TODO: Typing Composite Navigation props.
         navigation.navigate('PDEditPoolNavigator', { screen: 'EditPool' , params: { headerInfo } });
     };

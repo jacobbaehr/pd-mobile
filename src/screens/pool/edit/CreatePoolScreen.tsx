@@ -10,14 +10,14 @@ import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
 import { clearPickerState } from '~/redux/picker/Actions';
 import { clearPool, saveNewPool, updatePool } from '~/redux/selectedPool/Actions';
 import { Database } from '~/repository/Database';
-import { PoolDetails } from '~/screens/editPool/PoolDetails';
+import { PoolDetails } from '~/screens/pool/details/PoolDetails';
 import { ConversionUtil } from '~/services/ConversionsUtil';
 import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 import { Haptic } from '~/services/HapticService';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { PDPickerRouteProps } from '../picker/PickerScreen';
+import { PDPickerRouteProps } from '~/screens/picker/PickerScreen';
 
 const getInitialVolumeText = (units: PoolUnit, gallons: number) => {
     if (units === 'us') {

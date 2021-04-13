@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SectionList, StyleSheet } from 'react-native';
-import { MenuItemButton } from '~/screens/editPool/components/MenuItemButton';
+import { MenuItemButton } from '~/screens/pool/edit/components/MenuItemButton';
 import { PDText } from '~/components/PDText';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { Pool } from '~/models/Pool';
@@ -9,7 +9,7 @@ import { DeletePool } from './components/DeletePool';
 import { useModal } from '~/hooks/useModal';
 
 import { useTypedSelector } from '~/redux/AppState';
-import { EditPoolSectionInfo, usePoolSectionInfo } from './EditPoolSectionInfo';
+import { EditPoolSectionInfo, useEditPoolSectionInfo } from '~/screens/pool/hooks/useEditPoolSectionInfo';
 import { ScreenHeader } from '~/components/headers/ScreenHeader';
 import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { PDSpacing } from '~/components/PDTheme';
@@ -19,7 +19,7 @@ export const EditPoolScreen: React.FunctionComponent = () => {
     const { visible, toggleVisible } = useModal();
     const selectedPool = useTypedSelector((state) => state.selectedPool) as Pool;
     const deviceSettings = useTypedSelector((state) => state.deviceSettings) as DeviceSettings;
-    const editPoolSectionInfo: EditPoolSectionInfo[] = usePoolSectionInfo( deviceSettings, toggleVisible, selectedPool);
+    const editPoolSectionInfo: EditPoolSectionInfo[] = useEditPoolSectionInfo( deviceSettings, toggleVisible, selectedPool);
 
     return (
         <PDSafeAreaView bgColor="white">

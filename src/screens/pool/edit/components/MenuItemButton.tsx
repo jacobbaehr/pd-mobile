@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { EditPoolMenuItem } from '~/screens/editPool/EditPoolSectionInfo';
+import { EditPoolMenuItem } from '~/screens/pool/hooks/useEditPoolSectionInfo';
 import { MenuItemButtonWrapper } from './MenuItemButtonWrapper';
 
 export interface MenuItemButtonProps extends EditPoolMenuItem {

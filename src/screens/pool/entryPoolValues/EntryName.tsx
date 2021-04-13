@@ -66,7 +66,7 @@ export const EditName = () => {
                         style={ styles.buttonContainer }>
                         <Button
                             textStyles={ styles.text }
-                            textColor={ buttonDisabled ? 'black' : 'white' }
+                            textColor={ 'white' }
                             title="Save"
                             onPress={ handleOnPressSaveButton }
                             disabled={ buttonDisabled }

@@ -20,6 +20,14 @@ import IconOther from './images/shapes/icon_other.svg';
 import IconOval from './images/shapes/icon_oval.svg';
 import IconRectangle from './images/shapes/icon_rectangle.svg';
 import IconCloseButton from './images/shapes/close_button.svg';
+// Create and Edit Pool
+import IconName from './images/shapes/icon_name.svg';
+import IconWaterType from './images/shapes/icon_watertype.svg';
+import IconVolume from './images/shapes/icon_volume.svg';
+import IconWallType from './images/shapes/icon_walltype.svg';
+import IconRecipes from './images/shapes/icon_recipes.svg';
+
+
 
 
 /** */
@@ -65,7 +73,7 @@ export const images = {
     menuChevronIcon: require('~/assets/images/icon-menu-chevron.png'),
 };
 
-interface OverrideSvgProps extends SvgProps {
+export interface OverrideSvgProps extends SvgProps {
     fill?: string | PDColor;
 }
 
@@ -86,4 +94,9 @@ export const SVG:  Record<string, (props: OverrideSvgProps) => JSX.Element> = {
         IconCircleAdd: (props) => <IconCircleAdd { ...props } />,
         IconInformation: (props) => <IconInformation { ...props } />,
         IconCloseButton: (props)=> <IconCloseButton { ...props } />,
+        IconName: (props)=> <IconName { ...props } />,
+        IconWaterType: (props)=> <IconWaterType { ...props } />,
+        IconVolume: (props)=> <IconVolume { ...props } />,
+        IconWallType: (props)=> <IconWallType { ...props } />,
+        IconRecipes: (props)=> <IconRecipes { ...props } />,
 };

@@ -12,7 +12,7 @@ import { getDisplayForPoolValue, PoolUnit } from '~/models/Pool/PoolUnit';
 import { getDisplayForWallType, WallTypeValue } from '~/models/Pool/WallType';
 import { getDisplayForWaterType, WaterTypeValue } from '~/models/Pool/WaterType';
 
-import { EditListHeader } from '../poolList/PoolDetailsHeader';
+import { EditListHeader } from './PoolDetailsHeader';
 
 interface PoolDetailProps {
     name: string;
