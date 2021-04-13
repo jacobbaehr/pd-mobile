@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import { EnumPoolUnit, PoolUnit } from '~/models/Pool/PoolUnit';
 
 import {
     AllShapes, CircleMeasurements, OtherMeasurements, OvalMeasurements, RectangleMeasurements,
@@ -12,7 +11,6 @@ interface EntryShape {
     other: OtherMeasurements;
     oval: OvalMeasurements;
     estimation: string;
-    unit: PoolUnit;
 }
 
 type ShapeDispatchType = React.Dispatch<React.SetStateAction<EntryShape>>;
@@ -41,7 +39,6 @@ const initialState: EntryShape = {
         area: '',
     },
     estimation: '',
-    unit: EnumPoolUnit.us,
 };
 
 const ShapeState = React.createContext<EntryShape>(initialState);
@@ -57,20 +54,16 @@ export const ShapeProvider: React.FC = ({ children }) => {
     );
 };
 
-export const useVolumeEstimator = (shapeId: ShapeId) => {
+export const useVolumeEstimator = (shapeId?: ShapeId) => {
     const shape = useContext(ShapeState);
     const dispatch = useContext(ShapeDispatch);
 
     const setShape = (values: Partial<AllShapes>) => {
-        dispatch((prev) => ({ ...prev, [shapeId]: { ...prev[shapeId], ...values } }));
+        dispatch((prev) => ({ ...prev, [shapeId as ShapeId]: { ...prev[shapeId as ShapeId], ...values } }));
     };
-
+    // make sure the gallons are saved on Gallons
     const setEstimation = (value: string) => {
         dispatch({ ...shape, estimation: value });
-    };
-
-    const setUnit = (value: PoolUnit) => {
-        dispatch({ ...shape, unit: value });
     };
 
     const clear = () => {
@@ -78,12 +71,10 @@ export const useVolumeEstimator = (shapeId: ShapeId) => {
     };
 
     return {
-        shape: shape[shapeId],
+        shape: shape[shapeId as ShapeId],
         setShape,
         setEstimation,
         estimation: shape.estimation,
         clear,
-        unit: shape.unit,
-        setUnit,
     };
 };

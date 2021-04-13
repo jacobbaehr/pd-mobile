@@ -2,8 +2,6 @@ import * as React from 'react';
 import { RecipeKey } from '~/models/recipe/RecipeKey';
 import { BuyScreen } from '~/screens/buy/BuyScreen';
 import CustomTargetsScreen from '~/screens/customTargets/CustomTargetsScreen';
-import { EditPoolScreen } from '~/screens/pool/edit/EditPoolScreen';
-import { CreatePoolScreen } from '~/screens/pool/create/CreatePoolScreen';
 import { PoolScreen } from '~/screens/pool/PoolScreen';
 import { PoolListScreen } from '~/screens/poolList/PoolListScreen';
 import { ReadingListScreen } from '~/screens/readings/ReadingListScreen';
@@ -18,17 +16,15 @@ import { createStackNavigator } from '@react-navigation/stack';
 // This defines the navigation params accepted by each possible screen in PDCardNavigator
 export type PDCardNavigatorParams = {
     PoolList: undefined;
-    CreatePool: undefined;
     PoolScreen: undefined;
-    EditPool: undefined;
     ReadingList: undefined;
     TreatmentList: undefined;
     Settings: undefined;
-    RecipeList: { prevScreen: 'ReadingList' | 'PoolScreen' | 'EditPool' | 'CreatePool' };
-    RecipeDetails: { recipeKey: RecipeKey; prevScreen: 'ReadingList' | 'PoolScreen' | 'EditPool' | 'CreatePool'};
+    RecipeList: { prevScreen: 'ReadingList' | 'PDPoolNavigator' };
+    RecipeDetails: { recipeKey: RecipeKey; prevScreen: 'ReadingList' | 'PoolScreen' | 'EditPool' };
     PoolHistory: undefined;
     Buy: undefined;
-    CustomTargets: undefined;
+    CustomTargets: { prevScreen: 'ReadingList' | 'PDPoolNavigator' };
 };
 
 const CardStack = createStackNavigator<PDCardNavigatorParams>();
@@ -37,9 +33,7 @@ export const PDCardNavigator = (): JSX.Element => {
     return (
         <CardStack.Navigator headerMode="none" mode="card">
             <CardStack.Screen name="PoolList" component={ PoolListScreen } />
-            <CardStack.Screen name="CreatePool" component={ CreatePoolScreen } />
             <CardStack.Screen name="PoolScreen" component={ PoolScreen } />
-            <CardStack.Screen name="EditPool" component={ EditPoolScreen } />
             <CardStack.Screen name="ReadingList" component={ ReadingListScreen } />
             <CardStack.Screen name="TreatmentList" component={ TreatmentListScreen } />
             <CardStack.Screen name="RecipeList" component={ RecipeListScreen } />

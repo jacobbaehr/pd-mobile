@@ -6,9 +6,8 @@ import TouchableScale from 'react-native-touchable-scale';
 import { images } from '~/assets/images';
 import { PDText } from '~/components/PDText';
 import { useRealmPoolsHook } from '~/hooks/RealmPoolHook';
-import { DeviceSettings } from '~/models/DeviceSettings';
 import { Pool } from '~/models/Pool';
-import { PDStackNavigationProps } from '~/navigator/shared';
+import { PDComposerNavigation } from '~/navigator/shared';
 import { dispatch, useTypedSelector } from '~/redux/AppState';
 import { clearPool, selectPool } from '~/redux/selectedPool/Actions';
 import { DS } from '~/services/DSUtil';
@@ -20,8 +19,8 @@ import { PoolListItem } from './PoolListItem';
 
 export const PoolListScreen: React.FC = () => {
     const pools = useRealmPoolsHook();
-    const { navigate } = useNavigation<PDStackNavigationProps>();
-    const deviceSettings = useTypedSelector((state) => state.deviceSettings) as DeviceSettings;
+    const { navigate } = useNavigation<PDComposerNavigation<'CreatePool'>>();
+    const deviceSettings = useTypedSelector((state) => state.deviceSettings);
     const insets = useSafeArea();
 
     const handlePoolSelected = async (pool: Pool) => {
@@ -53,7 +52,9 @@ export const PoolListScreen: React.FC = () => {
         const hasUpgraded = DS.isSubscriptionValid(deviceSettings, Date.now());
         if (hasUpgraded || pools.length === 0) {
             dispatch(clearPool());
-            navigate('CreatePool');
+            navigate('PDPoolNavigator', {
+                screen: 'CreatePool',
+            });
         } else {
             promptUpgrade();
         }
@@ -65,9 +66,6 @@ export const PoolListScreen: React.FC = () => {
     const handleUpgradePressed = () => {
         navigate('Buy');
     };
-    // const handleVolumePressed = () => {
-    //     navigate('PDVolumesNavigator');
-    // };
 
     const isEmpty = pools.length === 0;
     const dynamicContainerStyles: ViewStyle = {
@@ -95,13 +93,6 @@ export const PoolListScreen: React.FC = () => {
                     </TouchableScale>
                 </View>
             </View>
-            {/* <View style={{ justifyContent: 'center', alignItems: 'center', margin: PDSpacing.md }}>
-                <TouchableScale
-                    style={{ justifyContent: 'center', alignItems: 'center' }}
-                    onPress={handleVolumePressed}>
-                    <PDText type="heading">press me </PDText>
-                </TouchableScale>
-            </View> */}
             <SectionList
                 style={ styles.sectionList }
                 renderItem={ ({ item }) => <PoolListItem pool={ item } onPoolSelected={ handlePoolSelected } /> }

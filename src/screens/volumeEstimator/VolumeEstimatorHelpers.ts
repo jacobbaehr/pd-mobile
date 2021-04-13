@@ -39,7 +39,9 @@ export interface Shape {
 
 export type ShapeId = 'rectangle' | 'circle' | 'oval' | 'other';
 export type AllShapes = RectangleMeasurements & CircleMeasurements & OtherMeasurements & OvalMeasurements;
-export type Formula = (props: AllShapes) => number;
+export type AllShapesKeys = keyof RectangleMeasurements | keyof CircleMeasurements | keyof OtherMeasurements | keyof OvalMeasurements;
+export type Formula = (props: Partial<AllShapes>) => number;
+
 
 export const shapes: Shape[] = [
     {
@@ -65,7 +67,13 @@ export const shapes: Shape[] = [
 ];
 
 export class VolumeEstimatorHelpers {
+    static inputAccessoryId = 'volumen_estimator'
     static isCompletedField = (shape: Partial<AllShapes>) => Object.keys(shape).every((sp) => !!shape[sp]);
+    static multiplier: Record<PoolUnit, number> = {
+        us: 3.78541,
+        metric: 1000,
+        imperial: 4.54609,
+    };
 
     static getBigShapeForSVG = (shapeId: ShapeId): string => {
         const bigShapeNamesById: Record<ShapeId, string> = {
@@ -94,6 +102,17 @@ export class VolumeEstimatorHelpers {
             circle: theme.blurredGreen,
             oval: theme.blurredOrange,
             other: theme.blurredPurple,
+        };
+
+        return shapeByPrimaryColor[shapeId];
+    };
+
+    static getPrimaryThemKeyByShapeId = (shapeId: ShapeId): keyof PDTheme => {
+        const shapeByPrimaryColor: Record<ShapeId,keyof PDTheme> = {
+            rectangle: 'blue',
+            circle: 'green',
+            oval: 'orange',
+            other: 'purple',
         };
 
         return shapeByPrimaryColor[shapeId];
@@ -149,5 +168,17 @@ export class VolumeEstimatorHelpers {
             imperial: 'FT',
         };
         return abbreviation[unit];
+    }
+
+    static getOnFocusLabelByShapeKey = (key: AllShapesKeys): string => {
+        const abbreviation : Record<AllShapesKeys, string> = {
+            deepest: 'Next',
+            area:'Next',
+            diameter:'Next',
+            length: 'Next',
+            width:'Next',
+            shallowest: 'Done',
+        };
+        return abbreviation[key];
     }
 }

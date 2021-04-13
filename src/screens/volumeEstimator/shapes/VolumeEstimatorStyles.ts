@@ -27,4 +27,7 @@ export default StyleSheet.create({
     fromRowOneField: {
         marginTop: PDSpacing.sm,
     },
+    textInput: {
+        width: '50%',
+    },
 });

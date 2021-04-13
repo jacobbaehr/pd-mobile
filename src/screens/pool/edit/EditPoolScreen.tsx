@@ -1,30 +1,25 @@
 import * as React from 'react';
 import { SectionList, StyleSheet } from 'react-native';
-import { MenuItemButton } from '~/screens/pool/edit/components/MenuItemButton';
+import ModalHeader from '~/components/headers/ModalHeader';
+import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { PDText } from '~/components/PDText';
-import { DeviceSettings } from '~/models/DeviceSettings';
+import { PDSpacing } from '~/components/PDTheme';
+import { useModal } from '~/hooks/useModal';
 import { Pool } from '~/models/Pool';
+import { useTypedSelector } from '~/redux/AppState';
+import { MenuItemButton } from '~/screens/pool/edit/components/MenuItemButton';
+import { usePoolSectionInfo } from '~/screens/pool/hooks/useEditPoolSectionInfo';
 
 import { DeletePool } from './components/DeletePool';
-import { useModal } from '~/hooks/useModal';
-
-import { useTypedSelector } from '~/redux/AppState';
-import { EditPoolSectionInfo, useEditPoolSectionInfo } from '~/screens/pool/hooks/useEditPoolSectionInfo';
-import { ScreenHeader } from '~/components/headers/ScreenHeader';
-import { PDSafeAreaView } from '~/components/PDSafeAreaView';
-import { PDSpacing } from '~/components/PDTheme';
 
 export const EditPoolScreen: React.FunctionComponent = () => {
-
     const { visible, toggleVisible } = useModal();
     const selectedPool = useTypedSelector((state) => state.selectedPool) as Pool;
-    const deviceSettings = useTypedSelector((state) => state.deviceSettings) as DeviceSettings;
-    const editPoolSectionInfo: EditPoolSectionInfo[] = useEditPoolSectionInfo( deviceSettings, toggleVisible, selectedPool);
+    const editPoolSectionInfo = usePoolSectionInfo(selectedPool,  toggleVisible );
 
     return (
         <PDSafeAreaView bgColor="white">
-            <ScreenHeader color="blue"> Edit Pool </ScreenHeader>
-
+            <ModalHeader>Edit Pool</ModalHeader>
                 <SectionList
                     sections={ editPoolSectionInfo }
                     renderSectionHeader={ ({ section: { title } }) => (
@@ -67,3 +62,5 @@ const styles = StyleSheet.create({
         marginTop: 15,
     },
 });
+
+

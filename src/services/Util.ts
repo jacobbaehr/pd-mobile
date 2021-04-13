@@ -114,4 +114,11 @@ export class Util {
     static generateTimestamp = () => {
         return new Date().getTime();
     };
+
+    static onlyTrueArray = (array: any[]) => {
+        return array.filter(Boolean);
+    }
+    static hasInArray = (array: any[], value: string) => {
+        return array.some((s) => s.includes(value));
+    }
 }

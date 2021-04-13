@@ -7,14 +7,14 @@ import { Pool } from '~/models/Pool';
 import { getDisplayForWallType } from '~/models/Pool/WallType';
 import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { PDStackNavigationProps } from '~/navigator/shared';
+import { useTypedSelector } from '~/redux/AppState';
 import { defaultRecipe } from '~/repository/recipes/Default';
+import { HeaderInfo } from '~/screens/pool/components/PoolPopover';
+import { editPoolPopoverProps } from '~/screens/pool/edit/EditPoolHelpers';
 import { ExportService } from '~/services/ExportService';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
 import { useNavigation } from '@react-navigation/native';
-
-import { HeaderInfo } from '~/screens/pool/components/PoolPopover';
-import { editPoolPopoverProps } from '~/screens/pool/edit/EditPoolHelpers';
 
 export type MenuItemId =
     | 'name'
@@ -48,28 +48,28 @@ export interface usePoolSectionInfoProps {
     toggleVisible: undefined;
 }
 
-export const useEditPoolSectionInfo = (
-    deviceSettings: DeviceSettings,
+export const usePoolSectionInfo = (
+    pool: Pool,
     toggleVisible: () => void,
-    pool?: Pool,
 ): EditPoolSectionInfo[] => {
+    const deviceSettings = useTypedSelector(state => state.deviceSettings);
     const recipe = useRecipeHook(pool?.recipeKey ?? defaultRecipe.id);
     const navigation = useNavigation<PDStackNavigationProps>();
-    if (!pool) {return [];}
+
     const targetsSelected = recipe?.custom.length ?? 0;
 
     const handleNavigateToPopover = (id: MenuItemId) => {
         let headerInfo: HeaderInfo = editPoolPopoverProps[id];
         // TODO: Typing Composite Navigation props.
-        navigation.navigate('PDEditPoolNavigator', { screen: 'EditPool' , params: { headerInfo } });
+        navigation.navigate('PDPoolNavigator', { screen: 'EditPoolModal' , params: { headerInfo } });
     };
 
     const handleNavigateToRecipeListScreen = () => {
-        navigation.navigate('RecipeList', { prevScreen: 'EditPool' });
+        navigation.navigate('RecipeList', { prevScreen: 'PDPoolNavigator' });
     };
 
     const handleNavigateToCustomTargets = () => {
-        navigation.navigate('CustomTargets');
+        navigation.navigate('CustomTargets', { prevScreen: 'PDPoolNavigator' });
     };
 
     const handleExportButtonPressed = async () => {

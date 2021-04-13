@@ -8,15 +8,14 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 
 import { PDCardNavigator } from './PDCardNavigator';
-import { PDEditPoolNavigator } from './PDEditPoolNavigator';
+import { PDPoolNavigator } from './PDPoolNavigator';
 
 // This defines the navigation params accepted by each possible screen in PDRootNavigator
 export type PDRootNavigatorParams = {
-    PDEditPoolNavigator: undefined;
+    PDPoolNavigator: undefined;
     PickerScreen: PDPickerRouteProps;
     PDCardNavigator: undefined;
     ScoopDetails: ScoopDetailsRouteProps;
-    FormSheetNavigator: undefined;
 };
 
 const RootStack = createNativeStackNavigator<PDRootNavigatorParams>();
@@ -36,7 +35,7 @@ export const PDRootNavigator = (): JSX.Element => {
                     options={ { stackPresentation: 'fullScreenModal' } }
                 />
                 <RootStack.Screen name="ScoopDetails" component={ ScoopDetailsScreen } />
-                <RootStack.Screen name="PDEditPoolNavigator" component={ PDEditPoolNavigator } />
+                <RootStack.Screen name="PDPoolNavigator" component={ PDPoolNavigator } />
             </RootStack.Navigator>
         </NavigationContainer>
     );

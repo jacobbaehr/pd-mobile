@@ -1,18 +1,21 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Keyboard, TextInput, View } from 'react-native';
+import { KeyboardButton } from '~/components/buttons/KeyboardButton';
 import BorderInputWithLabel from '~/components/inputs/BorderInputWithLabel';
 import { useTheme } from '~/components/PDTheme';
 import { useVolumeEstimator } from '~/hooks/useVolumeEstimator';
-import { EstimateRoute } from '~/navigator/PDVolumeNavigator';
+import { EstimateRoute } from '~/navigator/shared';
 
 import { useRoute } from '@react-navigation/native';
 
 import { OvalMeasurements, VolumeEstimatorHelpers } from '../VolumeEstimatorHelpers';
+import { ShapesProps } from './ShapeUtils';
 import styles from './VolumeEstimatorStyles';
 
-export const OvalVolumeShape: React.FC = () => {
+export const OvalVolumeShape:  React.FC<ShapesProps> = (props) => {
     const { params } = useRoute<EstimateRoute>();
-    const { setShape, unit } = useVolumeEstimator(params.shapeId);
+    const { unit } = props;
+    const { setShape, setEstimation } = useVolumeEstimator(params.shapeId);
     const theme = useTheme();
     const [shapeValues, setShapeValues] = useState<OvalMeasurements>({
         length: '',
@@ -20,7 +23,13 @@ export const OvalVolumeShape: React.FC = () => {
         deepest: '',
         shallowest: '',
     });
-    const primaryColor = VolumeEstimatorHelpers.getPrimaryColorByShapeId(params.shapeId, theme);
+
+    const [inputFocus, setInputFocus] = useState<keyof OvalMeasurements>('length');
+    const lengthRef = React.createRef<TextInput>();
+    const widthRef = React.createRef<TextInput>();
+    const deepestRef = React.createRef<TextInput>();
+    const shallowestRef = React.createRef<TextInput>();
+
 
     useEffect(() => {
         const isAllFieldsCompleted = VolumeEstimatorHelpers.isCompletedField(shapeValues);
@@ -38,6 +47,13 @@ export const OvalVolumeShape: React.FC = () => {
         [shapeValues.deepest, shapeValues.length, shapeValues.shallowest, shapeValues.width],
     );
 
+    const handleFocusInput = useCallback(
+        (Key: keyof OvalMeasurements) => {
+            setInputFocus(Key);
+        },
+        [],
+    );
+
     const handleChangedLength = (value: string) => {
         handleShapeValues('length', value);
     };
@@ -51,7 +67,40 @@ export const OvalVolumeShape: React.FC = () => {
         handleShapeValues('shallowest', value);
     };
 
+    const calculateVolume = () => {
+        const isAllFieldsCompleted = VolumeEstimatorHelpers.isCompletedField(shapeValues);
+        if (isAllFieldsCompleted) {
+            const formula = VolumeEstimatorHelpers.getFormulaByShapeId(params.shapeId);
+            const results = formula(shapeValues) * VolumeEstimatorHelpers.multiplier[unit];
+            setEstimation(results.toString());
+        }
+    };
+
+
+    const handleNextFocused = () => {
+        switch (inputFocus) {
+            case 'length':
+                lengthRef.current?.focus();
+                break;
+            case 'width':
+                widthRef.current?.focus();
+                break;
+
+            case 'deepest':
+                deepestRef.current?.focus();
+                break;
+
+            case 'shallowest':
+                calculateVolume();
+                Keyboard.dismiss();
+                break;
+        }
+    };
+
     const unitName = VolumeEstimatorHelpers.getAbbreviationUnit(unit);
+    const primaryColor = VolumeEstimatorHelpers.getPrimaryColorByShapeId(params.shapeId, theme);
+    const onFocusLabel = VolumeEstimatorHelpers.getOnFocusLabelByShapeKey(inputFocus);
+    const primaryKeyColor = VolumeEstimatorHelpers.getPrimaryThemKeyByShapeId(params.shapeId);
 
 
     return (
@@ -67,10 +116,13 @@ export const OvalVolumeShape: React.FC = () => {
                     returnKeyType="search"
                     returnKeyLabel="Next"
                     textInputStyleProps={ { color: primaryColor } }
+                    inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
+                    onFocus={ () => handleFocusInput('width') }
+                    ref={ lengthRef }
                 />
                 <BorderInputWithLabel
                     value={ shapeValues.width }
-                    label={ `length (${unitName})` }
+                    label={ `width (${unitName})` }
                     placeholder="Length"
                     onChangeText={ handleChangedWidth }
                     keyboardType="numeric"
@@ -78,6 +130,9 @@ export const OvalVolumeShape: React.FC = () => {
                     returnKeyType="search"
                     returnKeyLabel="Next"
                     textInputStyleProps={ { color: primaryColor } }
+                    inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
+                    onFocus={ () => handleFocusInput('deepest') }
+                    ref={ widthRef }
                 />
             </View>
             <View style={ styles.formRow }>
@@ -91,6 +146,9 @@ export const OvalVolumeShape: React.FC = () => {
                     returnKeyType="next"
                     returnKeyLabel="Next"
                     textInputStyleProps={ { color: primaryColor } }
+                    inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
+                    onFocus={ () => handleFocusInput('shallowest') }
+                    ref={ deepestRef }
                 />
                 <BorderInputWithLabel
                     value={ shapeValues.shallowest }
@@ -102,8 +160,14 @@ export const OvalVolumeShape: React.FC = () => {
                     returnKeyType="done"
                     returnKeyLabel="Done"
                     textInputStyleProps={ { color: primaryColor } }
+                    inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
+                    onFocus={ () => handleFocusInput('shallowest') }
+                    ref={ shallowestRef }
                 />
             </View>
+            <KeyboardButton nativeID={ VolumeEstimatorHelpers.inputAccessoryId } bgColor={ primaryKeyColor } onPress={ handleNextFocused }>
+                {onFocusLabel}
+            </KeyboardButton>
         </View>
     );
 };

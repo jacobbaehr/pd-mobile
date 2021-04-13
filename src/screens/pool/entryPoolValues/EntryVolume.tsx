@@ -1,16 +1,19 @@
+
 import React, { useState } from 'react';
-import { InputAccessoryView, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { SVG } from '~/assets/images';
 import { Button } from '~/components/buttons/Button';
 import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
+import { KeyboardButton } from '~/components/buttons/KeyboardButton';
 import BorderInputWithLabel from '~/components/inputs/BorderInputWithLabel';
 import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
+import { useVolumeEstimator } from '~/hooks/useVolumeEstimator';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { Pool } from '~/models/Pool';
 import { getDisplayForPoolValue, PoolUnit } from '~/models/Pool/PoolUnit';
-import { PDStackNavigationProps } from '~/navigator/shared';
+import { PDPoolNavigationProps } from '~/navigator/shared';
 import { useThunkDispatch, useTypedSelector } from '~/redux/AppState';
 import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
 import { updatePool } from '~/redux/selectedPool/Actions';
@@ -18,46 +21,50 @@ import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
 import { useNavigation } from '@react-navigation/native';
-import { PlatformSpecific } from '~/components/PlatformSpecific';
 
 export const EditVolume = () => {
     const selectedPool = useTypedSelector((state) => state.selectedPool) as Pool;
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
-    const [volume, setVolume] = useState(selectedPool.gallons);
-    const [buttonDisabled, setButtonDisabled] = useState(true);
+    const [volume, setVolume] = useState(() => {
+        return VolumeUnitsUtil.getVolumeByUnit(selectedPool?.gallons, 'us', deviceSettings.units);
+
+    });
     const [units, setUnits] = useState<PoolUnit>(deviceSettings.units);
     const dispatch = useThunkDispatch();
-    const navigation = useNavigation<PDStackNavigationProps>();
-    console.log('device unit', deviceSettings.units);
-
+    const navigation = useNavigation<PDPoolNavigationProps>();
+    const { estimation, clear } = useVolumeEstimator();
     const keyboardAccessoryViewId = 'keyboardaccessoryidpooleditscreen2';
 
     const handleOnPressSaveButton = () => {
+        const gallons  = VolumeUnitsUtil.getUsGallonsByUnit( estimation ? +estimation : volume , units);
+
         const existingPool: Pool = Pool.make({
             ...selectedPool,
-            gallons: VolumeUnitsUtil.getUsGallonsByUnit(volume, units),
+            gallons,
         });
 
         dispatch(updatePool(existingPool));
 
+        updateDeviceSettingsUnit();
+        clear();
+        navigation.goBack();
+    };
+
+    const updateDeviceSettingsUnit = () => {
         const newSettings: DeviceSettings = {
             ...deviceSettings,
             units,
         };
         dispatch(updateDeviceSettings(newSettings));
         DeviceSettingsService.saveSettings(newSettings);
-
-        navigation.goBack();
     };
 
     const handleTextChanged = (text: string) => {
         const input = Number(text);
         setVolume(input);
-        setButtonDisabled(!input);
     };
 
     const handleUnitButtonPressed = () => {
-        setButtonDisabled(false);
         const nextUnit: PoolUnit = VolumeUnitsUtil.getNextUnitValue(units);
         // Volume must be on Gallons for the conversion
         const value: number = VolumeUnitsUtil.getVolumeByUnit(volume, units, nextUnit);
@@ -67,20 +74,24 @@ export const EditVolume = () => {
     };
 
     const handleEstimatorButtonPressed = () => {
-        navigation.navigate('PDVolumesNavigator');
+        clear();
+        navigation.navigate('SelectShape');
     };
 
     const unitText = getDisplayForPoolValue(units) as string;
+    const volumesFixed = estimation ?  Number(estimation).toFixed(0) : volume.toFixed(0);
+    const buttonDisabled =  VolumeUnitsUtil.getUsGallonsByUnit(volume, units) !== selectedPool.gallons || estimation;
+
     return (
         <PDView>
             <PDView style={ styles.inputContainer }>
                 <BorderInputWithLabel
-                    value={ volume.toFixed(0) }
+                    value={ volumesFixed }
                     placeholder="Pool Volume"
                     label="Volume"
                     style={ styles.textInput }
-                    onChangeText={ handleTextChanged }
                     autoFocus
+                    onChangeText={ handleTextChanged }
                     keyboardType="number-pad"
                     inputAccessoryViewID={ keyboardAccessoryViewId }
                     returnKeyType="done"
@@ -109,25 +120,9 @@ export const EditVolume = () => {
                     <PDText type="subHeading"> Use Volume Estimator</PDText>
                 </PDView>
             </ButtonWithChildren>
-            <PlatformSpecific include={ ['ios'] }>
-            <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
-                <PDView style={ styles.inputAccessoryView }>
-                    <PDView
-                        bgColor={ 'pink' }
-                        opacity={ buttonDisabled ? 0 : 1 }
-                        style={ styles.saveButtonContainer }>
-                        <Button
-                            textStyles={ styles.saveText }
-                            textColor={ buttonDisabled ? 'black' : 'white' }
-                            title="Save"
-                            onPress={ handleOnPressSaveButton }
-                            disabled={ buttonDisabled }
-                            styles={ styles.saveButton }
-                        />
-                    </PDView>
-                </PDView>
-            </InputAccessoryView>
-            </PlatformSpecific>
+            <KeyboardButton onPress={ handleOnPressSaveButton } disabled={ !buttonDisabled } bgColor={ buttonDisabled ? 'pink' : 'greyVeryLight' } textColor={ buttonDisabled ? 'white' : 'grey' } nativeID={ keyboardAccessoryViewId } activeOpacity={ buttonDisabled ? 0 : 1 }>
+                Save
+            </KeyboardButton>
         </PDView>
     );
 };
@@ -138,7 +133,6 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         flexDirection: 'row',
-        width: '100%',
         justifyContent: 'space-around',
     },
     textInput: {
@@ -146,7 +140,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 8,
         paddingVertical: 6,
-        width: 165,
+        minWidth: 165,
         fontFamily: 'Poppins',
         fontWeight: '600',
         fontSize: 16,
@@ -164,6 +158,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         justifyContent: 'center',
         alignItems: 'center',
+        minWidth: 185,
     },
     unitButtonText: {
         fontWeight: '600',
@@ -177,9 +172,7 @@ const styles = StyleSheet.create({
     estimatorButtonContainer: {
         paddingHorizontal: 75,
         paddingVertical: PDSpacing.xs,
-        backgroundColor: '#EDEDED',
         borderRadius: 27.5,
-        alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',

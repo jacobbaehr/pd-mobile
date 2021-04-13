@@ -5,18 +5,20 @@ import { SVG } from '~/assets/images';
 import { PDText } from '~/components/PDText';
 import { PDColor, PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
+import { Util } from '~/services/Util';
 
 import { useNavigation } from '@react-navigation/native';
 
 interface ScreenHeaderProps {
     hasBackButton?: boolean;
     hasAddButton?: boolean;
+    hasBottomLine?: Boolean
     handlePressedAdd?: () => void;
     color?: PDColor;
 }
 export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
     const { goBack } = useNavigation();
-    const { children, hasAddButton = false, hasBackButton = true, handlePressedAdd, color = 'black' } = props;
+    const { children, hasAddButton = false,hasBottomLine = true, hasBackButton = true, handlePressedAdd, color = 'black' } = props;
     const theme = useTheme();
 
     const handlePressedBack = () => {
@@ -31,9 +33,9 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
     };
 
     const svgColor = theme[color];
-
+    const containerStyles = Util.onlyTrueArray([styles.container, hasBottomLine && styles.containerBottom]);
     return (
-        <PDView style={ styles.container } bgColor="white">
+        <PDView style={ containerStyles } bgColor="white">
             <PDView style={ styles.sideContainer }>
                 {hasBackButton && (
                     <TouchableScale { ...touchableProps } onPress={ handlePressedBack }>
@@ -42,7 +44,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
                 )}
             </PDView>
             <PDView style={ styles.centerContainer }>
-                <PDText type="heading" color="black" style={ styles.text }>
+                <PDText type="subHeading" color="black" style={ styles.text }>
                     {children}
                 </PDText>
             </PDView>
@@ -62,8 +64,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: PDSpacing.md,
-        paddingVertical: PDSpacing.sm,
+        padding: PDSpacing.lg,
+        maxHeight: 80,
+    },
+    containerBottom: {
         borderBottomColor: '#EDEDED',
         borderBottomWidth: 2,
     },

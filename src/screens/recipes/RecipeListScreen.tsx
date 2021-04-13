@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { Alert, Linking, SectionList, StyleSheet } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
-import { connect } from 'react-redux';
 import { PDText } from '~/components/PDText';
 import { useRecipeHook } from '~/hooks/RealmPoolHook';
 import { Pool } from '~/models/Pool';
 import { RecipeMeta } from '~/models/recipe/RecipeMeta';
 import { PDNavParams } from '~/navigator/shared';
-import { AppState } from '~/redux/AppState';
+import { useTypedSelector } from '~/redux/AppState';
 import { Config } from '~/services/Config';
 import { RecipeAPI } from '~/services/gql/RecipeAPI';
 import { RecipeService } from '~/services/RecipeService';
@@ -19,21 +18,11 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RecipeListHeader } from './RecipeListHeader';
 import { RecipeListItem } from './RecipeListItem';
 
-interface RecipeListScreenProps {
-    // The selected pool
-    pool: Pool | null;
-}
-
-const mapStateToProps = (state: AppState): RecipeListScreenProps => {
-    return {
-        pool: state.selectedPool,
-    };
-};
-
-const RecipeListScreenComponent: React.FunctionComponent<RecipeListScreenProps> = (props) => {
+export const RecipeListScreen: React.FC = () => {
     const { data } = RecipeAPI.useRecipeList();
-    const { navigate, goBack } = useNavigation<StackNavigationProp<PDNavParams, 'RecipeList'>>();
-    const currentRecipe = useRecipeHook(props.pool?.recipeKey || RecipeService.defaultRecipeKey);
+    const { navigate } = useNavigation<StackNavigationProp<PDNavParams, 'RecipeList'>>();
+    const pool = useTypedSelector(state => state.selectedPool) as Pool;
+    const currentRecipe = useRecipeHook(pool.recipeKey || RecipeService.defaultRecipeKey);
     const { params } = useRoute<RouteProp<PDNavParams, 'RecipeList'>>();
 
     const handleUpdatePressed = () => {
@@ -77,14 +66,6 @@ const RecipeListScreenComponent: React.FunctionComponent<RecipeListScreenProps> 
         appVersion: currentRecipe?.appVersion || '1.0.0',
     };
 
-    const handleBackPressed = () => {
-        goBack();
-    };
-
-    if (props.pool === null) {
-        return <></>;
-    }
-
     const sections = [
         {
             title: 'Current',
@@ -98,7 +79,7 @@ const RecipeListScreenComponent: React.FunctionComponent<RecipeListScreenProps> 
 
     return (
         <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } } forceInset={ { bottom: 'never' } }>
-            <RecipeListHeader handleBackPress={ handleBackPressed } pool={ props.pool } />
+            <RecipeListHeader />
             <SectionList
                 style={ styles.scrollView }
                 sections={ sections }
@@ -117,7 +98,6 @@ const RecipeListScreenComponent: React.FunctionComponent<RecipeListScreenProps> 
     );
 };
 
-export const RecipeListScreen = connect(mapStateToProps)(RecipeListScreenComponent);
 
 const styles = StyleSheet.create({
     scrollView: {

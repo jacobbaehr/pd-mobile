@@ -9,11 +9,11 @@ import { Recipe } from '~/models/recipe/Recipe';
 import { RecipeKey } from '~/models/recipe/RecipeKey';
 import { Database } from '~/repository/Database';
 import { RecipeService } from '~/services/RecipeService';
+import { Util } from '~/services/Util';
 
 import { useApolloClient } from '@apollo/react-hooks';
 
 import { RealmUtil } from '../services/RealmUtil';
-import { Util } from '~/services/Util';
 
 export const useRealmPoolsHook = (): Pool[] => {
     const [data, setData] = useState<Pool[]>(() => {

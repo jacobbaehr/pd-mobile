@@ -71,7 +71,6 @@ export class VolumeUnitsUtil {
     };
 
     static getImpGallonByUnit = (gallons: number, fromUnit: PoolUnit): number => {
-        console.log('hi imperial');
         switch (fromUnit) {
             case 'us':
                 return ConversionUtil.usGallonsToImpGallon(gallons);

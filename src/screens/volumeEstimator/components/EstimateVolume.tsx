@@ -1,39 +1,27 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SVG } from '~/assets/images';
 import { TextButton } from '~/components/buttons/TextButton';
 import { PDText } from '~/components/PDText';
 import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { useVolumeEstimator } from '~/hooks/useVolumeEstimator';
-import { EstimateRoute } from '~/navigator/PDVolumeNavigator';
+import { PoolUnit } from '~/models/Pool/PoolUnit';
+import { EstimateRoute, PDPoolNavigationProps } from '~/navigator/shared';
+import { VolumeEstimatorHelpers } from '~/screens/volumeEstimator/VolumeEstimatorHelpers';
 
-import { useRoute } from '@react-navigation/core';
+import { useNavigation, useRoute } from '@react-navigation/core';
 
-import { AllShapes, VolumeEstimatorHelpers } from '../VolumeEstimatorHelpers';
+interface EstimateVolumeProps {
+    unit: PoolUnit
+}
 
-export const EstimateVolume: React.FC = () => {
+export const EstimateVolume: React.FC<EstimateVolumeProps> = (props) => {
+    const { unit } = props;
     const { params } = useRoute<EstimateRoute>();
     const theme = useTheme();
-    const { shape, setEstimation, estimation, unit } = useVolumeEstimator(params.shapeId);
+    const { estimation } = useVolumeEstimator(params.shapeId);
     const unitMetric = VolumeEstimatorHelpers.getLabelForUnit(unit);
-
-    const isAllFieldsCompleted = React.useMemo(() => {
-        return VolumeEstimatorHelpers.isCompletedField(shape);
-    }, [shape]);
-
-    useEffect(() => {
-        if (isAllFieldsCompleted) {
-            const multiplier = {
-                US: 7.48052,
-                Metric: 1000,
-            };
-            const formula = VolumeEstimatorHelpers.getFormulaByShapeId(params.shapeId);
-            const results = formula(shape as AllShapes) * multiplier[unit];
-            setEstimation(results.toString());
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isAllFieldsCompleted, shape, unit]);
-
+    const navigation = useNavigation<PDPoolNavigationProps>();
     const calc = (): string => {
         let value: number = +estimation;
         let format: string = '--';
@@ -46,9 +34,17 @@ export const EstimateVolume: React.FC = () => {
         return `${format} ${value ? unitMetric : ''}`;
     };
 
+
+    const handlePressedEstimation = () => {
+        if (estimation) {
+            navigation.navigate('EditPoolModal');
+
+        }
+    };
+
     const primaryColor = VolumeEstimatorHelpers.getPrimaryColorByShapeId(params.shapeId, theme);
     const primaryBlurredColor = VolumeEstimatorHelpers.getPrimaryBlurredColorByShapeId(params.shapeId, theme);
-
+    const result = calc();
     return (
         <>
             <View style={ StyleSheet.flatten([styles.container, { backgroundColor: primaryBlurredColor }]) }>
@@ -61,18 +57,18 @@ export const EstimateVolume: React.FC = () => {
                     </PDText>
                 </View>
                 <View>
-                    <PDText>{calc()}</PDText>
+                    <PDText>{result}</PDText>
                 </View>
             </View>
             <View>
                 <TextButton
                     text="Use Estimated Volume"
-                    onPress={ () => {} }
-                    disabled={ !isAllFieldsCompleted }
-                    textStyles={ StyleSheet.flatten([styles.buttonText, isAllFieldsCompleted && { color: '#fff' }]) }
+                    onPress={ handlePressedEstimation }
+                    disabled={ !estimation }
+                    textStyles={ StyleSheet.flatten([styles.buttonText, !!estimation && { color: '#fff' }]) }
                     containerStyles={ StyleSheet.flatten([
                         styles.buttonContainer,
-                        isAllFieldsCompleted && { backgroundColor: primaryColor },
+                        !!estimation && { backgroundColor: primaryColor },
                     ]) }
                 />
             </View>

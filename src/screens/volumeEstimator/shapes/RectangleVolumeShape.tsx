@@ -1,18 +1,21 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Keyboard, TextInput, View } from 'react-native';
+import { KeyboardButton } from '~/components/buttons/KeyboardButton';
 import BorderInputWithLabel from '~/components/inputs/BorderInputWithLabel';
 import { useTheme } from '~/components/PDTheme';
 import { useVolumeEstimator } from '~/hooks/useVolumeEstimator';
-import { EstimateRoute } from '~/navigator/PDVolumeNavigator';
+import { EstimateRoute } from '~/navigator/shared';
 
 import { useRoute } from '@react-navigation/native';
 
 import { RectangleMeasurements, VolumeEstimatorHelpers } from '../VolumeEstimatorHelpers';
+import { ShapesProps } from './ShapeUtils';
 import styles from './VolumeEstimatorStyles';
 
-export const RectangleVolumeShape: React.FC = () => {
+export const RectangleVolumeShape:  React.FC<ShapesProps> = (props) => {
     const { params } = useRoute<EstimateRoute>();
-    const { setShape, unit } = useVolumeEstimator(params.shapeId);
+    const { unit } = props;
+    const { setShape,setEstimation } = useVolumeEstimator(params.shapeId);
 
     const theme = useTheme();
     const [shapeValues, setShapeValues] = useState<RectangleMeasurements>({
@@ -21,6 +24,12 @@ export const RectangleVolumeShape: React.FC = () => {
         deepest: '',
         shallowest: '',
     });
+    const [inputFocus, setInputFocus] = useState<keyof RectangleMeasurements>('length');
+    const lengthRef = React.createRef<TextInput>();
+    const widthRef = React.createRef<TextInput>();
+    const deepestRef = React.createRef<TextInput>();
+    const shallowestRef = React.createRef<TextInput>();
+
     const primaryColor = VolumeEstimatorHelpers.getPrimaryColorByShapeId(params.shapeId, theme);
 
     useEffect(() => {
@@ -39,6 +48,13 @@ export const RectangleVolumeShape: React.FC = () => {
         [shapeValues.deepest, shapeValues.length, shapeValues.shallowest, shapeValues.width],
     );
 
+    const handleFocusInput = useCallback(
+        (Key: keyof RectangleMeasurements) => {
+            setInputFocus(Key);
+        },
+        [],
+    );
+
     const handleChangedLength = (value: string) => {
         handleShapeValues('length', value);
     };
@@ -52,8 +68,39 @@ export const RectangleVolumeShape: React.FC = () => {
         handleShapeValues('shallowest', value);
     };
 
-    const unitName = VolumeEstimatorHelpers.getAbbreviationUnit(unit);
+    const calculateVolume = () => {
+        const isAllFieldsCompleted = VolumeEstimatorHelpers.isCompletedField(shapeValues);
+        if (isAllFieldsCompleted) {
+            const formula = VolumeEstimatorHelpers.getFormulaByShapeId(params.shapeId);
+            const results = formula(shapeValues) * VolumeEstimatorHelpers.multiplier[unit];
+            setEstimation(results.toString());
+        }
+    };
 
+    const handleNextFocused = () => {
+        switch (inputFocus) {
+            case 'length':
+                widthRef.current?.focus();
+                break;
+
+            case 'width':
+                deepestRef.current?.focus();
+                break;
+
+            case 'deepest':
+                shallowestRef.current?.focus();
+                break;
+
+            case 'shallowest':
+                calculateVolume();
+                Keyboard.dismiss();
+                break;
+        }
+    };
+
+    const unitName = VolumeEstimatorHelpers.getAbbreviationUnit(unit);
+    const primaryKeyColor = VolumeEstimatorHelpers.getPrimaryThemKeyByShapeId(params.shapeId);
+    const onFocusLabel = VolumeEstimatorHelpers.getOnFocusLabelByShapeKey(inputFocus);
 
     return (
         <View>
@@ -67,7 +114,10 @@ export const RectangleVolumeShape: React.FC = () => {
                     maxLength={ 4 }
                     returnKeyType="search"
                     returnKeyLabel="Next"
-                    textInputStyleProps={ { color: primaryColor } }
+                    textInputStyleProps={ { color: primaryColor, ...styles.textInput  } }
+                    inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
+                    onFocus={ () => handleFocusInput('length') }
+                    ref={ lengthRef }
                 />
                 <BorderInputWithLabel
                     value={ shapeValues.width }
@@ -78,7 +128,11 @@ export const RectangleVolumeShape: React.FC = () => {
                     maxLength={ 4 }
                     returnKeyType="next"
                     returnKeyLabel="Next"
-                    textInputStyleProps={ { color: primaryColor } }
+                    textInputStyleProps={ { color: primaryColor , ...styles.textInput } }
+                    inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
+                    onFocus={ () => handleFocusInput('width') }
+                    ref={ widthRef }
+
                 />
             </View>
             <View style={ styles.formRow }>
@@ -91,7 +145,11 @@ export const RectangleVolumeShape: React.FC = () => {
                     maxLength={ 4 }
                     returnKeyType="next"
                     returnKeyLabel="Next"
-                    textInputStyleProps={ { color: primaryColor } }
+                    textInputStyleProps={ { color: primaryColor , ...styles.textInput } }
+                    inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
+                    onFocus={ () => handleFocusInput('deepest') }
+                    ref={ deepestRef }
+
                 />
                 <BorderInputWithLabel
                     value={ shapeValues.shallowest }
@@ -102,9 +160,16 @@ export const RectangleVolumeShape: React.FC = () => {
                     maxLength={ 4 }
                     returnKeyType="done"
                     returnKeyLabel="Done"
-                    textInputStyleProps={ { color: primaryColor } }
+                    textInputStyleProps={ { color: primaryColor , ...styles.textInput } }
+                    inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
+                    onFocus={ () => handleFocusInput('shallowest') }
+                    ref={ shallowestRef }
+
                 />
             </View>
+            <KeyboardButton nativeID={ VolumeEstimatorHelpers.inputAccessoryId } bgColor={ primaryKeyColor } onPress={ handleNextFocused }>
+                {onFocusLabel}
+            </KeyboardButton>
         </View>
     );
 };

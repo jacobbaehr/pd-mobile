@@ -1,4 +1,5 @@
 import React from 'react';
+import { PoolUnit } from '~/models/Pool/PoolUnit';
 
 import { ShapeId } from '../VolumeEstimatorHelpers';
 import { CircleVolumeShape } from './CircleVolumeShape';
@@ -8,7 +9,7 @@ import { RectangleVolumeShape } from './RectangleVolumeShape';
 
 // I move this to a separate file, to fixed teh cycle warning between VolumeEstimatorHelper and The Shapes.
 export const getElementByShapeId = (shapeId: ShapeId) => {
-    const ReactElements: Record<ShapeId, React.FC> = {
+    const ReactElements: Record<ShapeId, React.FC<ShapesProps>> = {
         rectangle: RectangleVolumeShape,
         circle: CircleVolumeShape,
         oval: OvalVolumeShape,
@@ -16,3 +17,8 @@ export const getElementByShapeId = (shapeId: ShapeId) => {
     };
     return ReactElements[shapeId];
 };
+
+
+export interface ShapesProps {
+    unit: PoolUnit
+}

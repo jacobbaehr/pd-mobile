@@ -1,37 +1,28 @@
 import * as React from 'react';
-import { StyleSheet, StyleProp, TextStyle } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 // @ts-ignore
-import TouchableScale from 'react-native-touchable-scale';
-
+import TouchableScale, { TouchableScaleProps } from 'react-native-touchable-scale';
 import { PDText } from '~/components/PDText';
 
-interface ButtonProps {
+interface ButtonProps extends TouchableScaleProps{
     title: string;
-    onPress: () => void;
-    containerStyles?: any;
+    containerStyles?: StyleProp<ViewStyle>;
     textStyles?: StyleProp<TextStyle>;
-    disabled?: boolean;
 }
 
-export class BoringButton extends React.Component<ButtonProps> {
-    handleButtonPress = () => {
-        this.props.onPress();
-    };
-
-    render() {
-        return (
-            <TouchableScale
-                style={ [styles.container, this.props.containerStyles] }
-                onPress={ this.handleButtonPress }
-                disabled={ this.props.disabled }
-                activeScale={ 0.96 }>
-                <PDText type="default" style={ [styles.text, this.props.textStyles] }>
-                    {this.props.title}
-                </PDText>
-            </TouchableScale>
-        );
-    }
-}
+export const BoringButton :React.FC<ButtonProps> = (props) =>{
+    const { title, containerStyles, textStyles, ...rest } = props;
+    return (
+        <TouchableScale
+        style={ [styles.container, containerStyles] }
+        { ...rest }
+        activeScale={ 0.96 }>
+        <PDText type="default" style={ [styles.text, textStyles] }>
+            {title}
+        </PDText>
+    </TouchableScale>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {

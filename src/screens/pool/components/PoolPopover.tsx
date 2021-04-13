@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { StatusBar } from 'react-native';
-import { PDEditPoolParams } from '~/navigator/PDEditPoolNavigator';
+import { PDPoolParams } from '~/navigator/PDPoolNavigator';
 
 import { RouteProp, useRoute } from '@react-navigation/native';
 
-import { popoverContentResolverFunction } from './PopoverContent';
 import { EditPoolPropertyWrapper } from './EditPoolPropertyWrapper';
+import { popoverContentResolverFunction } from './PopoverContent';
 
 export interface HeaderInfo {
     id: string;
@@ -22,7 +22,7 @@ export interface PopoverProps {
 }
 
 export const PoolPopover = () => {
-    const route = useRoute<RouteProp<PDEditPoolParams, 'EditPool'>>();
+    const route = useRoute<RouteProp<PDPoolParams, 'EditPoolModal'>>();
     const { headerInfo } = route.params;
 
     const content = popoverContentResolverFunction[headerInfo.id]();

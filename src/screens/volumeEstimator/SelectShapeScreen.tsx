@@ -5,14 +5,14 @@ import { SVG } from '~/assets/images';
 import ModalHeader from '~/components/headers/ModalHeader';
 import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
-import { PDStackNavigationProps } from '~/navigator/shared';
+import { PDPoolNavigationProps } from '~/navigator/shared';
 
 import { useNavigation } from '@react-navigation/core';
 
 import { Shape, ShapeId, shapes } from './VolumeEstimatorHelpers';
 
 const SelectShapeScreen = () => {
-    const navigation = useNavigation<PDStackNavigationProps>();
+    const navigation = useNavigation<PDPoolNavigationProps>();
 
     const handlePressedShape = (shapeId: ShapeId) => {
         navigation.push('EntryShape', { shapeId });
