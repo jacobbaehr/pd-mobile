@@ -34,7 +34,7 @@ const EntryShapeScreen = () => {
     return (
         <View style={ styles.container }>
             <ScreenHeader hasBottomLine={ false }>Volume Estimator</ScreenHeader>
-            <KeyboardAwareScrollView style={ styles.content } >
+            <KeyboardAwareScrollView style={ styles.content } extraScrollHeight={ 80 } enableOnAndroid>
                 <View style={ StyleSheet.flatten([styles.shapeContainer, { backgroundColor: primaryBlurredColor }]) }>
                     <ShapeSVG width={ width } height={ height * 0.25 } />
                 </View>

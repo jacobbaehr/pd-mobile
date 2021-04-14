@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { SVG } from '~/assets/images';
 import { Button } from '~/components/buttons/Button';
@@ -36,11 +36,10 @@ export const EditVolume = () => {
     const keyboardAccessoryViewId = 'keyboardaccessoryidpooleditscreen2';
 
     const handleOnPressSaveButton = () => {
-        const gallons  = VolumeUnitsUtil.getUsGallonsByUnit( estimation ? +estimation : volume , units);
 
         const existingPool: Pool = Pool.make({
             ...selectedPool,
-            gallons,
+            gallons: VolumeUnitsUtil.getUsGallonsByUnit(volume, units),
         });
 
         dispatch(updatePool(existingPool));
@@ -66,21 +65,22 @@ export const EditVolume = () => {
 
     const handleUnitButtonPressed = () => {
         const nextUnit: PoolUnit = VolumeUnitsUtil.getNextUnitValue(units);
-        // Volume must be on Gallons for the conversion
-        const value: number = VolumeUnitsUtil.getVolumeByUnit(volume, units, nextUnit);
-
         setUnits(nextUnit);
-        setVolume(value);
     };
 
     const handleEstimatorButtonPressed = () => {
-        clear();
         navigation.navigate('SelectShape');
     };
 
     const unitText = getDisplayForPoolValue(units) as string;
     const volumesFixed = estimation ?  Number(estimation).toFixed(0) : volume.toFixed(0);
-    const buttonDisabled =  VolumeUnitsUtil.getUsGallonsByUnit(volume, units) !== selectedPool.gallons || estimation;
+
+    const getButtonDisableState = useCallback(
+        () => {
+            return  VolumeUnitsUtil.getUsGallonsByUnit(volume, units) !== selectedPool.gallons || estimation;
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [volume, units, estimation]);
 
     return (
         <PDView>
@@ -115,12 +115,12 @@ export const EditVolume = () => {
                 not sure?
             </PDText>
             <ButtonWithChildren onPress={ handleEstimatorButtonPressed }>
-                <PDView style={ styles.estimatorButtonContainer }>
+                <PDView style={ styles.estimatorButtonContainer } bgColor="greyLight">
                     <SVG.IconEstimator width={ 16 } height={ 16 } fill="#000000" />
                     <PDText type="subHeading"> Use Volume Estimator</PDText>
                 </PDView>
             </ButtonWithChildren>
-            <KeyboardButton onPress={ handleOnPressSaveButton } disabled={ !buttonDisabled } bgColor={ buttonDisabled ? 'pink' : 'greyVeryLight' } textColor={ buttonDisabled ? 'white' : 'grey' } nativeID={ keyboardAccessoryViewId } activeOpacity={ buttonDisabled ? 0 : 1 }>
+            <KeyboardButton onPress={ handleOnPressSaveButton } disabled={ !getButtonDisableState() } bgColor={ getButtonDisableState() ? 'pink' : 'greyVeryLight' } textColor={ getButtonDisableState() ? 'white' : 'grey' } nativeID={ keyboardAccessoryViewId } activeOpacity={ getButtonDisableState() ? 0 : 1 }>
                 Save
             </KeyboardButton>
         </PDView>

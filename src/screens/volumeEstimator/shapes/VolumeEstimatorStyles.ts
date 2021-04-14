@@ -7,6 +7,7 @@ export default StyleSheet.create({
         backgroundColor: '#fff',
     },
     content: {
+        flex: 1,
         paddingHorizontal: PDSpacing.lg,
     },
     formRow: {
