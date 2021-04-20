@@ -8,11 +8,6 @@ target 'pooldash' do
 
   use_react_native!(:path => config["reactNativePath"])
 
-  target 'pooldashTests' do
-    inherit! :complete
-    # Pods for testing
-  end
-
   # Enables Flipper.
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
@@ -26,17 +21,6 @@ target 'pooldash' do
           config.build_settings["ONLY_ACTIVE_ARCH"] = "YES"
         end
       end
-  end
-end
-
-
-
-target 'pooldash-tvOS' do
-  # Pods for pooldash-tvOS
-
-  target 'pooldash-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
   end
 end
 
