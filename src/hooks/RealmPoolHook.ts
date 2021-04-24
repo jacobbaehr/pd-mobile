@@ -42,8 +42,9 @@ export const useRealmPoolsHook = (): Pool[] => {
     return data; // this hook will return only the data from realm
 };
 
-export const useRealmPoolHistoryHook = (poolId: string): LogEntry[] => {
+export const useRealmPoolHistoryHook = (poolId: string | null): LogEntry[] => {
     const [data, setData] = useState<LogEntry[]>(() => {
+        if (!poolId) { return []; }
         const reamlLogEntry = Database.loadLogEntriesForPool(poolId, null, true);
         const parserData = RealmUtil.logEntryToPojo(reamlLogEntry);
         return parserData;
@@ -51,27 +52,27 @@ export const useRealmPoolHistoryHook = (poolId: string): LogEntry[] => {
 
     // This runs around the time when ComponentDidMount used to be called
     useEffect(() => {
+        if (!poolId) { return () => {};}
+
         const handleChange = (newData: Realm.Collection<LogEntry>) => {
             const parserData = RealmUtil.logEntryToPojo(newData);
-
             setData(parserData);
         };
 
         const dataQuery = Database.loadLogEntriesForPool(poolId, null, true);
-
         dataQuery.addListener(handleChange);
-
         // This will run sort-of like componentWillUnmount or whatever that lifecycle method was called
         return () => {
             dataQuery.removeAllListeners();
         };
+
     }, [poolId]);
 
     return data; // this hook will return only the data from realm
 };
 
 // WARNING: this is susceptible to race-conditions (if you request a remote recipe, and then a local one, the remote one might finish last & stomp the second call).
-export const useRecipeHook = (recipeKey: RecipeKey): Recipe | null => {
+export const useLoadRecipeHook = (recipeKey: RecipeKey): Recipe | null => {
     const [recipe, setRecipe] = useState<Recipe | null>(null);
     const client = useApolloClient() as ApolloClient<NormalizedCacheObject>; // TODO: type-casting? ugh.
 

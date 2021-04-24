@@ -2,15 +2,17 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { BackButton } from '~/components/buttons/BackButton';
 import { PDText } from '~/components/PDText';
-import { Pool } from '~/models/Pool';
 import { PDStackNavigationProps } from '~/navigator/shared';
-import { useTypedSelector } from '~/redux/AppState';
 
 import { useNavigation } from '@react-navigation/native';
 
-export const RecipeListHeader: React.FC = () => {
+interface RecipeListHeaderProps {
+    poolName: string;
+}
+
+export const RecipeListHeader: React.FC<RecipeListHeaderProps> = (props) => {
     const {  goBack  } = useNavigation<PDStackNavigationProps>();
-    const pool = useTypedSelector(state => state.selectedPool) as Pool;
+    const { poolName } = props;
 
     const handlePressedBack = () => {
         goBack();
@@ -18,7 +20,7 @@ export const RecipeListHeader: React.FC = () => {
 
     return (
         <View style={ styles.container }>
-            <BackButton title={ pool.name } onPress={ handlePressedBack } color={ 'recipesGreen' } />
+            <BackButton title={ poolName } onPress={ handlePressedBack } color={ 'recipesGreen' } />
             <PDText type="default" style={ styles.gradientText }>
                 Change Recipe
             </PDText>

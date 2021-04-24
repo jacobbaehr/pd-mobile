@@ -1,6 +1,5 @@
 import React from 'react';
-import { InputAccessoryView, StyleSheet, TouchableOpacityProps } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { InputAccessoryView, StyleSheet, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 
 import { PDText } from '../PDText';
 import { PDSpacing, PDTheme, useTheme } from '../PDTheme';

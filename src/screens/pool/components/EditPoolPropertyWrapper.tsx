@@ -24,6 +24,7 @@ export const EditPoolPropertyWrapper: React.FC<EditPoolPropertyWrapperProps> = (
 
 const styles = StyleSheet.create({
     container: {
+        display: 'flex',
         flex: 1,
     },
     description: {
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
         maxWidth: 300,
     },
     content: {
-        width: '100%',
+        flex: 1,
         paddingHorizontal: PDSpacing.lg,
         display: 'flex',
     },

@@ -210,6 +210,10 @@
 						LastSwiftMigration = 1120;
 						ProvisioningStyle = Automatic;
 					};
+					2D02E47A1E0B4A5D006451C7 = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "pooldash" */;

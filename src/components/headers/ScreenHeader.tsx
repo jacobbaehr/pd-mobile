@@ -14,14 +14,23 @@ interface ScreenHeaderProps {
     hasAddButton?: boolean;
     hasBottomLine?: Boolean
     handlePressedAdd?: () => void;
+    handlePressedBack?: () => void;
     color?: PDColor;
 }
 export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
     const { goBack } = useNavigation();
-    const { children, hasAddButton = false,hasBottomLine = true, hasBackButton = true, handlePressedAdd, color = 'black' } = props;
+    const { children,
+            hasAddButton = false,
+            hasBottomLine = true,
+            hasBackButton = true,
+            handlePressedAdd,
+            handlePressedBack = () => {return;},
+            color = 'black',
+        } = props;
     const theme = useTheme();
 
-    const handlePressedBack = () => {
+    const handleBackButtonPressed = () => {
+        handlePressedBack();
         goBack();
     };
 
@@ -38,7 +47,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
         <PDView style={ containerStyles } bgColor="white">
             <PDView style={ styles.sideContainer }>
                 {hasBackButton && (
-                    <TouchableScale { ...touchableProps } onPress={ handlePressedBack }>
+                    <TouchableScale { ...touchableProps } onPress={ handleBackButtonPressed }>
                         <SVG.IconCircleBack fill={ svgColor } />
                     </TouchableScale>
                 )}

@@ -21,7 +21,7 @@ export const PoolHeaderView: React.FC = () => {
 
     const handlePressedEdit = () => {
         // TODO: Type composite
-        navigation.navigate('PDPoolNavigator', { screen: 'EditPoolScreen' });
+        navigation.navigate('EditPoolNavigator');
 
     };
     const handlePressedBack = () => {

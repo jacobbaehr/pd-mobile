@@ -7,7 +7,6 @@ import { images } from '~/assets/images';
 import { PDText } from '~/components/PDText';
 import { useRealmPoolsHook } from '~/hooks/RealmPoolHook';
 import { Pool } from '~/models/Pool';
-import { PDComposerNavigation } from '~/navigator/shared';
 import { dispatch, useTypedSelector } from '~/redux/AppState';
 import { clearPool, selectPool } from '~/redux/selectedPool/Actions';
 import { DS } from '~/services/DSUtil';
@@ -16,10 +15,11 @@ import { useNavigation } from '@react-navigation/native';
 
 import { PoolListFooter } from './PoolListFooter';
 import { PoolListItem } from './PoolListItem';
+import { PDStackNavigationProps } from '~/navigator/shared';
 
 export const PoolListScreen: React.FC = () => {
     const pools = useRealmPoolsHook();
-    const { navigate } = useNavigation<PDComposerNavigation<'CreatePool'>>();
+    const { navigate } = useNavigation<PDStackNavigationProps>();
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
     const insets = useSafeArea();
 
@@ -52,9 +52,7 @@ export const PoolListScreen: React.FC = () => {
         const hasUpgraded = DS.isSubscriptionValid(deviceSettings, Date.now());
         if (hasUpgraded || pools.length === 0) {
             dispatch(clearPool());
-            navigate('PDPoolNavigator', {
-                screen: 'CreatePool',
-            });
+            navigate('EditPoolNavigator');
         } else {
             promptUpgrade();
         }

@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import TouchableScale from 'react-native-touchable-scale';
 
 import { PDText } from '~/components/PDText';
-import { PDColor } from '../PDTheme';
+import { PDColor, useTheme } from '~/components/PDTheme';
 
 interface ButtonProps {
     title: string;
@@ -20,32 +20,36 @@ interface ButtonProps {
     disabled?: boolean;
 
     hitSlop?: number;
+
+    bgColor?: PDColor;
 }
 
-export class Button extends React.Component<ButtonProps, {}> {
-    handleButtonPress = () => {
-        this.props.onPress();
+export const Button:React.FC<ButtonProps> = (props) => {
+    const theme = useTheme();
+
+    const handleButtonPress = () => {
+        props.onPress();
     };
 
-    render() {
-        const slop = this.props.hitSlop || 0;
-        return (
-            <TouchableScale
-                style={ [styles.container, this.props.styles] }
-                onPress={ this.handleButtonPress }
-                disabled={ this.props.disabled }
-                activeScale={ 0.97 }
-                hitSlop={ { top: slop, left: slop, bottom: slop, right: slop } }>
-                <PDText
-                    type="default"
-                    color={ this.props.textColor ?? 'white' }
-                    style={ this.props.textStyles ? this.props.textStyles : styles.text }>
-                    {this.props.title}
-                </PDText>
-            </TouchableScale>
-        );
-    }
-}
+    const bgColor = props.bgColor !== undefined ? theme[props.bgColor] : 'transparent';
+    const slop = props.hitSlop || 0;
+
+    return (
+        <TouchableScale
+            style={ [styles.container, { backgroundColor: bgColor }, props.styles] }
+            onPress={ handleButtonPress }
+            disabled={ props.disabled }
+            activeScale={ 0.97 }
+            hitSlop={ { top: slop, left: slop, bottom: slop, right: slop } }>
+            <PDText
+                type="default"
+                color={ props.textColor ?? 'white' }
+                style={ props.textStyles ? props.textStyles : styles.text }>
+                {props.title}
+            </PDText>
+        </TouchableScale>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {},

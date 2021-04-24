@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { RecipeKey } from '~/models/recipe/RecipeKey';
 import { BuyScreen } from '~/screens/buy/BuyScreen';
 import CustomTargetsScreen from '~/screens/customTargets/CustomTargetsScreen';
 import { PoolScreen } from '~/screens/pool/PoolScreen';
 import { PoolListScreen } from '~/screens/poolList/PoolListScreen';
 import { ReadingListScreen } from '~/screens/readings/ReadingListScreen';
-import { RecipeListScreen } from '~/screens/recipes/RecipeListScreen';
-import { RecipeScreen } from '~/screens/recipes/RecipeScreen';
+import { RecipeListScreen, RecipeListNavParams } from '~/screens/recipes/RecipeListScreen';
+import { RecipeDetailsNavParams, RecipeScreen } from '~/screens/recipes/RecipeScreen';
 import { SettingsScreen } from '~/screens/settings/SettingsScreen';
 import { TreatmentListScreen } from '~/screens/treatments/TreatmentListScreen';
 import { PoolHistoryScreen } from '~/screens/trends/PoolHistoryScreen';
@@ -20,8 +19,8 @@ export type PDCardNavigatorParams = {
     ReadingList: undefined;
     TreatmentList: undefined;
     Settings: undefined;
-    RecipeList: { prevScreen: 'ReadingList' | 'PDPoolNavigator' };
-    RecipeDetails: { recipeKey: RecipeKey; prevScreen: 'ReadingList' | 'PoolScreen' | 'EditPool' };
+    RecipeList: RecipeListNavParams;
+    RecipeDetails: RecipeDetailsNavParams;
     PoolHistory: undefined;
     Buy: undefined;
     CustomTargets: { prevScreen: 'ReadingList' | 'PDPoolNavigator' };

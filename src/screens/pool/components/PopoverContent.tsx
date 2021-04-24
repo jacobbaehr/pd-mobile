@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { EditName } from '~/screens/pool/entryPoolValues/EntryName';
-import { EditVolume } from '~/screens/pool/entryPoolValues/EntryVolume';
-import { EditWallType } from '~/screens/pool/entryPoolValues/EntryWallType';
-import { EditWaterType } from '~/screens/pool/entryPoolValues/EntryWaterType';
-
+import { EntryName } from '~/screens/pool/editOrCreate/entryPoolValues/EntryName';
+import { EntryVolume } from '~/screens/pool/editOrCreate/entryPoolValues/EntryVolume';
+import { EntryWallType } from '~/screens/pool/editOrCreate/entryPoolValues/EntryWallType';
+import { EntryWaterType } from '~/screens/pool/editOrCreate/entryPoolValues/EntryWaterType';
 interface PopoverContent {
     name: () => JSX.Element;
     waterType: () => JSX.Element;
@@ -12,8 +11,9 @@ interface PopoverContent {
 }
 
 export const popoverContentResolverFunction: PopoverContent = {
-    name: () => <EditName />,
-    waterType: () => <EditWaterType />,
-    gallons: () => <EditVolume />,
-    wallType: () => <EditWallType />,
+    name: () => <EntryName/>,
+    waterType: () => <EntryWaterType />,
+    gallons: () => <EntryVolume />,
+    wallType: () => <EntryWallType />,
 };
+

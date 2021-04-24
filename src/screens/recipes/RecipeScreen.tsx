@@ -3,26 +3,30 @@ import * as React from 'react';
 import { Linking, SafeAreaView, ScrollView, StyleSheet, TouchableHighlight, View } from 'react-native';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { PDText } from '~/components/PDText';
-import { useRecipeHook } from '~/hooks/RealmPoolHook';
-import { Pool } from '~/models/Pool';
+import { useLoadRecipeHook } from '~/hooks/RealmPoolHook';
 import { PDCardNavigatorParams } from '~/navigator/PDCardNavigator';
 import { PDStackNavigationProps } from '~/navigator/shared';
-import { useThunkDispatch, useTypedSelector } from '~/redux/AppState';
-import { updatePool } from '~/redux/selectedPool/Actions';
+import { dispatch } from '~/redux/AppState';
 import { Config } from '~/services/Config';
 import { RS } from '~/services/RecipeUtil';
 
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
 import { RecipeScreenHeader } from './RecipeScreenHeader';
+import { updateSelectedRecipe } from '~/redux/selectedRecipe/Actions';
+import { RecipeKey } from '~/models/recipe/RecipeKey';
+
+export interface RecipeDetailsNavParams {
+    recipeKey: RecipeKey;
+    prevScreen: 'ReadingList' | 'EditOrCreatePoolScreen';
+}
 
 export const RecipeScreen: React.FC = () => {
     const { navigate, goBack } = useNavigation<PDStackNavigationProps>();
     const { params } = useRoute<RouteProp<PDCardNavigatorParams, 'RecipeDetails'>>();
-    const pool = useTypedSelector((state) => state.selectedPool) as Pool;
-    const recipe = useRecipeHook(params.recipeKey);
+
+    const recipe = useLoadRecipeHook(params.recipeKey);
     const [isWebButtonPressed, setIsWebButtonPressed] = React.useState(false);
-    const dispatchThunk = useThunkDispatch();
 
     if (!recipe) {
         return <></>;
@@ -35,7 +39,7 @@ export const RecipeScreen: React.FC = () => {
     };
 
     const handleSelectRecipePressed = () => {
-        dispatchThunk(updatePool({ ...pool, recipeKey: RS.getKey(recipe) }));
+        dispatch(updateSelectedRecipe(params.recipeKey));
         navigate(params.prevScreen);
     };
 

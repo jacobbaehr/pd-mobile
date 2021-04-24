@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StatusBar } from 'react-native';
-import { PDPoolParams } from '~/navigator/PDPoolNavigator';
+import { PDPoolParams } from '~/navigator/EditPoolNavigator';
 
 import { RouteProp, useRoute } from '@react-navigation/native';
 
@@ -21,7 +21,7 @@ export interface PopoverProps {
     recipe: {id: 'recipe'}
 }
 
-export const PoolPopover = () => {
+export const PoolPopover: React.FC = () => {
     const route = useRoute<RouteProp<PDPoolParams, 'EditPoolModal'>>();
     const { headerInfo } = route.params;
 

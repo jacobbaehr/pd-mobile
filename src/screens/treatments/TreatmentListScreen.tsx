@@ -10,7 +10,7 @@ import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { PlatformSpecific } from '~/components/PlatformSpecific';
 import { ServiceNonStickyHeader } from '~/components/services/ServiceNonStickyHeader';
 import { ServiceStickyHeaderList } from '~/components/services/ServiceStickyHeaderList';
-import { useRealmPoolTargetRangesForPool, useRecipeHook } from '~/hooks/RealmPoolHook';
+import { useRealmPoolTargetRangesForPool, useLoadRecipeHook } from '~/hooks/RealmPoolHook';
 import { LogEntry } from '~/models/logs/LogEntry';
 import { Pool } from '~/models/Pool';
 import { DryChemicalUnits, Units, WetChemicalUnits } from '~/models/TreatmentUnits';
@@ -48,7 +48,7 @@ export const TreatmentListScreen: React.FC = () => {
     const { navigate } = useNavigation<StackNavigationProp<PDNavParams>>();
     // I hate this... it's dirty. We should move this into the picker screen maybe?
     const [concentrationTreatmentVar, updateConcentrationTreatment] = React.useState<string | null>(null);
-    const recipe = useRecipeHook(recipeKey);
+    const recipe = useLoadRecipeHook(recipeKey);
     const targetRangeOverridesForPool = useRealmPoolTargetRangesForPool(pool.objectId);
 
     const allScoops = deviceSettings.scoops;

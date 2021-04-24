@@ -5,7 +5,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 import { useSelector } from 'react-redux';
 import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
-import { useRecipeHook } from '~/hooks/RealmPoolHook';
+import { useLoadRecipeHook } from '~/hooks/RealmPoolHook';
 import { Pool } from '~/models/Pool';
 import { TargetRange } from '~/models/recipe/TargetRange';
 import { AppState } from '~/redux/AppState';
@@ -16,7 +16,7 @@ import CustomTargetsItem from './CustomTargetsItem';
 
 const CustomTargetsScreen = () => {
     const selectedPool = useSelector<AppState>((state) => state.selectedPool) as Pool;
-    const recipe = useRecipeHook(selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
+    const recipe = useLoadRecipeHook(selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
 
     const targets = recipe?.custom ?? [];
 

@@ -2,11 +2,9 @@ import * as React from 'react';
 import { Alert, Linking, SectionList, StyleSheet } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { PDText } from '~/components/PDText';
-import { useRecipeHook } from '~/hooks/RealmPoolHook';
-import { Pool } from '~/models/Pool';
+import { useLoadRecipeHook } from '~/hooks/RealmPoolHook';
 import { RecipeMeta } from '~/models/recipe/RecipeMeta';
 import { PDNavParams } from '~/navigator/shared';
-import { useTypedSelector } from '~/redux/AppState';
 import { Config } from '~/services/Config';
 import { RecipeAPI } from '~/services/gql/RecipeAPI';
 import { RecipeService } from '~/services/RecipeService';
@@ -17,12 +15,20 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 import { RecipeListHeader } from './RecipeListHeader';
 import { RecipeListItem } from './RecipeListItem';
+import { useEntryPool } from '../pool/editOrCreate/hooks/useEntryPool';
+
+export interface RecipeListNavParams {
+    poolName?: string;
+    prevScreen: 'ReadingList' | 'EditOrCreatePoolScreen';
+}
 
 export const RecipeListScreen: React.FC = () => {
     const { data } = RecipeAPI.useRecipeList();
     const { navigate } = useNavigation<StackNavigationProp<PDNavParams, 'RecipeList'>>();
-    const pool = useTypedSelector(state => state.selectedPool) as Pool;
-    const currentRecipe = useRecipeHook(pool.recipeKey || RecipeService.defaultRecipeKey);
+
+    const { pool } = useEntryPool();
+
+    const currentRecipe = useLoadRecipeHook(pool?.recipeKey || RecipeService.defaultRecipeKey);
     const { params } = useRoute<RouteProp<PDNavParams, 'RecipeList'>>();
 
     const handleUpdatePressed = () => {
@@ -79,7 +85,7 @@ export const RecipeListScreen: React.FC = () => {
 
     return (
         <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } } forceInset={ { bottom: 'never' } }>
-            <RecipeListHeader />
+            <RecipeListHeader poolName={ pool.name ?? 'Back' }/>
             <SectionList
                 style={ styles.scrollView }
                 sections={ sections }

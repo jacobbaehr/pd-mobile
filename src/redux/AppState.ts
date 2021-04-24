@@ -9,6 +9,7 @@ import { outputsReducer } from './outputs/Reducer';
 import { pickerStateReducer } from './picker/Reducer';
 import { readingEntriesReducer } from './readingEntries/Reducer';
 import { selectedPoolReducer } from './selectedPool/Reducer';
+import { selectedRecipeReducer } from './selectedRecipe/Reducer';
 
 const reducer = combineReducers({
     readingEntries: readingEntriesReducer,
@@ -17,7 +18,9 @@ const reducer = combineReducers({
     hasValidSubscription: hasValidSubscriptionReducer,
     pickerState: pickerStateReducer,
     deviceSettings: deviceSettingsReducer,
+    selectedRecipeKey: selectedRecipeReducer,
 });
+
 export type AppState = ReturnType<typeof reducer>;
 
 export const store = configureStore({
