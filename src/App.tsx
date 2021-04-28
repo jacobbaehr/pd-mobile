@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
-import { connect, DispatchProp } from 'react-redux';
 import { PDRootNavigator } from '~/navigator/PDRootNavigator';
 import { loadDeviceSettings } from '~/redux/deviceSettings/Actions';
 
@@ -10,39 +9,34 @@ import { DeviceSettings } from './models/DeviceSettings';
 import { dispatch } from './redux/AppState';
 import { Database } from './repository/Database';
 import { RecipeRepo } from './repository/RecipeRepo';
+import { CrashServices } from './services/CrashServices';
 import { DeviceSettingsService } from './services/DeviceSettingsService';
 import { getApolloClient } from './services/gql/Client';
 import { IAP } from './services/IAP';
 import { RecipeService } from './services/RecipeService';
 
-interface AppProps extends DispatchProp<any> {}
-
-export const AppComponent: React.FunctionComponent<AppProps> = () => {
+export const App: React.FC = () => {
     const [isDatabaseLoaded, setIsDatabaseLoaded] = React.useState(false);
     const [areRecipesPreloaded, setAreRecipesPreloaded] = React.useState(false);
     const [areDeviceSettingsLoaded, setAreDeviceSettingsLoaded] = React.useState(false);
-
     const apolloClient = getApolloClient();
 
     React.useEffect(() => {
         Database.prepare().finally(() => {
             setIsDatabaseLoaded(true);
         });
-    }, []);
-    React.useEffect(() => {
+
         RecipeRepo.savePreloadedRecipes().finally(() => {
             setAreRecipesPreloaded(true);
         });
-    }, []);
-    React.useEffect(() => {
+
         DeviceSettingsService.getSettings().then((settings: DeviceSettings) => {
             dispatch(loadDeviceSettings(settings));
             setAreDeviceSettingsLoaded(true);
         });
-    }, []);
-    // We don't need to block on this one:
-    React.useEffect(() => {
+
         IAP.configureOnLaunch();
+        CrashServices.initialize();
     }, []);
 
     // Only do this after recipes are preloaded & the database is ready to go
@@ -67,4 +61,3 @@ export const AppComponent: React.FunctionComponent<AppProps> = () => {
     );
 };
 
-export const App = connect()(AppComponent);

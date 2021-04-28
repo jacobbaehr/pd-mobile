@@ -3,8 +3,8 @@ import { Keyboard, TextInput, View } from 'react-native';
 import { KeyboardButton } from '~/components/buttons/KeyboardButton';
 import BorderInputWithLabel from '~/components/inputs/BorderInputWithLabel';
 import { useTheme } from '~/components/PDTheme';
-import { useVolumeEstimator } from '~/screens/pool/editOrCreate/hooks/useVolumeEstimator';
 import { EstimateRoute } from '~/navigator/shared';
+import { useVolumeEstimator } from '~/screens/pool/editOrCreate/hooks/useVolumeEstimator';
 
 import { useRoute } from '@react-navigation/native';
 
@@ -70,6 +70,7 @@ export const RectangleVolumeShape:  React.FC<ShapesProps> = (props) => {
 
     const calculateVolume = () => {
         const isAllFieldsCompleted = VolumeEstimatorHelpers.isCompletedField(shapeValues);
+        console.log(isAllFieldsCompleted);
         if (isAllFieldsCompleted) {
             const results = VolumeEstimatorHelpers.estimateRectangleVolume(shapeValues) * VolumeEstimatorHelpers.multiplier[unit];
             setEstimation(results.toString());
@@ -162,6 +163,7 @@ export const RectangleVolumeShape:  React.FC<ShapesProps> = (props) => {
                     textInputStyleProps={ { color: primaryColor , ...styles.textInput } }
                     inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
                     onFocus={ () => handleFocusInput('shallowest') }
+                    onSubmitEditing={ handleNextFocused }
                     ref={ shallowestRef }
 
                 />

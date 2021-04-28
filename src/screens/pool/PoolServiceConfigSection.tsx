@@ -6,14 +6,14 @@ import { useSelector } from 'react-redux';
 import { images } from '~/assets/images';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { PDText } from '~/components/PDText';
-import { useRealmPoolHistoryHook, useLoadRecipeHook } from '~/hooks/RealmPoolHook';
+import { useLoadRecipeHook, useRealmPoolHistoryHook } from '~/hooks/RealmPoolHook';
 import { Pool } from '~/models/Pool';
 import { PDNavParams } from '~/navigator/shared';
 import { AppState } from '~/redux/AppState';
 import { getCustomTargetsBySelectedPool } from '~/redux/selectedPool/Selectors';
 import { RecipeService } from '~/services/RecipeService';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useNavigationState } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 /**
@@ -21,6 +21,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
  */
 const PoolServiceConfigSection = () => {
     const { navigate } = useNavigation<StackNavigationProp<PDNavParams>>();
+    const navigationState = useNavigationState(state => state.routeNames);
     const selectedPool = useSelector<AppState>((state) => state.selectedPool) as Pool;
     const recipe = useLoadRecipeHook(selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
     const customTargets = useSelector((state: AppState) => getCustomTargetsBySelectedPool(state, recipe));
@@ -33,7 +34,8 @@ const PoolServiceConfigSection = () => {
     };
 
     const navigateToRecipes = () => {
-        navigate('RecipeList', { prevScreen: 'EditOrCreatePoolScreen' });
+        const screenName = navigationState?.includes('EditOrCreatePoolScreen') ? 'EditOrCreatePoolScreen' : 'PoolScreen';
+        navigate('RecipeList', { prevScreen: screenName });
     };
 
     const navigateToReadings = () => {

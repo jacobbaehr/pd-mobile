@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    Alert, LayoutAnimation, SectionList, SectionListData, StyleSheet, View,
+    Alert, LayoutAnimation, SectionList, SectionListData, StyleSheet, View
 } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 // @ts-ignore
@@ -8,12 +8,12 @@ import TouchableScale from 'react-native-touchable-scale';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { ChartCard } from '~/components/charts/ChartCard';
 import { PDText } from '~/components/PDText';
-import { useRealmPoolHistoryHook, useLoadRecipeHook } from '~/hooks/RealmPoolHook';
+import { useLoadRecipeHook, useRealmPoolHistoryHook } from '~/hooks/RealmPoolHook';
 import { LogEntry } from '~/models/logs/LogEntry';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { useThunkDispatch, useTypedSelector } from '~/redux/AppState';
+import { updatePool } from '~/redux/selectedPool/Actions';
 import { Database } from '~/repository/Database';
-import { ChartService } from '~/services/ChartService';
 import { DS } from '~/services/DSUtil';
 import { EmailService } from '~/services/EmailService';
 import { ExportService } from '~/services/ExportService';
@@ -26,11 +26,11 @@ import { useNavigation } from '@react-navigation/native';
 import { PoolHeaderView } from './PoolHeaderView';
 import { PoolHistoryListItem } from './PoolHistoryListItem';
 import PoolServiceConfigSection from './PoolServiceConfigSection';
-import { updatePool } from '~/redux/selectedPool/Actions';
+import { usePoolChart } from './usePoolChart';
 
 export const PoolScreen: React.FC = () => {
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
-    const selectedPool = useTypedSelector((state) => state.selectedPool);
+    const selectedPool  = useTypedSelector((state) => state.selectedPool);
     const dispatchThunk = useThunkDispatch();
 
     const isUnlocked = DS.isSubscriptionValid(deviceSettings, Date.now());
@@ -41,42 +41,23 @@ export const PoolScreen: React.FC = () => {
     const history = useRealmPoolHistoryHook(selectedPool?.objectId ?? null);
 
     const [selectedHistoryCellIds, setSelectedHistoryCellIds] = React.useState<string[]>([]);
-    const [chartData, setChartData] = React.useState(ChartService.loadFakeData(isUnlocked));
 
     const recipe = useLoadRecipeHook(selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
     const selectedRecipeKey = useTypedSelector(state => state.selectedRecipeKey);
+    const chartData = usePoolChart();
 
-    React.useEffect(() => {
-        if (!selectedPool) {
-            return;
-        }
-        let chosen = ChartService.loadFakeData(isUnlocked);
-
-        const allData = ChartService.loadChartData('1M', selectedPool, isUnlocked);
-        const filtered = allData.filter((x) => x.values.length >= 2);
-        if (filtered.length > 0) {
-            chosen = {
-                ...filtered[0],
-                interactive: false,
-            };
-        }
-        setChartData(chosen);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isUnlocked, history]);
 
     /// If the user selects a new recipe, save it to the pool.
     React.useEffect(() => {
-        if (!selectedPool) { return; }
-
-        if (selectedPool.recipeKey === selectedRecipeKey) { return; }
-
+        if (!selectedPool || selectedPool.recipeKey === selectedRecipeKey) { return; }
         dispatchThunk(
             updatePool({
                 ...selectedPool,
                 recipeKey: selectedRecipeKey ?? undefined,
             })
         );
-    }, [selectedRecipeKey, selectedPool, dispatchThunk]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedRecipeKey]);
 
     if (!selectedPool || !recipe) {
         return <></>;

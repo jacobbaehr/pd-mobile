@@ -1,22 +1,26 @@
-import { useNavigation } from '@react-navigation/native';
-import { ListRowItemSectionInfo } from '~/screens/pool/components/ListRowItem';
+import { useTheme } from '~/components/PDTheme';
 import { useLoadRecipeHook } from '~/hooks/RealmPoolHook';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { getDisplayForWallType } from '~/models/Pool/WallType';
 import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { defaultRecipe } from '~/repository/recipes/Default';
-import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
-import { createPoolPopoverProps } from '~/screens/pool/editOrCreate/create/CreatePoolHelpers';
+import { ListRowItemSectionInfo } from '~/screens/pool/components/ListRowItem';
 import { HeaderInfo } from '~/screens/pool/components/PoolPopover';
+import { createPoolPopoverProps } from '~/screens/pool/editOrCreate/create/CreatePoolHelpers';
 import { MenuItemId } from '~/screens/pool/editOrCreate/hooks/useEditPoolSectionInfo';
-import { useTheme } from '~/components/PDTheme';
+import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
+
+import { useNavigation } from '@react-navigation/native';
+
 import { useEntryPool } from './useEntryPool';
+import { useVolumeEstimator } from './useVolumeEstimator';
 
 export const useCreatePoolSectionInfo = (
     deviceSettings: DeviceSettings,
 ): ListRowItemSectionInfo[] => {
     const { pool } = useEntryPool();
+    const { estimation } = useVolumeEstimator();
     const navigation = useNavigation<PDStackNavigationProps>();
     const recipe = useLoadRecipeHook(pool?.recipeKey ?? defaultRecipe.id);
     const theme = useTheme();
@@ -30,6 +34,9 @@ export const useCreatePoolSectionInfo = (
     const handleNavigateToRecipeListScreen = () => {
         navigation.navigate('RecipeList', { prevScreen: 'EditOrCreatePoolScreen', poolName: pool?.name });
     };
+
+    const volume : number = pool?.gallons || Number(estimation);
+
 
     const createPoolSectionInfo: ListRowItemSectionInfo[] = [
         {
@@ -47,8 +54,8 @@ export const useCreatePoolSectionInfo = (
                     onPress: () => handleNavigateToPopover('waterType'),
                 },
                 {
-                    staticProps: { label: 'Volume: ', image: 'IconVolume', imageFill: theme.pink, valueColor: pool?.gallons ? 'pink' : 'grey', id: 'gallons' },
-                    value: pool?.gallons ? VolumeUnitsUtil.getDisplayVolume(pool?.gallons, deviceSettings) : 'Required',
+                    staticProps: { label: 'Volume: ', image: 'IconVolume', imageFill: theme.pink, valueColor: volume ? 'pink' : 'grey', id: 'gallons' },
+                    value: volume ? VolumeUnitsUtil.getDisplayVolume(volume, deviceSettings) : 'Required',
                     onPress: () => handleNavigateToPopover('gallons'),
                 },
                 {

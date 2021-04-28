@@ -13,13 +13,13 @@ import { RS } from '~/services/RecipeUtil';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import { useEntryPool } from '../pool/editOrCreate/hooks/useEntryPool';
 import { RecipeListHeader } from './RecipeListHeader';
 import { RecipeListItem } from './RecipeListItem';
-import { useEntryPool } from '../pool/editOrCreate/hooks/useEntryPool';
 
 export interface RecipeListNavParams {
     poolName?: string;
-    prevScreen: 'ReadingList' | 'EditOrCreatePoolScreen';
+    prevScreen: 'ReadingList' | 'EditOrCreatePoolScreen' | 'PoolScreen';
 }
 
 export const RecipeListScreen: React.FC = () => {

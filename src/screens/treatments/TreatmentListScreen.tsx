@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet, View,
+    InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet, View
 } from 'react-native';
 import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
@@ -10,7 +10,7 @@ import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { PlatformSpecific } from '~/components/PlatformSpecific';
 import { ServiceNonStickyHeader } from '~/components/services/ServiceNonStickyHeader';
 import { ServiceStickyHeaderList } from '~/components/services/ServiceStickyHeaderList';
-import { useRealmPoolTargetRangesForPool, useLoadRecipeHook } from '~/hooks/RealmPoolHook';
+import { useLoadRecipeHook, useRealmPoolTargetRangesForPool } from '~/hooks/RealmPoolHook';
 import { LogEntry } from '~/models/logs/LogEntry';
 import { Pool } from '~/models/Pool';
 import { DryChemicalUnits, Units, WetChemicalUnits } from '~/models/TreatmentUnits';
@@ -18,6 +18,7 @@ import { PDNavParams } from '~/navigator/shared';
 import { dispatch, useTypedSelector } from '~/redux/AppState';
 import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
 import { clearPickerState } from '~/redux/picker/Actions';
+import { clearReadings } from '~/redux/readingEntries/Actions';
 import { Database } from '~/repository/Database';
 import { CalculationService } from '~/services/CalculationService';
 import { Config } from '~/services/Config';
@@ -135,6 +136,7 @@ export const TreatmentListScreen: React.FC = () => {
         );
         dispatch(updateDeviceSettings(newDeviceSettings));
         await DeviceSettingsService.saveSettings(newDeviceSettings);
+        dispatch(clearReadings());
         navigate('PoolScreen');
     };
 

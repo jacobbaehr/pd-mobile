@@ -1,9 +1,9 @@
-import React, {  useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Pool } from '~/models/Pool';
 import { useTypedSelector } from '~/redux/AppState';
 import { RecipeService } from '~/services/RecipeService';
 
-interface IPartialPoolContext {
+interface PartialPoolContext {
     pool: Partial<Pool>,
     setPool: React.Dispatch<React.SetStateAction<Partial<Pool>>>,
 }
@@ -17,7 +17,7 @@ const createPoolDefaults: Partial<Pool> = {
     wallType: 'vinyl',
 };
 
-const PartialPoolContext = React.createContext<IPartialPoolContext>({
+const PartialPoolContext = React.createContext<PartialPoolContext>({
     pool: createPoolDefaults,
     // We're going to override this with the setState call in the PoolProvider component
     setPool: () => {console.log('this is the default issue');},
@@ -61,8 +61,6 @@ export const useEntryPool = () => {
         !!pool.waterType;
 
     const setPoolValue = (newValue: Partial<Pool>) => {
-        console.log('set pool: ');
-        console.log({ ...pool, ...newValue });
         setPool({ ...pool, ...newValue });
     };
 
