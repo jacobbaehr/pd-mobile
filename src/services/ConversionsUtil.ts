@@ -8,7 +8,7 @@ export class ConversionUtil {
 
     // US gallons to Imperial Gallons
     static usGallonsToImpGallon = (usGallon: number): number => {
-        return usGallon * 1.20095;
+        return usGallon * 0.832674;
     };
 
     // Metric Liters To Use Gallons

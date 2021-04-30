@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     },
     navRow: {
         flexDirection: 'row',
+        flexWrap: 'wrap',
     },
     infoRow: {
         marginTop: 15,

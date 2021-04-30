@@ -188,7 +188,7 @@ export const ReadingListScreen: React.FC = () => {
     }
     return (
         <PDSafeAreaView style={ { flex: 1 } } bgColor="white">
-            <ScreenHeader color="blue">Readings</ScreenHeader>
+            <ScreenHeader textType="heading" color="blue">Readings</ScreenHeader>
             <PDView style={ styles.container } bgColor="white">
                 <KeyboardAwareSectionList
                     style={ StyleSheet.flatten([styles.sectionList, { backgroundColor: theme.blurredBlue }]) }

@@ -1,21 +1,24 @@
 import * as Sentry from '@sentry/react-native';
+import { Config } from '~/services/Config';
 
 // https://docs.sentry.io/platforms/react-native
 export namespace CrashServices {
 
     export const initialize = () => {
         if (!__DEV__) {
-            // Sebas Key
-            // TODO: needs to create an account for pooldash
             Sentry.init({
-                release: '',
-                dsn: 'https://f1c00333a0c5432489341a8bcfa5c7dc@o315261.ingest.sentry.io/5738409',
+                release: Config.version,
+                dsn: 'https://5b0b3461aae34a1cbd52d9cc2136d1a8@o590587.ingest.sentry.io/5740181',
                 debug: __DEV__,
                 autoSessionTracking: true,
                 // Session will close after 10 seconds in background
                 sessionTrackingIntervalMillis: 10000,
               });
         }
+    };
+
+    export const throwError = () => {
+        throw new Error('This is an error');
     };
 
     export const captureNativeException = (error: any, ) => {
@@ -25,5 +28,4 @@ export namespace CrashServices {
     export const addCrash = () => {
         Sentry.nativeCrash();
     };
-
 }

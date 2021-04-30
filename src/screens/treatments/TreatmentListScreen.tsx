@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet, View
+    InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet, View,
 } from 'react-native';
 import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
@@ -363,7 +363,7 @@ export const TreatmentListScreen: React.FC = () => {
 
     return (
         <PDSafeAreaView bgColor="white">
-            <ScreenHeader color="purple">Treatments</ScreenHeader>
+            <ScreenHeader textType="heading" color="purple">Treatments</ScreenHeader>
             <KeyboardAwareSectionList
                 style={ styles.sectionList }
                 keyboardDismissMode="interactive"

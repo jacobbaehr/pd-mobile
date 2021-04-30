@@ -13,7 +13,7 @@ export interface EditPoolPropertyWrapperProps {
 export const EditPoolPropertyWrapper: React.FC<EditPoolPropertyWrapperProps> = ({ children, title, description }) => {
     return (
         <PDView style={ styles.container } bgColor="white">
-            <ScreenHeader hasBackButton hasBottomLine={ false }>{title}</ScreenHeader>
+            <ScreenHeader textType="subHeading" hasBackButton hasBottomLine={ false }>{title}</ScreenHeader>
             <PDText type="bodyMedium" style={ styles.description } numberOfLines={ 3 } >
                 {description}
             </PDText>

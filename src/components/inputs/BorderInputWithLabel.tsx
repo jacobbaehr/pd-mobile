@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: '#1E6BFF',
         paddingLeft: 8,
-        minWidth: 165,
+        minWidth: 100,
     },
 });
 

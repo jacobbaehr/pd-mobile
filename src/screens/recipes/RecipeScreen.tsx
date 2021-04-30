@@ -18,7 +18,7 @@ import { RecipeKey } from '~/models/recipe/RecipeKey';
 
 export interface RecipeDetailsNavParams {
     recipeKey: RecipeKey;
-    prevScreen: 'ReadingList' | 'EditOrCreatePoolScreen';
+    prevScreen: 'ReadingList' | 'EditOrCreatePoolScreen' | 'PoolScreen';
 }
 
 export const RecipeScreen: React.FC = () => {

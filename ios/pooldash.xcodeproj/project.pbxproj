@@ -186,7 +186,7 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				CB2CC8F1B869F463ECD97BF6 /* [CP] Copy Pods Resources */,
-				494E1C55B56E402ABA26207F /* Upload Debug Symbols to Sentry */,
+				6490EE52CC174F4183517AF0 /* Upload Debug Symbols to Sentry */,
 			);
 			buildRules = (
 			);
@@ -208,10 +208,6 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 48DG894L4C;
 						LastSwiftMigration = 1120;
-						ProvisioningStyle = Automatic;
-					};
-					2D02E47A1E0B4A5D006451C7 = {
-						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -339,7 +335,7 @@
 			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		494E1C55B56E402ABA26207F /* Upload Debug Symbols to Sentry */ = {
+		6490EE52CC174F4183517AF0 /* Upload Debug Symbols to Sentry */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (

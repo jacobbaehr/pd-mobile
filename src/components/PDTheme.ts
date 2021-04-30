@@ -29,6 +29,18 @@ export interface PDTheme {
 /// Represents all the possible colors in the app. We'll probably change these names soon --
 /// for instance, in night mode, 'white' will actually be black & vice-versa... so that's a bad name.
 export type PDColor = keyof PDTheme;
+export type PDTextType =
+    | 'default'
+    | 'tooltip'
+    | 'button'
+    | 'bodyRegular'
+    | 'bodyBold'
+    | 'bodySemiBold'
+    | 'bodyMedium'
+    | 'bodyGreyBold'
+    | 'subHeading'
+    | 'heading';
+
 /// Defines some constants for margins / padding / etc...
 export const PDSpacing = {
     xs: 8,

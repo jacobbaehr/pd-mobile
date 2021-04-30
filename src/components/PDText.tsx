@@ -1,18 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, Text, TextProps } from 'react-native';
-import { PDColor, useTheme } from '~/components/PDTheme';
-
-type PDTextType =
-    | 'default'
-    | 'tooltip'
-    | 'button'
-    | 'bodyRegular'
-    | 'bodyBold'
-    | 'bodySemiBold'
-    | 'bodyMedium'
-    | 'bodyGreyBold'
-    | 'subHeading'
-    | 'heading';
+import { PDColor, PDTextType, useTheme } from '~/components/PDTheme';
 
 interface PDTextProps extends TextProps {
     type?: PDTextType;

@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import TouchableScale from 'react-native-touchable-scale';
 import { SVG } from '~/assets/images';
 import { PDText } from '~/components/PDText';
-import { PDColor, PDSpacing, useTheme } from '~/components/PDTheme';
+import { PDColor, PDSpacing, PDTextType, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { Util } from '~/services/Util';
 
@@ -16,6 +16,7 @@ interface ScreenHeaderProps {
     handlePressedAdd?: () => void;
     handlePressedBack?: () => void;
     color?: PDColor;
+    textType: PDTextType;
 }
 export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
     const { goBack } = useNavigation();
@@ -53,7 +54,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
                 )}
             </PDView>
             <PDView style={ styles.centerContainer }>
-                <PDText type="subHeading" color="black" style={ styles.text }>
+                <PDText type={ props.textType } color="black" style={ styles.text }>
                     {children}
                 </PDText>
             </PDView>

@@ -45,7 +45,7 @@ const SelectShapeScreen: React.FC = () => {
 
     return (
         <View style={ styles.container }>
-            <ScreenHeader hasBottomLine={ false }>Volume Estimator</ScreenHeader>
+            <ScreenHeader textType="subHeading" hasBottomLine={ false }>Volume Estimator</ScreenHeader>
             <View style={ styles.content }>
                 <View>
                     <PDText type="bodyRegular" color="greyDarker" style={ styles.description } numberOfLines={ 2 }>
