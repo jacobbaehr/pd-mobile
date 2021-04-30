@@ -89,9 +89,9 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
                 <View style={ styles.content }>
                     <View style={ styles.topRow }>
                         <Image style={ styles.circleImage } source={ leftImageSource } width={ 28 } height={ 28 } />
-                        <PDText style={ styles.readingName }>
+                        <PDText type="bodySemiBold" style={ styles.readingName }>
                             {r.name}
-                            <PDText style={ styles.readingUnits }>{readingUnitsText}</PDText>
+                            <PDText type="bodySemiBold" style={ styles.readingUnits }>{readingUnitsText}</PDText>
                         </PDText>
                         <TextInput
                             style={ textInputStyles }
@@ -110,6 +110,7 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
                         minimumTrackTintColor="#E3E3E3"
                         maximumTrackTintColor="#E3E3E3"
                         thumbImage={ images.sliderThumbBlue }
+                        thumbStyle={ { width: 23, height: 23, backgroundColor: 'transparent' } }
                         onSlidingStart={ onSliderStart }
                         onSlidingComplete={ onSliderEnd }
                         onValueChange={ (value: number) => props.onSliderUpdatedValue(r.var, value) }
@@ -159,18 +160,13 @@ const styles = StyleSheet.create({
     readingName: {
         color: 'black',
         fontSize: 18,
-        fontWeight: '600',
         flex: 1,
-        textAlignVertical: 'center',
         marginTop: 3,
     },
     readingUnits: {
-        color: 'black',
-        opacity: 0.4,
+        color: 'gray',
         fontSize: 18,
-        fontWeight: '600',
         flex: 1,
-        textAlignVertical: 'center',
         marginTop: 3,
     },
     textInput: {

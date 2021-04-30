@@ -92,9 +92,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     heading: {
-        fontFamily: 'Poppins-Regular',
-        fontWeight: 'bold',
-        fontStyle: 'normal',
+        fontFamily: 'Poppins-Bold',
         lineHeight: 36,
         fontSize: 24,
     },

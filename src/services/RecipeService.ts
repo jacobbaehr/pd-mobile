@@ -8,13 +8,14 @@ import { dispatch } from '~/redux/AppState';
 import { updatePool } from '~/redux/selectedPool/Actions';
 import { Database } from '~/repository/Database';
 import { RecipeRepo } from '~/repository/RecipeRepo';
+import { defaultRecipe } from '~/repository/recipes/Default';
 import { Config } from './Config';
 
 import { RecipeAPI } from './gql/RecipeAPI';
 import { RS } from './RecipeUtil';
 
 export class RecipeService {
-    static defaultRecipeKey = 'vast_argument_756|1593550871334';
+    static defaultRecipeKey = RS.getKey(defaultRecipe);
 
     /// First, tries to load the recipe locally. If not found, it fetches, saves, then returns the recipe from the API.
     static resolveRecipeWithKey = async (
