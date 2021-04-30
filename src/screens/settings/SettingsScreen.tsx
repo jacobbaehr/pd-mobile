@@ -59,7 +59,7 @@ export const SettingsScreen: React.FC = () => {
         try {
             await ExportService.generateAndShareCSV(null);
         } catch (e) {
-            console.error(e);
+            console.warn(e);
         }
     };
 

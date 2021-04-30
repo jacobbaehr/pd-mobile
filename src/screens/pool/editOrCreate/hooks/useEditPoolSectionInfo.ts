@@ -68,7 +68,11 @@ export const useEditPoolSectionInfo = (
     const handleExportButtonPressed = async () => {
         const validatedPool = PoolService.validatePartial(pool);
         if (validatedPool) {
-            await ExportService.generateAndShareCSV(validatedPool);
+            try {
+                await ExportService.generateAndShareCSV(validatedPool);
+            } catch (e) {
+                console.warn(e);
+            }
         }
     };
 

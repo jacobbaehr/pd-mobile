@@ -92,6 +92,11 @@ export namespace RecipeRepo {
             }
 
             const meta = RS.reverseKey(key);
+
+            // We received error reports from some clients that apparently have recipes without a timestamp saved... whoops?
+            if (!meta.ts || !meta.id) {
+                return;  /* continue to next */
+            }
             const existingIndex = latestRecipeInfos.findIndex((r) => r.id === meta.id);
             if (existingIndex >= 0) {
                 // If we already have a recipe w/ this id, keep the newer one
