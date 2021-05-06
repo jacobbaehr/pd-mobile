@@ -48,8 +48,9 @@ export const PoolScreen: React.FC = () => {
 
 
     /// If the user selects a new recipe, save it to the pool.
+    /// This is so dangerous & error-prone
     React.useEffect(() => {
-        if (!selectedPool || selectedPool.recipeKey === selectedRecipeKey) { return; }
+        if (!selectedPool || !selectedRecipeKey || selectedPool.recipeKey === selectedRecipeKey) { return; }
         dispatchThunk(
             updatePool({
                 ...selectedPool,

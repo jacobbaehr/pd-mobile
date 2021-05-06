@@ -66,8 +66,6 @@ export class ChartCard extends React.PureComponent<ChartCardProps, ChartCardStat
     private onChartsLoaded = () => {
         if (this.webView !== null) {
             const labels = this.props.viewModel.timestamps.map((d) => this.formatTimestamp(d, 'MMM d, ha'));
-            console.log(labels);
-            console.log(this.props.viewModel.timestamps);
             const graphData = {
                 points: this.props.viewModel.values,
                 dates: labels,
@@ -75,7 +73,6 @@ export class ChartCard extends React.PureComponent<ChartCardProps, ChartCardStat
                 idealMax: this.props.viewModel.idealMax,
             };
             const graphString = JSON.stringify(graphData);
-            console.log('Graphing: ', graphString);
             this.webView.injectJavaScript(`setTimeout(() => {
                 window.graphData(${graphString});
             }, 100);`);

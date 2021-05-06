@@ -28,8 +28,6 @@ export class RS {
     };
 
     static needUpdateToUseRecipe = (recipeOrMeta: { appVersion: string }, appVersion: string): boolean => {
-        console.log('Recipe version: ', recipeOrMeta.appVersion);
-        console.log('Device version: ', appVersion);
         return compareVersions.compare(recipeOrMeta.appVersion, appVersion, '>');
     };
 }

@@ -7,7 +7,6 @@ import { getDisplayForWallType } from '~/models/Pool/WallType';
 import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { useTypedSelector } from '~/redux/AppState';
-import { defaultRecipe } from '~/repository/recipes/Default';
 import { HeaderInfo } from '~/screens/pool/components/PoolPopover';
 import { editPoolPopoverProps } from '~/screens/pool/editOrCreate/edit/EditPoolHelpers';
 import { ExportService } from '~/services/ExportService';
@@ -15,6 +14,7 @@ import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
 import { useNavigation } from '@react-navigation/native';
 import { PoolService } from '~/services/PoolService';
+import { RecipeService } from '~/services/RecipeService';
 
 export type MenuItemId =
     | 'name'
@@ -47,7 +47,7 @@ export const useEditPoolSectionInfo = (
     toggleVisible: () => void,
 ): EditPoolSectionInfo[] => {
     const deviceSettings = useTypedSelector(state => state.deviceSettings);
-    const recipe = useLoadRecipeHook(pool?.recipeKey ?? defaultRecipe.id);
+    const recipe = useLoadRecipeHook(pool.recipeKey ?? RecipeService.defaultRecipeKey);
     const navigation = useNavigation<PDStackNavigationProps>();
 
     const targetsSelected = recipe?.custom.length ?? 0;
@@ -87,7 +87,7 @@ export const useEditPoolSectionInfo = (
                 {
                     label: 'Name: ',
                     image: images.titleIcon,
-                    value: pool?.name,
+                    value: pool.name,
                     valueColor: 'blue',
                     onPress: () => handleNavigateToPopover('name'),
                     id: 'name',
@@ -95,7 +95,7 @@ export const useEditPoolSectionInfo = (
                 {
                     label: 'Water Type: ',
                     image: images.waterTypeIcon,
-                    value: getDisplayForWaterType(pool?.waterType ?? 'chlorine'),
+                    value: getDisplayForWaterType(pool.waterType ?? 'chlorine'),
                     valueColor: 'green',
                     onPress: () => handleNavigateToPopover('waterType'),
                     id: 'waterType',
@@ -103,7 +103,7 @@ export const useEditPoolSectionInfo = (
                 {
                     label: 'Volume: ',
                     image: images.volumeIcon,
-                    value: VolumeUnitsUtil.getDisplayVolume(pool?.gallons ?? 0, deviceSettings),
+                    value: VolumeUnitsUtil.getDisplayVolume(pool.gallons ?? 0, deviceSettings),
                     valueColor: 'pink',
                     onPress: () => handleNavigateToPopover('gallons'),
                     id: 'gallons',
@@ -111,7 +111,7 @@ export const useEditPoolSectionInfo = (
                 {
                     label: 'Wall Type: ',
                     image: images.wallTypeIcon,
-                    value: getDisplayForWallType(pool?.wallType ?? 'plaster'),
+                    value: getDisplayForWallType(pool.wallType ?? 'plaster'),
                     valueColor: 'purple',
                     onPress: () => handleNavigateToPopover('wallType'),
                     id: 'wallType',

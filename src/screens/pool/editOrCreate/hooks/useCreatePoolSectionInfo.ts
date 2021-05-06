@@ -4,7 +4,6 @@ import { DeviceSettings } from '~/models/DeviceSettings';
 import { getDisplayForWallType } from '~/models/Pool/WallType';
 import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { PDStackNavigationProps } from '~/navigator/shared';
-import { defaultRecipe } from '~/repository/recipes/Default';
 import { ListRowItemSectionInfo } from '~/screens/pool/components/ListRowItem';
 import { HeaderInfo } from '~/screens/pool/components/PoolPopover';
 import { createPoolPopoverProps } from '~/screens/pool/editOrCreate/create/CreatePoolHelpers';
@@ -15,6 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { useEntryPool } from './useEntryPool';
 import { useVolumeEstimator } from './useVolumeEstimator';
+import { RecipeService } from '~/services/RecipeService';
 
 export const useCreatePoolSectionInfo = (
     deviceSettings: DeviceSettings,
@@ -22,7 +22,7 @@ export const useCreatePoolSectionInfo = (
     const { pool } = useEntryPool();
     const { estimation } = useVolumeEstimator();
     const navigation = useNavigation<PDStackNavigationProps>();
-    const recipe = useLoadRecipeHook(pool?.recipeKey ?? defaultRecipe.id);
+    const recipe = useLoadRecipeHook(pool.recipeKey ?? RecipeService.defaultRecipeKey);
     const theme = useTheme();
 
     const handleNavigateToPopover = (id: MenuItemId) => {
@@ -32,11 +32,10 @@ export const useCreatePoolSectionInfo = (
     };
 
     const handleNavigateToRecipeListScreen = () => {
-        navigation.navigate('RecipeList', { prevScreen: 'EditOrCreatePoolScreen', poolName: pool?.name });
+        navigation.navigate('RecipeList', { prevScreen: 'EditOrCreatePoolScreen', poolName: pool.name });
     };
 
     const volume : number = pool?.gallons || Number(estimation);
-
 
     const createPoolSectionInfo: ListRowItemSectionInfo[] = [
         {

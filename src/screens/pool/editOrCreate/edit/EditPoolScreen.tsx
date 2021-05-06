@@ -11,7 +11,6 @@ import { MenuItemButton } from '~/screens/pool/editOrCreate/edit/components/Menu
 import { useEditPoolSectionInfo } from '~/screens/pool/editOrCreate/hooks/useEditPoolSectionInfo';
 import { PoolService } from '~/services/PoolService';
 import { useEntryPool } from '../hooks/useEntryPool';
-
 import { DeletePool } from './components/DeletePool';
 
 export const EditPoolScreen: React.FunctionComponent = () => {
@@ -25,6 +24,7 @@ export const EditPoolScreen: React.FunctionComponent = () => {
         const validatedPool = PoolService.validatePartial(pool);
         if (validatedPool) {
             dispatchThunk(updatePool(validatedPool));
+        } else {
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pool]);

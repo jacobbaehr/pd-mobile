@@ -110,8 +110,6 @@ export class RecipeAPI {
         if (!result.data) {
             return Promise.reject('Recipe meta not found on server');
         }
-        console.log('fetching latest for key: ' + key);
-        console.log('result: ' + result.data.latestPublishedMeta.ts);
 
         return result.data.latestPublishedMeta;
     };
