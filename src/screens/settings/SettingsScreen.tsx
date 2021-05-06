@@ -170,6 +170,7 @@ const styles = StyleSheet.create({
     },
     listItemContainer: {
         flexDirection: 'row',
+        flexWrap: 'wrap',
         marginTop: 10,
         marginHorizontal: 20,
         marginBottom: 16,
