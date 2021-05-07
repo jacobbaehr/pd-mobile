@@ -1,4 +1,4 @@
-import { Linking } from 'react-native';
+import { openComposer } from 'react-native-email-link';
 import { LogEntry } from '~/models/logs/LogEntry';
 import { format } from 'date-fns';
 
@@ -54,8 +54,14 @@ export class EmailService {
         if (subject === undefined) {
             subject = 'Pool Service Summary';
         }
-        const mailtoLink = 'mailto:?subject=' + subject + '&body=' + emailBody;
 
-        Linking.openURL(mailtoLink);
+        try {
+            openComposer({
+                subject,
+                body: emailBody,
+            });
+        } catch (e) {
+            console.error('Could not open email app: ' + e);
+        }
     }
 }
