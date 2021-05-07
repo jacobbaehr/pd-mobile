@@ -46,7 +46,7 @@ const UnitButton: React.FC<UnitButtonProps> = (props) => {
     const primaryColor = VolumeEstimatorHelpers.getPrimaryColorByShapeId(params.shapeId, theme);
 
     // Unit Values
-    const unitName = VolumeEstimatorHelpers.getLabelForUnit(unit);
+    const unitName = VolumeEstimatorHelpers.getButtonLabelForUnit(unit);
 
     return (
         <View>

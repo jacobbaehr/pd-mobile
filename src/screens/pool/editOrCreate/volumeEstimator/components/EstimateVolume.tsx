@@ -10,33 +10,48 @@ import { EstimateRoute, PDStackNavigationProps } from '~/navigator/shared';
 import { VolumeEstimatorHelpers } from '~/screens/pool/editOrCreate/volumeEstimator/VolumeEstimatorHelpers';
 
 import { useNavigation, useRoute } from '@react-navigation/core';
+import { useEntryPool } from '~/screens/pool/editOrCreate/hooks/useEntryPool';
+import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
 interface EstimateVolumeProps {
     unit: PoolUnit
 }
 
 export const EstimateVolume: React.FC<EstimateVolumeProps> = (props) => {
-    const { unit } = props;
     const { params } = useRoute<EstimateRoute>();
     const theme = useTheme();
-    const { estimation } = useVolumeEstimator(params.shapeId);
-    const unitMetric = VolumeEstimatorHelpers.getLabelForUnit(unit);
+    const { estimation, clear } = useVolumeEstimator(params.shapeId);
     const navigation = useNavigation<PDStackNavigationProps>();
+    const { setPool } = useEntryPool();
+
+    /// On dismiss, clear some context:
+    React.useEffect(() => {
+        return () => {
+            /// clear volume shape entries:
+            clear();
+        };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const calc = (): string => {
-        let value: number = +estimation;
+        let value = +estimation;
         let format: string = '--';
         if (value) {
             format = value.toLocaleString('en-US', {
-                maximumSignificantDigits: 2,
+                maximumFractionDigits: 0,
             });
         }
+        const displayUnits = VolumeEstimatorHelpers.getResultLabelForUnit(props.unit);
 
-        return `${format} ${value ? unitMetric : ''}`;
+        return `${format} ${value ? displayUnits : ''}`;
     };
 
-
     const handlePressedEstimation = () => {
-        if (estimation) {
+        if (estimation && +estimation) {
+            let gallons = VolumeUnitsUtil.getUsGallonsByUnit(+estimation, props.unit);
+            setPool({ gallons });
+
+            // We're going back 3 screens
             navigation.navigate('EditOrCreatePoolScreen');
         }
     };
@@ -56,7 +71,7 @@ export const EstimateVolume: React.FC<EstimateVolumeProps> = (props) => {
                     </PDText>
                 </View>
                 <View>
-                    <PDText>{result}</PDText>
+                    <PDText type={ 'subHeading' } style={ { textAlign: 'center', marginTop: PDSpacing.sm } }>{result}</PDText>
                 </View>
             </View>
             <View>

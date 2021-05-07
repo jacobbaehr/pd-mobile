@@ -6,14 +6,14 @@ import { PDText } from '../PDText';
 import { PDColor, useTheme } from '../PDTheme';
 import { PDView } from '../PDView';
 
-interface ButtonProps extends ViewProps {
+export interface PDButtonProps extends ViewProps {
     onPress: () => void;
     label: string;
     textStyle: StyleProp<TextStyle>;
     bgColor?: PDColor;
 }
 
-export const PDButton: React.FC<ButtonProps> = (props) => {
+export const PDButton: React.FC<PDButtonProps> = (props) => {
     const { onPress, children, style, textStyle, ...rest } = props;
     const theme = useTheme();
 

@@ -1,9 +1,9 @@
 
 import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
-// import { SVG } from '~/assets/images';
+import { SVG } from '~/assets/images';
 import { Button } from '~/components/buttons/Button';
-// import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
+import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
 import { KeyboardButton } from '~/components/buttons/KeyboardButton';
 import BorderInputWithLabel from '~/components/inputs/BorderInputWithLabel';
 import { PDText } from '~/components/PDText';
@@ -26,7 +26,6 @@ export const EntryVolume = () => {
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
     const [volume, setVolume] = useState(() => {
         return VolumeUnitsUtil.getVolumeByUnit(pool?.gallons ?? 0, 'us', deviceSettings.units);
-
     });
     const [units, setUnits] = useState<PoolUnit>(deviceSettings.units);
     const dispatch = useThunkDispatch();
@@ -62,9 +61,9 @@ export const EntryVolume = () => {
         DeviceSettingsService.saveSettings(newSettings);
     };
 
-    // const handleEstimatorButtonPressed = () => {
-    //     navigation.navigate('SelectShape');
-    // };
+    const handleEstimatorButtonPressed = () => {
+        navigation.navigate('SelectShape');
+    };
 
     const unitText = getDisplayForPoolValue(units) as string;
     const volumesFixed = estimation ?  Number(estimation).toFixed(0) : volume.toFixed(0);
@@ -106,7 +105,7 @@ export const EntryVolume = () => {
                     />
                 </PDView>
             </PDView>
-            {/* <PDText type="bodyGreyBold" style={ styles.notSure }>
+            <PDText type="bodyGreyBold" style={ styles.notSure }>
                 not sure?
             </PDText>
             <ButtonWithChildren onPress={ handleEstimatorButtonPressed }>
@@ -114,8 +113,15 @@ export const EntryVolume = () => {
                     <SVG.IconEstimator width={ 16 } height={ 16 } fill="#000000" />
                     <PDText type="subHeading"> Use Volume Estimator</PDText>
                 </PDView>
-            </ButtonWithChildren> */}
-            <KeyboardButton onPress={ handleOnPressSaveButton } disabled={ !getButtonDisableState() } bgColor={ getButtonDisableState() ? 'pink' : 'greyVeryLight' } textColor={ getButtonDisableState() ? 'white' : 'grey' } nativeID={ keyboardAccessoryViewId } activeOpacity={ getButtonDisableState() ? 0 : 1 }>
+            </ButtonWithChildren>
+            <KeyboardButton
+                onPress={ handleOnPressSaveButton }
+                disabled={ !getButtonDisableState() }
+                bgColor={ getButtonDisableState() ? 'pink' : 'greyVeryLight' }
+                textColor={ getButtonDisableState() ? 'white' : 'grey' }
+                nativeID={ keyboardAccessoryViewId }
+                activeOpacity={ getButtonDisableState() ? 0 : 1 }
+                hitSlop={ { top: 5, left: 5, bottom: 5, right: 5 } }>
                 Save
             </KeyboardButton>
         </PDView>

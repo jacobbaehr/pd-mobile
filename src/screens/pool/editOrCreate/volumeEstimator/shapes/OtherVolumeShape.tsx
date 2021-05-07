@@ -28,17 +28,22 @@ export const OtherVolumeShape: React.FC<ShapesProps> = (props) => {
     const shallowestRef = React.createRef<TextInput>();
 
     useEffect(() => {
-        const isAllFieldsCompleted = VolumeEstimatorHelpers.isCompletedField(shapeValues);
+        const isAllFieldsCompleted = VolumeEstimatorHelpers.areAllRequiredMeasurementsCompleteForShape(shapeValues);
         if (isAllFieldsCompleted) {
             setShape(shapeValues);
+            const results = VolumeEstimatorHelpers.estimateOtherVolume(shapeValues, unit);
+            setEstimation(results.toString());
+        } else {
+            setEstimation('');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [shapeValues]);
+    }, [shapeValues, unit]);
 
     const handleShapeValues = useCallback(
         (key: keyof OtherMeasurements, value: string) => {
             setShapeValues((prev) => ({ ...prev, [key]: +value }));
         },
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [shapeValues.deepest, shapeValues.area, shapeValues.shallowest],
     );
@@ -61,27 +66,19 @@ export const OtherVolumeShape: React.FC<ShapesProps> = (props) => {
         handleShapeValues('shallowest', value);
     };
 
-    const calculateVolume = () => {
-        const isAllFieldsCompleted = VolumeEstimatorHelpers.isCompletedField(shapeValues);
-        if (isAllFieldsCompleted) {
-            const results = VolumeEstimatorHelpers.estimateOtherVolume(shapeValues) * VolumeEstimatorHelpers.multiplier[unit];
-            setEstimation(results.toString());
-        }
-    };
-
-
     const handleNextFocused = () => {
         switch (inputFocus) {
             case 'area':
-                areaRef.current?.focus();
+                deepestRef.current?.focus();
+                setInputFocus('deepest');
                 break;
 
             case 'deepest':
-                deepestRef.current?.focus();
+                shallowestRef.current?.focus();
+                setInputFocus('shallowest');
                 break;
 
             case 'shallowest':
-                calculateVolume();
                 Keyboard.dismiss();
                 break;
         }
@@ -90,7 +87,7 @@ export const OtherVolumeShape: React.FC<ShapesProps> = (props) => {
     const unitName = VolumeEstimatorHelpers.getAbbreviationUnit(unit);
     const primaryKeyColor = VolumeEstimatorHelpers.getPrimaryThemKeyByShapeId(params.shapeId);
     const primaryColor = VolumeEstimatorHelpers.getPrimaryColorByShapeId(params.shapeId, theme);
-    const onFocusLabel = VolumeEstimatorHelpers.getOnFocusLabelByShapeKey(inputFocus);
+    const onFocusLabel = VolumeEstimatorHelpers.getInputAccessoryLabelByShapeKey(inputFocus);
 
     return (
         <View>
@@ -106,7 +103,7 @@ export const OtherVolumeShape: React.FC<ShapesProps> = (props) => {
                     returnKeyLabel="Next"
                     textInputStyleProps={ { color: primaryColor } }
                     inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
-                    onFocus={ () => handleFocusInput('deepest') }
+                    onFocus={ () => handleFocusInput('area') }
                     ref={ areaRef }
                 />
             </View>
@@ -122,7 +119,7 @@ export const OtherVolumeShape: React.FC<ShapesProps> = (props) => {
                     returnKeyLabel="Next"
                     textInputStyleProps={ { color: primaryColor } }
                     inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
-                    onFocus={ () => handleFocusInput('shallowest') }
+                    onFocus={ () => handleFocusInput('deepest') }
                     ref={ deepestRef }
                 />
                 <BorderInputWithLabel
@@ -141,7 +138,11 @@ export const OtherVolumeShape: React.FC<ShapesProps> = (props) => {
                     ref={ shallowestRef }
                 />
             </View>
-            <KeyboardButton nativeID={ VolumeEstimatorHelpers.inputAccessoryId } bgColor={ primaryKeyColor } onPress={ handleNextFocused }>
+            <KeyboardButton
+                nativeID={ VolumeEstimatorHelpers.inputAccessoryId }
+                bgColor={ primaryKeyColor }
+                onPress={ handleNextFocused }
+                hitSlop={ { top: 5, left: 5, bottom: 5, right: 5 } }>
                 {onFocusLabel}
             </KeyboardButton>
         </View>

@@ -22,8 +22,8 @@ const EntryShapeScreen: React.FC = () => {
     const [unit, setUnit] = useState(deviceSettings.units);
 
     /// SVG Rendering
-    const ShapeName = VolumeEstimatorHelpers.getBigShapeForSVG(params.shapeId);
-    const ShapeSVG = SVG[ShapeName];
+    const shapeName = VolumeEstimatorHelpers.getBigShapeForSVG(params.shapeId);
+    const ShapeSVG = SVG[shapeName];
 
     // Colors
     const primaryBlurredColor = VolumeEstimatorHelpers.getPrimaryBlurredColorByShapeId(params.shapeId, theme);
@@ -33,7 +33,12 @@ const EntryShapeScreen: React.FC = () => {
     return (
         <View style={ styles.container }>
             <ScreenHeader textType="subHeading" hasBottomLine={ false }>Volume Estimator</ScreenHeader>
-            <KeyboardAwareScrollView style={ styles.content } extraScrollHeight={ 80 } enableOnAndroid>
+            <KeyboardAwareScrollView
+                style={ styles.content }
+                extraScrollHeight={ 80 }
+                enableOnAndroid
+                keyboardShouldPersistTaps={ 'handled' }
+                >
                 <View style={ StyleSheet.flatten([styles.shapeContainer, { backgroundColor: primaryBlurredColor }]) }>
                     <ShapeSVG width={ '100%' } />
                 </View>

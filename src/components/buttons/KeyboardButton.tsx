@@ -23,7 +23,7 @@ export const KeyboardButton : React.FC<KeyboardButtonProps> = (props) => {
         <PlatformSpecific include={ ['ios'] }>
             <InputAccessoryView nativeID={ nativeID } >
                 <PDView style={ [styles.keyboardAccessoryContainer, { backgroundColor: theme.white }] }>
-                    <TouchableOpacity { ...touchableProps }  style={ [styles.buttonContainer ,{ backgroundColor }] }  >
+                    <TouchableOpacity { ...touchableProps }  style={ [styles.buttonContainer, { backgroundColor }] } >
                         <PDText type="heading" color={ textColor } >
                             {children}
                         </PDText>

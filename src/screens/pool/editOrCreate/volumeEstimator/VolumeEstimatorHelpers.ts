@@ -67,13 +67,8 @@ export const shapes: Shape[] = [
 ];
 
 export class VolumeEstimatorHelpers {
-    static inputAccessoryId = 'volumen_estimator'
-    static isCompletedField = (shape: SomeShape) => Object.keys(shape).every((sp) => !!shape[sp]);
-    static multiplier: Record<PoolUnit, number> = {
-        us: 3.78541,
-        metric: 1000,
-        imperial: 4.54609,
-    };
+    static inputAccessoryId = 'volume_estimator_input_accessory'
+    static areAllRequiredMeasurementsCompleteForShape = (shape: SomeShape) => Object.keys(shape).every((sp) => !!shape[sp]);
 
     static getBigShapeForSVG = (shapeId: ShapeId): string => {
         const bigShapeNamesById: Record<ShapeId, string> = {
@@ -118,35 +113,44 @@ export class VolumeEstimatorHelpers {
         return shapeByPrimaryColor[shapeId];
     };
 
-
-    static estimateRectangleVolume = ({ width, length, deepest, shallowest }: RectangleMeasurements): number => {
-        const area = +width * +length;
-        const averageDeep = +deepest + +shallowest / 2;
-        return area * averageDeep;
+    static estimateRectangleVolume = ({ width, length, deepest, shallowest }: RectangleMeasurements, units: PoolUnit): number => {
+        const averageDepth = (+deepest + +shallowest) / 2.0;
+        const surfaceArea = +width * +length;
+        return surfaceArea * averageDepth * getMultiplierForUnits(units);
     };
 
-    static estimateOvalVolume = ({ deepest, shallowest, length, width }: OvalMeasurements): number => {
-        const area = +width * +length;
-        const averageDeep = +deepest + +shallowest / 2;
-        return area * averageDeep;
+    static estimateOvalVolume = ({ deepest, shallowest, length, width }: OvalMeasurements, units: PoolUnit): number => {
+        const averageDepth = (+deepest + +shallowest) / 2.0;
+        const surfaceArea = +width * +length;
+        return surfaceArea * averageDepth * getMultiplierForUnits(units);
     };
 
-    static estimateCircleVolume = ({ shallowest, deepest, diameter }: CircleMeasurements): number => {
-        const averageDeep = +deepest + +shallowest / 2;
-        const radius = +diameter / 2;
-        return Math.PI * averageDeep * Math.pow(radius, 2);
+    static estimateCircleVolume = ({ shallowest, deepest, diameter }: CircleMeasurements, units: PoolUnit): number => {
+        const averageDepth = (+deepest + +shallowest) / 2.0;
+        const radius = +diameter / 2.0;
+        const surfaceArea = Math.PI * square(radius);
+        return surfaceArea * averageDepth * getMultiplierForUnits(units);
     };
 
-    static estimateOtherVolume = ({ area, deepest, shallowest }: OtherMeasurements): number => {
-        const averageDeep = +deepest + +shallowest / 2;
-        return 0.45 * +area * averageDeep;
+    static estimateOtherVolume = ({ area, deepest, shallowest }: OtherMeasurements, units: PoolUnit): number => {
+        const averageDepth = (+deepest + +shallowest) / 2.0;
+        return +area * averageDepth * getMultiplierForUnits(units);
     };
 
-    static getLabelForUnit = (unit: PoolUnit) : string => {
+    static getButtonLabelForUnit = (unit: PoolUnit) : string => {
         const label : Record<PoolUnit, string> = {
             us: 'US',
             metric: 'Metric',
             imperial: 'Imperial',
+        };
+        return label[unit];
+    }
+
+    static getResultLabelForUnit = (unit: PoolUnit) : string => {
+        const label : Record<PoolUnit, string> = {
+            us: 'Gallons (US)',
+            metric: 'Liters',
+            imperial: 'Gallons (Imperial)',
         };
         return label[unit];
     }
@@ -160,7 +164,7 @@ export class VolumeEstimatorHelpers {
         return abbreviation[unit];
     }
 
-    static getOnFocusLabelByShapeKey = (key: AllShapesKeys): string => {
+    static getInputAccessoryLabelByShapeKey = (key: AllShapesKeys): string => {
         const abbreviation : Record<AllShapesKeys, string> = {
             deepest: 'Next',
             area:'Next',
@@ -172,3 +176,22 @@ export class VolumeEstimatorHelpers {
         return abbreviation[key];
     }
 }
+
+const getMultiplierForUnits = (units: PoolUnit): number => {
+    const cubicMetersToLiters = 1000;
+    const cubicFeetToGallons = 7.48052;
+    const cubicFeetToImperialGallons = 6.22884;
+
+    if (units === 'us') {
+        return cubicFeetToGallons;
+    } else if (units === 'imperial') {
+        return cubicFeetToImperialGallons;
+    } else if (units === 'metric') {
+        return cubicMetersToLiters;
+    } else {
+        console.warn('invalid unit: ' + units);
+        return 1;
+    }
+};
+
+const square = (x: number): number => Math.pow(x, 2);

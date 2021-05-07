@@ -32,12 +32,16 @@ export const OvalVolumeShape:  React.FC<ShapesProps> = (props) => {
 
 
     useEffect(() => {
-        const isAllFieldsCompleted = VolumeEstimatorHelpers.isCompletedField(shapeValues);
+        const isAllFieldsCompleted = VolumeEstimatorHelpers.areAllRequiredMeasurementsCompleteForShape(shapeValues);
         if (isAllFieldsCompleted) {
             setShape(shapeValues);
+            const results = VolumeEstimatorHelpers.estimateOvalVolume(shapeValues, unit);
+            setEstimation(results.toString());
+        } else {
+            setEstimation('');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [shapeValues]);
+    }, [shapeValues, unit]);
 
     const handleShapeValues = useCallback(
         (key: keyof OvalMeasurements, value: string) => {
@@ -67,30 +71,18 @@ export const OvalVolumeShape:  React.FC<ShapesProps> = (props) => {
         handleShapeValues('shallowest', value);
     };
 
-    const calculateVolume = () => {
-        const isAllFieldsCompleted = VolumeEstimatorHelpers.isCompletedField(shapeValues);
-        if (isAllFieldsCompleted) {
-            const results = VolumeEstimatorHelpers.estimateOvalVolume(shapeValues) * VolumeEstimatorHelpers.multiplier[unit];
-            setEstimation(results.toString());
-        }
-    };
-
-
     const handleNextFocused = () => {
         switch (inputFocus) {
             case 'length':
-                lengthRef.current?.focus();
-                break;
-            case 'width':
                 widthRef.current?.focus();
                 break;
-
-            case 'deepest':
+            case 'width':
                 deepestRef.current?.focus();
                 break;
-
+            case 'deepest':
+                shallowestRef.current?.focus();
+                break;
             case 'shallowest':
-                calculateVolume();
                 Keyboard.dismiss();
                 break;
         }
@@ -98,9 +90,8 @@ export const OvalVolumeShape:  React.FC<ShapesProps> = (props) => {
 
     const unitName = VolumeEstimatorHelpers.getAbbreviationUnit(unit);
     const primaryColor = VolumeEstimatorHelpers.getPrimaryColorByShapeId(params.shapeId, theme);
-    const onFocusLabel = VolumeEstimatorHelpers.getOnFocusLabelByShapeKey(inputFocus);
+    const onFocusLabel = VolumeEstimatorHelpers.getInputAccessoryLabelByShapeKey(inputFocus);
     const primaryKeyColor = VolumeEstimatorHelpers.getPrimaryThemKeyByShapeId(params.shapeId);
-
 
     return (
         <View>
@@ -116,7 +107,7 @@ export const OvalVolumeShape:  React.FC<ShapesProps> = (props) => {
                     returnKeyLabel="Next"
                     textInputStyleProps={ { color: primaryColor } }
                     inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
-                    onFocus={ () => handleFocusInput('width') }
+                    onFocus={ () => handleFocusInput('length') }
                     ref={ lengthRef }
                 />
                 <BorderInputWithLabel
@@ -130,7 +121,7 @@ export const OvalVolumeShape:  React.FC<ShapesProps> = (props) => {
                     returnKeyLabel="Next"
                     textInputStyleProps={ { color: primaryColor } }
                     inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
-                    onFocus={ () => handleFocusInput('deepest') }
+                    onFocus={ () => handleFocusInput('width') }
                     ref={ widthRef }
                 />
             </View>
@@ -146,7 +137,7 @@ export const OvalVolumeShape:  React.FC<ShapesProps> = (props) => {
                     returnKeyLabel="Next"
                     textInputStyleProps={ { color: primaryColor } }
                     inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
-                    onFocus={ () => handleFocusInput('shallowest') }
+                    onFocus={ () => handleFocusInput('deepest') }
                     ref={ deepestRef }
                 />
                 <BorderInputWithLabel
@@ -161,11 +152,14 @@ export const OvalVolumeShape:  React.FC<ShapesProps> = (props) => {
                     textInputStyleProps={ { color: primaryColor } }
                     inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
                     onFocus={ () => handleFocusInput('shallowest') }
-                    onSubmitEditing={ handleNextFocused }
                     ref={ shallowestRef }
                 />
             </View>
-            <KeyboardButton nativeID={ VolumeEstimatorHelpers.inputAccessoryId } bgColor={ primaryKeyColor } onPress={ handleNextFocused }>
+            <KeyboardButton
+                nativeID={ VolumeEstimatorHelpers.inputAccessoryId }
+                bgColor={ primaryKeyColor }
+                onPress={ handleNextFocused }
+                hitSlop={ { top: 5, left: 5, bottom: 5, right: 5 } }>
                 {onFocusLabel}
             </KeyboardButton>
         </View>

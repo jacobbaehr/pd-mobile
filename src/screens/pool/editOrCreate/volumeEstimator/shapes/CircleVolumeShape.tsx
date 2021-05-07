@@ -12,6 +12,8 @@ import { CircleMeasurements, VolumeEstimatorHelpers } from '../VolumeEstimatorHe
 import { ShapesProps } from './ShapeUtils';
 import styles from './VolumeEstimatorStyles';
 
+const circleVolumeEstimatorAccessoryId = 'circleVolumeEstimatorAccessoryIdViewKeyboardThing3498';
+
 export const CircleVolumeShape: React.FC<ShapesProps> = (props) => {
     const { params } = useRoute<EstimateRoute>();
     const { unit } = props;
@@ -23,17 +25,21 @@ export const CircleVolumeShape: React.FC<ShapesProps> = (props) => {
         shallowest: '',
     });
     const [inputFocus, setInputFocus] = useState<keyof CircleMeasurements>('diameter');
-    const diameterRef = React.createRef<TextInput>();
-    const deepestRef = React.createRef<TextInput>();
-    const shallowestRef = React.createRef<TextInput>();
+    const diameterRef = React.useRef<TextInput>(null);
+    const deepestRef = React.useRef<TextInput>(null);
+    const shallowestRef = React.useRef<TextInput>(null);
 
     useEffect(() => {
-        const isAllFieldsCompleted = VolumeEstimatorHelpers.isCompletedField(shapeValues);
+        const isAllFieldsCompleted = VolumeEstimatorHelpers.areAllRequiredMeasurementsCompleteForShape(shapeValues);
         if (isAllFieldsCompleted) {
             setShape(shapeValues);
+            const results = VolumeEstimatorHelpers.estimateCircleVolume(shapeValues, unit);
+            setEstimation(results.toString());
+        } else {
+            setEstimation('');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [shapeValues]);
+    }, [shapeValues, unit]);
 
     const handleShapeValues = useCallback(
         (key: keyof CircleMeasurements, value: string) => {
@@ -53,20 +59,7 @@ export const CircleVolumeShape: React.FC<ShapesProps> = (props) => {
         handleShapeValues('shallowest', value);
     };
 
-
-    const calculateVolume = () => {
-        console.log('calculating');
-        const isAllFieldsCompleted = VolumeEstimatorHelpers.isCompletedField(shapeValues);
-        if (isAllFieldsCompleted) {
-            console.log('yes');
-            const results = VolumeEstimatorHelpers.estimateCircleVolume(shapeValues) * VolumeEstimatorHelpers.multiplier[unit];
-            setEstimation(results.toString());
-        }
-    };
-
-
     const handlePressedNext = () => {
-        console.log('inputFocus: ' + inputFocus);
         switch (inputFocus) {
             case 'diameter':
                 deepestRef.current?.focus();
@@ -75,7 +68,6 @@ export const CircleVolumeShape: React.FC<ShapesProps> = (props) => {
                 shallowestRef.current?.focus();
                 break;
             case 'shallowest':
-                calculateVolume();
                 Keyboard.dismiss();
                 break;
         }
@@ -83,7 +75,7 @@ export const CircleVolumeShape: React.FC<ShapesProps> = (props) => {
 
     const unitName = VolumeEstimatorHelpers.getAbbreviationUnit(unit);
     const primaryKeyColor = VolumeEstimatorHelpers.getPrimaryThemKeyByShapeId(params.shapeId);
-    const onFocusLabel = VolumeEstimatorHelpers.getOnFocusLabelByShapeKey(inputFocus);
+    const onFocusLabel = VolumeEstimatorHelpers.getInputAccessoryLabelByShapeKey(inputFocus);
     const primaryColor = VolumeEstimatorHelpers.getPrimaryColorByShapeId(params.shapeId, theme);
 
     return (
@@ -96,10 +88,9 @@ export const CircleVolumeShape: React.FC<ShapesProps> = (props) => {
                     onChangeText={ handleChangedDiameter }
                     keyboardType="numeric"
                     maxLength={ 4 }
-                    returnKeyType="search"
                     returnKeyLabel="Next"
                     textInputStyleProps={ { color: primaryColor } }
-                    inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
+                    inputAccessoryViewID={ circleVolumeEstimatorAccessoryId }
                     onFocus={ () => setInputFocus('diameter') }
                     ref={ diameterRef }
                 />
@@ -115,7 +106,7 @@ export const CircleVolumeShape: React.FC<ShapesProps> = (props) => {
                     returnKeyType="next"
                     returnKeyLabel="Next"
                     textInputStyleProps={ { color: primaryColor } }
-                    inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
+                    inputAccessoryViewID={ circleVolumeEstimatorAccessoryId }
                     onFocus={ () => setInputFocus('deepest') }
                     ref={ deepestRef }
                 />
@@ -129,13 +120,12 @@ export const CircleVolumeShape: React.FC<ShapesProps> = (props) => {
                     returnKeyType="done"
                     returnKeyLabel="Done"
                     textInputStyleProps={ { color: primaryColor } }
-                    inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
+                    inputAccessoryViewID={ circleVolumeEstimatorAccessoryId }
                     onFocus={ () => setInputFocus('shallowest') }
-                    onSubmitEditing={ handlePressedNext }
                     ref={ shallowestRef }
                 />
             </View>
-            <KeyboardButton nativeID={ VolumeEstimatorHelpers.inputAccessoryId } bgColor={ primaryKeyColor } onPress={ handlePressedNext }>
+            <KeyboardButton nativeID={ circleVolumeEstimatorAccessoryId } bgColor={ primaryKeyColor } onPress={ handlePressedNext }>
                 {onFocusLabel}
             </KeyboardButton>
         </View>
