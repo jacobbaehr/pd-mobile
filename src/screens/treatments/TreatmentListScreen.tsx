@@ -405,7 +405,7 @@ export const TreatmentListScreen: React.FC = () => {
                     }
                 } }
             />
-            <WebView containerStyle={ styles.webview } onMessage={ onMessage } source={ { html: htmlString } } />
+            <WebView containerStyle={ styles.webview } onMessage={ onMessage } source={ { html: htmlString } } androidHardwareAccelerationDisabled />
             <View style={ styles.bottomButtonContainer }>
                 <BoringButton containerStyles={ styles.button } onPress={ save } title={ hasSelectedAnyTreatments ? 'Save' : 'Save All' } />
             </View>

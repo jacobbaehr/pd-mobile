@@ -99,6 +99,7 @@ export class ChartCard extends React.PureComponent<ChartCardProps, ChartCardStat
                             source={ { uri: chartPath } }
                             scrollEnabled={ false }
                             style={ styles.chartWebView }
+                            androidHardwareAccelerationDisabled
                         />
                     </View>
                     <View style={ styles.labelContainer }>{this.getDateLabels()}</View>
