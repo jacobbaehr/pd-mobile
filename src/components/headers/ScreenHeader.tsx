@@ -12,8 +12,10 @@ import { useNavigation } from '@react-navigation/native';
 interface ScreenHeaderProps {
     hasBackButton?: boolean;
     hasAddButton?: boolean;
+    hasEditButton?: boolean;
     hasBottomLine?: Boolean
     handlePressedAdd?: () => void;
+    handlePressedEdit?: () => void;
     handlePressedBack?: () => void;
     color?: PDColor;
     textType: PDTextType;
@@ -22,9 +24,11 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
     const { goBack } = useNavigation();
     const { children,
             hasAddButton = false,
+            hasEditButton = false,
             hasBottomLine = true,
             hasBackButton = true,
             handlePressedAdd,
+            handlePressedEdit,
             handlePressedBack = () => {return;},
             color = 'black',
         } = props;
@@ -49,7 +53,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
             <PDView style={ styles.sideContainer }>
                 {hasBackButton && (
                     <TouchableScale { ...touchableProps } onPress={ handleBackButtonPressed }>
-                        <SVG.IconCircleBack fill={ svgColor } />
+                        <SVG.IconCircleBack height={ 32 } width={ 32 } fill={ svgColor } />
                     </TouchableScale>
                 )}
             </PDView>
@@ -61,7 +65,12 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
             <PDView style={ styles.sideContainer }>
                 {hasAddButton && (
                     <TouchableScale { ...touchableProps } onPress={ handlePressedAdd }>
-                        <SVG.IconCircleAdd fill={ svgColor } />
+                        <SVG.IconCircleAdd height={ 32 } width={ 32 } fill={ svgColor } />
+                    </TouchableScale>
+                )}
+                {hasEditButton && (
+                    <TouchableScale { ...touchableProps } onPress={ handlePressedEdit }>
+                        <SVG.IconCircleEdit height={ 32 } width={ 32 } fill={ svgColor } />
                     </TouchableScale>
                 )}
             </PDView>
