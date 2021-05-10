@@ -1,20 +1,25 @@
 import { formatDistanceStrict } from 'date-fns';
 import React from 'react';
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
-import { images } from '~/assets/images';
+import { SVG } from '~/assets/images';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { PDText } from '~/components/PDText';
+import { PDView } from '~/components/PDView';
 import { useLoadRecipeHook, useRealmPoolHistoryHook } from '~/hooks/RealmPoolHook';
 import { Pool } from '~/models/Pool';
+import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { PDNavParams } from '~/navigator/shared';
-import { AppState } from '~/redux/AppState';
+import { AppState, useTypedSelector } from '~/redux/AppState';
 import { getCustomTargetsBySelectedPool } from '~/redux/selectedPool/Selectors';
 import { RecipeService } from '~/services/RecipeService';
+import { Util } from '~/services/Util';
 
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+
+import { VolumeEstimatorHelpers } from './editOrCreate/volumeEstimator/VolumeEstimatorHelpers';
 
 /**
  * Displays info about the recipe & customizations in the SectionList on the pool details screen.
@@ -26,6 +31,7 @@ const PoolServiceConfigSection = () => {
     const recipe = useLoadRecipeHook(selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
     const customTargets = useSelector((state: AppState) => getCustomTargetsBySelectedPool(state, recipe));
     const history = useRealmPoolHistoryHook(selectedPool?.objectId);
+    const deviceSettings = useTypedSelector(state => state.deviceSettings);
 
     const isEmptyCustom = customTargets?.length === 0;
 
@@ -63,53 +69,54 @@ const PoolServiceConfigSection = () => {
     const lastTimeUpdate = () =>
         history.length > 0 ? `Last Serviced: ${formatDistanceStrict(history[0].ts, Date.now())} ago` : '';
 
+    const abbreviateGallons = `${Util.abbreviate(selectedPool.gallons)} ${VolumeEstimatorHelpers.getResultLabelForUnit(deviceSettings.units)}, ${getDisplayForWaterType(selectedPool.waterType)}`;
+
     return (
-        <View style={ styles.container }>
-            <View>
+        <PDView style={ styles.container }>
+            <PDView>
                 <PDText type="default" style={ styles.title }>
-                    Service Config
+                    Pool Service
                 </PDText>
-                <View>
-                    <View>
+                <PDView style={ styles.row }>
+                    <SVG.IconInformation height={ 21 } width={ 22 } fill="#737373"/>
+                    <PDText type="bodySemiBold" color="grey" style={ { marginLeft: 4 } }>{abbreviateGallons}</PDText>
+                </PDView>
+                <PDView>
+                    <PDView>
                         <PDText type="default" style={ styles.subTitle }>
-                            Recipe
+                            formula
                         </PDText>
                         <TouchableOpacity onPress={ navigateToRecipes }>
-                            <View style={ styles.row }>
-                                <Text style={ styles.buttonResults } numberOfLines={ 1 } ellipsizeMode="tail">
+                            <PDView style={ styles.row }>
+                                <PDText style={ styles.buttonResults } numberOfLines={ 1 } ellipsizeMode="tail">
                                     {recipe?.name}
-                                </Text>
-                                <Image source={ images.rightArrow } height={ 21 } width={ 22 } style={ styles.arrowImage } />
-                            </View>
+                                </PDText>
+                                <SVG.IconCircleForward height={ 21 } width={ 22 } fill="#1E6BFF"/>
+                            </PDView>
                         </TouchableOpacity>
-                    </View>
+                    </PDView>
                     {isEmptyCustom || (
-                        <View>
+                        <PDView>
                             <PDText type="default" style={ styles.subTitle }>
                                 Custom Targets
                             </PDText>
                             <TouchableOpacity onPress={ navigateToCustomTargets }>
-                                <View style={ styles.row }>
-                                    <Text style={ styles.buttonResults } numberOfLines={ 1 } ellipsizeMode="tail">
+                                <PDView style={ styles.row }>
+                                    <PDText style={ styles.buttonResults } numberOfLines={ 1 } ellipsizeMode="tail">
                                         {getCustomTargets()}
-                                    </Text>
-                                    <Image
-                                        source={ images.rightArrow }
-                                        height={ 21 }
-                                        width={ 22 }
-                                        style={ styles.arrowImage }
-                                    />
-                                </View>
+                                    </PDText>
+                                    <SVG.IconCircleForward height={ 21 } width={ 22 } fill="#1E6BFF"/>
+                                </PDView>
                             </TouchableOpacity>
-                        </View>
+                        </PDView>
                     )}
-                </View>
-            </View>
+                </PDView>
+            </PDView>
             <BoringButton title="Start Service" onPress={ navigateToReadings } containerStyles={ styles.buttonContainer } />
             <PDText type="default" style={ styles.lastUpdateText }>
                 {lastTimeUpdate()}
             </PDText>
-        </View>
+        </PDView>
     );
 };
 
@@ -126,53 +133,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 18,
         paddingTop: 18,
     },
-    navRow: {
-        flexDirection: 'row',
-    },
-    poolVolumeText: {
-        color: 'rgba(0,0,0,0.6)',
-        fontSize: 18,
-        fontWeight: '600',
-    },
-    editButtonContainer: {
-        alignSelf: 'center',
-    },
-    backButtonContainer: {
-        flexGrow: 1,
-    },
-    editButton: {
-        backgroundColor: 'rgba(30,107,255,.1)',
-        borderRadius: 15,
-    },
-    editButtonText: {
-        color: '#2D5FFF',
-        textAlign: 'center',
-        marginTop: '2%',
-        fontFamily: 'Poppins-Regular',
-        fontSize: 16,
-        fontWeight: '700',
-        paddingHorizontal: 15,
-        paddingVertical: 3,
-    },
-    recipeLinkNormal: {
-        backgroundColor: 'transparent',
-        color: '#3910E8',
-        fontSize: 18,
-        textDecorationLine: 'underline',
-    },
     buttonContainer: {
         backgroundColor: '#00B25C',
         marginBottom: 12,
-    },
-    buttonText: {
-        fontSize: 18,
-        lineHeight: 27,
-        textAlign: 'center',
-        fontWeight: 'bold',
-    },
-    arrowImage: {
-        alignSelf: 'center',
-        marginLeft: 8,
     },
     buttonResults: {
         fontSize: 16,
@@ -186,7 +149,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         lineHeight: 27,
         color: '#000',
-        marginBottom: 12,
+        marginBottom: 8,
     },
     subTitle: {
         fontWeight: 'bold',
@@ -199,7 +162,9 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
+        alignItems: 'center',
         marginBottom: 10,
+        // This witdh it's required for ellipsizeMode
         width: Dimensions.get('window').width * 0.8,
     },
 

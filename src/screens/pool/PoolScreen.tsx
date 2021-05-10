@@ -1,12 +1,13 @@
 import * as React from 'react';
 import {
-    Alert, LayoutAnimation, SectionList, SectionListData, StyleSheet, View,
+    Alert, LayoutAnimation, SectionList, SectionListData, StyleSheet, View
 } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { ChartCard } from '~/components/charts/ChartCard';
+import { ScreenHeader } from '~/components/headers/ScreenHeader';
 import { PDText } from '~/components/PDText';
 import { useLoadRecipeHook, useRealmPoolHistoryHook } from '~/hooks/RealmPoolHook';
 import { LogEntry } from '~/models/logs/LogEntry';
@@ -63,6 +64,10 @@ export const PoolScreen: React.FC = () => {
     if (!selectedPool || !recipe) {
         return <></>;
     }
+
+    const handleEditButtonPressed = () => {
+        navigate('EditPoolNavigator');
+    };
 
     const handleChartsPressed = () => {
         if (isUnlocked) {
@@ -220,7 +225,9 @@ export const PoolScreen: React.FC = () => {
     ];
     return (
         <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } } forceInset={ { bottom: 'never' } }>
-            <PoolHeaderView />
+           <ScreenHeader textType="heading" hasEditButton color="blue" handlePressedEdit={ handleEditButtonPressed }>
+            {selectedPool.name}
+           </ScreenHeader>
             <SectionList
                 sections={ sections }
                 style={ styles.sectionList }
