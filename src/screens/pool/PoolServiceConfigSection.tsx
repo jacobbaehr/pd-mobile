@@ -26,12 +26,12 @@ import { VolumeEstimatorHelpers } from './editOrCreate/volumeEstimator/VolumeEst
  */
 const PoolServiceConfigSection = () => {
     const { navigate } = useNavigation<StackNavigationProp<PDNavParams>>();
-    const navigationState = useNavigationState(state => state.routeNames);
+    const navigationState = useNavigationState((state) => state.routeNames);
     const selectedPool = useSelector<AppState>((state) => state.selectedPool) as Pool;
     const recipe = useLoadRecipeHook(selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
     const customTargets = useSelector((state: AppState) => getCustomTargetsBySelectedPool(state, recipe));
     const history = useRealmPoolHistoryHook(selectedPool?.objectId);
-    const deviceSettings = useTypedSelector(state => state.deviceSettings);
+    const deviceSettings = useTypedSelector((state) => state.deviceSettings);
 
     const isEmptyCustom = customTargets?.length === 0;
 
@@ -40,12 +40,18 @@ const PoolServiceConfigSection = () => {
     };
 
     const navigateToRecipes = () => {
-        const screenName = navigationState?.includes('EditOrCreatePoolScreen') ? 'EditOrCreatePoolScreen' : 'PoolScreen';
+        const screenName = navigationState?.includes('EditOrCreatePoolScreen')
+            ? 'EditOrCreatePoolScreen'
+            : 'PoolScreen';
         navigate('RecipeList', { prevScreen: screenName });
     };
 
     const navigateToReadings = () => {
         navigate('ReadingList');
+    };
+
+    const navigateToEditPool = () => {
+        navigate('EditPoolNavigator');
     };
 
     const getCustomTargets = () => {
@@ -69,54 +75,71 @@ const PoolServiceConfigSection = () => {
     const lastTimeUpdate = () =>
         history.length > 0 ? `Last Serviced: ${formatDistanceStrict(history[0].ts, Date.now())} ago` : '';
 
-    const abbreviateGallons = `${Util.abbreviate(selectedPool.gallons)} ${VolumeEstimatorHelpers.getResultLabelForUnit(deviceSettings.units)}, ${getDisplayForWaterType(selectedPool.waterType)}`;
+    const abbreviateGallons = `${Util.abbreviate(selectedPool.gallons)} ${VolumeEstimatorHelpers.getResultLabelForUnit(
+        deviceSettings.units,
+    )}, ${getDisplayForWaterType(selectedPool.waterType)}`;
 
     return (
-        <PDView style={ styles.container }>
-            <PDView>
-                <PDText type="default" style={ styles.title }>
-                    Pool Service
-                </PDText>
-                <PDView style={ styles.row }>
-                    <SVG.IconInformation height={ 21 } width={ 22 } fill="#737373"/>
-                    <PDText type="bodySemiBold" color="grey" style={ { marginLeft: 4 } }>{abbreviateGallons}</PDText>
-                </PDView>
+        <>
+            <PDView bgColor="white" style={ styles.poolNameContainer }>
+                <PDText type="heading" numberOfLines={ 4 }>{selectedPool.name}</PDText>
+            </PDView>
+            <PDView style={ styles.container }>
                 <PDView>
-                    <PDView>
-                        <PDText type="default" style={ styles.subTitle }>
-                            formula
-                        </PDText>
-                        <TouchableOpacity onPress={ navigateToRecipes }>
-                            <PDView style={ styles.row }>
-                                <PDText style={ styles.buttonResults } numberOfLines={ 1 } ellipsizeMode="tail">
-                                    {recipe?.name}
-                                </PDText>
-                                <SVG.IconCircleForward height={ 21 } width={ 22 } fill="#1E6BFF"/>
+                    <PDText type="bodySemiBold" style={ [styles.subTitle, { marginBottom: 4 }] }>
+                        water
+                    </PDText>
+                    <TouchableOpacity onPress={ navigateToEditPool }>
+                        <PDView style={ styles.row }>
+                            <PDView style={ styles.buttonText }>
+                                <SVG.IconInformation height={ 21 } width={ 22 } fill="#1E6BFF" />
                             </PDView>
-                        </TouchableOpacity>
-                    </PDView>
-                    {isEmptyCustom || (
-                        <PDView>
-                            <PDText type="default" style={ styles.subTitle }>
-                                Custom Targets
+                            <PDText type="bodyBold" color="blue">
+                                {abbreviateGallons}
                             </PDText>
-                            <TouchableOpacity onPress={ navigateToCustomTargets }>
+                        </PDView>
+                    </TouchableOpacity>
+                    <PDView>
+                        <PDView>
+                            <PDText type="bodySemiBold" style={ styles.subTitle }>
+                                formula
+                            </PDText>
+                            <TouchableOpacity onPress={ navigateToRecipes }>
                                 <PDView style={ styles.row }>
-                                    <PDText style={ styles.buttonResults } numberOfLines={ 1 } ellipsizeMode="tail">
-                                        {getCustomTargets()}
+                                    <PDText type="bodyBold" color="blue" numberOfLines={ 1 } ellipsizeMode="tail" style={ styles.buttonText }>
+                                        {recipe?.name}
                                     </PDText>
-                                    <SVG.IconCircleForward height={ 21 } width={ 22 } fill="#1E6BFF"/>
+                                    <SVG.IconCircleForward height={ 21 } width={ 22 } fill="#1E6BFF" />
                                 </PDView>
                             </TouchableOpacity>
                         </PDView>
-                    )}
+                        {isEmptyCustom || (
+                            <PDView>
+                                <PDText type="bodySemiBold" style={ styles.subTitle }>
+                                    Custom Targets
+                                </PDText>
+                                <TouchableOpacity onPress={ navigateToCustomTargets }>
+                                    <PDView style={ styles.row }>
+                                        <PDText type="bodyBold" color="blue" numberOfLines={ 1 } ellipsizeMode="tail" style={ styles.buttonText }>
+                                            {getCustomTargets()}
+                                        </PDText>
+                                        <SVG.IconCircleForward height={ 21 } width={ 22 } fill="#1E6BFF" />
+                                    </PDView>
+                                </TouchableOpacity>
+                            </PDView>
+                        )}
+                    </PDView>
                 </PDView>
+                <BoringButton
+                    title="Start Service"
+                    onPress={ navigateToReadings }
+                    containerStyles={ styles.buttonContainer }
+                />
+                <PDText type="default" style={ styles.lastUpdateText }>
+                    {lastTimeUpdate()}
+                </PDText>
             </PDView>
-            <BoringButton title="Start Service" onPress={ navigateToReadings } containerStyles={ styles.buttonContainer } />
-            <PDText type="default" style={ styles.lastUpdateText }>
-                {lastTimeUpdate()}
-            </PDText>
-        </PDView>
+        </>
     );
 };
 
@@ -136,13 +159,6 @@ const styles = StyleSheet.create({
     buttonContainer: {
         backgroundColor: '#00B25C',
         marginBottom: 12,
-    },
-    buttonResults: {
-        fontSize: 16,
-        lineHeight: 24,
-        color: '#1E6BFF',
-        fontStyle: 'normal',
-        fontWeight: 'bold',
     },
     title: {
         fontWeight: 'bold',
@@ -167,7 +183,9 @@ const styles = StyleSheet.create({
         // This witdh it's required for ellipsizeMode
         width: Dimensions.get('window').width * 0.8,
     },
-
+    buttonText: {
+        marginRight: 4,
+    },
     lastUpdateText: {
         fontStyle: 'normal',
         fontWeight: '500',
@@ -175,6 +193,10 @@ const styles = StyleSheet.create({
         lineHeight: 24,
         color: '#8C8C8C',
         marginBottom: 18,
+    },
+    poolNameContainer: {
+        paddingHorizontal: 18,
+        paddingTop: 18,
     },
 });
 

@@ -24,14 +24,13 @@ import { Util } from '~/services/Util';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { PoolHeaderView } from './PoolHeaderView';
 import { PoolHistoryListItem } from './PoolHistoryListItem';
 import PoolServiceConfigSection from './PoolServiceConfigSection';
 import { usePoolChart } from './usePoolChart';
 
 export const PoolScreen: React.FC = () => {
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
-    const selectedPool  = useTypedSelector((state) => state.selectedPool);
+    const selectedPool = useTypedSelector((state) => state.selectedPool);
     const dispatchThunk = useThunkDispatch();
 
     const isUnlocked = DS.isSubscriptionValid(deviceSettings, Date.now());
@@ -44,21 +43,22 @@ export const PoolScreen: React.FC = () => {
     const [selectedHistoryCellIds, setSelectedHistoryCellIds] = React.useState<string[]>([]);
 
     const recipe = useLoadRecipeHook(selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
-    const selectedRecipeKey = useTypedSelector(state => state.selectedRecipeKey);
+    const selectedRecipeKey = useTypedSelector((state) => state.selectedRecipeKey);
     const chartData = usePoolChart();
-
 
     /// If the user selects a new recipe, save it to the pool.
     /// This is so dangerous & error-prone
     React.useEffect(() => {
-        if (!selectedPool || !selectedRecipeKey || selectedPool.recipeKey === selectedRecipeKey) { return; }
+        if (!selectedPool || !selectedRecipeKey || selectedPool.recipeKey === selectedRecipeKey) {
+            return;
+        }
         dispatchThunk(
             updatePool({
                 ...selectedPool,
                 recipeKey: selectedRecipeKey ?? undefined,
-            })
+            }),
         );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedRecipeKey]);
 
     if (!selectedPool || !recipe) {
@@ -225,9 +225,9 @@ export const PoolScreen: React.FC = () => {
     ];
     return (
         <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } } forceInset={ { bottom: 'never' } }>
-           <ScreenHeader textType="heading" hasEditButton color="blue" handlePressedEdit={ handleEditButtonPressed }>
-            {selectedPool.name}
-           </ScreenHeader>
+            <ScreenHeader textType="heading" hasEditButton color="blue" handlePressedEdit={ handleEditButtonPressed }>
+                Pool Details
+            </ScreenHeader>
             <SectionList
                 sections={ sections }
                 style={ styles.sectionList }
