@@ -2,33 +2,32 @@ import React from 'react';
 import { SvgProps } from 'react-native-svg';
 import { PDColor } from '~/components/PDTheme';
 
-import IconCircleAdd from './images/icons/icon_add.svg';
+import IconCircleAdd from './images/icons/icon_circle_add.svg';
 // General Icons
-import IconBack from './images/icons/icon_back.svg';
+import IconBack from './images/icons/icon_circle_back.svg';
+import IconCircleEdit from './images/icons/icon_circle_edit.svg';
+import IconCircleForward from './images/icons/icon_circle_forward.svg';
 import IconForward from './images/icons/icon_forward.svg';
 import IconInformation from './images/icons/icon_information.svg';
 import Circle from './images/shapes/big_circle.svg';
 import Other from './images/shapes/big_other.svg';
 import Oval from './images/shapes/big_oval.svg';
 import Rectangle from './images/shapes/big_rectangle.svg';
+import IconCloseButton from './images/shapes/close_button.svg';
 import IconCheckmark from './images/shapes/icon_checkmark.svg';
 // Volume Estimator
 import IconCircle from './images/shapes/icon_circle.svg';
 import IconDelete from './images/shapes/icon_delete.svg';
 import IconEstimator from './images/shapes/icon_estimator.svg';
-import IconOther from './images/shapes/icon_other.svg';
-import IconOval from './images/shapes/icon_oval.svg';
-import IconRectangle from './images/shapes/icon_rectangle.svg';
-import IconCloseButton from './images/shapes/close_button.svg';
 // Create and Edit Pool
 import IconName from './images/shapes/icon_name.svg';
-import IconWaterType from './images/shapes/icon_watertype.svg';
+import IconOther from './images/shapes/icon_other.svg';
+import IconOval from './images/shapes/icon_oval.svg';
+import IconRecipes from './images/shapes/icon_recipes.svg';
+import IconRectangle from './images/shapes/icon_rectangle.svg';
 import IconVolume from './images/shapes/icon_volume.svg';
 import IconWallType from './images/shapes/icon_walltype.svg';
-import IconRecipes from './images/shapes/icon_recipes.svg';
-
-
-
+import IconWaterType from './images/shapes/icon_watertype.svg';
 
 /** */
 export const images = {
@@ -83,6 +82,7 @@ export const SVG:  Record<string, (props: OverrideSvgProps) => JSX.Element> = {
         IconOval: (props) => <IconOval { ...props } />,
         IconOther: (props) => <IconOther { ...props } />,
         IconCircleBack: (props) => <IconBack { ...props } />,
+        IconCircleEdit: (props) => <IconCircleEdit { ...props } />,
         IconForward: (props) => <IconForward { ...props } />,
         Rectangle: (props) => <Rectangle { ...props } />,
         Oval: (props) => <Oval { ...props } />,
@@ -92,6 +92,7 @@ export const SVG:  Record<string, (props: OverrideSvgProps) => JSX.Element> = {
         IconCheckmark: (props) => <IconCheckmark { ...props } />,
         IconDelete: (props) => <IconDelete { ...props } />,
         IconCircleAdd: (props) => <IconCircleAdd { ...props } />,
+        IconCircleForward: (props) => <IconCircleForward { ...props } />,
         IconInformation: (props) => <IconInformation { ...props } />,
         IconCloseButton: (props)=> <IconCloseButton { ...props } />,
         IconName: (props)=> <IconName { ...props } />,
