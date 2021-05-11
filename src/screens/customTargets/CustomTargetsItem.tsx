@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { TextButton } from '~/components/buttons/TextButton';
@@ -13,6 +13,7 @@ import { TargetRange } from '~/models/recipe/TargetRange';
 import { AppState } from '~/redux/AppState';
 import { Database } from '~/repository/Database';
 import { Util } from '~/services/Util';
+
 import { TargetsHelper } from './TargetHelper';
 
 interface CustomTargetsItemProps {
@@ -79,11 +80,14 @@ const CustomTargetsItem: React.FC<CustomTargetsItemProps> = ({ tr }) => {
         await Database.saveNewCustomTarget(mapCustomTarget);
     };
 
-    const handleTextChange = (fieldName: 'min' | 'max', newValue: string) => {
-        const newFormValues = Util.deepCopy(formValues);
-        newFormValues[fieldName] = newValue;
-        setFormValues(newFormValues);
-    };
+    const handleTextChange = useCallback(
+        (fieldName: 'min' | 'max', newValue: string) => {
+            const newFormValues = Util.deepCopy(formValues);
+            newFormValues[fieldName] = newValue;
+            setFormValues(newFormValues);
+        },
+        [formValues]
+    );
 
     const handleBlur = () => {
         if (isValid) {

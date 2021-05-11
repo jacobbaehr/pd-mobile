@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 import SafeAreaView from 'react-native-safe-area-view';
 import { useSelector } from 'react-redux';
+import { ScreenHeader } from '~/components/headers/ScreenHeader';
 import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
 import { useLoadRecipeHook } from '~/hooks/RealmPoolHook';
@@ -11,7 +12,6 @@ import { TargetRange } from '~/models/recipe/TargetRange';
 import { AppState } from '~/redux/AppState';
 import { RecipeService } from '~/services/RecipeService';
 
-import CustomTargetsHeader from './CustomTargetsHeader';
 import CustomTargetsItem from './CustomTargetsItem';
 
 const CustomTargetsScreen = () => {
@@ -22,7 +22,9 @@ const CustomTargetsScreen = () => {
 
     return (
         <SafeAreaView forceInset={ { bottom: 'never' } } style={ styles.safeArea }>
-            <CustomTargetsHeader />
+            <ScreenHeader textType="heading" color="blue">
+                Custom Targets
+            </ScreenHeader>
             <KeyboardAwareFlatList
                 keyboardDismissMode={ 'interactive' }
                 keyboardShouldPersistTaps={ 'handled' }
