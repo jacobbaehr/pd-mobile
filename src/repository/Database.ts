@@ -57,6 +57,7 @@ export class Database {
                     objectId: pool.objectId,
                     recipeKey: pool.recipeKey,
                     wallType: pool.wallType,
+                    email: pool.email,
                 });
             });
         } catch (e) {
@@ -150,6 +151,7 @@ export class Database {
                     existingPool.recipeKey = pool.recipeKey;
                     existingPool.waterType = pool.waterType;
                     existingPool.wallType = pool.wallType;
+                    existingPool.email = pool.email;
                 }
             });
             return Promise.resolve();

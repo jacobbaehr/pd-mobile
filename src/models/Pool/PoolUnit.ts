@@ -23,7 +23,7 @@ export const PoolUnitOptions: DisplayValueOption<PoolUnit>[] = [
     },
 ];
 
-export const getDisplayForPoolValue = (value: PoolUnit): string | null => {
+export const getDisplayForPoolValue = (value: PoolUnit): string => {
     const names = { metric: 'Liters', us: 'US Gallons', imperial: 'Imp Gallons' };
-    return names[value] ?? null;
+    return names[value];
 };

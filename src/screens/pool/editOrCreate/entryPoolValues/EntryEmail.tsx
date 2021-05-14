@@ -7,37 +7,43 @@ import { useNavigation } from '@react-navigation/native';
 
 import { useEntryPool } from '../hooks/useEntryPool';
 
-export const EntryName: React.FC = () => {
+export const EntryEmail: React.FC = () => {
     const navigation = useNavigation<PDStackNavigationProps>();
     const { pool, setPool } = useEntryPool();
-    const [name, setName] = useState(pool?.name);
+    const [email, setEmail] = useState(pool?.email ?? '');
 
-    const keyboardAccessoryViewId = 'keyboardaccessoryidpooleditscreen1';
+    const keyboardAccessoryViewId = 'keyboardaccesoryentryemial';
 
     const goBack = () => {
         navigation.goBack();
     };
 
+    const validateEmail = () => new RegExp(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/).test(email.trim());
+
+
     const handleOnPressSaveButton = () => {
-        setPool({ name });
-        goBack();
+        const hasValidateEmail = validateEmail();
+        if (hasValidateEmail) {
+            setPool({ email: email.trim() });
+            goBack();
+        }
     };
 
-    const handleTextChanged = useCallback((newName: string) => {
-        setName(newName);
+    const handleTextChanged = useCallback((newEmail: string) => {
+        setEmail(newEmail);
     }, []);
 
-    const hasPoolNameChanged = name === pool?.name;
 
     return (
         <>
             <BorderInputWithLabel
-                label="Name"
-                placeholder="Aquaman's Pool"
+                label="Email"
+                placeholder="johnsmith@gmail.com"
                 onChangeText={ handleTextChanged }
+                autoCapitalize="none"
                 autoFocus
                 inputAccessoryViewID={ keyboardAccessoryViewId }
-                value={ name }
+                value={ email }
                 returnKeyType="done"
                 onSubmitEditing={ handleOnPressSaveButton }
                 enablesReturnKeyAutomatically
@@ -45,10 +51,9 @@ export const EntryName: React.FC = () => {
             <KeyboardButton
                 nativeID={ keyboardAccessoryViewId }
                 onPress={ handleOnPressSaveButton }
-                bgColor={ !hasPoolNameChanged ? 'blue' : 'greyVeryLight' }
-                activeOpacity={ !hasPoolNameChanged ? 0 : 1 }
+                bgColor={ validateEmail() ? 'blue' : 'greyVeryLight' }
                 hitSlop={ { top: 5, left: 5, bottom: 5, right: 5 } }
-                disabled={ hasPoolNameChanged }>
+                disabled={ !validateEmail() }>
                 Save
             </KeyboardButton>
         </>

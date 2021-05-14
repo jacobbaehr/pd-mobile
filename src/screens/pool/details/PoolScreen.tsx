@@ -128,7 +128,7 @@ export const PoolScreen: React.FC = () => {
     };
 
     const handleHistoryCellEmailPressed = (logEntry: LogEntry) => {
-        EmailService.emailLogEntry(logEntry);
+        EmailService.emailLogEntry(logEntry, selectedPool?.email ?? '');
     };
 
     const handleDataButtonPressed = async () => {
