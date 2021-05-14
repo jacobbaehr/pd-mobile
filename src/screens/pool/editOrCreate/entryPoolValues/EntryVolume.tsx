@@ -1,4 +1,3 @@
-
 import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { SVG } from '~/assets/images';
@@ -15,6 +14,7 @@ import { PDStackNavigationProps } from '~/navigator/shared';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
 import { useNavigation } from '@react-navigation/native';
+
 import { useEntryPool } from '../hooks/useEntryPool';
 import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
 
@@ -27,20 +27,19 @@ export const EntryVolume = () => {
     const [units, setUnits] = useState<PoolUnit>(ds.units);
     const navigation = useNavigation<PDStackNavigationProps>();
     const { estimation, clear } = useVolumeEstimator();
+
     const keyboardAccessoryViewId = 'keyboardaccessoryidpooleditscreen2';
 
     const handleOnPressSaveButton = () => {
         let gallons = VolumeUnitsUtil.getUsGallonsByUnit(volume, units);
         setPool({ gallons });
-
         clear();
         navigation.goBack();
     };
 
-    const handleTextChanged = (text: string) => {
-        const input = Number(text);
-        setVolume(input);
-    };
+    const handleTextChanged = useCallback((text: string) => {
+        setVolume(+text);
+    }, []);
 
     const handleUnitButtonPressed = () => {
         const nextUnit = VolumeUnitsUtil.getNextUnitValue(units);
@@ -56,18 +55,13 @@ export const EntryVolume = () => {
         navigation.navigate('SelectShape');
     };
 
-    const unitText = getDisplayForPoolValue(units) as string;
-    const volumesFixed = estimation ?  Number(estimation).toFixed(0) : volume.toFixed(0);
+    const unitText = getDisplayForPoolValue(units);
+    const volumesFixed = estimation ? Number(estimation).toFixed(0) : volume.toFixed(0);
 
-    const getButtonDisableState = useCallback(
-        () => {
-            return  (VolumeUnitsUtil.getUsGallonsByUnit(volume, units) !== pool?.gallons) || estimation;
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [volume, units, estimation]);
+    const hasVolumeChanged = VolumeUnitsUtil.getUsGallonsByUnit(volume, units) !== pool?.gallons || estimation;
 
     return (
-        <PDView>
+        <>
             <PDView style={ styles.inputContainer }>
                 <BorderInputWithLabel
                     value={ volumesFixed }
@@ -83,7 +77,7 @@ export const EntryVolume = () => {
                     onSubmitEditing={ handleOnPressSaveButton }
                     enablesReturnKeyAutomatically
                 />
-                <PDView style={ { flex:1 } }>
+                <PDView style={ { flex: 1 } }>
                     <PDText type="bodyGreyBold" style={ styles.unit }>
                         unit
                     </PDText>
@@ -107,22 +101,19 @@ export const EntryVolume = () => {
             </ButtonWithChildren>
             <KeyboardButton
                 onPress={ handleOnPressSaveButton }
-                disabled={ !getButtonDisableState() }
-                bgColor={ getButtonDisableState() ? 'pink' : 'greyVeryLight' }
-                textColor={ getButtonDisableState() ? 'white' : 'grey' }
+                disabled={ !hasVolumeChanged }
+                bgColor={ hasVolumeChanged ? 'pink' : 'greyVeryLight' }
+                textColor={ hasVolumeChanged ? 'white' : 'grey' }
                 nativeID={ keyboardAccessoryViewId }
-                activeOpacity={ getButtonDisableState() ? 0 : 1 }
+                activeOpacity={ hasVolumeChanged ? 0 : 1 }
                 hitSlop={ { top: 5, left: 5, bottom: 5, right: 5 } }>
                 Save
             </KeyboardButton>
-        </PDView>
+        </>
     );
 };
 
 const styles = StyleSheet.create({
-    inputAccessoryView: {
-        width: '100%',
-    },
     inputContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -169,21 +160,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-    },
-    saveButtonContainer: {
-        borderRadius: 27.5,
-        marginBottom: 24,
-        justifyContent: 'center',
-        alignSelf: 'center',
-    },
-    saveButton: {
-        borderRadius: 27.5,
-        paddingVertical: PDSpacing.xs,
-        paddingHorizontal: 155,
-    },
-    saveText: {
-        fontWeight: '700',
-        fontSize: 18,
-        alignSelf: 'center',
     },
 });

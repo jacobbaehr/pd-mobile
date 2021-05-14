@@ -1,16 +1,17 @@
+import { format } from 'date-fns';
 import { openComposer } from 'react-native-email-link';
 import { LogEntry } from '~/models/logs/LogEntry';
-import { format } from 'date-fns';
 
-export class EmailService {
-    static emailLogEntry(logEntry: LogEntry) {
-        const emailBody = EmailService.createEmailBody(logEntry);
+export namespace EmailService {
+
+    export const emailLogEntry = (logEntry: LogEntry, poolEmail:string) => {
+        const emailBody = createEmailBody(logEntry);
         const subject = 'Pool Service Summary';
-        EmailService.sendEmail(subject, emailBody);
-    }
+        sendEmail(subject, emailBody, poolEmail);
+    };
 
     // function that accepts LogEntry and returns string for email body
-    private static createEmailBody = (logEntry: LogEntry) => {
+    const createEmailBody = (logEntry: LogEntry) => {
         // putting date in format desired for email body
         const dateFormat = format(logEntry.ts, 'MMM d, y') + format(logEntry.ts, '  //  h:mma').toLowerCase();
 
@@ -48,7 +49,7 @@ export class EmailService {
     };
 
     // function that sends the email and accepts strings for subject and logEntry
-    private static sendEmail(subject: string, emailBody: string) {
+    const sendEmail = (subject: string, emailBody: string, poolEmail: string) => {
         // for now I've hardcoded subject, but if its value came from somewhere, this would autopopulate
         // the subject line if it is undefined
         if (subject === undefined) {
@@ -58,10 +59,11 @@ export class EmailService {
         try {
             openComposer({
                 subject,
+                to: poolEmail,
                 body: emailBody,
             });
         } catch (e) {
             console.error('Could not open email app: ' + e);
         }
-    }
+    };
 }

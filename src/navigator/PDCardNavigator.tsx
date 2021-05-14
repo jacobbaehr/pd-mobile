@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { CustomTargetsScreen } from '~/screens/customTargets/CustomTargetsScreen';
-import { PoolScreen } from '~/screens/pool/PoolScreen';
+import { PoolScreen } from '~/screens/pool/details/PoolScreen';
 import { PoolListScreen } from '~/screens/poolList/PoolListScreen';
 import { ReadingListScreen } from '~/screens/readings/ReadingListScreen';
 import { RecipeListNavParams, RecipeListScreen } from '~/screens/recipes/RecipeListScreen';
