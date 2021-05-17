@@ -27,8 +27,10 @@ import { useNavigation } from '@react-navigation/native';
 import { PoolHistoryListItem } from './PoolHistoryListItem';
 import PoolServiceConfigSection from './PoolServiceConfigSection';
 import { usePoolChart } from './usePoolChart';
+import { useStandardStatusBar } from '~/hooks/useStatusBar';
 
 export const PoolScreen: React.FC = () => {
+    useStandardStatusBar();
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
     const selectedPool = useTypedSelector((state) => state.selectedPool);
     const dispatchThunk = useThunkDispatch();

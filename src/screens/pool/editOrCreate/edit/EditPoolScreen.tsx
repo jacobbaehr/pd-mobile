@@ -17,7 +17,7 @@ export const EditPoolScreen: React.FunctionComponent = () => {
     const { visible, toggleVisible } = useModal();
     const { pool } = useEntryPool();
     const dispatchThunk = useThunkDispatch();
-    const editPoolSectionInfo = useEditPoolSectionInfo(pool, toggleVisible );
+    const editPoolSectionInfo = useEditPoolSectionInfo(pool, toggleVisible);
 
     /// Whenever the pool context changes, persist them in the db:
     React.useEffect(() => {

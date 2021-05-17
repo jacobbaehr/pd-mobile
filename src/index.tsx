@@ -13,6 +13,7 @@ const PoolDash: React.FunctionComponent<{}> = () => {
     React.useEffect(() => {
         StatusBar.setBarStyle('dark-content');
     }, []);
+
     return (
         <Provider store={ store }>
             <SafeAreaProvider>
