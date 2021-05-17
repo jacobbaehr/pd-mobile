@@ -62,7 +62,7 @@ export const PoolListScreen: React.FC = () => {
         navigate('Settings');
     };
     const handleUpgradePressed = () => {
-        navigate('Buy');
+        navigate('Subscription');
     };
 
     const isEmpty = pools.length === 0;

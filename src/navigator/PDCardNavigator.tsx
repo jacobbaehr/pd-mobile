@@ -24,7 +24,6 @@ export type PDCardNavigatorParams = {
     RecipeList: RecipeListNavParams;
     RecipeDetails: RecipeDetailsNavParams;
     PoolHistory: undefined;
-    Buy: undefined;
     Subscription: undefined;
     CustomTargets: { prevScreen: 'ReadingList' | 'EditPoolNavigator' };
 };
