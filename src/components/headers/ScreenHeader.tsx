@@ -18,7 +18,7 @@ interface ScreenHeaderProps {
     handlePressedEdit?: () => void;
     handlePressedBack?: () => void;
     color?: PDColor;
-    textType: PDTextType;
+    textType?: PDTextType
 }
 export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
     const { goBack } = useNavigation();
@@ -31,6 +31,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
             handlePressedEdit,
             handlePressedBack = () => {return;},
             color = 'black',
+            textType = 'subHeading',
         } = props;
     const theme = useTheme();
 
@@ -50,7 +51,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
     const containerStyles = Util.onlyTrueArray([styles.container, hasBottomLine && styles.containerBottom]);
     return (
         <PDView style={ containerStyles } bgColor="white">
-            <PDView style={ styles.sideContainer }>
+        <PDView style={ styles.sideContainer }>
                 {hasBackButton && (
                     <TouchableScale { ...touchableProps } onPress={ handleBackButtonPressed }>
                         <SVG.IconCircleBack height={ 32 } width={ 32 } fill={ svgColor } />
@@ -58,7 +59,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
                 )}
             </PDView>
             <PDView style={ styles.centerContainer }>
-                <PDText type={ props.textType } color="black" style={ styles.text }>
+                <PDText type={ textType } color="black" style={ styles.text }>
                     {children}
                 </PDText>
             </PDView>
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: PDSpacing.lg,
+        padding: PDSpacing.md,
         maxHeight: 80,
     },
     containerBottom: {

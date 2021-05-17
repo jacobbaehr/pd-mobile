@@ -1,16 +1,18 @@
 import * as React from 'react';
-import { BuyScreen } from '~/screens/buy/BuyScreen';
-import CustomTargetsScreen from '~/screens/customTargets/CustomTargetsScreen';
-import { PoolScreen } from '~/screens/pool/details/PoolScreen';
+import { CustomTargetsScreen } from '~/screens/customTargets/CustomTargetsScreen';
+import { PoolScreen } from '~/screens/pool/PoolScreen';
 import { PoolListScreen } from '~/screens/poolList/PoolListScreen';
 import { ReadingListScreen } from '~/screens/readings/ReadingListScreen';
-import { RecipeListScreen, RecipeListNavParams } from '~/screens/recipes/RecipeListScreen';
+import { RecipeListNavParams, RecipeListScreen } from '~/screens/recipes/RecipeListScreen';
 import { RecipeDetailsNavParams, RecipeScreen } from '~/screens/recipes/RecipeScreen';
 import { SettingsScreen } from '~/screens/settings/SettingsScreen';
+import { SubscriptionScreen } from '~/screens/subscription/SubscriptionScreen';
 import { TreatmentListScreen } from '~/screens/treatments/TreatmentListScreen';
 import { PoolHistoryScreen } from '~/screens/trends/PoolHistoryScreen';
 
 import { createStackNavigator } from '@react-navigation/stack';
+
+import { SettingNavigation } from './animationEffects';
 
 // This defines the navigation params accepted by each possible screen in PDCardNavigator
 export type PDCardNavigatorParams = {
@@ -23,7 +25,8 @@ export type PDCardNavigatorParams = {
     RecipeDetails: RecipeDetailsNavParams;
     PoolHistory: undefined;
     Buy: undefined;
-    CustomTargets: { prevScreen: 'ReadingList' | 'PDPoolNavigator' };
+    Subscription: undefined;
+    CustomTargets: { prevScreen: 'ReadingList' | 'EditPoolNavigator' };
 };
 
 const CardStack = createStackNavigator<PDCardNavigatorParams>();
@@ -38,10 +41,18 @@ export const PDCardNavigator = (): JSX.Element => {
             <CardStack.Screen name="RecipeList" component={ RecipeListScreen } />
             <CardStack.Screen name="RecipeDetails" component={ RecipeScreen } />
             <CardStack.Screen name="PoolHistory" component={ PoolHistoryScreen } />
-            <CardStack.Screen name="Settings" component={ SettingsScreen } />
-            <CardStack.Screen name="Buy" component={ BuyScreen } />
+            <CardStack.Screen
+                name="Settings"
+                component={ SettingsScreen }
+                options={ {
+                    transitionSpec: {
+                        open: SettingNavigation,
+                        close: SettingNavigation,
+                    },
+                } }
+            />
             <CardStack.Screen name="CustomTargets" component={ CustomTargetsScreen } />
-            {/* <Stack.Screen name="PurchasePro" component={ PurchaseProStack } /> */}
+            <CardStack.Screen name="Subscription" component={ SubscriptionScreen } />
         </CardStack.Navigator>
     );
 };

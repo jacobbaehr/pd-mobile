@@ -5,12 +5,12 @@ import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
 import { Util } from './Util';
 
 // Every time wee add a property to whatever class you will need to those arrays.
-const PoolProps = ['name', 'gallons', 'waterType', 'wallType', 'objectId', 'recipeKey', 'email'];
+const PoolProps = ['name', 'gallons', 'waterType', 'wallType', 'objectId', 'recipeKey', 'newPool'];
 const LogEntryProps = ['objectId', 'poolId', 'ts', 'readingEntries', 'treatmentEntries', 'recipeKey', 'notes'];
 const TargetRangeProps = ['objectId', 'poolId', 'var', 'min', 'max'];
 
 /**
- * if you need to parser, cast or convert any data form realm, you should use in this util class.inmant
+ * if you need to parser, cast or convert any data form realm, you should use in this util class.
  */
 export class RealmUtil {
     /**

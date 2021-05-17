@@ -1,3 +1,4 @@
+
 import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { SVG } from '~/assets/images';
@@ -8,42 +9,38 @@ import BorderInputWithLabel from '~/components/inputs/BorderInputWithLabel';
 import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
-import { DeviceSettings } from '~/models/DeviceSettings';
+import { useVolumeEstimator } from '~/screens/pool/editOrCreate/hooks/useVolumeEstimator';
 import { getDisplayForPoolValue, PoolUnit } from '~/models/Pool/PoolUnit';
 import { PDStackNavigationProps } from '~/navigator/shared';
-import { useThunkDispatch, useTypedSelector } from '~/redux/AppState';
-import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
-import { useVolumeEstimator } from '~/screens/pool/editOrCreate/hooks/useVolumeEstimator';
-import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
 import { useNavigation } from '@react-navigation/native';
-
 import { useEntryPool } from '../hooks/useEntryPool';
+import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
 
 export const EntryVolume = () => {
     const { pool, setPool } = useEntryPool();
-    const deviceSettings = useTypedSelector((state) => state.deviceSettings);
+    const { ds, updateDS } = useDeviceSettings();
     const [volume, setVolume] = useState(() => {
-        return VolumeUnitsUtil.getVolumeByUnit(pool?.gallons ?? 0, 'us', deviceSettings.units);
+        return VolumeUnitsUtil.getVolumeByUnit(pool?.gallons ?? 0, 'us', ds.units);
     });
-    const [units, setUnits] = useState<PoolUnit>(deviceSettings.units);
-    const dispatch = useThunkDispatch();
+    const [units, setUnits] = useState<PoolUnit>(ds.units);
     const navigation = useNavigation<PDStackNavigationProps>();
     const { estimation, clear } = useVolumeEstimator();
-
     const keyboardAccessoryViewId = 'keyboardaccessoryidpooleditscreen2';
 
     const handleOnPressSaveButton = () => {
         let gallons = VolumeUnitsUtil.getUsGallonsByUnit(volume, units);
         setPool({ gallons });
+
         clear();
         navigation.goBack();
     };
 
-    const handleTextChanged = useCallback((text: string) => {
-        setVolume(+text);
-    }, []);
+    const handleTextChanged = (text: string) => {
+        const input = Number(text);
+        setVolume(input);
+    };
 
     const handleUnitButtonPressed = () => {
         const nextUnit = VolumeUnitsUtil.getNextUnitValue(units);
@@ -52,25 +49,25 @@ export const EntryVolume = () => {
     };
 
     const updateDeviceSettingsUnit = (newUnits: PoolUnit) => {
-        const newSettings: DeviceSettings = {
-            ...deviceSettings,
-            units: newUnits,
-        };
-        dispatch(updateDeviceSettings(newSettings));
-        DeviceSettingsService.saveSettings(newSettings);
+        updateDS({ units: newUnits });
     };
 
     const handleEstimatorButtonPressed = () => {
         navigation.navigate('SelectShape');
     };
 
-    const unitText = getDisplayForPoolValue(units);
-    const volumesFixed = estimation ? Number(estimation).toFixed(0) : volume.toFixed(0);
+    const unitText = getDisplayForPoolValue(units) as string;
+    const volumesFixed = estimation ?  Number(estimation).toFixed(0) : volume.toFixed(0);
 
-    const hasVolumeChanged = VolumeUnitsUtil.getUsGallonsByUnit(volume, units) !== pool?.gallons || estimation;
+    const getButtonDisableState = useCallback(
+        () => {
+            return  (VolumeUnitsUtil.getUsGallonsByUnit(volume, units) !== pool?.gallons) || estimation;
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [volume, units, estimation]);
 
     return (
-        <>
+        <PDView>
             <PDView style={ styles.inputContainer }>
                 <BorderInputWithLabel
                     value={ volumesFixed }
@@ -86,7 +83,7 @@ export const EntryVolume = () => {
                     onSubmitEditing={ handleOnPressSaveButton }
                     enablesReturnKeyAutomatically
                 />
-                <PDView style={ { flex: 1 } }>
+                <PDView style={ { flex:1 } }>
                     <PDText type="bodyGreyBold" style={ styles.unit }>
                         unit
                     </PDText>
@@ -110,19 +107,22 @@ export const EntryVolume = () => {
             </ButtonWithChildren>
             <KeyboardButton
                 onPress={ handleOnPressSaveButton }
-                disabled={ !hasVolumeChanged }
-                bgColor={ hasVolumeChanged ? 'pink' : 'greyVeryLight' }
-                textColor={ hasVolumeChanged ? 'white' : 'grey' }
+                disabled={ !getButtonDisableState() }
+                bgColor={ getButtonDisableState() ? 'pink' : 'greyVeryLight' }
+                textColor={ getButtonDisableState() ? 'white' : 'grey' }
                 nativeID={ keyboardAccessoryViewId }
-                activeOpacity={ hasVolumeChanged ? 0 : 1 }
+                activeOpacity={ getButtonDisableState() ? 0 : 1 }
                 hitSlop={ { top: 5, left: 5, bottom: 5, right: 5 } }>
                 Save
             </KeyboardButton>
-        </>
+        </PDView>
     );
 };
 
 const styles = StyleSheet.create({
+    inputAccessoryView: {
+        width: '100%',
+    },
     inputContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -169,5 +169,21 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
+    },
+    saveButtonContainer: {
+        borderRadius: 27.5,
+        marginBottom: 24,
+        justifyContent: 'center',
+        alignSelf: 'center',
+    },
+    saveButton: {
+        borderRadius: 27.5,
+        paddingVertical: PDSpacing.xs,
+        paddingHorizontal: 155,
+    },
+    saveText: {
+        fontWeight: '700',
+        fontSize: 18,
+        alignSelf: 'center',
     },
 });

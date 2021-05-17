@@ -1,20 +1,22 @@
 import { format } from 'date-fns';
 import * as React from 'react';
-import { Linking, SafeAreaView, ScrollView, StyleSheet, TouchableHighlight, View } from 'react-native';
+import {
+    Linking, SafeAreaView, ScrollView, StyleSheet, TouchableHighlight, View
+} from 'react-native';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { PDText } from '~/components/PDText';
 import { useLoadRecipeHook } from '~/hooks/RealmPoolHook';
+import { RecipeKey } from '~/models/recipe/RecipeKey';
 import { PDCardNavigatorParams } from '~/navigator/PDCardNavigator';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { dispatch } from '~/redux/AppState';
+import { updateSelectedRecipe } from '~/redux/selectedRecipe/Actions';
 import { Config } from '~/services/Config';
 import { RS } from '~/services/RecipeUtil';
 
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
 import { RecipeScreenHeader } from './RecipeScreenHeader';
-import { updateSelectedRecipe } from '~/redux/selectedRecipe/Actions';
-import { RecipeKey } from '~/models/recipe/RecipeKey';
 
 export interface RecipeDetailsNavParams {
     recipeKey: RecipeKey;

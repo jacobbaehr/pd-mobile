@@ -1,19 +1,15 @@
 import React from 'react';
 import { View } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { CycleButton } from '~/components/buttons/CycleButton';
 import { PDText } from '~/components/PDText';
 import { useTheme } from '~/components/PDTheme';
-import { DeviceSettings } from '~/models/DeviceSettings';
 import { PoolUnit } from '~/models/Pool/PoolUnit';
 import { EstimateRoute } from '~/navigator/shared';
-import { useTypedSelector } from '~/redux/AppState';
-import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
 import { VolumeEstimatorHelpers } from '~/screens/pool/editOrCreate/volumeEstimator/VolumeEstimatorHelpers';
-import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
 import { useRoute } from '@react-navigation/native';
+import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
 
 interface UnitButtonProps  {
     unit: PoolUnit
@@ -23,19 +19,12 @@ interface UnitButtonProps  {
 const UnitButton: React.FC<UnitButtonProps> = (props) => {
     const { unit, handleUnit } = props;
     const { params } = useRoute<EstimateRoute>();
-    const deviceSettings = useTypedSelector(state => state.deviceSettings);
-    const dispatch = useDispatch();
+    const { updateDS } = useDeviceSettings();
 
     const theme = useTheme();
 
-
     const updateDeviceSettingsUnit = (nextUnit: PoolUnit) => {
-        const newSettings: DeviceSettings = {
-            ...deviceSettings,
-            units: nextUnit,
-        };
-        dispatch(updateDeviceSettings(newSettings));
-        DeviceSettingsService.saveSettings(newSettings);
+        updateDS({ units: nextUnit });
     };
 
     const handlerPressedUnitButton = () => {

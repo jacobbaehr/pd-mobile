@@ -16,13 +16,11 @@ import { Pool } from '~/models/Pool';
 import { DryChemicalUnits, Units, WetChemicalUnits } from '~/models/TreatmentUnits';
 import { PDNavParams } from '~/navigator/shared';
 import { dispatch, useTypedSelector } from '~/redux/AppState';
-import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
 import { clearPickerState } from '~/redux/picker/Actions';
 import { clearReadings } from '~/redux/readingEntries/Actions';
 import { Database } from '~/repository/Database';
 import { CalculationService } from '~/services/CalculationService';
 import { Config } from '~/services/Config';
-import { DeviceSettingsService } from '~/services/DeviceSettingsService';
 import { Haptic } from '~/services/HapticService';
 import { RecipeService } from '~/services/RecipeService';
 import { Converter } from '~/services/TreatmentUnitsService';
@@ -36,12 +34,13 @@ import { PDPickerRouteProps } from '../picker/PickerScreen';
 import { TreatmentListFooter } from './TreatmentListFooter';
 import { TreatmentListHelpers, TreatmentState } from './TreatmentListHelpers';
 import { TreatmentListItem } from './TreatmentListItem';
+import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
 
 export const TreatmentListScreen: React.FC = () => {
     const readings = useTypedSelector((state) => state.readingEntries);
     const pool = useTypedSelector((state) => state.selectedPool) as Pool;
     const pickerState = useTypedSelector((state) => state.pickerState);
-    const deviceSettings = useTypedSelector((state) => state.deviceSettings);
+    const { ds, updateDS } = useDeviceSettings();
     const recipeKey = pool?.recipeKey || RecipeService.defaultRecipeKey;
     const [treatmentStates, setTreatmentStates] = React.useState<TreatmentState[]>([]);
     const [hasSelectedAnyTreatments, setHasSelectedAnyTreatments] = React.useState(false);
@@ -52,7 +51,7 @@ export const TreatmentListScreen: React.FC = () => {
     const recipe = useLoadRecipeHook(recipeKey);
     const targetRangeOverridesForPool = useRealmPoolTargetRangesForPool(pool.objectId);
 
-    const allScoops = deviceSettings.scoops;
+    const allScoops = ds.scoops;
 
     const keyboardAccessoryViewId = 'dedgumThisIsSomeReallyUniqueTextTreatmentListKeyboard';
 
@@ -94,12 +93,10 @@ export const TreatmentListScreen: React.FC = () => {
             updateConcentrationTreatment(null);
 
             if (didChange) {
-                const ds = Util.deepCopy(deviceSettings);
-                ds.treatments.concentrations[concentrationTreatmentVar] = newConcentration;
+                const newTreatments = Util.deepCopy(ds.treatments);
+                newTreatments.concentrations[concentrationTreatmentVar] = newConcentration;
                 // Don't await it, be bold:
-                DeviceSettingsService.saveSettings(ds);
-
-                dispatch(updateDeviceSettings(ds));
+                updateDS({ treatments: newTreatments });
             }
         }
     });
@@ -129,13 +126,12 @@ export const TreatmentListScreen: React.FC = () => {
 
         await Database.saveNewLogEntry(logEntry);
         // Save the last-used units:
-        const newDeviceSettings = Util.deepCopy(deviceSettings);
-        newDeviceSettings.treatments.units = TreatmentListHelpers.getUpdatedLastUsedUnits(
-            newDeviceSettings.treatments.units,
+        const newTreatments = Util.deepCopy(ds.treatments);
+        newTreatments.units = TreatmentListHelpers.getUpdatedLastUsedUnits(
+            newTreatments.units,
             finalTreatmentStates,
         );
-        dispatch(updateDeviceSettings(newDeviceSettings));
-        await DeviceSettingsService.saveSettings(newDeviceSettings);
+        updateDS({ treatments: newTreatments });
         dispatch(clearReadings());
         navigate('PoolScreen');
     };
@@ -143,7 +139,7 @@ export const TreatmentListScreen: React.FC = () => {
     const onMessage = (event: WebViewMessageEvent) => {
         const tes = CalculationService.getTreatmentEntriesFromWebviewMessage(event, recipe);
 
-        const lastUnits = deviceSettings.treatments.units;
+        const lastUnits = ds.treatments.units;
         const tss: TreatmentState[] = tes
             .map((te) => {
                 const t = TreatmentListHelpers.getTreatmentFromRecipe(te.var, recipe);
@@ -154,7 +150,7 @@ export const TreatmentListScreen: React.FC = () => {
 
                 let ounces = te.ounces || 0;
                 const baseConcentration = t.concentration || 100;
-                const concentrationOverride = TreatmentListHelpers.getConcentrationForTreatment(t.var, deviceSettings);
+                const concentrationOverride = TreatmentListHelpers.getConcentrationForTreatment(t.var, ds);
 
                 if (concentrationOverride) {
                     ounces = (ounces * baseConcentration) / concentrationOverride;
@@ -327,7 +323,7 @@ export const TreatmentListScreen: React.FC = () => {
     const handleTreatmentNameButtonPressed = (varName: string) => {
         const t = TreatmentListHelpers.getTreatmentFromRecipe(varName, recipe);
         const concentration =
-            TreatmentListHelpers.getConcentrationForTreatment(varName, deviceSettings) || t?.concentration || 100;
+            TreatmentListHelpers.getConcentrationForTreatment(varName, ds) || t?.concentration || 100;
         updateConcentrationTreatment(varName);
 
         Keyboard.dismiss();

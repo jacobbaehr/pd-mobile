@@ -24,11 +24,11 @@ PODS:
     - GCDWebServer/Core (= 3.5.4)
   - GCDWebServer/Core (3.5.4)
   - glog (0.3.5)
-  - Purchases (3.7.5):
-    - PurchasesCoreSwift (= 3.7.5)
-  - PurchasesCoreSwift (3.7.5)
-  - PurchasesHybridCommon (1.4.5):
-    - Purchases (= 3.7.5)
+  - Purchases (3.10.7):
+    - PurchasesCoreSwift (= 3.10.7)
+  - PurchasesCoreSwift (3.10.7)
+  - PurchasesHybridCommon (1.6.2):
+    - Purchases (= 3.10.7)
   - RCTRequired (0.63.3)
   - RCTTypeSafety (0.63.3):
     - FBLazyVector (= 0.63.3)
@@ -259,32 +259,32 @@ PODS:
     - React-Core (= 0.63.3)
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
-  - RealmJS (6.1.6):
+  - RealmJS (6.1.7):
     - GCDWebServer
     - React
   - RNCAsyncStorage (1.12.1):
     - React-Core
-  - RNCMaskedView (0.1.10):
+  - RNCMaskedView (0.1.11):
     - React
-  - RNFS (2.16.6):
+  - RNFS (2.17.0):
     - React
-  - RNGestureHandler (1.10.1):
+  - RNGestureHandler (1.10.3):
     - React-Core
-  - RNPurchases (3.4.3):
-    - PurchasesHybridCommon (= 1.4.5)
-    - React
+  - RNPurchases (4.1.1):
+    - PurchasesHybridCommon (= 1.6.2)
+    - React-Core
   - RNReactNativeHapticFeedback (1.11.0):
     - React-Core
-  - RNReanimated (1.13.2):
+  - RNReanimated (1.13.3):
     - React-Core
-  - RNScreens (2.17.1):
+  - RNScreens (2.18.1):
     - React-Core
   - RNSentry (2.4.2):
     - React-Core
     - Sentry (= 6.1.4)
   - RNShare (4.1.2):
     - React-Core
-  - RNSVG (12.1.0):
+  - RNSVG (12.1.1):
     - React
   - Sentry (6.1.4):
     - Sentry/Core (= 6.1.4)
@@ -438,9 +438,9 @@ SPEC CHECKSUMS:
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
-  Purchases: 7ebce9418bc16732c3c3bb4b6ff7e7e397de024e
-  PurchasesCoreSwift: 50636e307c1ab76c7a7894a87d042665f2fe0be9
-  PurchasesHybridCommon: b1dd1c5125ccf99b9e62b5974d0e5145895e8b87
+  Purchases: b8b8fb6e856ac8166e217f6e014df894d821dda1
+  PurchasesCoreSwift: 8ae0f08e020f0bc97c1befa4e38a0dbc8e9732e0
+  PurchasesHybridCommon: 5f5c1c245b12fc5e8760af7d11cb10f888109a9b
   RCTRequired: 48884c74035a0b5b76dbb7a998bd93bcfc5f2047
   RCTTypeSafety: edf4b618033c2f1c5b7bc3d90d8e085ed95ba2ab
   React: f36e90f3ceb976546e97df3403e37d226f79d0e3
@@ -463,18 +463,18 @@ SPEC CHECKSUMS:
   React-RCTText: 65a6de06a7389098ce24340d1d3556015c38f746
   React-RCTVibration: 8e9fb25724a0805107fc1acc9075e26f814df454
   ReactCommon: 4167844018c9ed375cc01a843e9ee564399e53c3
-  RealmJS: 7a3251770bcdc95e16758ffc21837bb6608beb18
+  RealmJS: cdc42c2387db202ace6c0936b1f042aeaf78ff76
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
-  RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
-  RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
-  RNGestureHandler: 5e58135436aacc1c5d29b75547d3d2b9430d052c
-  RNPurchases: 2d9a3f50c5b4924fc2b79e3c548d7ccb4217f355
+  RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
+  RNFS: 93d5b5535eb39d98e6b19009faa8fe717f7ea45d
+  RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNPurchases: ffe3b7fd393642f35695907947f2cdb84b282ebb
   RNReactNativeHapticFeedback: 653a8c126a0f5e88ce15ffe280b3ff37e1fbb285
-  RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
-  RNScreens: b6c9607e6fe47c1b6e2f1910d2acd46dd7ecea3a
+  RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
+  RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNSentry: e86fb2e2fec0365644f4b582938bf66be515acce
   RNShare: d22507fa5e80c72f236b5622556cf831de5b1e93
-  RNSVG: ce9d996113475209013317e48b05c21ee988d42e
+  RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   Sentry: 9d055e2de30a77685e86b219acf02e59b82091fc
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
 

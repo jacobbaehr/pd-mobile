@@ -4,20 +4,17 @@ import { ScrollView } from 'react-native-gesture-handler';
 import SafeAreaView, { useSafeArea } from 'react-native-safe-area-view';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
-import { images } from '~/assets/images';
+import { images, SVG } from '~/assets/images';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { CycleButton } from '~/components/buttons/CycleButton';
+import { ScreenHeader } from '~/components/headers/ScreenHeader';
 import { PDText } from '~/components/PDText';
-import { Upgrade } from '~/components/Upgrade';
-import { DeviceSettings } from '~/models/DeviceSettings';
+import { PDSpacing } from '~/components/PDTheme';
+import { PDView } from '~/components/PDView';
 import { getDisplayForPoolValue } from '~/models/Pool/PoolUnit';
 import { Scoop } from '~/models/Scoop';
 import { PDStackNavigationProps } from '~/navigator/shared';
-import { dispatch, useTypedSelector } from '~/redux/AppState';
-import { updateDeviceSettings } from '~/redux/deviceSettings/Actions';
 import { Config } from '~/services/Config';
-import { DeviceSettingsService } from '~/services/DeviceSettingsService';
-import { DS } from '~/services/DSUtil';
 import { ExportService } from '~/services/ExportService';
 import { Haptic } from '~/services/HapticService';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
@@ -25,30 +22,21 @@ import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 import { useNavigation } from '@react-navigation/native';
 
 import { ScoopListItem } from './scoops/ScoopListItem';
-import { SettingsHeader } from './SettingsHeader';
+import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
 
 export const SettingsScreen: React.FC = () => {
-    const { goBack, navigate } = useNavigation<PDStackNavigationProps>();
+    const { navigate } = useNavigation<PDStackNavigationProps>();
     const insets = useSafeArea();
-    const ds = useTypedSelector((state) => state.deviceSettings);
-    const isUnlocked = DS.isSubscriptionValid(ds, Date.now());
-
-    const handleGoBack = () => {
-        goBack();
-    };
+    const { ds, updateDS } = useDeviceSettings();
+    // const isUnlocked = DS.isSubscriptionValid(ds, Date.now());
 
     const handlePressedUnits = () => {
         const newUnits = VolumeUnitsUtil.getNextUnitValue(ds.units);
-        const newSettings: DeviceSettings = {
-            ...ds,
-            units: newUnits,
-        };
-        dispatch(updateDeviceSettings(newSettings));
-        DeviceSettingsService.saveSettings(newSettings);
+        updateDS({ units: newUnits });
     };
 
-    const handleUpgradePressed = () => {
-        navigate('Buy');
+    const handleSubscriptionButton = () => {
+        navigate('Subscription');
     };
 
     const handleForumPressed = () => {
@@ -87,7 +75,7 @@ export const SettingsScreen: React.FC = () => {
 
     return (
         <SafeAreaView forceInset={ { bottom: 'never' } } style={ styles.safeAreaContainer }>
-            <SettingsHeader goBack={ handleGoBack } />
+            <ScreenHeader color="blue" textType="heading">Settings</ScreenHeader>
             <ScrollView style={ styles.scrollView }>
                 <PDText type="default" style={ styles.sectionTitle }>
                     Units
@@ -117,10 +105,22 @@ export const SettingsScreen: React.FC = () => {
                 </View>
                 {getScoops()}
 
-                <PDText type="default" style={ styles.sectionTitle }>
-                    {isUnlocked ? 'Subscription' : 'Unlock'}
-                </PDText>
-                <Upgrade style={ styles.upgradeContainer } onPress={ handleUpgradePressed } isUnlocked={ isUnlocked } />
+                <PDView>
+                    <PDText type="default" style={ styles.sectionTitle }>
+                        Subscription
+                    </PDText>
+                    <TouchableScale
+                        style={ styles.subscriptionButton }
+                        activeScale={ 0.97 }
+                        onPress={ handleSubscriptionButton }
+                      >
+                          <PDView style={ styles.subscriptionTexContainer }>
+                            <PDText type="heading" color="black">Pooldash +</PDText>
+                            <SVG.IconForward fill="black" width={ 18 } height={ 18 }/>
+                          </PDView>
+                    </TouchableScale>
+                </PDView>
+
                 <PDText type="default" style={ styles.sectionTitle }>
                     Data Export
                 </PDText>
@@ -157,7 +157,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     header: {
-        display: 'flex',
         flexDirection: 'row',
         backgroundColor: 'white',
         borderBottomColor: '#F0F0F0',
@@ -241,4 +240,8 @@ const styles = StyleSheet.create({
         shadowColor: 'transparent',
     },
     forumButtonText: {},
+    subscriptionButton:  { backgroundColor: 'white',         borderWidth: 2,
+    borderColor: '#F0F0F0' , margin: PDSpacing.xs , borderRadius: 24 },
+    subscriptionTexContainer:{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: PDSpacing.md, paddingHorizontal: PDSpacing.lg },
+
 });

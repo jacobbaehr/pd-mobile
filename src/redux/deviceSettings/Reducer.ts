@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 
 import { addScoop, editScoop, loadDeviceSettings, updateDeviceSettings } from './Actions';
-import { DeviceSettingsService } from '~/services/DeviceSettingsService';
+import { DeviceSettingsService } from '~/services/DeviceSettings/DeviceSettingsService';
 
 // TODO: @sebas, use either this initial state, or the one passed in AppState.tsx
 export const deviceSettingsReducer = createReducer(DeviceSettingsService.getDefaultSettings(), (builder) => {

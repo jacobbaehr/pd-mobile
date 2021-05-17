@@ -1,35 +1,34 @@
 import * as React from 'react';
 import { SectionList, StyleSheet } from 'react-native';
-import { PDButton } from '~/components/buttons/PDButton';
-import ModalHeader from '~/components/headers/ModalHeader';
-import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { PDText } from '~/components/PDText';
-import { PDSpacing } from '~/components/PDTheme';
-import { PDView } from '~/components/PDView';
-import { Pool } from '~/models/Pool';
+
 import { useThunkDispatch, useTypedSelector } from '~/redux/AppState';
-import { saveNewPool } from '~/redux/selectedPool/Actions';
-import { useCreatePool } from '~/screens/pool/editOrCreate/hooks/useCreatePool';
+import { useCreatePoolSectionInfo } from '~/screens/pool/editOrCreate/hooks/useCreatePoolSectionInfo';
+import { PDSafeAreaView } from '~/components/PDSafeAreaView';
+import { PDSpacing } from '~/components/PDTheme';
+import { ListRowItem, ListRowItemSectionInfo } from '~/screens/pool/components/ListRowItem';
+import { Button } from '~/components/buttons/Button';
+import { PDView } from '~/components/PDView';
 import { useEntryPool } from '~/screens/pool/editOrCreate/hooks/useEntryPool';
-import { Haptic } from '~/services/HapticService';
-
+import { saveNewPool } from '~/redux/selectedPool/Actions';
 import { useNavigation } from '@react-navigation/core';
-
-import { MenuItemButton } from '../../components/MenuItemButton';
+import { PoolService } from '~/services/PoolService';
+import ModalHeader from '~/components/headers/ModalHeader';
+import { Haptic } from '~/services/HapticService';
 
 export const CreatePoolScreen: React.FunctionComponent = () => {
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
-    const createPoolSectionInfo = useCreatePool(deviceSettings);
+    const createPoolSectionInfo: ListRowItemSectionInfo[] = useCreatePoolSectionInfo(deviceSettings);
     const dispatch = useThunkDispatch();
 
     const { pool, isRequiredFilledOut } = useEntryPool();
-    const navigation = useNavigation();
+    const  navigation = useNavigation();
 
     const handleCreatePoolPressed = () => {
-        if (isRequiredFilledOut) {
-            const newPool = Pool.make(pool as Pool);
+        const validatedPool = PoolService.validatePartial(pool);
+        if (validatedPool) {
             Haptic.heavy();
-            dispatch(saveNewPool(newPool));
+            dispatch(saveNewPool(validatedPool));
             navigation.goBack();
         }
     };
@@ -44,23 +43,31 @@ export const CreatePoolScreen: React.FunctionComponent = () => {
                         {title}
                     </PDText>
                 ) }
-                renderItem={ ({ item, index, section }) => (
-                    <MenuItemButton { ...item } index={ index } sectionLength={ section.data.length } />
-                ) }
-                keyExtractor={ (item, index) => item.id + index }
+                renderItem={ ({ item, index, section }) => {
+                    return (
+                        <ListRowItem
+                            { ...item }
+                            index={ index }
+                            sectionLength={ section.data.length }
+                        />
+                    );
+                } }
+                keyExtractor={ (item, index) => item.staticProps.id + index }
                 stickySectionHeadersEnabled={ false }
                 contentContainerStyle={ styles.listContent }
                 style={ styles.listContainer }
             />
-            <PDView>
-                <PDButton
-                    textStyle={ styles.text }
-                    onPress={ handleCreatePoolPressed }
-                    touchableProps={ { disabled: !isRequiredFilledOut } }
-                    style={ styles.saveButton }
-                    bgColor={ !isRequiredFilledOut ? 'greyLight' : 'blue' }>
-                    Create Pool
-                </PDButton>
+            <PDView bgColor={ 'greyVeryLight' }>
+                <PDView
+                        opacity={ isRequiredFilledOut ? 1 : 0 }
+                        style={ styles.buttonContainer }>
+                    <Button title="Create Pool"
+                        onPress={ handleCreatePoolPressed }
+                        textStyles={ styles.text }
+                        disabled={ !isRequiredFilledOut }
+                        styles={ styles.saveButton }
+                        bgColor={ 'blue' }/>
+                </PDView>
             </PDView>
         </PDSafeAreaView>
     );
@@ -91,10 +98,10 @@ const styles = StyleSheet.create({
     saveButton: {
         borderRadius: 27.5,
         paddingVertical: PDSpacing.xs,
-        marginHorizontal: PDSpacing.lg,
     },
     text: {
-        textAlign: 'center',
-        color: 'white',
+        fontWeight: '700',
+        fontSize: 18,
+        alignSelf: 'center',
     },
 });

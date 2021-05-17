@@ -15,11 +15,11 @@ import { Scoop } from '~/models/Scoop';
 import { DryChemicalUnits, Units, WetChemicalUnits } from '~/models/TreatmentUnits';
 import { PDNavParams } from '~/navigator/shared';
 import { AppState, dispatch } from '~/redux/AppState';
-import { addScoop, editScoop, updateDeviceSettings } from '~/redux/deviceSettings/Actions';
+import { addScoop, editScoop } from '~/redux/deviceSettings/Actions';
 import { clearPickerState } from '~/redux/picker/Actions';
 import { PickerState } from '~/redux/picker/PickerState';
 import { PDPickerRouteProps } from '~/screens/picker/PickerScreen';
-import { DeviceSettingsService } from '~/services/DeviceSettingsService';
+import { DeviceSettingsService } from '~/services/DeviceSettings/DeviceSettingsService';
 import { Haptic } from '~/services/HapticService';
 import { ScoopService } from '~/services/ScoopService';
 import { Converter } from '~/services/TreatmentUnitsService';
@@ -29,6 +29,7 @@ import { RouteProp, useFocusEffect, useNavigation } from '@react-navigation/nati
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { getTreatmentWithVar, mapScoopDeviceSettings } from './ScoopDetailsUtils';
+import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
 
 export interface ScoopDetailsRouteProps {
     prevScoop: Scoop | null;
@@ -38,7 +39,6 @@ interface ScoopDetailsScreenProps {
     navigation: StackNavigationProp<PDNavParams, 'ScoopDetails'>;
     route: RouteProp<PDNavParams, 'ScoopDetails'>;
     pickerState: PickerState | null;
-    deviceSettings: DeviceSettings;
 }
 
 const mapStateToProps = (state: AppState, ownProps: ScoopDetailsScreenProps): ScoopDetailsScreenProps => {
@@ -46,7 +46,6 @@ const mapStateToProps = (state: AppState, ownProps: ScoopDetailsScreenProps): Sc
         navigation: ownProps.navigation,
         route: ownProps.route,
         pickerState: state.pickerState,
-        deviceSettings: state.deviceSettings,
     };
 };
 
@@ -61,6 +60,7 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
     const [treatment, setTreatment] = React.useState<Treatment | null>(null);
     const [isSelectingInitialTreatment, setIsSelectingInitialTreatment] = React.useState(false);
     const type = treatment?.type || 'dryChemical';
+    const { ds, updateDS } = useDeviceSettings();
 
     const [units, setUnits] = React.useState<Units>(getUnits(type, prevScoop?.displayUnits));
     const headerTitle = prevScoop ? 'Edit Scoop' : 'Add Scoop';
@@ -75,7 +75,7 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
             // Each treatment can only have a single scoop... for now:
             allTreatments = allTreatments.filter((t) => {
                 return (
-                    props.deviceSettings.scoops.findIndex((s) => s.var === t.var) < 0 ||
+                    ds.scoops.findIndex((s) => s.var === t.var) < 0 ||
                     (prevScoop && prevScoop.var === t.var)
                 );
             });
@@ -174,10 +174,10 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
 
         let deviceSettings: DeviceSettings | null = null;
         if (prevScoop) {
-            deviceSettings = mapScoopDeviceSettings(props.deviceSettings, newScoop, 'edit');
+            deviceSettings = mapScoopDeviceSettings(ds, newScoop, 'edit');
             dispatch(editScoop(newScoop));
         } else {
-            deviceSettings = mapScoopDeviceSettings(props.deviceSettings, newScoop, 'create');
+            deviceSettings = mapScoopDeviceSettings(ds, newScoop, 'create');
             dispatch(addScoop(newScoop));
         }
         await DeviceSettingsService.saveSettings(deviceSettings);
@@ -215,13 +215,8 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
     };
 
     const handleDeleteConfirmed = async () => {
-        // We're going to modify this copy:
-        const newDeviceSettings = Util.deepCopy(props.deviceSettings);
-
-        newDeviceSettings.scoops = newDeviceSettings.scoops.filter((s) => s.var !== treatment?.var);
-
-        await DeviceSettingsService.saveSettings(newDeviceSettings);
-        dispatch(updateDeviceSettings(newDeviceSettings));
+        const newScoops = Util.deepCopy(ds.scoops).filter((s) => s.var !== treatment?.var);
+        await updateDS({ scoops: newScoops });
         goBack();
     };
 

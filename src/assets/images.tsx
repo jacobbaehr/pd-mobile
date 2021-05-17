@@ -2,34 +2,38 @@ import React from 'react';
 import { SvgProps } from 'react-native-svg';
 import { PDColor } from '~/components/PDTheme';
 
-import IconCheckmark from './images/icons/icon_checkmark.svg';
-import IconChevronForward from './images/icons/icon_chevron_forward.svg';
-// General Icons
 import IconCircleAdd from './images/icons/icon_circle_add.svg';
+// General Icons
 import IconBack from './images/icons/icon_circle_back.svg';
 import IconCircleEdit from './images/icons/icon_circle_edit.svg';
 import IconCircleForward from './images/icons/icon_circle_forward.svg';
-import IconCloseButton from './images/icons/icon_close.svg';
-import IconDelete from './images/icons/icon_delete.svg';
-import IconExportData from './images/icons/icon_export_data.svg';
+import IconEmptyCircle from './images/icons/icon_circle.svg';
+import IconCircleCheck from './images/icons/icon_circle_checkmark.svg';
 import IconForward from './images/icons/icon_forward.svg';
 import IconInformation from './images/icons/icon_information.svg';
-import IconCustomTargets from './images/pool/icon_custom_targets.svg';
-import IconPoolEmail from './images/pool/icon_email.svg';
-import IconPoolFormula from './images/pool/icon_formula.svg';
-import IconPoolName from './images/pool/icon_name.svg';
-import IconPoolVolume from './images/pool/icon_volume.svg';
-import IconPoolWallType from './images/pool/icon_wall_type.svg';
-import IconPoolWaterType from './images/pool/icon_water_type.svg';
+// Volume Estimator
 import Circle from './images/shapes/big_circle.svg';
 import Other from './images/shapes/big_other.svg';
 import Oval from './images/shapes/big_oval.svg';
 import Rectangle from './images/shapes/big_rectangle.svg';
+import IconCloseButton from './images/shapes/close_button.svg';
+import IconCheckmark from './images/shapes/icon_checkmark.svg';
 import IconCircle from './images/shapes/icon_circle.svg';
+import IconDelete from './images/shapes/icon_delete.svg';
 import IconEstimator from './images/shapes/icon_estimator.svg';
+// Create and Edit Pool
+import IconName from './images/shapes/icon_name.svg';
 import IconOther from './images/shapes/icon_other.svg';
 import IconOval from './images/shapes/icon_oval.svg';
+import IconRecipes from './images/shapes/icon_recipes.svg';
 import IconRectangle from './images/shapes/icon_rectangle.svg';
+import IconVolume from './images/shapes/icon_volume.svg';
+import IconWallType from './images/shapes/icon_walltype.svg';
+import IconWaterType from './images/shapes/icon_watertype.svg';
+// Subscription
+import IconCharts from './images/subscription/icon_charts.svg';
+import IconHeart from './images/subscription/icon_heart.svg';
+import IconInfinitive from './images/subscription/icon_infinitive.svg';
 
 /** */
 export const images = {
@@ -78,32 +82,35 @@ export interface OverrideSvgProps extends SvgProps {
     fill?: string | PDColor;
 }
 
-export const SVG: Record<string, (props: OverrideSvgProps) => JSX.Element> = {
-    IconCircle: (props) => <IconCircle { ...props } />,
-    IconRectangle: (props) => <IconRectangle { ...props } />,
-    IconOval: (props) => <IconOval { ...props } />,
-    IconOther: (props) => <IconOther { ...props } />,
-    IconCircleBack: (props) => <IconBack { ...props } />,
-    IconCircleEdit: (props) => <IconCircleEdit { ...props } />,
-    IconForward: (props) => <IconForward { ...props } />,
-    Rectangle: (props) => <Rectangle { ...props } />,
-    Oval: (props) => <Oval { ...props } />,
-    Circle: (props) => <Circle { ...props } />,
-    Other: (props) => <Other { ...props } />,
-    IconEstimator: (props) => <IconEstimator { ...props } />,
-    IconCheckmark: (props) => <IconCheckmark { ...props } />,
-    IconDelete: (props) => <IconDelete { ...props } />,
-    IconCircleAdd: (props) => <IconCircleAdd { ...props } />,
-    IconCircleForward: (props) => <IconCircleForward { ...props } />,
-    IconInformation: (props) => <IconInformation { ...props } />,
-    IconCloseButton: (props) => <IconCloseButton { ...props } />,
-    IconChevronForward: (props) => <IconChevronForward { ...props } />,
-    IconExportData: (props) => <IconExportData { ...props } />,
-    IconCustomTargets: (props) => <IconCustomTargets { ...props } />,
-    IconPoolName: (props) => <IconPoolName { ...props } />,
-    IconPoolEmail: (props) => <IconPoolEmail { ...props } />,
-    IconPoolFormula: (props) => <IconPoolFormula { ...props } />,
-    IconPoolVolume: (props) => <IconPoolVolume { ...props } />,
-    IconPoolWallType: (props) => <IconPoolWallType { ...props } />,
-    IconPoolWaterType: (props) => <IconPoolWaterType { ...props } />,
+
+// TODO: Improved SVG Type, need to reusable types on string.
+export const SVG:  Record<string, (props: OverrideSvgProps) => JSX.Element> = {
+        IconCircle: (props) => <IconCircle { ...props } />,
+        IconRectangle: (props) => <IconRectangle { ...props } />,
+        IconOval: (props) => <IconOval { ...props } />,
+        IconOther: (props) => <IconOther { ...props } />,
+        IconCircleBack: (props) => <IconBack { ...props } />,
+        IconCircleEdit: (props) => <IconCircleEdit { ...props } />,
+        IconForward: (props) => <IconForward { ...props } />,
+        Rectangle: (props) => <Rectangle { ...props } />,
+        Oval: (props) => <Oval { ...props } />,
+        Circle: (props) => <Circle { ...props } />,
+        Other: (props) => <Other { ...props } />,
+        IconEstimator: (props) => <IconEstimator { ...props } />,
+        IconCheckmark: (props) => <IconCheckmark { ...props } />,
+        IconDelete: (props) => <IconDelete { ...props } />,
+        IconCircleAdd: (props) => <IconCircleAdd { ...props } />,
+        IconCircleForward: (props) => <IconCircleForward { ...props } />,
+        IconInformation: (props) => <IconInformation { ...props } />,
+        IconCloseButton: (props)=> <IconCloseButton { ...props } />,
+        IconName: (props)=> <IconName { ...props } />,
+        IconWaterType: (props)=> <IconWaterType { ...props } />,
+        IconVolume: (props)=> <IconVolume { ...props } />,
+        IconWallType: (props)=> <IconWallType { ...props } />,
+        IconRecipes: (props)=> <IconRecipes { ...props } />,
+        IconInfinitive: (props)=> <IconInfinitive { ...props } />,
+        IconHeart: (props)=> <IconHeart { ...props } />,
+        IconCharts: (props)=> <IconCharts { ...props } />,
+        IconEmptyCircle: (props)=> <IconEmptyCircle { ...props } />,
+        IconCircleCheck: (props)=> <IconCircleCheck { ...props } />,
 };

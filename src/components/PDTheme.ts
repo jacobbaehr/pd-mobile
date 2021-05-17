@@ -1,13 +1,11 @@
 import * as React from 'react';
 
-/// For now, this is all colors, named after day-mode:
-export interface PDTheme {
-    white: string;
-    black: string;
-    grey: string;
-    greyDarker: string;
-    greyLight: string;
-    greyVeryLight: string,
+// --------------------------------------------------------------
+// ---------------------- Theme Types  --------------------------
+// --------------------------------------------------------------
+
+
+export interface PDMainColors {
     // Blurred Colors
     blurredRed: string;
     blurredBlue: string;
@@ -26,6 +24,25 @@ export interface PDTheme {
     blue: string;
     purple: string;
 }
+
+export interface PDThemeColors {
+    background: string
+    card: string
+    text: string
+    border: string
+    notification: string
+}
+
+/// For now, this is all colors, named after day-mode:
+export interface PDTheme extends PDMainColors, PDThemeColors {
+    white: string;
+    black: string;
+    grey: string;
+    greyDarker: string;
+    greyLight: string;
+    greyVeryLight: string,
+}
+
 /// Represents all the possible colors in the app. We'll probably change these names soon --
 /// for instance, in night mode, 'white' will actually be black & vice-versa... so that's a bad name.
 export type PDColor = keyof PDTheme;
@@ -49,13 +66,8 @@ export const PDSpacing = {
     lg: 24,
     xl: 40,
 };
-export const lightTheme: PDTheme = {
-    white: '#FFFFFF',
-    black: '#000000',
-    grey: '#737373',
-    greyDarker: '#262626',
-    greyLight: '#EDEDED',
-    greyVeryLight: '#FAFAFA',
+
+export const MainColors: PDMainColors = {
     blurredRed: '#F9000007',
     blurredBlue: '#1E6BFF07',
     blurredOrange: '#FF750207',
@@ -71,6 +83,24 @@ export const lightTheme: PDTheme = {
     blue: '#1E6BFF',
     purple: '#B21FF1',
 };
+
+
+// TODO: Complete Colors Pallets
+export const lightTheme: PDTheme = {
+    white: '#FFFFFF',
+    black: '#000000',
+    grey: '#737373',
+    greyDarker: '#262626',
+    greyLight: '#EDEDED',
+    greyVeryLight: '#FAFAFA',
+    background: '',
+    card: '',
+    text: '',
+    border: '#EDEDED',
+    notification: '',
+    ...MainColors,
+
+};
 /// This is fake, don't use it yet:
 export const darkTheme: PDTheme = {
     white: '#FFFFFF',
@@ -79,20 +109,15 @@ export const darkTheme: PDTheme = {
     greyDarker: '#262626',
     greyLight: '#EDEDED',
     greyVeryLight: '#FAFAFA',
-    blurredRed: '#F9000010',
-    blurredBlue: '#1E6BFF10',
-    blurredOrange: '#FF750210',
-    blurredPurple: '#B21FF110',
-    blurredTeal: '#00AEA010',
-    blurredPink: '#FF007310',
-    blurredGreen: '#00B25C10',
-    pink: '#FF0073',
-    red: '#F90000',
-    orange: '#FF7502',
-    green: '#00B25C',
-    teal: '#00AEA0',
-    blue: '#1E6BFF',
-    purple: '#B21FF1',
+    background: '',
+    card: '',
+    text: '',
+    border: '#1F1F1F',
+    notification: '',
+    ...MainColors,
 };
+
 export const PDThemeContext = React.createContext<PDTheme>(lightTheme);
+
 export const useTheme = () => React.useContext(PDThemeContext);
+

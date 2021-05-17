@@ -14,7 +14,7 @@ import { RecipeService } from '~/services/RecipeService';
 
 import CustomTargetsItem from './CustomTargetsItem';
 
-const CustomTargetsScreen = () => {
+export const CustomTargetsScreen : React.FC = () => {
     const selectedPool = useSelector<AppState>((state) => state.selectedPool) as Pool;
     const recipe = useLoadRecipeHook(selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
 
@@ -63,4 +63,3 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CustomTargetsScreen;

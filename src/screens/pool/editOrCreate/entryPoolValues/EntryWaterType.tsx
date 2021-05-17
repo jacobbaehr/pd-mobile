@@ -1,17 +1,12 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { SVG } from '~/assets/images';
-import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
-import { PDText } from '~/components/PDText';
-import { PDSpacing } from '~/components/PDTheme';
+import React, { useState } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
 import { PDView } from '~/components/PDView';
+import { Button } from '~/components/buttons/Button';
 import { waterTypeOptions, WaterTypeValue } from '~/models/Pool/WaterType';
-import { PDStackNavigationProps } from '~/navigator/shared';
-import { Haptic } from '~/services/HapticService';
-import { Util } from '~/services/Util';
-
+import { SVG } from '~/assets/images';
+import { lightTheme } from '~/components/PDTheme';
 import { useNavigation } from '@react-navigation/native';
-
+import { PDStackNavigationProps } from '~/navigator/shared';
 import { useEntryPool } from '../hooks/useEntryPool';
 
 export const EntryWaterType = () => {
@@ -19,67 +14,80 @@ export const EntryWaterType = () => {
     const [waterType, setWaterType] = useState(pool?.waterType ?? 'chlorine');
     const navigation = useNavigation<PDStackNavigationProps>();
 
-    const handleBackNavigation = useCallback(
-        () =>
-            setTimeout(() => {
-                navigation.goBack();
-            }, 100),
-        [navigation],
-    );
-
-    useEffect(() => {
-        return () => {
-            clearTimeout(handleBackNavigation());
-        };
-    }, [handleBackNavigation]);
-
     const handleButtonSelected = (menuItem: WaterTypeValue) => {
         setWaterType(menuItem);
-        setPool({ waterType: menuItem });
-        Haptic.medium();
-        handleBackNavigation();
+        setPool({ waterType : menuItem });
+
+        setTimeout(() => {
+            navigation.goBack();
+        }, 300);
     };
 
     return (
-        <PDView style={ styles.container }>
-            {waterTypeOptions.map((water) => (
-                <ButtonWithChildren
-                    key={ water.value }
-                    styles={ Util.onlyTrueArray([
-                        styles.buttonContainer,
-                        waterType === water.value && styles.selectedButtonContainer,
-                    ]) }
-                    onPress={ () => handleButtonSelected(water.value) }>
-                    <PDText type="bodySemiBold" color={ waterType === water.value ? 'white' : 'greyDarker' }>
-                        {water.display}
-                    </PDText>
-                    {waterType === water.value && (
-                        <SVG.IconCheckmark width={ 24 } height={ 24 } fill="white" style={ styles.checkmark } />
-                    )}
-                </ButtonWithChildren>
-            ))}
+        <PDView>
+            <FlatList
+                data={ waterTypeOptions }
+                renderItem={ ({ item }) => (
+                    <PDView style={ waterType === item.value ? styles.selectedButtonContainer : styles.buttonContainer }>
+                        <Button
+                            textStyles={ waterType === item.value ? styles.selectedText : styles.unselectedText }
+                            title={ item.display }
+                            onPress={ () => {
+                                handleButtonSelected(item.value);
+                            } }
+                        />
+                        {waterType === item.value ? (
+                            <SVG.IconCheckmark width={ 24 } height={ 24 } fill="white" style={ styles.checkmark } />
+                        ) : null}
+                    </PDView>
+                ) }
+                keyExtractor={ (item) => item.value }
+                ItemSeparatorComponent={ () => <PDView style={ styles.separator } /> }
+                contentContainerStyle={ styles.list }
+            />
         </PDView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: 'column',
-    },
     buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        width: 327,
+        height: 48,
         backgroundColor: '#F7F7F7',
         borderRadius: 24,
-        paddingVertical: PDSpacing.md,
-        paddingHorizontal: PDSpacing.lg,
-        marginBottom: PDSpacing.xs,
+        justifyContent: 'center',
     },
     selectedButtonContainer: {
-        backgroundColor: '#00B25C',
+        width: 327,
+        height: 48,
+        backgroundColor: lightTheme.green,
+        borderRadius: 24,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+    },
+    unselectedText: {
+        color: lightTheme.greyDarker,
+        fontWeight: '600',
+        fontSize: 16,
+        alignSelf: 'flex-start',
+        marginLeft: 16,
+    },
+    selectedText: {
+        color: 'white',
+        fontWeight: '600',
+        fontSize: 16,
+        alignSelf: 'flex-start',
+        marginLeft: 16,
     },
     checkmark: {
-        marginRight: PDSpacing.md,
+        marginRight: 12,
+    },
+    separator: {
+        height: '1%',
+    },
+    list: {
+        alignSelf: 'center',
+        height: '100%',
     },
 });

@@ -135,8 +135,8 @@ android {
         applicationId "com.gazzini.pooldash"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 19
-        versionName "1.4.3"
+        versionCode 18
+        versionName "1.4.4"
         multiDexEnabled true
     }
     splits {

@@ -1,21 +1,20 @@
 import React from 'react';
-import { useTypedSelector } from '~/redux/AppState';
-import { PoolPopover } from '~/screens/pool/components/PoolPopover';
+import { HeaderInfo, PoolPopover } from '~/screens/pool/components/PoolPopover';
 import { EditOrCreatePoolScreen } from '~/screens/pool/editOrCreate/EditOrCreatePoolScreen';
-import { PoolProvider } from '~/screens/pool/editOrCreate/hooks/useEntryPool';
-import { ShapeProvider } from '~/screens/pool/editOrCreate/hooks/useVolumeEstimator';
-import { PoolHeader } from '~/screens/pool/editOrCreate/shared';
 import EntryShapeScreen from '~/screens/pool/editOrCreate/volumeEstimator/EntryShapeScreen';
 import SelectShapeScreen from '~/screens/pool/editOrCreate/volumeEstimator/SelectShapeScreen';
 import { ShapeId } from '~/screens/pool/editOrCreate/volumeEstimator/VolumeEstimatorHelpers';
-import { RecipeListNavParams, RecipeListScreen } from '~/screens/recipes/RecipeListScreen';
-import { RecipeDetailsNavParams, RecipeScreen } from '~/screens/recipes/RecipeScreen';
 
 import { createStackNavigator } from '@react-navigation/stack';
+import { RecipeListNavParams, RecipeListScreen } from '~/screens/recipes/RecipeListScreen';
+import { RecipeDetailsNavParams, RecipeScreen } from '~/screens/recipes/RecipeScreen';
+import { PoolProvider } from '~/screens/pool/editOrCreate/hooks/useEntryPool';
+import { useTypedSelector } from '~/redux/AppState';
+import { ShapeProvider } from '~/screens/pool/editOrCreate/hooks/useVolumeEstimator';
 
 export type PDPoolParams = {
     EditOrCreatePoolScreen: undefined;
-    EditPoolModal: { headerInfo: PoolHeader };
+    EditPoolModal: { headerInfo: HeaderInfo };
     SelectShape: undefined;
     EntryShape: {
         shapeId: ShapeId;
