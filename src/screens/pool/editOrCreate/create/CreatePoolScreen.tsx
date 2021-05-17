@@ -59,7 +59,7 @@ export const CreatePoolScreen: React.FunctionComponent = () => {
             />
             <PDView bgColor={ 'greyVeryLight' }>
                 <PDView
-                        opacity={ isRequiredFilledOut ? 1 : 0 }
+                        opacity={ isRequiredFilledOut ? 1 : 0.4 }
                         style={ styles.buttonContainer }>
                     <Button title="Create Pool"
                         onPress={ handleCreatePoolPressed }
