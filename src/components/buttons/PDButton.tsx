@@ -8,17 +8,27 @@ import { PDView } from '../PDView';
 
 export interface PDButtonProps extends ViewProps {
     onPress: () => void;
-    touchableProps?:  TouchableScaleProps;
+    touchableProps?: TouchableScaleProps;
     textStyle?: StyleProp<TextStyle>;
     textType?: PDTextType;
+    textColor?: PDColor;
     bgColor?: PDColor;
 }
 
 export const PDButton: React.FC<PDButtonProps> = (props) => {
-    const { onPress, children, style, textStyle, textType = 'subHeading', ...rest } = props;
+    const {
+        onPress,
+        children,
+        style,
+        textStyle,
+        textType = 'subHeading',
+        bgColor = 'blue',
+        textColor = 'white',
+        ...rest
+    } = props;
     const theme = useTheme();
 
-    const backgroundColor = props.bgColor !== undefined ? theme[props.bgColor] : 'transparent';
+    const backgroundColor = bgColor !== undefined ? theme[bgColor] : 'transparent';
     const colorStylesFromTheme = { backgroundColor };
 
     const viewStyles = StyleSheet.flatten([colorStylesFromTheme, style]);
@@ -34,7 +44,7 @@ export const PDButton: React.FC<PDButtonProps> = (props) => {
     return (
         <TouchableScale { ...touchableProps } onPress={ onPress }>
             <PDView style={ [styles.container, viewStyles] } { ...rest }>
-                <PDText type={ textType } style={ textStyle }>
+                <PDText type={ textType } color={ textColor } style={ textStyle }>
                     {children}
                 </PDText>
             </PDView>

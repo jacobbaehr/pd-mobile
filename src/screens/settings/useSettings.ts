@@ -14,7 +14,7 @@ export const useSettings = () => {
 
     };
     const handleNavigationScoops = () =>{
-        navigate('ScoopsNavigator');
+        navigate('ScoopsList');
 
     };
     const handleNavigationSubscription = () =>{

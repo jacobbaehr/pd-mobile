@@ -5,6 +5,7 @@ import { PoolListScreen } from '~/screens/poolList/PoolListScreen';
 import { ReadingListScreen } from '~/screens/readings/ReadingListScreen';
 import { RecipeListNavParams, RecipeListScreen } from '~/screens/recipes/RecipeListScreen';
 import { RecipeDetailsNavParams, RecipeScreen } from '~/screens/recipes/RecipeScreen';
+import { ScoopsListScreen } from '~/screens/settings/scoops/list/ScoopsListScreen';
 import { SettingsScreen } from '~/screens/settings/SettingsScreen';
 import { SubscriptionScreen } from '~/screens/subscription/SubscriptionScreen';
 import { TreatmentListScreen } from '~/screens/treatments/TreatmentListScreen';
@@ -13,7 +14,6 @@ import { PoolHistoryScreen } from '~/screens/trends/PoolHistoryScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { SettingNavigation } from './animationEffects';
-import { PDScoopsNavigator } from './PDScoopsNavigator';
 
 // This defines the navigation params accepted by each possible screen in PDCardNavigator
 export type PDCardNavigatorParams = {
@@ -27,7 +27,7 @@ export type PDCardNavigatorParams = {
     PoolHistory: undefined;
     Subscription: undefined;
     CustomTargets: { prevScreen: 'ReadingList' | 'EditPoolNavigator' };
-    ScoopsNavigator: undefined
+    ScoopsList: undefined
 };
 
 const CardStack = createStackNavigator<PDCardNavigatorParams>();
@@ -54,7 +54,7 @@ export const PDCardNavigator = (): JSX.Element => {
             />
             <CardStack.Screen name="CustomTargets" component={ CustomTargetsScreen } />
             <CardStack.Screen name="Subscription" component={ SubscriptionScreen } />
-            <CardStack.Screen name="ScoopsNavigator" component={ PDScoopsNavigator }  />
+            <CardStack.Screen name="ScoopsList" component={ ScoopsListScreen }  />
         </CardStack.Navigator>
     );
 };
