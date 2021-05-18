@@ -8,10 +8,11 @@ import { EditPoolField, EditPoolList } from '~/screens/pool/editOrCreate/edit/Ed
 import { ExportService } from '~/services/ExportService';
 import { RecipeService } from '~/services/RecipeService';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
-import { EditPoolHelpers } from '../edit/EditPoolHelpers';
-import { HeaderInfo } from '../../components/PoolPopover';
 
 import { useNavigation } from '@react-navigation/native';
+
+import { HeaderInfo } from '../../components/PoolPopover';
+import { EditPoolHelpers } from '../edit/EditPoolHelpers';
 
 export type MenuItemId =
     | 'name'

@@ -1,6 +1,9 @@
-import { DeviceSettings, DeviceSettingsPurchaseFields, RawDeviceSettings } from '~/models/DeviceSettings';
+import {
+    DeviceSettings, DeviceSettingsPurchaseFields, RawDeviceSettings
+} from '~/models/DeviceSettings';
 
 import AsyncStorage from '@react-native-community/async-storage';
+
 import { PurchaseState } from '../subscription/IAP';
 
 const DEVICE_SETTINGS_KEY = 'pd_device_settings_0';

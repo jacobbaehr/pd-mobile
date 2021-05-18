@@ -20,7 +20,7 @@ export const SubscriptionListItem: React.FC<SubscriptionListItemProps> = (props)
     const { product, selected, updateSelection } = props;
     const Icon = SVG[selected ? 'IconCircleCheck' : 'IconEmptyCircle'];
 
-    const compactStyles = Util.onlyTrueArray([styles.container, selected && styles.active]);
+    const compactStyles = Util.excludeFalsy([styles.container, selected && styles.active]);
 
     const handleSelection = () => {
         Haptic.light();

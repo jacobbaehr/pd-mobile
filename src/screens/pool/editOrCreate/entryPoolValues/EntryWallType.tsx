@@ -47,7 +47,7 @@ export const EntryWallType = () => {
             {wallTypeOptions.map((wall) => (
                 <ButtonWithChildren
                     key={ wall.value }
-                    styles={ Util.onlyTrueArray([
+                    styles={ Util.excludeFalsy([
                         styles.buttonContainer,
                         wallType === wall.value && styles.selectedButtonContainer,
                     ]) }

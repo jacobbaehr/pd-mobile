@@ -45,7 +45,7 @@ export const EntryWaterType = () => {
             {waterTypeOptions.map((water) => (
                 <ButtonWithChildren
                     key={ water.value }
-                    styles={ Util.onlyTrueArray([
+                    styles={ Util.excludeFalsy([
                         styles.buttonContainer,
                         waterType === water.value && styles.selectedButtonContainer,
                     ]) }

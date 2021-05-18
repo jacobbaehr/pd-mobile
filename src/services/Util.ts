@@ -115,7 +115,7 @@ export class Util {
         return new Date().getTime();
     };
 
-    static onlyTrueArray = (array: any[]) => {
+    static excludeFalsy = (array: any[]) => {
         return array.filter(Boolean);
     }
     static hasInArray = (array: any[], value: string) => {

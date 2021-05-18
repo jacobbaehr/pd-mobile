@@ -4,11 +4,13 @@ import { ScreenHeader } from '~/components/headers/ScreenHeader';
 import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
-import { PDPoolParams } from '~/navigator/EditPoolNavigator';
-import { RouteProp, useRoute } from '@react-navigation/native';
 import { useContrastStatusBar } from '~/hooks/useStatusBar';
+import { PDPoolParams } from '~/navigator/EditPoolNavigator';
+
+import { RouteProp, useRoute } from '@react-navigation/native';
+
 import {
-    EntryPoolElements, EntryPoolHelpers,
+    EntryPoolElements, EntryPoolHelpers
 } from '../editOrCreate/entryPoolValues/EntryPoolHelpers';
 
 export interface HeaderInfo {

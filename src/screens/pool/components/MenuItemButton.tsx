@@ -23,7 +23,7 @@ export const MenuItemButton: React.FC<MenuItemButtonProps> = (props) => {
 
     const getWrapperStyles = ({ pressed }: PressableStateCallbackType): StyleProp<ViewStyle> => [
         { backgroundColor: pressed ? theme.greyLight : 'white' },
-        ...Util.onlyTrueArray([firstItem, lastItem]),
+        ...Util.excludeFalsy([firstItem, lastItem]),
     ];
 
     const colorLabel = props.id === 'deletePool' ? 'red' : 'black';
