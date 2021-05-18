@@ -13,26 +13,29 @@ interface ScreenHeaderProps {
     hasBackButton?: boolean;
     hasAddButton?: boolean;
     hasEditButton?: boolean;
-    hasBottomLine?: Boolean
+    hasBottomLine?: Boolean;
     handlePressedAdd?: () => void;
     handlePressedEdit?: () => void;
     handlePressedBack?: () => void;
     color?: PDColor;
-    textType?: PDTextType
+    textType?: PDTextType;
 }
 export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
     const { goBack } = useNavigation();
-    const { children,
-            hasAddButton = false,
-            hasEditButton = false,
-            hasBottomLine = true,
-            hasBackButton = true,
-            handlePressedAdd,
-            handlePressedEdit,
-            handlePressedBack = () => {return;},
-            color = 'black',
-            textType = 'subHeading',
-        } = props;
+    const {
+        children,
+        hasAddButton = false,
+        hasEditButton = false,
+        hasBottomLine = true,
+        hasBackButton = true,
+        handlePressedAdd,
+        handlePressedEdit,
+        handlePressedBack = () => {
+            return;
+        },
+        color = 'black',
+        textType = 'subHeading',
+    } = props;
     const theme = useTheme();
 
     const handleBackButtonPressed = () => {
@@ -51,7 +54,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
     const containerStyles = Util.excludeFalsy([styles.container, hasBottomLine && styles.containerBottom]);
     return (
         <PDView style={ containerStyles } bgColor="white">
-        <PDView style={ styles.sideContainer }>
+            <PDView style={ styles.sideContainer }>
                 {hasBackButton && (
                     <TouchableScale { ...touchableProps } onPress={ handleBackButtonPressed }>
                         <SVG.IconCircleBack height={ 32 } width={ 32 } fill={ svgColor } />

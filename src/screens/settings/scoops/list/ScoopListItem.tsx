@@ -1,18 +1,21 @@
+import pluralize from 'pluralize';
 import * as React from 'react';
+import { StyleSheet } from 'react-native';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
-import { StyleSheet, View } from 'react-native';
 import { PDText } from '~/components/PDText';
+import { PDSpacing } from '~/components/PDTheme';
+import { PDView } from '~/components/PDView';
 import { Scoop } from '~/models/Scoop';
 import { Haptic } from '~/services/HapticService';
-import pluralize from 'pluralize';
 
 interface ScoopListItemProps {
     scoop: Scoop;
     handlePressedScoop: (scoop: Scoop) => void;
 }
 
-export const ScoopListItem: React.FunctionComponent<ScoopListItemProps> = (props) => {
+export const ScoopListItem: React.FC<ScoopListItemProps> = (props) => {
+
     const handlePressed = () => {
         Haptic.light();
         props.handlePressedScoop(props.scoop);
@@ -23,16 +26,17 @@ export const ScoopListItem: React.FunctionComponent<ScoopListItemProps> = (props
         parseFloat(props.scoop.displayValue),
     )}`;
 
+
     return (
         <TouchableScale onPress={ handlePressed } activeScale={ 0.96 }>
-            <View style={ styles.listItemContainer }>
-                <PDText type="default" style={ styles.chemNameText }>
+            <PDView bgColor="white" style={ styles.listItemContainer }>
+                <PDText type="bodySemiBold" style={ styles.chemNameText }>
                     {props.scoop.chemName}
                 </PDText>
-                <PDText type="default" style={ styles.unitsText }>
+                <PDText type="bodySemiBold" color="pink" style={ styles.unitsText }>
                     {unitsText}
                 </PDText>
-            </View>
+            </PDView>
         </TouchableScale>
     );
 };
@@ -40,27 +44,20 @@ export const ScoopListItem: React.FunctionComponent<ScoopListItemProps> = (props
 const styles = StyleSheet.create({
     listItemContainer: {
         flexDirection: 'row',
-        marginTop: 6,
+        marginBottom: PDSpacing.xs,
         marginHorizontal: 20,
-        marginBottom: 6,
-        backgroundColor: 'white',
-        paddingVertical: 12,
-        paddingHorizontal: 24,
+        paddingVertical: PDSpacing.md,
+        paddingHorizontal: PDSpacing.lg,
         borderRadius: 24,
         borderWidth: 2,
         borderColor: '#F0F0F0',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     chemNameText: {
-        fontWeight: '600',
         fontSize: 18,
-        color: 'black',
-        alignSelf: 'center',
     },
     unitsText: {
-        fontWeight: '600',
         fontSize: 18,
-        color: '#1E6BFF',
-        alignSelf: 'center',
-        marginLeft: 'auto',
     },
 });

@@ -81,6 +81,14 @@ export class Util {
         return null;
     }
 
+    static lastIndexInArray = (array: any[]): number => {
+        return array.length - 1;
+    };
+
+    static lastItemInArray = <T>(array: T[]): T => {
+        return array[array.length - 1];
+    };
+
     /**
      *
      * The main reason for this function is about to integrate the Realms Objects or Collections
