@@ -42,7 +42,7 @@ export const SubscriptionListItem: React.FC<SubscriptionListItemProps> = (props)
                         {product.price_string} per {product.identifier === Products.MONTHLY ? 'month' : 'year'}
                     </PDText>
                 </PDView>
-                <PDView>{selected && <Icon height={ 24 } width={ 24 } />}</PDView>
+                <PDView>{selected && <Icon height={ 24 } width={ 24 } color="green" />}</PDView>
             </PDView>
         </TouchableWithoutFeedback>
     );

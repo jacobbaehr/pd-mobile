@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { PDSectionListProps } from '~/components/list/PDSectionList';
 import { getDisplayForPoolValue } from '~/models/Pool/PoolUnit';
 import { PDStackNavigationProps } from '~/navigator/shared';
@@ -6,11 +7,35 @@ import { ExportService } from '~/services/ExportService';
 
 import { useNavigation } from '@react-navigation/native';
 
+import { PoolUnit, PoolUnitOptions } from '../../models/Pool/PoolUnit';
+import { useDeviceSettings } from '../../services/DeviceSettings/Hooks';
+
 export const useSettings = () => {
     const { navigate } = useNavigation<PDStackNavigationProps>();
-    const ds = useTypedSelector((state) => state.deviceSettings);
+    const popoverValue = useTypedSelector(state => state.popover);
+    const { ds, updateDS } = useDeviceSettings();
+
+
+    useEffect(() => {
+        if (popoverValue && popoverValue !== ds.units) {
+            const cb = async () => {
+                console.log(popoverValue);
+                await updateDS({ units: popoverValue as PoolUnit });
+            };
+            cb();
+
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [popoverValue, ds.units]);
 
     const handleNavigationUnits = () =>{
+        navigate('PopoverScreen', {
+            title: 'Change Unit',
+            color: 'orange',
+            description: 'Your selection will be used globally across all unit selectors',
+            items: PoolUnitOptions.map((item) => ({ name: item.display, value: item.value })),
+            prevSelection: ds.units,
+        });
 
     };
     const handleNavigationScoops = () =>{

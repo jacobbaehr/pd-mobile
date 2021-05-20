@@ -6,10 +6,10 @@ import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { ProductId } from '~/models/InAppPurchase';
 import { IAP } from '~/services/subscription/IAP';
-
-import { SU } from '~/services/subscription/Util';
-import { SubscriptionListItem } from './SubscriptionListItem';
 import { useAvailablePackages } from '~/services/subscription/SubHooks';
+import { SU } from '~/services/subscription/Util';
+
+import { SubscriptionListItem } from './SubscriptionListItem';
 
 export const SubscriptionList = () => {
     const packages = useAvailablePackages();
@@ -45,16 +45,21 @@ export const SubscriptionList = () => {
                 ))}
             </PDView>
             <PDView>
-                <PDButton onPress={ handlePurchase } bgColor={ !selectedSku ? 'greyLight' : 'blue' } textStyle={ { color: theme.white } } touchableProps={ {
-                    disabled: !selectedSku,
-                } }>
+                <PDButton
+                    onPress={ handlePurchase }
+                    bgColor={ !selectedSku ? 'greyLight' : 'blue' }
+                    textStyle={ { color: theme.white } }
+                    touchableProps={ {
+                        disabled: !selectedSku,
+                    } }>
                     Subscribe {SU.getDisplayNameByCurrentSubscription(selectedSku)}
                 </PDButton>
                 <PDButton
                     onPress={ handleRestore }
                     touchableProps={ {
-                        disabled:  !selectedSku,
+                        disabled: !selectedSku,
                     } }
+                    bgColor="transparent"
                     textType="tooltip"
                     textStyle={ { color: theme.grey, fontWeight: 'bold' } }>
                     Restore Purchases

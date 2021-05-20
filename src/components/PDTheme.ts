@@ -46,6 +46,8 @@ export interface PDTheme extends PDMainColors, PDThemeColors {
     // Status bar
     statusBarDefault: StatusBarStyle;
     statusBarContrast: StatusBarStyle;
+
+    transparent: string
 }
 
 /// Represents all the possible colors in the app. We'll probably change these names soon --
@@ -103,7 +105,9 @@ export const lightTheme: PDTheme = {
     text: '',
     border: '#EDEDED',
     notification: '',
+    transparent: 'transparent',
     statusBarDefault: 'dark-content',
+
     statusBarContrast: 'light-content',
     ...MainColors,
 
@@ -121,8 +125,10 @@ export const darkTheme: PDTheme = {
     text: '',
     border: '#1F1F1F',
     notification: '',
+    transparent: 'transparent',
     statusBarDefault: 'light-content',
     statusBarContrast: 'dark-content',
+
     ...MainColors,
 };
 
