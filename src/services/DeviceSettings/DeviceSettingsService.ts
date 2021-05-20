@@ -1,5 +1,5 @@
 import {
-    DeviceSettings, DeviceSettingsPurchaseFields, RawDeviceSettings
+    DeviceSettings, DeviceSettingsPurchaseFields, RawDeviceSettings,
 } from '~/models/DeviceSettings';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -45,7 +45,7 @@ export class DeviceSettingsService {
     //     const asString = await AsyncStorage.getItem(DEVICE_SETTINGS_KEY);
     //     if (!asString) {
     //         const ds = DeviceSettingsService.getDefaultSettings();
-    //         ds.sub_exp = (new Date()).getTime() + 30000000;
+    //         ds.sub_exp = Date.now() + 3000000000;
     //         return ds;
     //     }
     //     const rs = JSON.parse(asString) as RawDeviceSettings;
@@ -53,8 +53,9 @@ export class DeviceSettingsService {
     //     // fill it in (if necessary)
     //     const ds = DeviceSettingsService.rawDeviceSettingsToDeviceSettings(rs);
 
-    //     ds.sub_exp = (new Date()).getTime() + 30000000;
-
+    //     ds.sub_exp = Date.now() + 3000000000;
+    //     console.log('SETTINGS:');
+    //     console.log(JSON.stringify(ds));
     //     return ds;
     // }
 

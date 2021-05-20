@@ -22,9 +22,9 @@ export const SubscriptionScreen: React.FC = () => {
         :  <SubscriptionOptions />;
 
     return (
-        <PDSafeAreaView bgColor="white">
+        <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never' } }>
             <ScreenHeader color="blue" textType="heading">
-                Pooldash Plus
+                Pooldash+
             </ScreenHeader>
             <ScrollView style={ [styles.content, { backgroundColor: theme.greyVeryLight } ] }>
                 { content }

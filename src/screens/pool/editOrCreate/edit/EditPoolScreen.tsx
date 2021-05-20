@@ -31,7 +31,7 @@ export const EditPoolScreen: React.FunctionComponent = () => {
     }, [pool]);
 
     return (
-        <PDSafeAreaView bgColor="white">
+        <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never' } }>
             <ModalHeader>Edit Pool</ModalHeader>
             <SectionList
                 sections={ editPoolSectionInfo }

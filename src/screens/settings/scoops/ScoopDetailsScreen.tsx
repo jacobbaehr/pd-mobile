@@ -30,6 +30,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 import { getTreatmentWithVar, mapScoopDeviceSettings } from './ScoopDetailsUtils';
 import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
+import { useContrastStatusBar } from '~/hooks/useStatusBar';
 
 export interface ScoopDetailsRouteProps {
     prevScoop: Scoop | null;
@@ -61,6 +62,7 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
     const [isSelectingInitialTreatment, setIsSelectingInitialTreatment] = React.useState(false);
     const type = treatment?.type || 'dryChemical';
     const { ds, updateDS } = useDeviceSettings();
+    useContrastStatusBar();
 
     const [units, setUnits] = React.useState<Units>(getUnits(type, prevScoop?.displayUnits));
     const headerTitle = prevScoop ? 'Edit Scoop' : 'Add Scoop';

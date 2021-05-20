@@ -120,7 +120,7 @@ export class Util {
     };
 
     static generateTimestamp = () => {
-        return new Date().getTime();
+        return Date.now();
     };
 
     static excludeFalsy = (array: any[]) => {

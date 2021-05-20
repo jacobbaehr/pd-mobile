@@ -35,7 +35,7 @@ export const CreatePoolScreen: React.FunctionComponent = () => {
     };
 
     return (
-        <PDSafeAreaView bgColor="white">
+        <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never' } }>
             <ModalHeader>Create Pool</ModalHeader>
             <SectionList
                 sections={ createPoolSectionInfo }

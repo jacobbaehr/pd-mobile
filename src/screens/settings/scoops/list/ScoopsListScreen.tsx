@@ -5,29 +5,29 @@ import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { Scoop } from '~/models/Scoop';
 import { PDStackNavigationProps } from '~/navigator/shared';
+import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { useFetchScoops } from '../useScoops';
 import { ScoopListItem } from './ScoopListItem';
+import { useStandardStatusBar } from '~/hooks/useStatusBar';
 
 export const ScoopsListScreen = () => {
-    const scoops = useFetchScoops();
+    const { ds } = useDeviceSettings();
     const theme = useTheme();
     const navigation = useNavigation<PDStackNavigationProps>();
+    useStandardStatusBar();
 
     const handleAddButtonPressed = () => {
-        navigation.navigate('AddScoop');
+        navigation.navigate('ScoopDetails', { prevScoop: null });
     };
 
     const handleScoopItemPressed = ( scoop: Scoop)=> {
-        navigation.navigate('ScoopDetails', {
-            prevScoop: scoop,
-        });
+        navigation.navigate('ScoopDetails', { prevScoop: scoop });
     };
 
     return (
-        <PDSafeAreaView bgColor="white">
+        <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never' } }>
             <ScreenHeader
                 hasAddButton
                 hasBottomLine
@@ -37,7 +37,7 @@ export const ScoopsListScreen = () => {
                 Scoops
             </ScreenHeader>
             <FlatList
-                data={ scoops }
+                data={ ds.scoops }
                 keyExtractor={ (item) => item.guid }
                 style={ [{ backgroundColor: theme.blurredPink }] }
                 contentContainerStyle={ { paddingTop: PDSpacing.md } }

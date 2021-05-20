@@ -4,12 +4,9 @@ import { Scoop } from '~/models/Scoop';
 import { Util } from '~/services/Util';
 
 export const getTreatmentWithVar = (treatments: Treatment[], varName: string): Treatment | null => {
-    const filteredList = treatments.filter((t) => t.var === varName);
-    if (filteredList.length) {
-        return filteredList[0];
-    } else {
-        return null;
-    }
+    return Util.firstOrNull(
+        treatments.filter((t) => t.var === varName)
+    );
 };
 
 export const mapScoopDeviceSettings = (deviceSetting: DeviceSettings, scoop: Scoop, type: 'edit' | 'create') => {

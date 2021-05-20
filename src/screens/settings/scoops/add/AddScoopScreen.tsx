@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Keyboard, StyleSheet } from 'react-native';
 import { KeyboardButton } from '~/components/buttons/KeyboardButton';
 import { PDButton } from '~/components/buttons/PDButton';
 import ModalHeader from '~/components/headers/ModalHeader';
@@ -9,12 +9,50 @@ import { PDText } from '~/components/PDText';
 import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { useStandardStatusBar } from '~/hooks/useStatusBar';
+import { PDStackNavigationProps } from '~/navigator/shared';
+import { Util } from '~/services/Util';
+
+import { useNavigation } from '@react-navigation/native';
+
+import { useFetchAllTreatments } from '../useScoops';
 
 export const AddScoopScreen = () => {
     useStandardStatusBar();
     const theme = useTheme();
+    // const [amount, setAmount] = useState<string>('');
+    const { navigate } = useNavigation<PDStackNavigationProps>();
+    const treatments = useFetchAllTreatments();
+
+    const handleChemicalPressed = () => {
+        navigate('PopoverScreen', {
+            title: 'Select Chemical',
+            color: 'pink',
+            items: treatments.map((t) => ({
+                name: Util.getDisplayNameForTreatment(t),
+                value: t.var,
+            })),
+            popoverKey: 'scoop',
+        });
+    };
+
+    const handleUnitPressed = () => {
+        navigate('PopoverScreen', {
+            title: 'Change Unit',
+            color: 'orange',
+            items:[],
+        });
+    };
+
+
+    const handleSavePressed = () => {
+        Keyboard.dismiss();
+
+
+
+    };
 
     const keyboardId = 'thisistheuniquekeyboardidforscoops';
+
     return (
         <PDSafeAreaView bgColor="white">
             <ModalHeader>Add Scoop</ModalHeader>
@@ -28,7 +66,7 @@ export const AddScoopScreen = () => {
                     <PDText type="bodyGreyBold" color="grey">
                         chemical
                     </PDText>
-                    <PDButton bgColor="white" textColor="pink" style={ styles.button }  onPress={ () => {} }>
+                    <PDButton bgColor="white" textColor="pink" style={ styles.button }  onPress={ handleChemicalPressed }>
                         sodium carbonate
                     </PDButton>
                 </PDView>
@@ -48,7 +86,7 @@ export const AddScoopScreen = () => {
                         <PDText type="bodyGreyBold" color="grey">
                             unit
                         </PDText>
-                        <PDButton  bgColor="white" textColor="pink" style={ styles.button } onPress={ () => {} } >
+                        <PDButton  bgColor="white" textColor="pink" style={ styles.button } onPress={ handleUnitPressed } >
                             Gallons
                         </PDButton>
                     </PDView>
@@ -58,7 +96,7 @@ export const AddScoopScreen = () => {
                     bgColor={ true ? 'pink' : 'greyVeryLight' }
                     hitSlop={ { top: 5, left: 5, bottom: 5, right: 5 } }
                     disabled={ false }
-                    onPress={ () => {} }>
+                    onPress={ handleSavePressed }>
                     Save
                 </KeyboardButton>
             </PDView>

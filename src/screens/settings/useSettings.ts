@@ -9,30 +9,29 @@ import { useNavigation } from '@react-navigation/native';
 
 import { PoolUnit, PoolUnitOptions } from '../../models/Pool/PoolUnit';
 import { useDeviceSettings } from '../../services/DeviceSettings/Hooks';
+import pluralize from 'pluralize';
+import { DS } from '~/services/DSUtil';
 
 export const useSettings = () => {
     const { navigate } = useNavigation<PDStackNavigationProps>();
     const popoverValue = useTypedSelector(state => state.popover);
     const { ds, updateDS } = useDeviceSettings();
 
-
     useEffect(() => {
         if (popoverValue && popoverValue !== ds.units) {
             const cb = async () => {
-                console.log(popoverValue);
                 await updateDS({ units: popoverValue as PoolUnit });
             };
             cb();
-
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [popoverValue, ds.units]);
 
     const handleNavigationUnits = () =>{
         navigate('PopoverScreen', {
-            title: 'Change Unit',
+            title: 'Volume Units',
             color: 'orange',
-            description: 'Your selection will be used globally across all unit selectors',
+            description: 'This will affect how pool volume is displayed throughout the app.',
             items: PoolUnitOptions.map((item) => ({ name: item.display, value: item.value })),
             prevSelection: ds.units,
         });
@@ -40,7 +39,6 @@ export const useSettings = () => {
     };
     const handleNavigationScoops = () =>{
         navigate('ScoopsList');
-
     };
     const handleNavigationSubscription = () =>{
         navigate('Subscription');
@@ -54,10 +52,18 @@ export const useSettings = () => {
         }
     };
 
+    let scoopsSubtitle = '';
+    const numScoops = ds.scoops.length;
+    if (numScoops > 0) {
+        scoopsSubtitle = `${numScoops} ${pluralize('scoop', numScoops)}`;
+    }
+
+    const isSubscribed = DS.isSubscriptionValid(ds, Date.now());
+    console.log(`subbed? ${isSubscribed}`);
 
     const settingsSection : PDSectionListProps[] = [
         {
-            title: 'basic information',
+            title: 'measurements',
             data: [
                 {
                     id: 'unit',
@@ -68,17 +74,22 @@ export const useSettings = () => {
                     onPress: handleNavigationUnits,
                 },
                 {
-                    id: 'sccops',
+                    id: 'scoops',
                     image: 'IconScoop',
                     label: 'Scoops:',
                     valueColor: 'pink',
-                    value: `${3} scoops`,
+                    value: scoopsSubtitle,
                     onPress: handleNavigationScoops,
                 },
+            ],
+        },
+        {
+            title: 'subscription',
+            data: [
                 {
                     id: 'pooldashPlus',
                     image: 'IconPooldashPlus',
-                    label: 'Upgrade to:  ',
+                    label: isSubscribed ? 'Manage: ' : 'Upgrade to: ',
                     valueColor: 'teal',
                     value: 'Pooldash+',
                     onPress: handleNavigationSubscription,

@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { SafeAreaView, StyleSheet, ViewProps } from 'react-native';
+import { StyleSheet, ViewProps } from 'react-native';
+import SafeAreaView, { ForceInsetProp } from 'react-native-safe-area-view';
 
 import { PDColor, useTheme } from './PDTheme';
 
 interface PDSafeAreaViewProps extends ViewProps {
     bgColor?: PDColor;
+    forceInset?: ForceInsetProp;
 }
 
 /// Wrapper around SafeAreaView component that allows some custom theming

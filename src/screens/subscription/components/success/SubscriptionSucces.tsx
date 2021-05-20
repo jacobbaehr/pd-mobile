@@ -35,7 +35,7 @@ export const SubscriptionSuccess: React.FC<SubscriptionSuccessScreenProps> = ({ 
     return (
         <>
             <PDView>
-                <PDText type="subHeading">Thanks for Subscribing to Plus!</PDText>
+                <PDText type="subHeading">Thanks for Subscribing!</PDText>
             </PDView>
             <HR />
 

@@ -22,6 +22,7 @@ export interface PopoverRouteProps {
     color: keyof PDTheme;
     items?: Item[];
     prevSelection?: string;
+    popoverKey?: string;
 }
 
 export const PopoverScreen = () => {
@@ -52,7 +53,7 @@ export const PopoverScreen = () => {
     };
 
     return (
-        <PDSafeAreaView bgColor="white">
+        <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never' } }>
             <ScreenHeader textType="subHeading" hasBackButton hasBottomLine={ false }>
                 {title}
             </ScreenHeader>
