@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { PurchasesProduct } from 'react-native-purchases';
+import TouchableScale from 'react-native-touchable-scale';
 import { SVG } from '~/assets/images';
 import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
@@ -32,7 +33,7 @@ export const SubscriptionListItem: React.FC<SubscriptionListItemProps> = (props)
     }
 
     return (
-        <TouchableWithoutFeedback  onPress={ handleSelection }>
+        <TouchableScale onPress={ handleSelection } activeScale={ 0.98 }>
             <PDView bgColor="white" style={ compactStyles }>
                 <PDView>
                     <PDText type="bodySemiBold" color="black">
@@ -44,7 +45,7 @@ export const SubscriptionListItem: React.FC<SubscriptionListItemProps> = (props)
                 </PDView>
                 <PDView>{selected && <Icon height={ 24 } width={ 24 } color="green" />}</PDView>
             </PDView>
-        </TouchableWithoutFeedback>
+        </TouchableScale>
     );
 };
 
