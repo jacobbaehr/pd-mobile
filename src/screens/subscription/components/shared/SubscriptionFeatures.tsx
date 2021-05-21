@@ -33,7 +33,7 @@ export const SubscriptionFeatures = () => {
     return (
         <PDView>
             <PDText type="bodySemiBold" color="grey">
-                INCLUDED FEATURES
+                BENEFITS
             </PDText>
             {features.map((feature: Feature) => {
                 const Icon = SVG[feature.icon];
