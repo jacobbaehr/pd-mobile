@@ -52,14 +52,10 @@ export const useSettings = () => {
         }
     };
 
-    let scoopsSubtitle = '';
     const numScoops = ds.scoops.length;
-    if (numScoops > 0) {
-        scoopsSubtitle = `${numScoops} ${pluralize('scoop', numScoops)}`;
-    }
+    const scoopsSubtitle = `${numScoops} ${pluralize('scoop', numScoops)}`;
 
     const isSubscribed = DS.isSubscriptionValid(ds, Date.now());
-    console.log(`subbed? ${isSubscribed}`);
 
     const settingsSection : PDSectionListProps[] = [
         {

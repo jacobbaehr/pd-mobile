@@ -57,7 +57,7 @@ export const SubscriptionSuccess: React.FC<SubscriptionSuccessScreenProps> = ({ 
 
             <SubscriptionFeatures />
             <PDView style={ styles.buttonContainer }>
-                <PDButton onPress={ handleManageSubPressed } bgColor="greyLight">
+                <PDButton onPress={ handleManageSubPressed } bgColor="blue">
                     Manage Subscription
                 </PDButton>
             </PDView>
