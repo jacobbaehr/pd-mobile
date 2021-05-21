@@ -16,12 +16,14 @@ import { useNavigation } from '@react-navigation/native';
 import { PoolListFooter } from './PoolListFooter';
 import { PoolListItem } from './PoolListItem';
 import { PDStackNavigationProps } from '~/navigator/shared';
+import { useStandardStatusBar } from '~/hooks/useStatusBar';
 
 export const PoolListScreen: React.FC = () => {
     const pools = useRealmPoolsHook();
     const { navigate } = useNavigation<PDStackNavigationProps>();
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
     const insets = useSafeArea();
+    useStandardStatusBar();
 
     const handlePoolSelected = async (pool: Pool) => {
         dispatch(selectPool(pool));

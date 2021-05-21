@@ -16,11 +16,13 @@ import { Haptic } from '~/services/HapticService';
 import { useNavigation } from '@react-navigation/core';
 
 import { MenuItemButton } from '../../components/MenuItemButton';
+import { useSafeArea } from 'react-native-safe-area-context';
 
 export const CreatePoolScreen: React.FunctionComponent = () => {
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
     const createPoolSectionInfo = useCreatePool(deviceSettings);
     const dispatch = useThunkDispatch();
+    const insets = useSafeArea();
 
     const { pool, isRequiredFilledOut } = useEntryPool();
     const navigation = useNavigation();
@@ -52,7 +54,7 @@ export const CreatePoolScreen: React.FunctionComponent = () => {
                 contentContainerStyle={ styles.listContent }
                 style={ styles.listContainer }
             />
-            <PDView>
+            <PDView style={ { paddingBottom: insets.bottom + PDSpacing.sm } }>
                 <PDButton
                     textStyle={ styles.text }
                     onPress={ handleCreatePoolPressed }
