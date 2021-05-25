@@ -10,8 +10,9 @@ import { PDPoolParams } from '~/navigator/EditPoolNavigator';
 import { RouteProp, useRoute } from '@react-navigation/native';
 
 import {
-    EntryPoolElements, EntryPoolHelpers
+    EntryPoolElements, EntryPoolHelpers,
 } from '../editOrCreate/entryPoolValues/EntryPoolHelpers';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export interface HeaderInfo {
     id: EntryPoolElements;
@@ -30,12 +31,18 @@ export const PoolPopover: React.FC = () => {
             <ScreenHeader textType="subHeading" hasBackButton hasBottomLine={ false }>
                 {headerInfo.title}
             </ScreenHeader>
-            <PDText type="bodyMedium" style={ styles.description } numberOfLines={ 3 }>
-                {headerInfo.description}
-            </PDText>
-            <PDView style={ styles.content }>
-                <EntryField/>
-            </PDView>
+            <KeyboardAwareScrollView
+                style={ styles.container }
+                extraScrollHeight={ 60 }
+                enableOnAndroid
+                keyboardShouldPersistTaps={ 'handled' }>
+                <PDText type="bodyMedium" style={ styles.description } numberOfLines={ 3 }>
+                    {headerInfo.description}
+                </PDText>
+                <PDView style={ styles.content }>
+                    <EntryField/>
+                </PDView>
+            </KeyboardAwareScrollView>
         </PDView>
     );
 };

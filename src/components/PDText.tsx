@@ -24,7 +24,7 @@ const BaseText: React.FC<PDTextProps> = (props) => {
     const textStyles = StyleSheet.flatten([defaultStyles, colorStylesFromTheme,{ textAlign }, style]);
 
     return (
-        <Text style={ textStyles } { ...restProps }>
+        <Text style={ textStyles } allowFontScaling={ true } maxFontSizeMultiplier={ 1.4 } { ...restProps }>
             {children}
         </Text>
     );
