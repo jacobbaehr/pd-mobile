@@ -2,6 +2,9 @@ import React from 'react';
 import { SvgProps } from 'react-native-svg';
 import { PDColor } from '~/components/PDTheme';
 
+import IconPlay from './images/icon_play.svg';
+import IconSearch from './images/icon_search.svg';
+import IconSettings from './images/icon_settings.svg';
 // General Icons
 import IconCheckmark from './images/icons/icon_checkmark.svg';
 import IconChevronForward from './images/icons/icon_chevron_forward.svg';
@@ -123,6 +126,7 @@ export const SVG: Record<string, (props: OverrideSvgProps) => JSX.Element> = {
     IconChevronForward: (props) => <IconChevronForward { ...props } />,
     IconExportData: (props) => <IconExportData { ...props } />,
     IconImportData: (props) => <IconImportData { ...props } />,
+    IconPlay: (props) => <IconPlay { ...props } />,
 
     // Pool Icons
     IconCustomTargets: (props) => <IconCustomTargets { ...props } />,
@@ -137,4 +141,6 @@ export const SVG: Record<string, (props: OverrideSvgProps) => JSX.Element> = {
     IconPooldashPlus: (props) => <IconPooldashPlus { ...props } />,
     IconScoop: (props) => <IconScoop { ...props } />,
     IconUnits: (props) => <IconUnits { ...props } />,
+    IconSettings: (props) => <IconSettings { ...props } />,
+    IconSearch: (props) => <IconSearch { ...props } />,
 };

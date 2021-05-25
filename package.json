@@ -4,8 +4,7 @@
     "private": true,
     "scripts": {
         "android": "npx react-native run-android",
-        "ios": "npx react-native run-ios --scheme dev",
-        "ios:sandbox": "npx react-native run-ios --scheme sandbox",
+        "ios": "npx react-native run-ios --scheme sandbox",
         "start": "npx react-native start",
         "test": "jest",
         "lint": "eslint . --ext .ts,.tsx",

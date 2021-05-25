@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet, View,
+    InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet, View
 } from 'react-native';
 import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
@@ -21,12 +21,13 @@ import { clearReadings } from '~/redux/readingEntries/Actions';
 import { Database } from '~/repository/Database';
 import { CalculationService } from '~/services/CalculationService';
 import { Config } from '~/services/Config';
+import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
 import { Haptic } from '~/services/HapticService';
 import { RecipeService } from '~/services/RecipeService';
 import { Converter } from '~/services/TreatmentUnitsService';
 import { Util } from '~/services/Util';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useNavigationState } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { TargetsHelper } from '../customTargets/TargetHelper';
@@ -34,7 +35,6 @@ import { PDPickerRouteProps } from '../picker/PickerScreen';
 import { TreatmentListFooter } from './TreatmentListFooter';
 import { TreatmentListHelpers, TreatmentState } from './TreatmentListHelpers';
 import { TreatmentListItem } from './TreatmentListItem';
-import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
 
 export const TreatmentListScreen: React.FC = () => {
     const readings = useTypedSelector((state) => state.readingEntries);
@@ -50,6 +50,7 @@ export const TreatmentListScreen: React.FC = () => {
     const [concentrationTreatmentVar, updateConcentrationTreatment] = React.useState<string | null>(null);
     const recipe = useLoadRecipeHook(recipeKey);
     const targetRangeOverridesForPool = useRealmPoolTargetRangesForPool(pool.objectId);
+    const navRoutes = useNavigationState(state => state.routeNames);
 
     const allScoops = ds.scoops;
 
@@ -133,7 +134,8 @@ export const TreatmentListScreen: React.FC = () => {
         );
         updateDS({ treatments: newTreatments });
         dispatch(clearReadings());
-        navigate('PoolScreen');
+        const navigateBackScreen = navRoutes.includes('PoolList') ? 'PoolList' : 'PoolScreen';
+        navigate(navigateBackScreen);
     };
 
     const onMessage = (event: WebViewMessageEvent) => {
