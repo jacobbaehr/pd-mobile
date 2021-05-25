@@ -18,7 +18,7 @@ export const EntryEmail: React.FC = () => {
         navigation.goBack();
     };
 
-    const validateEmail = () => new RegExp(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/).test(email.trim());
+    const validateEmail = () => new RegExp(/^\S+@\S+\.\S+$/).test(email.trim());
 
 
     const handleOnPressSaveButton = () => {
