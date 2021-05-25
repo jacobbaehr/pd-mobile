@@ -47,6 +47,7 @@ export const EntryEmail: React.FC = () => {
                 returnKeyType="done"
                 onSubmitEditing={ handleOnPressSaveButton }
                 enablesReturnKeyAutomatically
+                keyboardType="email-address"
             />
             <KeyboardButton
                 nativeID={ keyboardAccessoryViewId }
