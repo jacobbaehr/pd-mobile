@@ -1,5 +1,5 @@
-import React from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import TouchableScale from 'react-native-touchable-scale';
 import { useDispatch } from 'react-redux';
 import { SearchInput } from '~/components/inputs/SearchInput';
@@ -7,11 +7,12 @@ import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
-import { useRealmPoolsHook } from '~/hooks/RealmPoolHook';
 import { Pool } from '~/models/Pool';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { selectPool } from '~/redux/selectedPool/Actions';
 import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
+import { RecipeService } from '~/services/RecipeService';
+import { RS } from '~/services/RecipeUtil';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
 import { useNavigation } from '@react-navigation/native';
@@ -19,12 +20,14 @@ import { useNavigation } from '@react-navigation/native';
 import { ChipButton } from './ChipButton';
 import { PoolListFooter } from './PoolListFooter';
 import { SearchHeader } from './SearchHeader';
+import { usePoolSearch } from './usePoolSearch';
 
 export const PoolListScreen = () => {
-    const pools = useRealmPoolsHook();
     const { ds } = useDeviceSettings();
     const { navigate } = useNavigation<PDStackNavigationProps>();
     const dispatch = useDispatch();
+    const [keyboard, setKeyboard] = useState<string>('');
+    const pools = usePoolSearch(keyboard);
 
     const handleItemPressed = (item: Pool) => {
         dispatch(selectPool(item));
@@ -36,26 +39,37 @@ export const PoolListScreen = () => {
         navigate('ReadingList');
     };
 
-
     const handleUpgradePressed = () => {
         navigate('Subscription');
     };
 
+    const handleKeyboardChanged = useCallback(
+        (newText: string) => {
+            setKeyboard(newText);
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [keyboard],
+    );
+
+    const hanldeSeeAllPressed = () => {
+        setKeyboard('');
+    };
 
     const isEmpty = pools.length === 0;
 
     const renderItem = ({ item }: { item: Pool }) => {
         const volume = VolumeUnitsUtil.getDisplayVolume(item.gallons, ds);
-        const cb = () => handleItemPressed(item);
-        const cb2 = () => handleChipPressed(item);
+        const recipeColor = RS.getRecipeColor(item.recipeKey ?? RecipeService.defaultRecipeKey);
         return (
-            <TouchableScale onPress={ cb }>
+            <TouchableScale onPress={ () => handleItemPressed(item) }>
                 <PDView bgColor="white" style={ styles.containerItem }>
-                    <PDText type="bodyBold" numberOfLines={ 3 }>{item.name}</PDText>
-                    <PDText type="bodyMedium" color="grey">
-                        {item.waterType} - {volume }
+                    <PDText type="bodyBold" numberOfLines={ 3 }>
+                        {item.name}
                     </PDText>
-                    <ChipButton onPress={ cb2 } recipeKey={ item.recipeKey } />
+                    <PDText type="bodyMedium" color="grey">
+                        {item.waterType} - {volume}
+                    </PDText>
+                    <ChipButton onPress={ () => handleChipPressed(item) } recipeColor={ recipeColor } recipeKey={ item.recipeKey }/>
                 </PDView>
             </TouchableScale>
         );
@@ -64,18 +78,35 @@ export const PoolListScreen = () => {
     return (
         <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never' } }>
             <SearchHeader>
-                <SearchInput />
+                <SearchInput value={ keyboard } onChangeText={ handleKeyboardChanged } />
             </SearchHeader>
             <FlatList
                 style={ styles.container }
                 contentContainerStyle={ styles.content }
+                keyExtractor-={ (item: Pool, index: number) => item.objectId  + index }
+
                 data={ pools }
                 renderItem={ renderItem }
-                ListFooterComponent={ () => (
-                    <PoolListFooter isEmpty={ isEmpty } handlePressedUpgrade={ handleUpgradePressed }
-                    />
-                ) }
-                keyExtractor-={ (item: Pool) => item.objectId }
+                ListFooterComponent={ () => {
+                    if (pools.length === 0 && keyboard) {
+                        return (
+                            <TouchableOpacity onPress={ hanldeSeeAllPressed }>
+                                <PDText type="bodySemiBold" color="blue" textAlign="center">See all pools</PDText>
+                            </TouchableOpacity>
+                        );
+                    }
+                    return <PoolListFooter isEmpty={ isEmpty } handlePressedUpgrade={ handleUpgradePressed } />;
+                } }
+                ListEmptyComponent={ () => {
+                    if (pools.length === 0 && keyboard) {
+                        return (
+                            <PDView>
+                                <PDText style={ styles.emptyText }>🤷‍♂️🤷‍♀️</PDText>
+                            </PDView>
+                        );
+                    }
+                    return null;
+                } }
             />
         </PDSafeAreaView>
     );
@@ -96,5 +127,9 @@ const styles = StyleSheet.create({
         borderRadius: 24,
         borderColor: '#EDEDED',
         marginBottom: PDSpacing.xs,
+    },
+    emptyText: {
+        fontSize: 72,
+        textAlign: 'center',
     },
 });
