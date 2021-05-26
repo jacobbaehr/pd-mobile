@@ -4,7 +4,7 @@ import { getDisplayForWallType } from '~/models/Pool/WallType';
 import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import {
-    CreatePoolField, CreatePoolHelpers, CreatePoolList
+    CreatePoolField, CreatePoolHelpers, CreatePoolList,
 } from '~/screens/pool/editOrCreate/create/CreatePoolHelpers';
 import { RecipeService } from '~/services/RecipeService';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
@@ -68,7 +68,7 @@ export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolList[] 
                     onPress: () => handleNavigateToPopover('wallType'),
                 },
                 {
-                    label: 'Recipe: ',
+                    label: 'Formula: ',
                     image: 'IconPoolFormula',
                     valueColor: recipe?.name ? 'orange' : 'grey',
                     id: 'recipe',

@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import * as React from 'react';
 import {
-    Linking, SafeAreaView, ScrollView, StyleSheet, TouchableHighlight, View
+    Linking, SafeAreaView, ScrollView, StyleSheet, TouchableHighlight, View,
 } from 'react-native';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { PDText } from '~/components/PDText';
@@ -89,7 +89,7 @@ export const RecipeScreen: React.FC = () => {
                         {updatedText}
                     </PDText>
                     <PDText type="default" style={ styles.recipeNameIntroText }>
-                        Want to see the formulas?
+                        Want to see the calculations?
                     </PDText>
                     <View style={ styles.topRow }>
                         <TouchableHighlight
@@ -105,7 +105,7 @@ export const RecipeScreen: React.FC = () => {
                 <BoringButton
                     containerStyles={ styles.button }
                     onPress={ handleSelectRecipePressed }
-                    title="Use this recipe"
+                    title="Use this formula"
                 />
             </View>
         </SafeAreaView>

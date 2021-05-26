@@ -21,7 +21,7 @@ export const ReadingListFooter: React.FunctionComponent<ReadingListFooterProps> 
     return (
         <View style={ styles.container }>
             <PDText type="default" style={ styles.recipeNameIntroText }>
-                Current recipe:{' '}
+                Current formula:{' '}
                 <PDText type="default" style={ styles.recipeNameText }>
                     {props.recipe.name}
                 </PDText>
@@ -35,7 +35,7 @@ export const ReadingListFooter: React.FunctionComponent<ReadingListFooterProps> 
                     onPressOut={ () => setIsChangeButtonPressed(false) }
                     onPress={ props.pressedChangeRecipe }>
                     <PDText type="default" style={ changeButtonStyles }>
-                        Change recipe.
+                        Change formula.
                     </PDText>
                 </TouchableHighlight>
             </View>

@@ -102,7 +102,7 @@ export const useEditPool = (pool: Partial<Pool>, toggleVisible: () => void): Edi
             data: [
                 {
                     id: 'recipe',
-                    label: 'Recipe: ',
+                    label: 'Formula: ',
                     image: 'IconPoolFormula',
                     value: recipe?.name,
                     valueColor: 'orange',

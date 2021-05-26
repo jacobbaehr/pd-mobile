@@ -22,7 +22,7 @@ export const RecipeListHeader: React.FC<RecipeListHeaderProps> = (props) => {
         <View style={ styles.container }>
             <BackButton title={ poolName } onPress={ handlePressedBack } color={ 'recipesGreen' } />
             <PDText type="default" style={ styles.gradientText }>
-                Change Recipe
+                Change Formula
             </PDText>
         </View>
     );
