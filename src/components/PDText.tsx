@@ -21,7 +21,7 @@ const BaseText: React.FC<PDTextProps> = (props) => {
     const color = props.color !== undefined ? theme[props.color] : theme.black;
     const colorStylesFromTheme = { color };
     /// Any custom TextStyle properties are also applied at the end, via the "style" prop:
-    const textStyles = StyleSheet.flatten([defaultStyles, colorStylesFromTheme,{ textAlign }, style]);
+    const textStyles = StyleSheet.flatten([defaultStyles, colorStylesFromTheme, { textAlign }, style]);
 
     return (
         <Text style={ textStyles } allowFontScaling={ true } maxFontSizeMultiplier={ 1.4 } { ...restProps }>
@@ -96,5 +96,9 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Bold',
         lineHeight: 36,
         fontSize: 24,
+    },
+    buttonSmall: {
+        fontFamily: 'Poppins-Bold',
+        fontSize: 14,
     },
 });

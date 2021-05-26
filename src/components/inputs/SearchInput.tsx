@@ -12,9 +12,13 @@ export const SearchInput: React.FC<TextInputProps> = (props) => {
             <PDView>
                 <SVG.IconSearch/>
             </PDView>
-            <PDView style={ { marginLeft: 8 } }>
-                <TextInput { ...props }  style={ styles.textInput } placeholder="Search" placeholderTextColor="#909090" keyboardType="default"/>
-            </PDView>
+                <TextInput
+                    { ...props }
+                    style={ styles.textInput }
+                    placeholder="Search"
+                    placeholderTextColor="#909090"
+                    keyboardType="default"
+                    hitSlop={ { top: 5, bottom: 5, left: 20, right: 5 } } />
         </PDView>
     );
 };
@@ -28,6 +32,8 @@ const styles = StyleSheet.create({
         padding: PDSpacing.xs,
      },
     textInput: {
+        marginHorizontal: PDSpacing.xs,
+        flex: 1,
         fontFamily: 'Poppins',
         fontSize: 16,
         lineHeight: 24,

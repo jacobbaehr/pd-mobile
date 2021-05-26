@@ -21,6 +21,8 @@ import { ChipButton } from './ChipButton';
 import { PoolListFooter } from './PoolListFooter';
 import { SearchHeader } from './SearchHeader';
 import { usePoolSearch } from './usePoolSearch';
+import { getDisplayForWaterType } from '~/models/Pool/WaterType';
+import { Haptic } from '~/services/HapticService';
 
 export const PoolListScreen = () => {
     const { ds } = useDeviceSettings();
@@ -30,6 +32,7 @@ export const PoolListScreen = () => {
     const pools = usePoolSearch(keyboard);
 
     const handleItemPressed = (item: Pool) => {
+        Haptic.light();
         dispatch(selectPool(item));
         navigate('PoolScreen');
     };
@@ -51,23 +54,23 @@ export const PoolListScreen = () => {
         [keyboard],
     );
 
-    const hanldeSeeAllPressed = () => {
+    const handleSeeAllPressed = () => {
         setKeyboard('');
     };
 
     const isEmpty = pools.length === 0;
 
     const renderItem = ({ item }: { item: Pool }) => {
-        const volume = VolumeUnitsUtil.getDisplayVolume(item.gallons, ds);
+        const volume = VolumeUnitsUtil.getAbbreviatedDisplayVolume(item.gallons, ds);
         const recipeColor = RS.getRecipeColor(item.recipeKey ?? RecipeService.defaultRecipeKey);
         return (
-            <TouchableScale onPress={ () => handleItemPressed(item) }>
+            <TouchableScale onPress={ () => handleItemPressed(item) } activeScale={ 0.97 }>
                 <PDView bgColor="white" style={ styles.containerItem }>
                     <PDText type="bodyBold" numberOfLines={ 3 }>
                         {item.name}
                     </PDText>
                     <PDText type="bodyMedium" color="grey">
-                        {item.waterType} - {volume}
+                        { getDisplayForWaterType(item.waterType) }, {volume}
                     </PDText>
                     <ChipButton onPress={ () => handleChipPressed(item) } recipeColor={ recipeColor } recipeKey={ item.recipeKey }/>
                 </PDView>
@@ -84,14 +87,15 @@ export const PoolListScreen = () => {
                 style={ styles.container }
                 contentContainerStyle={ styles.content }
                 keyExtractor-={ (item: Pool, index: number) => item.objectId  + index }
-
+                keyboardShouldPersistTaps={ 'handled' }
+                keyboardDismissMode={ 'interactive' }
                 data={ pools }
                 renderItem={ renderItem }
                 ListFooterComponent={ () => {
                     if (pools.length === 0 && keyboard) {
                         return (
-                            <TouchableOpacity onPress={ hanldeSeeAllPressed }>
-                                <PDText type="bodySemiBold" color="blue" textAlign="center">See all pools</PDText>
+                            <TouchableOpacity onPress={ handleSeeAllPressed } hitSlop={ { left: 5, top: 5, right: 5, bottom: 5 } }>
+                                <PDText type="bodySemiBold" color="blue" textAlign="center" style={ { textDecorationLine: 'underline' } }>See all pools</PDText>
                             </TouchableOpacity>
                         );
                     }
@@ -121,7 +125,8 @@ const styles = StyleSheet.create({
         marginTop: PDSpacing.sm,
     },
     containerItem: {
-        paddingVertical: PDSpacing.sm,
+        paddingTop: PDSpacing.sm,
+        paddingBottom: PDSpacing.md,
         paddingHorizontal: PDSpacing.lg,
         borderWidth: 2,
         borderRadius: 24,

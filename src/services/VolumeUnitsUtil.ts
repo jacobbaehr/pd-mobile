@@ -2,6 +2,7 @@ import { DeviceSettings } from '~/models/DeviceSettings';
 import { PoolUnit } from '~/models/Pool/PoolUnit';
 
 import { ConversionUtil } from './ConversionsUtil';
+import { Util } from './Util';
 
 export class VolumeUnitsUtil {
     static getNextUnitValue = (inputUnit: PoolUnit): PoolUnit => {
@@ -34,6 +35,17 @@ export class VolumeUnitsUtil {
                 return `${ConversionUtil.usGallonsToImpGallon(gallons).toLocaleString(undefined, {
                     maximumFractionDigits: 0,
                 })} Imp Gallons`;
+        }
+    };
+
+    static getAbbreviatedDisplayVolume = (gallons: number, settings: DeviceSettings): string => {
+        switch (settings.units) {
+            case 'us':
+                return `${Util.abbreviate(gallons)} Gallons`;
+            case 'metric':
+                return `${Util.abbreviate(ConversionUtil.usGallonsToLiters(gallons))} Liters`;
+            case 'imperial':
+                return `${Util.abbreviate(ConversionUtil.usGallonsToImpGallon(gallons))} Gallons (Imperial)`;
         }
     };
 
