@@ -13,7 +13,11 @@ import { DS } from '~/services/DSUtil';
 
 import { useNavigation } from '@react-navigation/native';
 
-export const SearchHeader : React.FC = (props) => {
+interface SearchHeaderProps {
+    numPools: number;
+}
+
+export const SearchHeader: React.FC<SearchHeaderProps> = (props) => {
     const { navigate } = useNavigation<PDStackNavigationProps>();
     const { ds } = useDeviceSettings();
     const dispatch = useDispatch();
@@ -41,7 +45,7 @@ export const SearchHeader : React.FC = (props) => {
 
     const handleAddButtonPressed = () => {
         const hasUpgraded = DS.isSubscriptionValid(ds, Date.now());
-        if (hasUpgraded ) {
+        if (hasUpgraded || (props.numPools === 0)) {
             dispatch(clearPool());
             navigate('EditPoolNavigator');
         } else {
@@ -52,7 +56,6 @@ export const SearchHeader : React.FC = (props) => {
     const handleSettingButtonPressed = () => {
         navigate('Settings');
     };
-
 
     return (
         <PDView bgColor="white" style={ styles.containerBottom }>
