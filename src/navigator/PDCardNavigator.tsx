@@ -14,6 +14,8 @@ import { PoolHistoryScreen } from '~/screens/trends/PoolHistoryScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { SettingNavigation } from './animationEffects';
+import { TermsScreen } from '~/screens/subscription/TermsScreen';
+import { PrivacyScreen } from '~/screens/subscription/PrivacyScreen';
 
 // This defines the navigation params accepted by each possible screen in PDCardNavigator
 export type PDCardNavigatorParams = {
@@ -27,7 +29,9 @@ export type PDCardNavigatorParams = {
     PoolHistory: undefined;
     Subscription: undefined;
     CustomTargets: { prevScreen: 'ReadingList' | 'EditPoolNavigator' };
-    ScoopsList: undefined
+    TermsOfService: undefined;
+    PrivacyPolicy: undefined;
+    ScoopsList: undefined;
 };
 
 const CardStack = createStackNavigator<PDCardNavigatorParams>();
@@ -54,6 +58,8 @@ export const PDCardNavigator = (): JSX.Element => {
             />
             <CardStack.Screen name="CustomTargets" component={ CustomTargetsScreen } />
             <CardStack.Screen name="Subscription" component={ SubscriptionScreen } />
+            <CardStack.Screen name="TermsOfService" component={ TermsScreen } />
+            <CardStack.Screen name="PrivacyPolicy" component={ PrivacyScreen } />
             <CardStack.Screen name="ScoopsList" component={ ScoopsListScreen }  />
         </CardStack.Navigator>
     );

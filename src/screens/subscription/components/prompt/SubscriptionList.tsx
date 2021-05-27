@@ -1,10 +1,12 @@
+import { useNavigation } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableHighlight } from 'react-native';
 import { PDButton } from '~/components/buttons/PDButton';
 import { PDText } from '~/components/PDText';
 import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { ProductId } from '~/models/InAppPurchase';
+import { PDStackNavigationProps } from '~/navigator/shared';
 import { Haptic } from '~/services/HapticService';
 import { IAP } from '~/services/subscription/IAP';
 import { useAvailablePackages } from '~/services/subscription/SubHooks';
@@ -17,6 +19,7 @@ export const SubscriptionList = () => {
     const [selectedSku, setSelectedSku] = useState<ProductId | null>(null);
     const theme = useTheme();
     const [isLoading, setIsLoading] = useState(false);
+    const { navigate } = useNavigation<PDStackNavigationProps>();
 
     // Only set initial selection after that package has been loaded:
     useEffect(() => {
@@ -48,6 +51,14 @@ export const SubscriptionList = () => {
         setIsLoading(true);
         await IAP.restoreLastPurchase();
         setIsLoading(false);
+    };
+
+    const handlePressedTerms = () => {
+        navigate('TermsOfService');
+    };
+
+    const handlePressedPrivacy = () => {
+        navigate('PrivacyPolicy');
     };
 
     return (
@@ -86,6 +97,29 @@ export const SubscriptionList = () => {
                     Restore Purchases
                 </PDButton>
             </PDView>
+            <PDView style={ styles.termsContainer }>
+                <PDText type="default" style={ styles.termsText }>
+                    By subscribing, you agree to our
+                    {' '}
+                </PDText>
+                <TouchableHighlight
+                    onPress={ handlePressedTerms }>
+                    <PDText type="default" style={ styles.termsLink }>
+                        Terms of Service
+                    </PDText>
+                </TouchableHighlight>
+                <PDText type="default" style={ styles.termsText }>
+                    {' '}
+                    and
+                    {'  '}
+                </PDText>
+                <TouchableHighlight
+                    onPress={ handlePressedPrivacy }>
+                    <PDText type="default" style={ styles.termsLink }>
+                        Privacy Policy
+                    </PDText>
+                </TouchableHighlight>
+            </PDView>
         </PDView>
     );
 };
@@ -93,5 +127,30 @@ export const SubscriptionList = () => {
 const styles = StyleSheet.create({
     content: {
         marginVertical: PDSpacing.sm,
+    },
+    container: {
+        marginTop: 20,
+        marginHorizontal: 16,
+        marginBottom: 40,
+        backgroundColor: 'transparent',
+    },
+    termsContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignSelf: 'center',
+        textAlign: 'center',
+        justifyContent: 'center',
+    },
+    termsText: {
+        textAlign: 'center',
+        color: 'rgba(0,0,0,.6)',
+        fontSize: 14,
+    },
+    termsLink: {
+        textAlign: 'center',
+        backgroundColor: 'transparent',
+        color: '#3910E8',
+        fontSize: 14,
+        textDecorationLine: 'underline',
     },
 });
