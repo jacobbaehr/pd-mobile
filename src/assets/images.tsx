@@ -7,23 +7,29 @@ import IconSearch from './images/icon_search.svg';
 import IconSettings from './images/icon_settings.svg';
 // General Icons
 import IconCheckmark from './images/icons/icon_checkmark.svg';
+import IconChevronCircleDown from './images/icons/icon_chevron_circle_down.svg';
+import IconChevronCircleUp from './images/icons/icon_chevron_circle_up.svg';
 import IconChevronForward from './images/icons/icon_chevron_forward.svg';
 import IconEmptyCircle from './images/icons/icon_circle.svg';
 import IconCircleAdd from './images/icons/icon_circle_add.svg';
+import IconCircleAddSolid from './images/icons/icon_circle_add_solid.svg';
 import IconBack from './images/icons/icon_circle_back.svg';
-import IconCircleCheck from './images/icons/icon_circle_checkmark.svg';
+import IconCircleCheckmark from './images/icons/icon_circle_checkmark.svg';
 import IconCircleEdit from './images/icons/icon_circle_edit.svg';
 import IconCircleForward from './images/icons/icon_circle_forward.svg';
 import IconCloseButton from './images/icons/icon_close.svg';
 import IconDelete from './images/icons/icon_delete.svg';
+import IconDeleteOutline from './images/icons/icon_delete_outline.svg';
 import IconExportData from './images/icons/icon_export_data.svg';
 import IconForward from './images/icons/icon_forward.svg';
 import IconImportData from './images/icons/icon_import_data.svg';
 import IconInformation from './images/icons/icon_information.svg';
+import IconMail from './images/icons/icon_mail.svg';
 // Pool
 import IconCustomTargets from './images/pool/icon_custom_targets.svg';
 import IconPoolEmail from './images/pool/icon_email.svg';
 import IconPoolFormula from './images/pool/icon_formula.svg';
+import IconFormulaV2 from './images/pool/icon_formula_v2.svg';
 import IconPoolName from './images/pool/icon_name.svg';
 import IconPoolVolume from './images/pool/icon_volume.svg';
 import IconPoolWallType from './images/pool/icon_wall_type.svg';
@@ -122,11 +128,17 @@ export const SVG: Record<string, (props: OverrideSvgProps) => JSX.Element> = {
     IconHeart: (props)=> <IconHeart { ...props } />,
     IconCharts: (props)=> <IconCharts { ...props } />,
     IconEmptyCircle: (props)=> <IconEmptyCircle { ...props } />,
-    IconCircleCheck: (props)=> <IconCircleCheck { ...props } />,
+    IconCircleCheck: (props)=> <IconCheckmark { ...props } />,
     IconChevronForward: (props) => <IconChevronForward { ...props } />,
     IconExportData: (props) => <IconExportData { ...props } />,
     IconImportData: (props) => <IconImportData { ...props } />,
+    IconChevronCircleDown: (props) => <IconChevronCircleDown { ...props } />,
+    IconChevronCircleUp: (props) => <IconChevronCircleUp { ...props } />,
+    IconCircleAddSolid: (props) => <IconCircleAddSolid { ...props } />,
     IconPlay: (props) => <IconPlay { ...props } />,
+    IconDeleteOutline: (props) => <IconDeleteOutline { ...props } />,
+    IconMail: (props) => <IconMail { ...props } />,
+    IconCircleCheckmark: (props) => <IconCircleCheckmark { ...props } />,
 
     // Pool Icons
     IconCustomTargets: (props) => <IconCustomTargets { ...props } />,
@@ -136,6 +148,7 @@ export const SVG: Record<string, (props: OverrideSvgProps) => JSX.Element> = {
     IconPoolVolume: (props) => <IconPoolVolume { ...props } />,
     IconPoolWallType: (props) => <IconPoolWallType { ...props } />,
     IconPoolWaterType: (props) => <IconPoolWaterType { ...props } />,
+    IconFormulaV2: (props) => <IconFormulaV2 { ...props } />,
 
     // Settings
     IconPooldashPlus: (props) => <IconPooldashPlus { ...props } />,

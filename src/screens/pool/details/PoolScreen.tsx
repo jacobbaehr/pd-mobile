@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    Alert, LayoutAnimation, SectionList, SectionListData, StyleSheet, View,
+    Alert, LayoutAnimation, SectionList, SectionListData, StyleSheet, View
 } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 // @ts-ignore
@@ -10,6 +10,7 @@ import { ChartCard } from '~/components/charts/ChartCard';
 import { ScreenHeader } from '~/components/headers/ScreenHeader';
 import { PDText } from '~/components/PDText';
 import { useLoadRecipeHook, useRealmPoolHistoryHook } from '~/hooks/RealmPoolHook';
+import { useStandardStatusBar } from '~/hooks/useStatusBar';
 import { LogEntry } from '~/models/logs/LogEntry';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { useThunkDispatch, useTypedSelector } from '~/redux/AppState';
@@ -24,10 +25,9 @@ import { Util } from '~/services/Util';
 
 import { useNavigation } from '@react-navigation/native';
 
+import { usePoolChart } from './deprecated/usePoolChart';
 import { PoolHistoryListItem } from './PoolHistoryListItem';
 import PoolServiceConfigSection from './PoolServiceConfigSection';
-import { usePoolChart } from './usePoolChart';
-import { useStandardStatusBar } from '~/hooks/useStatusBar';
 
 export const PoolScreen: React.FC = () => {
     useStandardStatusBar();

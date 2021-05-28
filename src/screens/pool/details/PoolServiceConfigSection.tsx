@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { SVG } from '~/assets/images';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { PDText } from '~/components/PDText';
+import { PDSpacing } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { useLoadRecipeHook, useRealmPoolHistoryHook } from '~/hooks/RealmPoolHook';
 import { Pool } from '~/models/Pool';
@@ -85,9 +86,9 @@ const PoolServiceConfigSection = () => {
             <PDView bgColor="white" style={ styles.poolNameContainer }>
                 <PDText type="heading" numberOfLines={ 4 }>{selectedPool.name}</PDText>
             </PDView>
-            <PDView style={ styles.container }>
+            <PDView bgColor="white" style={ styles.container }>
                 <PDView>
-                    <PDText type="bodySemiBold" style={ [styles.subTitle, { marginBottom: 4 }] }>
+                    <PDText type="bodyBold" color="grey" style={ styles.subTitle }>
                         water
                     </PDText>
                     <TouchableOpacity onPress={ navigateToEditPool }>
@@ -102,7 +103,7 @@ const PoolServiceConfigSection = () => {
                     </TouchableOpacity>
                     <PDView>
                         <PDView>
-                            <PDText type="bodySemiBold" style={ styles.subTitle }>
+                            <PDText type="bodyBold" color="grey"  style={ styles.subTitle }>
                                 formula
                             </PDText>
                             <TouchableOpacity onPress={ navigateToRecipes }>
@@ -116,7 +117,7 @@ const PoolServiceConfigSection = () => {
                         </PDView>
                         {isEmptyCustom || (
                             <PDView>
-                                <PDText type="bodySemiBold" style={ styles.subTitle }>
+                                <PDText type="bodyBold" color="grey"  style={ styles.subTitle }>
                                     Custom Targets
                                 </PDText>
                                 <TouchableOpacity onPress={ navigateToCustomTargets }>
@@ -152,28 +153,15 @@ const border = {
 const styles = StyleSheet.create({
     container: {
         ...border,
-        backgroundColor: '#fff',
-        flexDirection: 'column',
-        paddingHorizontal: 18,
-        paddingTop: 18,
+        paddingHorizontal: PDSpacing.md,
+        paddingTop: PDSpacing.md,
     },
     buttonContainer: {
         backgroundColor: '#00B25C',
-        marginBottom: 12,
-    },
-    title: {
-        fontWeight: 'bold',
-        fontSize: 18,
-        lineHeight: 27,
-        color: '#000',
-        marginBottom: 8,
+        marginBottom: PDSpacing.sm,
     },
     subTitle: {
-        fontWeight: 'bold',
-        fontStyle: 'normal',
-        fontSize: 18,
-        lineHeight: 27,
-        color: '#8C8C8C',
+        lineHeight: 21,
         letterSpacing: 0.5,
         textTransform: 'uppercase',
     },
@@ -181,7 +169,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 10,
-        // This witdh it's required for ellipsizeMode
+        // This width it's required for ellipsizeMode
         width: Dimensions.get('window').width * 0.8,
     },
     buttonText: {
