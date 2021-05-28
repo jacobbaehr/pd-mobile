@@ -25,9 +25,9 @@ import { Util } from '~/services/Util';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { usePoolChart } from './deprecated/usePoolChart';
 import { PoolHistoryListItem } from './PoolHistoryListItem';
 import PoolServiceConfigSection from './PoolServiceConfigSection';
+import { usePoolChart } from './usePoolChart';
 
 export const PoolScreen: React.FC = () => {
     useStandardStatusBar();
