@@ -1,5 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback } from 'react-native';
+
+import { PDText } from '../PDText';
+import { PDView } from '../PDView';
 
 interface SelectableTextButtonProps {
     buttonText: string;
@@ -33,9 +36,9 @@ export class SelectableTextButton extends React.Component<SelectableTextButtonPr
         const textStyles = this.state.isSelected ? styles.selectedText : styles.unselectedText;
         return (
             <TouchableWithoutFeedback onPress={ this.handleOnPress }>
-                <View style={ [styles.baseContainer, buttonStyles] }>
-                    <Text style={ [styles.text, textStyles] }>{this.props.buttonText}</Text>
-                </View>
+                <PDView style={ [styles.baseContainer, buttonStyles] }>
+                    <PDText style={ [styles.text, textStyles] }>{this.props.buttonText}</PDText>
+                </PDView>
             </TouchableWithoutFeedback>
         );
     }

@@ -1,18 +1,13 @@
 import * as React from 'react';
 import {
-    InputAccessoryView,
-    Keyboard,
-    NativeSyntheticEvent,
-    StyleSheet,
-    TextInputEndEditingEventData,
-    View,
+    InputAccessoryView, Keyboard, NativeSyntheticEvent, StyleSheet, TextInputEndEditingEventData,
+    View
 } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
-// import Slider from '@react-native-community/slider';
 // @ts-ignore
 import Slider from 'react-native-slider';
 import { images } from '~/assets/images';
 import { BoringButton } from '~/components/buttons/BoringButton';
+import { PDTextInput } from '~/components/inputs/PDTextInput';
 import { PlatformSpecific } from '~/components/PlatformSpecific';
 import { Haptic } from '~/services/HapticService';
 
@@ -68,13 +63,15 @@ export const PickerSlider: React.FunctionComponent<PickerSliderProps> = (props) 
             <View style={ styles.content }>
                 <View style={ styles.topRow }>
                     <View style={ styles.topRowContent }>
-                        <TextInput
+                        <PDTextInput
                             style={ styles.textInput }
                             onChangeText={ onTextChange }
                             onEndEditing={ onTextEndEditing }
                             keyboardType={ 'number-pad' }
                             inputAccessoryViewID={ keyboardAccessoryViewId }
                             value={ rs.value }
+                            maxFontSizeMultiplier={ 1.4 }
+                            allowFontScaling
                         />
                         <PDText type="default" style={ styles.unitsText }>
                             %

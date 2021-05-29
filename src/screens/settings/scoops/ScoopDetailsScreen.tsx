@@ -1,14 +1,16 @@
 import pluralize from 'pluralize';
 import * as React from 'react';
-import { Alert, InputAccessoryView, Keyboard, SafeAreaView, StyleSheet, TextInput, View } from 'react-native';
+import { Alert, InputAccessoryView, Keyboard, SafeAreaView, StyleSheet, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { ChoosyButton } from '~/components/buttons/ChoosyButton';
 import { CloseButton } from '~/components/buttons/CloseButton';
 import { CycleButton } from '~/components/buttons/CycleButton';
+import { PDTextInput } from '~/components/inputs/PDTextInput';
 import { PDText } from '~/components/PDText';
 import { PlatformSpecific } from '~/components/PlatformSpecific';
+import { useContrastStatusBar } from '~/hooks/useStatusBar';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { Treatment, TreatmentType } from '~/models/recipe/Treatment';
 import { Scoop } from '~/models/Scoop';
@@ -20,6 +22,7 @@ import { clearPickerState } from '~/redux/picker/Actions';
 import { PickerState } from '~/redux/picker/PickerState';
 import { PDPickerRouteProps } from '~/screens/picker/PickerScreen';
 import { DeviceSettingsService } from '~/services/DeviceSettings/DeviceSettingsService';
+import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
 import { Haptic } from '~/services/HapticService';
 import { ScoopService } from '~/services/ScoopService';
 import { Converter } from '~/services/TreatmentUnitsService';
@@ -29,8 +32,6 @@ import { RouteProp, useFocusEffect, useNavigation } from '@react-navigation/nati
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { getTreatmentWithVar, mapScoopDeviceSettings } from './ScoopDetailsUtils';
-import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
-import { useContrastStatusBar } from '~/hooks/useStatusBar';
 
 export interface ScoopDetailsRouteProps {
     prevScoop: Scoop | null;
@@ -261,7 +262,7 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
                     Size
                 </PDText>
                 <View style={ styles.bubbleContainer }>
-                    <TextInput
+                    <PDTextInput
                         style={ styles.textInput }
                         onChangeText={ handleTextboxUpdated }
                         keyboardType={ 'decimal-pad' }

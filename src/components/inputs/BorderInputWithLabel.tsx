@@ -6,12 +6,12 @@ import { PDView } from '../PDView';
 
 interface BorderInputWithLabel extends TextInputProps {
     label: string;
-    labelStyleProps?: TextStyle  | TextStyle[];
+    labelStyleProps?: TextStyle | TextStyle[];
     textInputStyleProps?: TextStyle | TextStyle[];
     containerStyles?: ViewStyle;
 }
 
-const BorderInputWithLabel = React.forwardRef<TextInput, BorderInputWithLabel>((props, ref ) => {
+const BorderInputWithLabel = React.forwardRef<TextInput, BorderInputWithLabel>((props, ref) => {
     const { label, labelStyleProps, textInputStyleProps, ...restTextInputProps } = props;
     const defaultStyle = { ...styles.textInput, ...textInputStyleProps };
 
@@ -20,7 +20,15 @@ const BorderInputWithLabel = React.forwardRef<TextInput, BorderInputWithLabel>((
             <PDText type="bodyGreyBold" color="grey" style={ labelStyleProps }>
                 {label}
             </PDText>
-            <TextInput ref={ ref } style={ defaultStyle } placeholderTextColor="#BBBBBB" blurOnSubmit { ...restTextInputProps } />
+            <TextInput
+                ref={ ref }
+                style={ defaultStyle }
+                placeholderTextColor="#BBBBBB"
+                blurOnSubmit
+                allowFontScaling
+                maxFontSizeMultiplier={ 1.4 }
+                { ...restTextInputProps }
+            />
         </PDView>
     );
 });

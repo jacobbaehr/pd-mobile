@@ -1,8 +1,10 @@
 import format from 'date-fns/format';
 import * as React from 'react';
-import { Animated, Platform, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { Animated, Platform, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { WebView } from 'react-native-webview';
 
+import { PDText } from '../PDText';
+import { PDView } from '../PDView';
 import { Upgrade } from '../Upgrade';
 import { ChartCardViewModel } from './ChartCardViewModel';
 
@@ -53,9 +55,9 @@ export class ChartCard extends React.PureComponent<ChartCardProps, ChartCardStat
         const last = this.props.viewModel.timestamps[this.props.viewModel.timestamps.length - 1];
         const dateFormat = 'MMM';
         return [this.formatTimestamp(first, dateFormat), this.formatTimestamp(last, dateFormat)].map((range) => (
-            <Text style={ styles.labelText } key={ count++ }>
+            <PDText style={ styles.labelText } key={ count++ }>
                 {range}
-            </Text>
+            </PDText>
         ));
     };
 
@@ -84,10 +86,10 @@ export class ChartCard extends React.PureComponent<ChartCardProps, ChartCardStat
             Platform.OS === 'android' ? 'file:///android_asset/charts/Charts.html' : './web.bundle/Charts.html';
 
         return (
-            <View style={ [styles.container, this.props.containerStyles] }>
-                <Text style={ styles.title }>{this.props.viewModel.title}</Text>
-                <View style={ styles.chartContainer }>
-                    <View
+            <PDView style={ [styles.container, this.props.containerStyles] }>
+                <PDText style={ styles.title }>{this.props.viewModel.title}</PDText>
+                <PDView style={ styles.chartContainer }>
+                    <PDView
                         style={ styles.chartWebViewContainer }
                         pointerEvents={ this.props.viewModel.interactive ? 'auto' : 'none' }>
                         <WebView
@@ -101,9 +103,9 @@ export class ChartCard extends React.PureComponent<ChartCardProps, ChartCardStat
                             style={ styles.chartWebView }
                             androidHardwareAccelerationDisabled
                         />
-                    </View>
-                    <View style={ styles.labelContainer }>{this.getDateLabels()}</View>
-                </View>
+                    </PDView>
+                    <PDView style={ styles.labelContainer }>{this.getDateLabels()}</PDView>
+                </PDView>
                 {this.props.children}
                 <Animated.View style={ [styles.overlay, { opacity: this.state.overlayOpacity }] } pointerEvents={ 'none' }>
                     <Upgrade
@@ -112,7 +114,7 @@ export class ChartCard extends React.PureComponent<ChartCardProps, ChartCardStat
                         isUnlocked={ this.props.viewModel.isUnlocked }
                     />
                 </Animated.View>
-            </View>
+            </PDView>
         );
     }
 }

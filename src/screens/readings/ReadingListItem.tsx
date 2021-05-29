@@ -1,12 +1,14 @@
 import * as React from 'react';
-import { Image, NativeSyntheticEvent, StyleSheet, TextInputEndEditingEventData, TextStyle, View } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import {
+    Image, NativeSyntheticEvent, StyleSheet, TextInputEndEditingEventData, TextStyle, View
+} from 'react-native';
 // import Slider from '@react-native-community/slider';
 // @ts-ignore
 import Slider from 'react-native-slider';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
 import { images } from '~/assets/images';
+import { PDTextInput } from '~/components/inputs/PDTextInput';
 import { lightTheme } from '~/components/PDTheme';
 
 import { PDText } from '../../components/PDText';
@@ -93,7 +95,7 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
                             {r.name}
                             <PDText type="bodySemiBold" style={ styles.readingUnits }>{readingUnitsText}</PDText>
                         </PDText>
-                        <TextInput
+                        <PDTextInput
                             style={ textInputStyles }
                             onFocus={ onTextBeginEditing }
                             onChangeText={ onTextChange }
@@ -117,6 +119,8 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
                         value={ sliderValue }
                         step={ sliderStep }
                         thumbTouchSize={ { width: 55, height: 55 } }
+                        allowFontScaling
+                        maxFontSizeMultiplier={ 1.4 }
                     />
                 </View>
             </TouchableScale>

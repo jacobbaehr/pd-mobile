@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, Text, TextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
+import {
+    StyleProp, StyleSheet, TextInput, TextInputProps, TextStyle, ViewStyle
+} from 'react-native';
+
+import { PDText } from './PDText';
+import { PDView } from './PDView';
 
 export interface Focusable {
     focus: () => void;
@@ -42,11 +47,11 @@ const TextInputWithTitleComponent = (props: TextInputWithTitleProps, ref: React.
     }));
 
     return (
-        <View style={ containerStyles }>
-            <View style={ styles.titleContainer }>
-                <Text style={ [styles.titleText, titleTextStyles] }>{titleText}</Text>
-                <Text style={ [styles.subtitleText, subtitleTextStyles] }>{subtitleText}</Text>
-            </View>
+        <PDView style={ containerStyles }>
+            <PDView style={ styles.titleContainer }>
+                <PDText style={ [styles.titleText, titleTextStyles] }>{titleText}</PDText>
+                <PDText style={ [styles.subtitleText, subtitleTextStyles] }>{subtitleText}</PDText>
+            </PDView>
             <TextInput
                 { ...propsInput }
                 placeholder={ placeholderText }
@@ -55,8 +60,10 @@ const TextInputWithTitleComponent = (props: TextInputWithTitleProps, ref: React.
                 ref={ inputRef }
                 inputAccessoryViewID={ accessoryViewId }
                 hitSlop={ { top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop } }
+                allowFontScaling
+                maxFontSizeMultiplier={ 1.4 }
             />
-        </View>
+        </PDView>
     );
 };
 

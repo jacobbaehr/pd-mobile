@@ -1,13 +1,15 @@
 import pluralize from 'pluralize';
 import * as React from 'react';
-import { Image, NativeSyntheticEvent, StyleSheet, TextInputEndEditingEventData, TextStyle, View } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import {
+    Image, NativeSyntheticEvent, StyleSheet, TextInputEndEditingEventData, TextStyle, View
+} from 'react-native';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
 import { images } from '~/assets/images';
 import { ChoosyButton } from '~/components/buttons/ChoosyButton';
 import { CycleButton } from '~/components/buttons/CycleButton';
 import { Conditional } from '~/components/Conditional';
+import { PDTextInput } from '~/components/inputs/PDTextInput';
 import { Util } from '~/services/Util';
 
 import { PDText } from '../../components/PDText';
@@ -83,7 +85,7 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
                             <PDText type="default" style={ styles.ofLabel }>
                                 {t.name}
                             </PDText>
-                            <TextInput
+                            <PDTextInput
                                 style={ textInputStyles }
                                 onFocus={ onTextBeginEditing }
                                 onChangeText={ onTextChange }
@@ -100,7 +102,7 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
                                 <PDText type="default" style={ styles.addLabel }>
                                     Add
                                 </PDText>
-                                <TextInput
+                                <PDTextInput
                                     style={ textInputStyles }
                                     onFocus={ onTextBeginEditing }
                                     onChangeText={ onTextChange }

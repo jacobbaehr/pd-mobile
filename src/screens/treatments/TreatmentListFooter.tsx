@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { StyleSheet, View } from 'react-native';
+import { PDTextInput } from '~/components/inputs/PDTextInput';
 import { PDText } from '~/components/PDText';
 
 interface TreatmentListFooterProps {
@@ -15,12 +15,14 @@ export const TreatmentListFooter: React.FunctionComponent<TreatmentListFooterPro
                 Notes
             </PDText>
             <View style={ styles.container }>
-                <TextInput
+                <PDTextInput
                     style={ styles.text }
                     value={ props.text }
                     onChangeText={ props.updatedText }
                     multiline={ true }
                     scrollEnabled={ false }
+                    maxFontSizeMultiplier={ 1.4 }
+                    allowFontScaling
                 />
             </View>
         </View>
