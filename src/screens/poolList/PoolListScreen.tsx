@@ -11,8 +11,6 @@ import { Pool } from '~/models/Pool';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { selectPool } from '~/redux/selectedPool/Actions';
 import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
-import { RecipeService } from '~/services/RecipeService';
-import { RS } from '~/services/RecipeUtil';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
 import { useNavigation } from '@react-navigation/native';
@@ -64,7 +62,6 @@ export const PoolListScreen = () => {
 
     const renderItem = ({ item }: { item: Pool }) => {
         const volume = VolumeUnitsUtil.getAbbreviatedDisplayVolume(item.gallons, ds);
-        const recipeColor = RS.getRecipeColor(item.recipeKey ?? RecipeService.defaultRecipeKey);
         return (
             <TouchableScale onPress={ () => handleItemPressed(item) } activeScale={ 0.97 } key={ item.objectId }>
                 <PDView bgColor="white" style={ styles.containerItem }>
@@ -74,7 +71,7 @@ export const PoolListScreen = () => {
                     <PDText type="bodyMedium" color="grey">
                         { getDisplayForWaterType(item.waterType) }, {volume}
                     </PDText>
-                    <ChipButton onPress={ () => handleChipPressed(item) } recipeColor={ recipeColor } recipeKey={ item.recipeKey }/>
+                    <ChipButton onPress={ () => handleChipPressed(item) } />
                 </PDView>
             </TouchableScale>
         );
