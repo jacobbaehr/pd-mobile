@@ -26,7 +26,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = (props) => {
     const promptUpgrade = () => {
         Alert.alert(
             'Sorry, but...',
-            'You must unlock the app to add multiple pools.',
+            'You must upgrade the app to add multiple pools.',
             [
                 {
                     text: 'Cancel',
@@ -34,7 +34,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = (props) => {
                     style: 'cancel',
                 },
                 {
-                    text: 'Unlock',
+                    text: 'Upgrade',
                     onPress: () => navigate('Subscription'),
                     style: 'default',
                 },

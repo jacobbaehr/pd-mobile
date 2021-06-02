@@ -38,7 +38,7 @@ export const Upgrade: React.FunctionComponent<UpgradeProps> = (props) => {
                 </View>
             </Conditional>
             <BoringButton
-                title={ props.isUnlocked ? 'Manage' : 'Unlock' }
+                title={ props.isUnlocked ? 'Manage' : 'Upgrade' }
                 onPress={ props.onPress }
                 containerStyles={ styles.dataButton }
                 textStyles={ styles.dataButtonText }

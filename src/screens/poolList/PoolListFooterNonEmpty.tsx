@@ -57,7 +57,7 @@ const PoolListFooterNonEmptyComponent: React.FunctionComponent<PoolListFooterNon
                     onPressOut={ () => setIsChangeButtonPressed(false) }
                     onPress={ props.pressedUpgrade }>
                     <PDText type="default" style={ changeButtonStyles }>
-                        Unlock
+                        Upgrade
                     </PDText>
                 </TouchableHighlight>
                 <PDText type="default" style={ styles.changeRecipeIntro }>
