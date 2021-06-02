@@ -57,11 +57,18 @@ export const SearchHeader: React.FC<SearchHeaderProps> = (props) => {
         navigate('Settings');
     };
 
+    const shouldShowSearch = props.numPools > 0;
+    const searchBar = shouldShowSearch && (
+        <PDView style={ styles.containerSearch }>
+            {props.children}
+        </PDView>
+    );
+
     return (
         <PDView bgColor="white" style={ styles.containerBottom }>
             <PDView  style={ styles.container  }>
                 <PDView style={ styles.sideContainer }>
-                    <TouchableScale  onPress={ handleSettingButtonPressed }>
+                    <TouchableScale  onPress={ handleSettingButtonPressed } hitSlop={ { top: 7, bottom: 7, left: 7, right: 7 } }>
                         <SVG.IconSettings height={ 32 } width={ 32 } fill={ 'blue' } />
                     </TouchableScale>
                 </PDView>
@@ -76,9 +83,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = (props) => {
                     </TouchableScale>
                 </PDView>
             </PDView>
-            <PDView style={ styles.containerSearch }>
-                {props.children}
-            </PDView>
+            {searchBar}
         </PDView>
     );
 };

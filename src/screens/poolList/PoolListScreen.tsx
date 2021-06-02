@@ -23,6 +23,7 @@ import { SearchHeader } from './SearchHeader';
 import { usePoolSearch } from './usePoolSearch';
 import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { Haptic } from '~/services/HapticService';
+import { useStandardStatusBar } from '~/hooks/useStatusBar';
 
 export const PoolListScreen = () => {
     const { ds } = useDeviceSettings();
@@ -30,6 +31,7 @@ export const PoolListScreen = () => {
     const dispatch = useDispatch();
     const [keyboard, setKeyboard] = useState<string>('');
     const pools = usePoolSearch(keyboard);
+    useStandardStatusBar();
 
     const handleItemPressed = (item: Pool) => {
         Haptic.light();
@@ -64,7 +66,7 @@ export const PoolListScreen = () => {
         const volume = VolumeUnitsUtil.getAbbreviatedDisplayVolume(item.gallons, ds);
         const recipeColor = RS.getRecipeColor(item.recipeKey ?? RecipeService.defaultRecipeKey);
         return (
-            <TouchableScale onPress={ () => handleItemPressed(item) } activeScale={ 0.97 }>
+            <TouchableScale onPress={ () => handleItemPressed(item) } activeScale={ 0.97 } key={ item.objectId }>
                 <PDView bgColor="white" style={ styles.containerItem }>
                     <PDText type="bodyBold" numberOfLines={ 3 }>
                         {item.name}

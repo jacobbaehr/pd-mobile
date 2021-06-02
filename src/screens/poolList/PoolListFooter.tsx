@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         marginHorizontal: 20,
         textAlign: 'center',
-        marginTop: 100,
+        marginTop: 50,
     },
     image: {
         alignSelf: 'center',
