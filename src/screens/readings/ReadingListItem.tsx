@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    Image, NativeSyntheticEvent, StyleSheet, TextInputEndEditingEventData, TextStyle, View
+    Image, NativeSyntheticEvent, StyleSheet, TextInputEndEditingEventData, TextStyle, View,
 } from 'react-native';
 // import Slider from '@react-native-community/slider';
 // @ts-ignore

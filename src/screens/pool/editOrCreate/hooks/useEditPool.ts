@@ -28,7 +28,7 @@ export type NavigationProps = { headerInfo: HeaderInfo } | { prevScreen: string 
 
 export const useEditPool = (pool: Partial<Pool>, toggleVisible: () => void): EditPoolList[] => {
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
-    const recipe = useLoadRecipeHook(pool?.recipeKey ?? RecipeService.defaultRecipeKey);
+    const recipe = useLoadRecipeHook(pool?.recipeKey ?? RecipeService.defaultFormulaKey);
     const navigation = useNavigation<PDStackNavigationProps>();
 
     const targetsSelected = recipe?.custom.length ?? 0;

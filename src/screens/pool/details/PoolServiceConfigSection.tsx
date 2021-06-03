@@ -30,7 +30,7 @@ const PoolServiceConfigSection = () => {
     const { navigate } = useNavigation<StackNavigationProp<PDNavParams>>();
     const navigationState = useNavigationState((state) => state.routeNames);
     const selectedPool = useSelector<AppState>((state) => state.selectedPool) as Pool;
-    const recipe = useLoadRecipeHook(selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
+    const recipe = useLoadRecipeHook(selectedPool?.recipeKey || RecipeService.defaultFormulaKey);
     const customTargets = useSelector((state: AppState) => getCustomTargetsBySelectedPool(state, recipe));
     const history = useRealmPoolHistoryHook(selectedPool?.objectId);
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);

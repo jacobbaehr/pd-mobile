@@ -11,7 +11,10 @@ export interface Treatment {
     var: string;
 
     // The javascript formula that determines how much (if any) of the treatment is necessary
-    formula: string;
+    formula?: string;
+
+    // The javascript function that determines how much (if any) of the treatment is necessary
+    function: string;
 
     // The % active ingredient of the chemical product recommended [1,100]
     concentration?: number;

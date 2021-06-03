@@ -6,7 +6,7 @@ import {
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { PDText } from '~/components/PDText';
 import { useLoadRecipeHook } from '~/hooks/RealmPoolHook';
-import { RecipeKey } from '~/models/recipe/RecipeKey';
+import { FormulaKey } from '~/models/recipe/FormulaKey';
 import { PDCardNavigatorParams } from '~/navigator/PDCardNavigator';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { dispatch } from '~/redux/AppState';
@@ -19,7 +19,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { RecipeScreenHeader } from './RecipeScreenHeader';
 
 export interface RecipeDetailsNavParams {
-    recipeKey: RecipeKey;
+    recipeKey: FormulaKey;
     prevScreen: 'ReadingList' | 'EditOrCreatePoolScreen' | 'PoolScreen';
 }
 

@@ -1,11 +1,11 @@
 import compareVersions from 'compare-versions';
 import { PDColor } from '~/components/PDTheme';
 import { Recipe } from '~/models/recipe/Recipe';
-import { RecipeKey } from '~/models/recipe/RecipeKey';
-import { RecipeMeta } from '~/models/recipe/RecipeMeta';
+import { FormulaKey } from '~/models/recipe/FormulaKey';
+import { FormulaMeta } from '~/models/recipe/FormulaMeta';
 
 export class RS {
-    static toMeta = (recipe: Recipe): RecipeMeta => {
+    static toMeta = (recipe: Recipe): FormulaMeta => {
         return {
             id: recipe.id,
             name: recipe.name,
@@ -15,11 +15,11 @@ export class RS {
         };
     };
 
-    static getKey = (recipeOrMeta: { id: string; ts: number }): RecipeKey => {
+    static getKey = (recipeOrMeta: { id: string; ts: number }): FormulaKey => {
         return `${recipeOrMeta.id}|${recipeOrMeta.ts}`;
     };
 
-    static reverseKey = (key: RecipeKey): { id: string; ts: number } => {
+    static reverseKey = (key: FormulaKey): { id: string; ts: number } => {
         const parts = key.split('|');
         return {
             id: parts[0],

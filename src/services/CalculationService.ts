@@ -1,9 +1,9 @@
 import { WebViewMessageEvent } from 'react-native-webview';
 import { TreatmentEntry } from '~/models/logs/TreatmentEntry';
+import { ReadingValue } from '~/models/ReadingValue';
 import { EffectiveTargetRange } from '~/models/recipe/TargetRange';
 import { TreatmentState } from '~/screens/treatments/TreatmentListHelpers';
 
-import { ReadingEntry } from '../models/logs/ReadingEntry';
 import { Pool } from '../models/Pool';
 import { Recipe } from '../models/recipe/Recipe';
 
@@ -17,7 +17,7 @@ export class CalculationService {
     static getHtmlStringForLocalHermes = (
         recipe: Recipe,
         pool: Pool,
-        inputs: ReadingEntry[],
+        inputs: ReadingValue[],
         targets: EffectiveTargetRange[],
     ): string => {
         const calc = `

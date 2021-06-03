@@ -14,7 +14,7 @@ const createPoolDefaults: Partial<Pool> = {
     waterType: undefined,
     email: undefined,
     objectId: undefined,
-    recipeKey: RecipeService.defaultRecipeKey,
+    recipeKey: RecipeService.defaultFormulaKey,
     wallType: 'vinyl',
 };
 
@@ -46,13 +46,13 @@ export const useEntryPool = () => {
     const { pool, setPool } = useContext(PartialPoolContext);
 
     /// When the selected recipe key in redux changes, update the partial pool.
-    const selectedRecipeKey = useTypedSelector((state) => state.selectedRecipeKey);
+    const selectedFormulaKey = useTypedSelector((state) => state.selectedFormulaKey);
     React.useEffect(() => {
-        if (selectedRecipeKey && selectedRecipeKey !== pool.recipeKey) {
-            setPool({ ...pool, recipeKey: selectedRecipeKey });
+        if (selectedFormulaKey && selectedFormulaKey !== pool.recipeKey) {
+            setPool({ ...pool, recipeKey: selectedFormulaKey });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedRecipeKey]);
+    }, [selectedFormulaKey]);
 
     const isRequiredFilledOut: boolean = !!pool.name && !!pool.gallons && !!pool.waterType;
 

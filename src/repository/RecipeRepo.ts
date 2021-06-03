@@ -1,7 +1,7 @@
 import * as RNFS from 'react-native-fs';
 import { Recipe } from '~/models/recipe/Recipe';
 import { defaultRecipe } from '~/repository/recipes/Default';
-import { RecipeKey, getRecipeKey } from '~/models/recipe/RecipeKey';
+import { FormulaKey, getFormulaKey } from '~/models/recipe/FormulaKey';
 import { Util } from '~/services/Util';
 import { RS } from '~/services/RecipeUtil';
 
@@ -10,8 +10,8 @@ const defaultRecipes: Recipe[] = [defaultRecipe];
 
 export namespace RecipeRepo {
     /// Attempts to load the recipes from the Recipe folder
-    export const loadLocalRecipeWithKey = async (recipeKey: RecipeKey): Promise<Recipe> => {
-        const filePath = getFilepathForRecipeKey(recipeKey);
+    export const loadLocalRecipeWithKey = async (recipeKey: FormulaKey): Promise<Recipe> => {
+        const filePath = getFilepathForFormulaKey(recipeKey);
 
         const fileExists = await RNFS.exists(filePath);
         if (!fileExists) {
@@ -25,6 +25,12 @@ export namespace RecipeRepo {
         /// to an empty array:
         recipe.custom = recipe.custom || [];
 
+        /// some old recipes might have treatment.formula instead of treatment.function,
+        /// so we map it here:
+        recipe.treatments.forEach(t => {
+            t.function = t.function ?? t.formula;
+        });
+
         return recipe;
     };
 
@@ -35,15 +41,15 @@ export namespace RecipeRepo {
         } catch (e) {
             return Promise.reject(e);
         }
-        const latestLocalRecipeMetas = (await loadLatestLocalRecipeKeys()).map((rk) => RS.reverseKey(rk));
+        const latestLocalFormulaMetas = (await loadLatestLocalFormulaKeys()).map((rk) => RS.reverseKey(rk));
 
         const promises = defaultRecipes.map((r) => {
             return new Promise<void>(async (resolve) => {
                 /// If we've already saved the same (or later) local recipe, skip it.
-                const existingNewerRecipeMeta = latestLocalRecipeMetas.filter(
+                const existingNewerFormulaMeta = latestLocalFormulaMetas.filter(
                     (meta) => meta.id === r.id && meta.ts >= r.ts,
                 );
-                if (existingNewerRecipeMeta.length === 0) {
+                if (existingNewerFormulaMeta.length === 0) {
                     await RecipeRepo.saveRecipe(r);
                 }
                 resolve();
@@ -54,8 +60,8 @@ export namespace RecipeRepo {
 
     /// Saves recipe, will overwrite existing file if it already exists.
     export const saveRecipe = async (recipe: Recipe): Promise<Boolean> => {
-        const key = getRecipeKey(recipe);
-        const filePath = getFilepathForRecipeKey(key);
+        const key = getFormulaKey(recipe);
+        const filePath = getFilepathForFormulaKey(key);
         const fileData = JSON.stringify(recipe);
 
         const fileExists = await RNFS.exists(filePath);
@@ -75,18 +81,18 @@ export namespace RecipeRepo {
 
     /// Loads the latest version of each recipe from the filesystem
     export const loadLatestLocalRecipes = async (): Promise<Recipe[]> => {
-        const latestRecipeKeys = await RecipeRepo.loadLatestLocalRecipeKeys();
-        const loadLatest = latestRecipeKeys.map((key) => RecipeRepo.loadLocalRecipeWithKey(key));
+        const latestFormulaKeys = await RecipeRepo.loadLatestLocalFormulaKeys();
+        const loadLatest = latestFormulaKeys.map((key) => RecipeRepo.loadLocalRecipeWithKey(key));
         return await Promise.all(loadLatest);
     };
 
-    export const loadLatestLocalRecipeKeys = async (): Promise<RecipeKey[]> => {
+    export const loadLatestLocalFormulaKeys = async (): Promise<FormulaKey[]> => {
         const folderPath = `${RNFS.DocumentDirectoryPath}/${recipeFolderName}/`;
         const allRecipeFiles = await RNFS.readDir(folderPath);
         const latestRecipeInfos: { id: string; ts: number }[] = [];
 
         allRecipeFiles.forEach((file) => {
-            const key = getRecipeKeyFromFileName(file.name);
+            const key = getFormulaKeyFromFileName(file.name);
             if (!key) {
                 return; /* continue to next */
             }
@@ -125,22 +131,22 @@ export namespace RecipeRepo {
         }
     };
 
-    const getFilepathForRecipeKey = (recipeKey: RecipeKey): string => {
+    const getFilepathForFormulaKey = (recipeKey: FormulaKey): string => {
         const fileName = recipeKey + '.json';
         const filePath = `${RNFS.DocumentDirectoryPath}/${recipeFolderName}/${fileName}`;
         // console.warn(filePath);
         return filePath;
     };
 
-    const getRecipeKeyFromFileName = (name: string): RecipeKey | null => {
+    const getFormulaKeyFromFileName = (name: string): FormulaKey | null => {
         if (!name.endsWith('.json')) {
             return null;
         }
         return Util.removeSuffixIfPresent('.json', name);
     };
 
-    export const deleteRecipeWithId = async (recipeKey: RecipeKey): Promise<boolean> => {
-        const filePath = getFilepathForRecipeKey(recipeKey);
+    export const deleteRecipeWithId = async (recipeKey: FormulaKey): Promise<boolean> => {
+        const filePath = getFilepathForFormulaKey(recipeKey);
         const fileExists = await RNFS.exists(filePath);
         if (!fileExists) {
             return false;

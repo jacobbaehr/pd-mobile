@@ -3,10 +3,10 @@ import { StyleSheet, View } from 'react-native';
 
 import { PDText } from '~/components/PDText';
 import { BackButton } from '~/components/buttons/BackButton';
-import { RecipeMeta } from '~/models/recipe/RecipeMeta';
+import { FormulaMeta } from '~/models/recipe/FormulaMeta';
 
 interface RecipeScreenHeaderProps {
-    meta: RecipeMeta;
+    meta: FormulaMeta;
     handleBackPress: () => void;
 }
 

@@ -1,5 +1,6 @@
 import Realm from 'realm';
-import { LogEntry } from '~/models/logs/LogEntry';
+import { LogEntryV0 } from '~/models/logs/LogEntry/LogEntryV0';
+import { LogEntryV1 } from '~/models/logs/LogEntry/LogEntryV1';
 import { ReadingEntry } from '~/models/logs/ReadingEntry';
 import { TreatmentEntry } from '~/models/logs/TreatmentEntry';
 import { PoolV0 } from '~/models/Pool/PoolV0';
@@ -12,12 +13,16 @@ import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
  */
 export const schemas = [
     {
-        schema: [PoolV0.schema, LogEntry.schema, ReadingEntry.schema, TreatmentEntry.schema, TargetRangeOverride.schema],
+        schema: [PoolV0.schema, LogEntryV0.schema, ReadingEntry.schema, TreatmentEntry.schema, TargetRangeOverride.schema],
         schemaVersion: 0,
     },
     {
-        schema: [PoolV1.schema, LogEntry.schema, ReadingEntry.schema, TreatmentEntry.schema, TargetRangeOverride.schema],
+        schema: [PoolV1.schema, LogEntryV0.schema, ReadingEntry.schema, TreatmentEntry.schema, TargetRangeOverride.schema],
         schemaVersion: 1,
+    },
+    {
+        schema: [PoolV1.schema, LogEntryV1.schema, ReadingEntry.schema, TreatmentEntry.schema, TargetRangeOverride.schema],
+        schemaVersion: 2,
     },
 ];
 

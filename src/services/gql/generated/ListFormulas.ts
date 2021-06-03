@@ -4,10 +4,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: ListRecipes
+// GraphQL query operation: ListFormulas
 // ====================================================
 
-export interface ListRecipes_listRecipes {
+export interface ListFormulas_listFormulas {
   __typename: "FormulaMeta";
   id: string;
   name: string;
@@ -16,6 +16,6 @@ export interface ListRecipes_listRecipes {
   appVersion: string;
 }
 
-export interface ListRecipes {
-  listRecipes: ListRecipes_listRecipes[];
+export interface ListFormulas {
+  listFormulas: ListFormulas_listFormulas[];
 }

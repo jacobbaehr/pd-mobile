@@ -1,12 +1,12 @@
-import { ReadingEntry } from '~/models/logs/ReadingEntry';
 import { clearReadings } from '~/redux/readingEntries/Actions';
 
 // import { AnyAction } from 'redux';
 import { createReducer } from '@reduxjs/toolkit';
 
 import { recordInput } from './Actions';
+import { ReadingValue } from '~/models/ReadingValue';
 
-export const readingEntriesReducer = createReducer([] as ReadingEntry[], (builder) => {
+export const readingEntriesReducer = createReducer([] as ReadingValue[], (builder) => {
     builder
         .addCase(recordInput, (state, action) => {
             const { reading, value } = action.payload;
@@ -19,7 +19,7 @@ export const readingEntriesReducer = createReducer([] as ReadingEntry[], (builde
                 }
             });
             if (readingIsNew) {
-                state.push(ReadingEntry.make(reading, value));
+                state.push({ var: reading.var, value });
             }
 
             return state;

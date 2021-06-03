@@ -19,11 +19,11 @@ export class Database {
         }
 
         // migrate database
-        // try {
-        //     Migrator.runMigrations();
-        // } catch (e) {
-        //     console.warn(e);
-        // }
+        try {
+            Migrator.runMigrations();
+        } catch (e) {
+            console.warn(e);
+        }
         await Realm.open(Migrator.getCurrentSchemaVersion())
             .then((value: Realm) => {
                 Database.realm = value;
@@ -78,6 +78,7 @@ export class Database {
                     treatmentEntries: entry.treatmentEntries,
                     ts: entry.ts,
                     recipeKey: entry.recipeKey,
+                    formulaName: entry.formulaName,
                     notes: entry.notes,
                 });
             });

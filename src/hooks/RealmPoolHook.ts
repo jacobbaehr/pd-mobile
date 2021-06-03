@@ -6,7 +6,7 @@ import { LogEntry } from '~/models/logs/LogEntry';
 import { Pool } from '~/models/Pool';
 import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
 import { Recipe } from '~/models/recipe/Recipe';
-import { RecipeKey } from '~/models/recipe/RecipeKey';
+import { FormulaKey } from '~/models/recipe/FormulaKey';
 import { Database } from '~/repository/Database';
 import { RecipeService } from '~/services/RecipeService';
 import { Util } from '~/services/Util';
@@ -18,22 +18,18 @@ import { RealmUtil } from '../services/RealmUtil';
 export const useRealmPoolsHook = (): Pool[] => {
     const [data, setData] = useState<Pool[]>(() => {
         const realmPools = Database.loadPools();
-        const parserData = RealmUtil.poolToPojo(realmPools);
-        return parserData;
+        return RealmUtil.poolsToPojo(realmPools);
     });
 
     // This runs around the time when ComponentDidMount used to be called
     useEffect(() => {
         const handleChange = (newData: Realm.Collection<Pool>) => {
-            const parserData = RealmUtil.poolToPojo(newData);
-            setData(parserData);
+            const plainPools = RealmUtil.poolsToPojo(newData);
+            setData(plainPools);
         };
 
         const dataQuery = Database.loadPools();
-
         dataQuery.addListener(handleChange);
-
-        // This will run sort-of like componentWillUnmount or whatever that lifecycle method was called
         return () => {
             dataQuery.removeAllListeners();
         };
@@ -45,9 +41,9 @@ export const useRealmPoolsHook = (): Pool[] => {
 export const useRealmPoolHistoryHook = (poolId: string | null): LogEntry[] => {
     const [data, setData] = useState<LogEntry[]>(() => {
         if (!poolId) { return []; }
-        const reamlLogEntry = Database.loadLogEntriesForPool(poolId, null, true);
-        const parserData = RealmUtil.logEntryToPojo(reamlLogEntry);
-        return parserData;
+        const realmLogEntries = Database.loadLogEntriesForPool(poolId, null, true);
+        const logEntries = RealmUtil.logEntriesToPojo(realmLogEntries);
+        return logEntries;
     });
 
     // This runs around the time when ComponentDidMount used to be called
@@ -55,7 +51,7 @@ export const useRealmPoolHistoryHook = (poolId: string | null): LogEntry[] => {
         if (!poolId) { return () => {};}
 
         const handleChange = (newData: Realm.Collection<LogEntry>) => {
-            const parserData = RealmUtil.logEntryToPojo(newData);
+            const parserData = RealmUtil.logEntriesToPojo(newData);
             setData(parserData);
         };
 
@@ -72,14 +68,14 @@ export const useRealmPoolHistoryHook = (poolId: string | null): LogEntry[] => {
 };
 
 // WARNING: this is susceptible to race-conditions (if you request a remote recipe, and then a local one, the remote one might finish last & stomp the second call).
-export const useLoadRecipeHook = (recipeKey: RecipeKey): Recipe | null => {
+export const useLoadRecipeHook = (formulaKey: FormulaKey): Recipe | null => {
     const [recipe, setRecipe] = useState<Recipe | null>(null);
     const client = useApolloClient() as ApolloClient<NormalizedCacheObject>; // TODO: type-casting? ugh.
 
     useEffect(() => {
         try {
             const loadRecipe = async () => {
-                const recipeResult = await RecipeService.resolveRecipeWithKey(recipeKey, client);
+                const recipeResult = await RecipeService.resolveRecipeWithKey(formulaKey, client);
                 // TODO: check async state here for subsequent requests
                 setRecipe(recipeResult);
             };
@@ -88,7 +84,7 @@ export const useLoadRecipeHook = (recipeKey: RecipeKey): Recipe | null => {
             console.error(e);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [recipeKey]);
+    }, [formulaKey]);
     return recipe;
 };
 

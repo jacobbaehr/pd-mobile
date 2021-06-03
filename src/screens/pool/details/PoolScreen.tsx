@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    Alert, LayoutAnimation, SectionList, SectionListData, StyleSheet, View
+    Alert, LayoutAnimation, SectionList, SectionListData, StyleSheet, View,
 } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 // @ts-ignore
@@ -44,24 +44,24 @@ export const PoolScreen: React.FC = () => {
 
     const [selectedHistoryCellIds, setSelectedHistoryCellIds] = React.useState<string[]>([]);
 
-    const recipe = useLoadRecipeHook(selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
-    const selectedRecipeKey = useTypedSelector((state) => state.selectedRecipeKey);
+    const recipe = useLoadRecipeHook(selectedPool?.recipeKey || RecipeService.defaultFormulaKey);
+    const selectedFormulaKey = useTypedSelector((state) => state.selectedFormulaKey);
     const chartData = usePoolChart();
 
     /// If the user selects a new recipe, save it to the pool.
     /// This is so dangerous & error-prone
     React.useEffect(() => {
-        if (!selectedPool || !selectedRecipeKey || selectedPool.recipeKey === selectedRecipeKey) {
+        if (!selectedPool || !selectedFormulaKey || selectedPool.recipeKey === selectedFormulaKey) {
             return;
         }
         dispatchThunk(
             updatePool({
                 ...selectedPool,
-                recipeKey: selectedRecipeKey ?? undefined,
+                recipeKey: selectedFormulaKey ?? undefined,
             }),
         );
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedRecipeKey]);
+    }, [selectedFormulaKey]);
 
     if (!selectedPool || !recipe) {
         return <></>;

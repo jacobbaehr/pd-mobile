@@ -14,12 +14,12 @@ import { PDView } from '../PDView';
     textColor?: PDColor;
     bgColor?: PDColor;
     icon?: JSX.Element
+    title: string;
 }
 
 export const PDButtonSolid: React.FC<PDButtonProps> = (props) => {
     const {
         onPress,
-        children,
         style,
         textStyle,
         textType = 'buttonSmall',
@@ -52,7 +52,7 @@ export const PDButtonSolid: React.FC<PDButtonProps> = (props) => {
                     </PDView>
                 )}
                 <PDText type={ textType } color={ textColor } style={ textStyle }>
-                    {children}
+                    {props.title}
                 </PDText>
             </PDView>
         </TouchableScale>
@@ -61,8 +61,9 @@ export const PDButtonSolid: React.FC<PDButtonProps> = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: PDSpacing.xl,
-        paddingVertical: 4,
+        paddingHorizontal: PDSpacing.md,
+        paddingVertical: 6,
+        marginHorizontal: PDSpacing.sm,
         borderRadius: 8,
         justifyContent: 'center',
         alignItems: 'center',

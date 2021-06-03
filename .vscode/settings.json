@@ -8,5 +8,8 @@
     "javascript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": true,
     "typescript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": true,
     "editor.detectIndentation": false,
-    "prettier.configPath": "./.prettierrc.js"
+    "prettier.configPath": "./.prettierrc.js",
+    "cSpell.words": [
+        "pojo"
+    ]
 }

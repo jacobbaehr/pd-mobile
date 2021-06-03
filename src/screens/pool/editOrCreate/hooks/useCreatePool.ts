@@ -18,7 +18,7 @@ export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolList[] 
     const { pool } = useEntryPool();
     const { estimation } = useVolumeEstimator();
     const { navigate } = useNavigation<PDStackNavigationProps>();
-    const recipe = useLoadRecipeHook(pool.recipeKey ?? RecipeService.defaultRecipeKey);
+    const recipe = useLoadRecipeHook(pool.recipeKey ?? RecipeService.defaultFormulaKey);
 
     const handleNavigateToPopover = (id: CreatePoolField) => {
         const headerInfo = CreatePoolHelpers.createPoolList[id];

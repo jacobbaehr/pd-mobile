@@ -4,20 +4,20 @@ import { View, StyleSheet } from 'react-native';
 import TouchableScale from 'react-native-touchable-scale';
 
 import { PDText } from '~/components/PDText';
-import { RecipeMeta } from '~/models/recipe/RecipeMeta';
+import { FormulaMeta } from '~/models/recipe/FormulaMeta';
 
 interface RecipeListItemProps {
-    recipe: RecipeMeta;
-    onRecipeSelected: (recipe: RecipeMeta) => void;
+    formula: FormulaMeta;
+    onFormulaSelected: (formula: FormulaMeta) => void;
 }
 
 export class RecipeListItem extends React.Component<RecipeListItemProps, {}> {
     private handleButtonPressed = (): void => {
-        this.props.onRecipeSelected(this.props.recipe);
+        this.props.onFormulaSelected(this.props.formula);
     };
 
     render() {
-        const recipe = this.props.recipe;
+        const recipe = this.props.formula;
         return (
             <TouchableScale style={ styles.content } onPress={ this.handleButtonPressed } activeScale={ 0.98 }>
                 <View style={ { flex: 1 } }>

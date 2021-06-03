@@ -3,10 +3,10 @@ import { Alert, Linking, SectionList, StyleSheet } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { PDText } from '~/components/PDText';
 import { useLoadRecipeHook } from '~/hooks/RealmPoolHook';
-import { RecipeMeta } from '~/models/recipe/RecipeMeta';
+import { FormulaMeta } from '~/models/recipe/FormulaMeta';
 import { PDNavParams } from '~/navigator/shared';
 import { Config } from '~/services/Config';
-import { RecipeAPI } from '~/services/gql/RecipeAPI';
+import { FormulaAPI } from '~/services/gql/FormulaAPI';
 import { RecipeService } from '~/services/RecipeService';
 import { RS } from '~/services/RecipeUtil';
 
@@ -23,12 +23,12 @@ export interface RecipeListNavParams {
 }
 
 export const RecipeListScreen: React.FC = () => {
-    const { data } = RecipeAPI.useRecipeList();
+    const { data } = FormulaAPI.useFormulaList();
     const { navigate } = useNavigation<StackNavigationProp<PDNavParams, 'RecipeList'>>();
 
     const { pool } = useEntryPool();
 
-    const currentRecipe = useLoadRecipeHook(pool?.recipeKey || RecipeService.defaultRecipeKey);
+    const currentRecipe = useLoadRecipeHook(pool?.recipeKey || RecipeService.defaultFormulaKey);
     const { params } = useRoute<RouteProp<PDNavParams, 'RecipeList'>>();
 
     const handleUpdatePressed = () => {
@@ -55,7 +55,7 @@ export const RecipeListScreen: React.FC = () => {
         );
     };
 
-    const handleRecipeSelected = (recipe: RecipeMeta): void => {
+    const handleRecipeSelected = (recipe: FormulaMeta): void => {
         if (RS.needUpdateToUseRecipe(recipe, Config.version)) {
             promptUpdate();
         } else {
@@ -64,7 +64,7 @@ export const RecipeListScreen: React.FC = () => {
         }
     };
 
-    const currentMeta: RecipeMeta = {
+    const currentMeta: FormulaMeta = {
         name: currentRecipe?.name || 'loading...',
         ts: currentRecipe?.ts || 0,
         id: currentRecipe?.id || '',
@@ -79,7 +79,7 @@ export const RecipeListScreen: React.FC = () => {
         },
         {
             title: 'Community Recipes',
-            data: data?.listRecipes || [],
+            data: data?.listFormulas || [],
         },
     ];
 
@@ -90,7 +90,7 @@ export const RecipeListScreen: React.FC = () => {
                 style={ styles.scrollView }
                 sections={ sections }
                 renderItem={ ({ item }) => (
-                    <RecipeListItem recipe={ item } onRecipeSelected={ handleRecipeSelected } key={ item.id } />
+                    <RecipeListItem formula={ item } onFormulaSelected={ handleRecipeSelected } key={ item.id } />
                 ) }
                 renderSectionHeader={ ({ section: { title } }) => (
                     <PDText type="default" style={ styles.sectionTitle }>

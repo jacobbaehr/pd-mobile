@@ -2,21 +2,21 @@ import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import ApolloClient from 'apollo-client';
 import { Pool } from '~/models/Pool';
 import { Recipe } from '~/models/recipe/Recipe';
-import { RecipeKey } from '~/models/recipe/RecipeKey';
+import { FormulaKey } from '~/models/recipe/FormulaKey';
 import { Database } from '~/repository/Database';
 import { RecipeRepo } from '~/repository/RecipeRepo';
 import { defaultRecipe } from '~/repository/recipes/Default';
 import { Config } from './Config';
 
-import { RecipeAPI } from './gql/RecipeAPI';
+import { FormulaAPI } from './gql/FormulaAPI';
 import { RS } from './RecipeUtil';
 
 export class RecipeService {
-    static defaultRecipeKey = RS.getKey(defaultRecipe);
+    static defaultFormulaKey = RS.getKey(defaultRecipe);
 
     /// First, tries to load the recipe locally. If not found, it fetches, saves, then returns the recipe from the API.
     static resolveRecipeWithKey = async (
-        recipeKey: RecipeKey,
+        recipeKey: FormulaKey,
         client: ApolloClient<NormalizedCacheObject>,
     ): Promise<Recipe> => {
         try {
@@ -26,7 +26,7 @@ export class RecipeService {
         }
 
         try {
-            const recipe = await RecipeAPI.fetchRecipe(recipeKey, client);
+            const recipe = await FormulaAPI.fetchFormula(recipeKey, client);
             const saveResult = await RecipeRepo.saveRecipe(recipe);
             if (!saveResult) { console.warn(`Warning: could not save recipe ${recipe.id}|${recipe.ts}`); }
             return recipe;
@@ -36,11 +36,11 @@ export class RecipeService {
     };
 
     static saveLatestRecipeVersion = async (
-        key: RecipeKey,
+        key: FormulaKey,
         client: ApolloClient<NormalizedCacheObject>,
     ): Promise<void> => {
         /// latestKey may or may not be equal to "key"
-        const latestInfo = await RecipeAPI.fetchLatestMetaForRecipe(key, client);
+        const latestInfo = await FormulaAPI.fetchLatestMetaForFormula(key, client);
 
         if (RS.needUpdateToUseRecipe(latestInfo, Config.version)) {
             console.warn('Please update pooldash!');
@@ -54,14 +54,14 @@ export class RecipeService {
 
     static updateAllLocalRecipes = async (client: ApolloClient<NormalizedCacheObject>): Promise<void> => {
         // First, update all the local recipes
-        const oldLocalRecipeKeys = await RecipeRepo.loadLatestLocalRecipeKeys();
+        const oldLocalFormulaKeys = await RecipeRepo.loadLatestLocalFormulaKeys();
         // TODO: batch these api calls? (nah)
         // As a side-effect of fetching them, we'll persist them locally.
-        const updateEach = oldLocalRecipeKeys.map((key) => RecipeService.saveLatestRecipeVersion(key, client));
+        const updateEach = oldLocalFormulaKeys.map((key) => RecipeService.saveLatestRecipeVersion(key, client));
         await Promise.all(updateEach);
 
         // Pull a fresh list from the local repo:
-        const updatedKeys = await RecipeRepo.loadLatestLocalRecipeKeys();
+        const updatedKeys = await RecipeRepo.loadLatestLocalFormulaKeys();
 
         // Then, iterate over all the pools & update them to the latest keys:
         const allPools = Database.loadPools();

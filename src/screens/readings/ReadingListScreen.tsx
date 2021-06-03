@@ -30,7 +30,7 @@ export const ReadingListScreen: React.FC = () => {
     const [isSliding, setIsSliding] = React.useState(false);
     const [readingStates, setReadingStates] = React.useState<ReadingState[]>([]);
     const pool = useTypedSelector((state) => state.selectedPool) as Pool;
-    const recipe = useLoadRecipeHook(pool.recipeKey || RecipeService.defaultRecipeKey);
+    const recipe = useLoadRecipeHook(pool.recipeKey || RecipeService.defaultFormulaKey);
     const { setOptions, navigate } = useNavigation<PDStackNavigationProps>();
     const theme = useTheme();
 

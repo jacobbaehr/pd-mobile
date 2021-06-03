@@ -35,13 +35,14 @@ import { PDPickerRouteProps } from '../picker/PickerScreen';
 import { TreatmentListFooter } from './TreatmentListFooter';
 import { TreatmentListHelpers, TreatmentState } from './TreatmentListHelpers';
 import { TreatmentListItem } from './TreatmentListItem';
+import { RealmUtil } from '~/services/RealmUtil';
 
 export const TreatmentListScreen: React.FC = () => {
     const readings = useTypedSelector((state) => state.readingEntries);
     const pool = useTypedSelector((state) => state.selectedPool) as Pool;
     const pickerState = useTypedSelector((state) => state.pickerState);
     const { ds, updateDS } = useDeviceSettings();
-    const recipeKey = pool?.recipeKey || RecipeService.defaultRecipeKey;
+    const recipeKey = pool?.recipeKey || RecipeService.defaultFormulaKey;
     const [treatmentStates, setTreatmentStates] = React.useState<TreatmentState[]>([]);
     const [hasSelectedAnyTreatments, setHasSelectedAnyTreatments] = React.useState(false);
     const [notes, setNotes] = React.useState('');
@@ -123,7 +124,9 @@ export const TreatmentListScreen: React.FC = () => {
         const ts = Util.generateTimestamp();
         const tes = CalculationService.mapTreatmentStatesToTreatmentEntries(finalTreatmentStates);
 
-        const logEntry = LogEntry.make(id, pool.objectId, ts, readings, tes, recipeKey, notes);
+        const readingEntries = RealmUtil.createReadingEntriesFromReadingValues(readings, recipe);
+        console.log('recipe name: ' + recipe.name);
+        const logEntry = LogEntry.make(id, pool.objectId, ts, readingEntries, tes, recipeKey, recipe.name, notes);
 
         await Database.saveNewLogEntry(logEntry);
         // Save the last-used units:

@@ -19,7 +19,7 @@ const reducer = combineReducers({
     hasValidSubscription: hasValidSubscriptionReducer,
     pickerState: pickerStateReducer,
     deviceSettings: deviceSettingsReducer,
-    selectedRecipeKey: selectedRecipeReducer,
+    selectedFormulaKey: selectedRecipeReducer,
     popover: popoverReducer,
 });
 

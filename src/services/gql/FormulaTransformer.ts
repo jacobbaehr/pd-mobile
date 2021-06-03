@@ -4,20 +4,20 @@ import { Recipe } from '~/models/recipe/Recipe';
 import { Treatment, TreatmentType } from '~/models/recipe/Treatment';
 
 import {
-    FetchRecipe_recipeVersion,
-    FetchRecipe_recipeVersion_readings,
-    FetchRecipe_recipeVersion_treatments,
-} from './generated/FetchRecipe';
+    FetchFormula_formulaVersion,
+    FetchFormula_formulaVersion_readings,
+    FetchFormula_formulaVersion_treatments,
+} from './generated/FetchFormula';
 
-export class RecipeTransformer {
-    static fromAPI = (apiRec: FetchRecipe_recipeVersion): Recipe => {
+export class FormulaTransformer {
+    static fromAPI = (apiFormula: FetchFormula_formulaVersion): Recipe => {
         return {
-            ...apiRec,
-            readings: apiRec.readings.map((ar) => RecipeTransformer.readingFromAPI(ar)),
-            treatments: apiRec.treatments.map((at) => RecipeTransformer.treatmentFromAPI(at)),
+            ...apiFormula,
+            readings: apiFormula.readings.map((ar) => FormulaTransformer.readingFromAPI(ar)),
+            treatments: apiFormula.treatments.map((at) => FormulaTransformer.treatmentFromAPI(at)),
 
             // This is gross: all this to typecast the waterType from "string | null" -> "waterType | null"
-            custom: apiRec.custom.map((c) => ({
+            custom: apiFormula.custom.map((c) => ({
                 ...c,
                 defaults: c.defaults.map((d) => ({
                     ...d,
@@ -27,7 +27,7 @@ export class RecipeTransformer {
         };
     };
 
-    static readingFromAPI = (apiReading: FetchRecipe_recipeVersion_readings): Reading => {
+    static readingFromAPI = (apiReading: FetchFormula_formulaVersion_readings): Reading => {
         return {
             ...apiReading,
             type: apiReading.type as ReadingType,
@@ -39,7 +39,7 @@ export class RecipeTransformer {
         };
     };
 
-    static treatmentFromAPI = (apiTreatment: FetchRecipe_recipeVersion_treatments): Treatment => {
+    static treatmentFromAPI = (apiTreatment: FetchFormula_formulaVersion_treatments): Treatment => {
         return {
             ...apiTreatment,
             type: apiTreatment.type as TreatmentType,

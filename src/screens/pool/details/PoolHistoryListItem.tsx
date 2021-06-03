@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import TouchableScale from 'react-native-touchable-scale';
 import { SVG } from '~/assets/images';
 import { PDButtonSolid } from '~/components/buttons/PDButtonSolid';
+import { Conditional } from '~/components/Conditional';
 import { PDText } from '~/components/PDText';
 import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
@@ -64,10 +65,10 @@ const TreatmentRow: React.FC<{ te: TreatmentEntry }> = (props) => {
 export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemProps> = (props) => {
     const dayOfWeek = format(props.logEntry.ts, 'cccc');
     const boringDate = format(props.logEntry.ts, 'MMM d, y') + format(props.logEntry.ts, '  //  h:mma').toLowerCase();
-    const recipeName = props.logEntry.recipeKey;
+    const formulaName = props.logEntry.formulaName;
     const theme = useTheme();
 
-    let expandedContent: JSX.Element[] = [];
+    let expandedContent: JSX.Element | null = null;
     if (props.isExpanded) {
         const readings = props.logEntry.readingEntries.map((re) => (
             <ReadingRow key={ 'r' + re.var + props.logEntry.objectId } re={ re } />
@@ -77,47 +78,47 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
             <TreatmentRow key={ 't' + te.var + props.logEntry.objectId } te={ te } />
         ));
 
-        expandedContent = [
-            <PDView style={ { borderWidth: 1, borderColor: theme.border, marginTop: PDSpacing.xs } } />,
-            <PDView style={ styles.sectionContainer } key={ '9o8asd87' + props.logEntry.objectId }>
-                <PDText type="buttonSmall" color="grey" >
-                    Formula
-                </PDText>
-                <PDView style={ styles.rowItemContainer }>
-                    <SVG.IconFormulaV2 width={ 16 } height={ 16 } />
-                    <PDText type="bodyRegular" color="black" style={ styles.lineItem }>
-                        {recipeName}
+        expandedContent = <>
+            <PDView style={ { borderWidth: 1, borderColor: theme.border, marginTop: PDSpacing.xs } } />
+            <PDView style={ styles.sectionContainer } >
+                <Conditional condition={ !!formulaName }>
+                    <PDText type="buttonSmall" color="grey" >
+                        Formula
                     </PDText>
-                </PDView>
-            </PDView>,
-            <PDView  style={ styles.sectionContainer } key={ '9o8asd89' + props.logEntry.objectId }>
+                    <PDView style={ styles.rowItemContainer }>
+                        <SVG.IconFormulaV2 width={ 16 } height={ 16 } />
+                        <PDText type="bodyRegular" color="black" style={ styles.lineItem }>
+                            {formulaName}
+                        </PDText>
+                    </PDView>
+                </Conditional>
+            </PDView>
+            <PDView  style={ styles.sectionContainer } >
                 <PDText type="buttonSmall" color="grey">
                     Readings
                 </PDText>
                 {readings}
-            </PDView>,
+            </PDView>
             <PDView style={ styles.sectionContainer } key={ '9o8asd88' + props.logEntry.objectId }>
-                <PDText  type="buttonSmall" color="grey" >
+                <PDText type="buttonSmall" color="grey" >
                     Treatments
                 </PDText>
                 {treatments}
-            </PDView>,
-            <View style={ styles.buttonRow } key={ recipeName + props.logEntry.objectId + 'afsd98' }>
+            </PDView>
+            <View style={ styles.buttonRow }>
                 <PDButtonSolid
                     bgColor="greyLight"
                     textColor="black"
                     onPress={ () => props.handleEmailPressed(props.logEntry) }
-                    icon={ <SVG.IconMail fill="black" /> }>
-                    Email
-                </PDButtonSolid>
+                    icon={ <SVG.IconMail fill="black" /> }
+                    title="Email" />
                 <PDButtonSolid
                     bgColor="red"
                     onPress={ () => props.handleDeletePressed(props.logEntry.objectId) }
-                    icon={ <SVG.IconDeleteOutline fill={ theme.white } /> }>
-                    Delete
-                </PDButtonSolid>
-            </View>,
-        ];
+                    icon={ <SVG.IconDeleteOutline fill={ theme.white } /> }
+                    title="Delete" />
+            </View>
+        </>;
     }
 
     const handleButtonPressed = () => {

@@ -1,16 +1,19 @@
 import { LogEntry } from '~/models/logs/LogEntry';
+import { ReadingEntry } from '~/models/logs/ReadingEntry';
 import { Pool } from '~/models/Pool';
 import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
+import { ReadingValue } from '~/models/ReadingValue';
+import { Recipe } from '~/models/recipe/Recipe';
 
 import { Util } from './Util';
 
-// Every time wee add a property to whatever class you will need to those arrays.
+// Every time we add a property to these classes, we have to mirror them here (yuck).
 const PoolProps = ['name', 'gallons', 'waterType', 'wallType', 'objectId', 'recipeKey', 'email'];
-const LogEntryProps = ['objectId', 'poolId', 'ts', 'readingEntries', 'treatmentEntries', 'recipeKey', 'notes'];
+const LogEntryProps = ['objectId', 'poolId', 'ts', 'readingEntries', 'treatmentEntries', 'recipeKey', 'formulaName', 'notes'];
 const TargetRangeProps = ['objectId', 'poolId', 'var', 'min', 'max'];
 
 /**
- * if you need to parser, cast or convert any data form realm, you should use in this util class.inmant
+ * if you need to parser, cast or convert any data form realm, you should use in this util class.
  */
 export class RealmUtil {
     /**
@@ -18,7 +21,7 @@ export class RealmUtil {
      * @param rawPools RealmCollection<Pool>
      * @returns array plain pool
      */
-    static poolToPojo = (rawPools: Realm.Collection<Pool>) => {
+    static poolsToPojo = (rawPools: Realm.Collection<Pool>) => {
         const parserData = Util.toArrayPojo<Pool>(PoolProps, rawPools);
         return parserData;
     };
@@ -28,9 +31,8 @@ export class RealmUtil {
      * @param rawLogEntry RealmCollection<LogEntry>
      * @returns array plain LogEntry
      */
-    static logEntryToPojo = (rawLogEntry: Realm.Collection<LogEntry>) => {
-        const parserData = Util.toArrayPojo<LogEntry>(LogEntryProps, rawLogEntry);
-        return parserData;
+    static logEntriesToPojo = (realmLogEntries: Realm.Collection<LogEntry>) => {
+        return Util.toArrayPojo<LogEntry>(LogEntryProps, realmLogEntries);
     };
 
     /**
@@ -42,4 +44,16 @@ export class RealmUtil {
         const parserData = Util.toArrayPojo<TargetRangeOverride>(TargetRangeProps, rawCustomTargers);
         return parserData;
     };
+
+    static createReadingEntriesFromReadingValues = (values: ReadingValue[], formula: Recipe): ReadingEntry[] => {
+        const entries: ReadingEntry[] = [];
+        values.forEach(v => {
+            const reading = Util.firstOrNull(formula.readings.filter(r => r.var === v.var));
+            if (reading) {
+                const e = ReadingEntry.make(reading, v.value);
+                entries.push(e);
+            }
+        });
+        return entries;
+    }
 }

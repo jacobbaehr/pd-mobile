@@ -85,7 +85,7 @@ export const PoolListScreen = () => {
             <FlatList
                 style={ styles.container }
                 contentContainerStyle={ styles.content }
-                keyExtractor-={ (item: Pool, index: number) => item.objectId  + index }
+                keyExtractor={ (item: Pool, index: number) => item.objectId + index }
                 keyboardShouldPersistTaps={ 'handled' }
                 keyboardDismissMode={ 'interactive' }
                 data={ pools }

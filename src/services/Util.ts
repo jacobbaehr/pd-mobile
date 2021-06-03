@@ -96,17 +96,17 @@ export class Util {
      *
      */
     static toPojo = <T>(fields: string[], rawEntity: T): T => {
-        const parserEntity: T = {} as T;
-        fields.forEach((field) => (parserEntity[field] = rawEntity[field]));
-        return parserEntity;
+        const pojo: T = {} as T;
+        fields.forEach((field) => (pojo[field] = rawEntity[field]));
+        return pojo;
     };
 
     static toArrayPojo = <T>(entityProps: string[], realmObjects: Realm.Collection<T>): T[] => {
         const parseData: T[] = [];
 
         realmObjects.forEach((ro) => {
-            const poolPojo = Util.toPojo<T>(entityProps, ro);
-            parseData.push(poolPojo);
+            const pojo = Util.toPojo<T>(entityProps, ro);
+            parseData.push(pojo);
         });
 
         return parseData;

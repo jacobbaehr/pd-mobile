@@ -1,24 +1,24 @@
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import ApolloClient from 'apollo-client';
 import gql from 'graphql-tag';
-import { Recipe } from '~/models/recipe/Recipe';
-import { RecipeKey } from '~/models/recipe/RecipeKey';
+import { Formula } from '~/models/recipe/Recipe';
+import { FormulaKey } from '~/models/recipe/FormulaKey';
 
 import { QueryResult } from '@apollo/react-common';
 import { useQuery } from '@apollo/react-hooks';
 
 import { RS } from '../RecipeUtil';
-import { FetchLatestRecipeMeta, FetchLatestRecipeMetaVariables } from './generated/FetchLatestRecipeMeta';
-import { FetchRecipe, FetchRecipeVariables } from './generated/FetchRecipe';
-import { ListRecipes } from './generated/ListRecipes';
-import { RecipeTransformer } from './RecipeTransformer';
-import { RecipeMeta } from '~/models/recipe/RecipeMeta';
+import { FetchLatestFormulaMeta, FetchLatestFormulaMetaVariables } from './generated/FetchLatestFormulaMeta';
+import { FetchFormula, FetchFormulaVariables } from './generated/FetchFormula';
+import { ListFormulas } from './generated/ListFormulas';
+import { FormulaTransformer } from './FormulaTransformer';
+import { FormulaMeta } from '~/models/recipe/FormulaMeta';
 
-export class RecipeAPI {
-    static useRecipeList = (): QueryResult<ListRecipes> => {
+export class FormulaAPI {
+    static useFormulaList = (): QueryResult<ListFormulas> => {
         const query = gql`
-            query ListRecipes {
-                listRecipes {
+            query ListFormulas {
+                listFormulas {
                     id
                     name
                     desc
@@ -28,13 +28,13 @@ export class RecipeAPI {
             }
         `;
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        return useQuery<ListRecipes>(query);
+        return useQuery<ListFormulas>(query);
     };
 
-    static fetchRecipe = async (key: RecipeKey, client: ApolloClient<NormalizedCacheObject>): Promise<Recipe> => {
+    static fetchFormula = async (key: FormulaKey, client: ApolloClient<NormalizedCacheObject>): Promise<Formula> => {
         const query = gql`
-            query FetchRecipe($id: String!, $ts: Float!) {
-                recipeVersion(id: $id, ts: $ts) {
+            query FetchFormula($id: String!, $ts: Float!) {
+                formulaVersion(id: $id, ts: $ts) {
                     id
                     author_id
                     author_username
@@ -57,7 +57,7 @@ export class RecipeAPI {
                     treatments {
                         name
                         var
-                        formula
+                        function
                         type
                         concentration
                     }
@@ -76,23 +76,23 @@ export class RecipeAPI {
         `;
         const variables = RS.reverseKey(key);
         console.log('Variable: ', JSON.stringify(variables));
-        const result = await client.query<FetchRecipe, FetchRecipeVariables>({
+        const result = await client.query<FetchFormula, FetchFormulaVariables>({
             query,
             variables,
         });
         if (result.data) {
-            return RecipeTransformer.fromAPI(result.data.recipeVersion);
+            return FormulaTransformer.fromAPI(result.data.formulaVersion);
         }
         return Promise.reject('');
     };
 
-    /// Runs a cheap query to fetch _some_ of the metadata of the most recent version for a particular recipe (see the Omit fields)
-    static fetchLatestMetaForRecipe = async (
-        key: RecipeKey,
+    /// Runs a cheap query to fetch _some_ of the metadata of the most recent version for a particular formula (see the Omit fields)
+    static fetchLatestMetaForFormula = async (
+        key: FormulaKey,
         client: ApolloClient<NormalizedCacheObject>,
-    ): Promise<Omit<RecipeMeta, 'desc' | 'name'>> => {
+    ): Promise<Omit<FormulaMeta, 'desc' | 'name'>> => {
         const query = gql`
-            query FetchLatestRecipeMeta($id: String!) {
+            query FetchLatestFormulaMeta($id: String!) {
                 latestPublishedMeta(id: $id) {
                     ts
                     appVersion
@@ -103,12 +103,12 @@ export class RecipeAPI {
         const variables = {
             id: RS.reverseKey(key).id,
         };
-        const result = await client.query<FetchLatestRecipeMeta, FetchLatestRecipeMetaVariables>({
+        const result = await client.query<FetchLatestFormulaMeta, FetchLatestFormulaMetaVariables>({
             query,
             variables,
         });
         if (!result.data) {
-            return Promise.reject('Recipe meta not found on server');
+            return Promise.reject('Formula meta not found on server');
         }
 
         return result.data.latestPublishedMeta;

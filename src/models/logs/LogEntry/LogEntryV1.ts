@@ -1,11 +1,11 @@
-import { ReadingEntry } from './ReadingEntry';
-import { TreatmentEntry } from './TreatmentEntry';
-import { RecipeKey } from '../recipe/RecipeKey';
+import { ReadingEntry } from '../ReadingEntry';
+import { TreatmentEntry } from '../TreatmentEntry';
+import { FormulaKey } from '../../recipe/FormulaKey';
 
 /**
  * Represents readingEntries and treatmentEntries for a given pool
  */
-export class LogEntry {
+export class LogEntryV1 {
     // The id of this object
     objectId!: string;
 
@@ -22,7 +22,10 @@ export class LogEntry {
     treatmentEntries!: TreatmentEntry[];
 
     // The unique id of the recipe
-    recipeKey!: RecipeKey;
+    recipeKey!: FormulaKey;
+
+    // The human-friendly name of the formula
+    formulaName?: string;
 
     // Any special thoughts the user had about this log entry.
     notes?: string;
@@ -38,6 +41,7 @@ export class LogEntry {
             treatmentEntries: 'TreatmentEntry[]',
             ts: 'int',
             recipeKey: 'string',
+            formulaName: 'string?',
             notes: 'string?',
         },
     };
@@ -48,16 +52,18 @@ export class LogEntry {
         ts: number,
         readingEntries: ReadingEntry[],
         treatmentEntries: TreatmentEntry[],
-        recipeKey: RecipeKey,
+        recipeKey: FormulaKey,
+        formulaName: string,
         notes: string | null,
-    ): LogEntry {
-        let logEntry = new LogEntry();
+    ): LogEntryV1 {
+        let logEntry = new LogEntryV1();
         logEntry.objectId = objectId;
         logEntry.poolId = poolId;
         logEntry.ts = ts;
         logEntry.readingEntries = readingEntries;
         logEntry.treatmentEntries = treatmentEntries;
         logEntry.recipeKey = recipeKey;
+        logEntry.formulaName = formulaName;
         if (notes && notes.length > 0) {
             logEntry.notes = notes;
         }

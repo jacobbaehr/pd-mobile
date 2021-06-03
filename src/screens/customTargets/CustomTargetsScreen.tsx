@@ -16,7 +16,7 @@ import CustomTargetsItem from './CustomTargetsItem';
 
 export const CustomTargetsScreen : React.FC = () => {
     const selectedPool = useSelector<AppState>((state) => state.selectedPool) as Pool;
-    const recipe = useLoadRecipeHook(selectedPool?.recipeKey || RecipeService.defaultRecipeKey);
+    const recipe = useLoadRecipeHook(selectedPool?.recipeKey || RecipeService.defaultFormulaKey);
 
     const targets = recipe?.custom ?? [];
 
