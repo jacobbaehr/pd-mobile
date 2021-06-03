@@ -129,4 +129,8 @@ export class Util {
     static hasInArray = (array: any[], value: string) => {
         return array.some((s) => s.includes(value));
     }
+
+    static doAsync = async (cb: () => void) => {
+        setTimeout(cb, 0);
+    }
 }

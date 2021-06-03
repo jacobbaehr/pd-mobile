@@ -1,6 +1,6 @@
 import { LogEntry } from '~/models/logs/LogEntry';
 import { ReadingEntry } from '~/models/logs/ReadingEntry';
-import { Pool } from '~/models/Pool';
+import { IPool, Pool } from '~/models/Pool';
 import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
 import { ReadingValue } from '~/models/ReadingValue';
 import { Recipe } from '~/models/recipe/Recipe';
@@ -21,8 +21,8 @@ export class RealmUtil {
      * @param rawPools RealmCollection<Pool>
      * @returns array plain pool
      */
-    static poolsToPojo = (rawPools: Realm.Collection<Pool>) => {
-        const parserData = Util.toArrayPojo<Pool>(PoolProps, rawPools);
+    static poolsToPojo = (rawPools: Realm.Collection<Pool>): IPool[] => {
+        const parserData = Util.toArrayPojo<IPool>(PoolProps, rawPools);
         return parserData;
     };
 

@@ -7,28 +7,27 @@ import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { useModal } from '~/hooks/useModal';
-import { Pool } from '~/models/Pool';
 import { useThunkDispatch } from '~/redux/AppState';
 import { updatePool } from '~/redux/selectedPool/Actions';
 import { MenuItemButton } from '~/screens/pool/components/MenuItemButton';
 import { useEditPool } from '~/screens/pool/editOrCreate/hooks/useEditPool';
 
 import { useEntryPool } from '../hooks/useEntryPool';
+import { toPool } from '../shared';
 import { DeletePool } from './components/DeletePool';
 
 export const EditPoolScreen: React.FunctionComponent = () => {
     const { visible, toggleVisible } = useModal();
-    const { pool, isRequiredFilledOut } = useEntryPool();
+    const { pool } = useEntryPool();
     const dispatchThunk = useThunkDispatch();
     const editPoolSectionInfo = useEditPool(pool, toggleVisible);
     const insets = useSafeArea();
 
     /// Whenever the pool context changes, persist them in the db:
     React.useEffect(() => {
-        if (isRequiredFilledOut) {
-            const updatedPool = Pool.make(pool as Pool);
+        const updatedPool = toPool(pool);
+        if (updatedPool) {
             dispatchThunk(updatePool(updatedPool));
-
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pool]);
@@ -55,8 +54,9 @@ export const EditPoolScreen: React.FunctionComponent = () => {
                 stickySectionHeadersEnabled={ false }
                 contentContainerStyle={ styles.listContent }
                 style={ styles.listContainer }
+                contentInset={ { bottom: insets.bottom } }
             />
-            <PDView style={ { paddingBottom: insets.bottom + PDSpacing.sm } }>
+            <PDView>
                 <DeletePool visible={ visible } toggleVisible={ toggleVisible } />
             </PDView>
         </PDSafeAreaView>

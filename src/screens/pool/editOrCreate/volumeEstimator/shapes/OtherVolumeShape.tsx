@@ -23,9 +23,9 @@ export const OtherVolumeShape: React.FC<ShapesProps> = (props) => {
         shallowest: '',
     });
     const [inputFocus, setInputFocus] = useState<keyof OtherMeasurements>('area');
-    const areaRef = React.createRef<TextInput>();
-    const deepestRef = React.createRef<TextInput>();
-    const shallowestRef = React.createRef<TextInput>();
+    const areaRef = React.useRef<TextInput>(null);
+    const deepestRef = React.useRef<TextInput>(null);
+    const shallowestRef = React.useRef<TextInput>(null);
 
     useEffect(() => {
         const isAllFieldsCompleted = VolumeEstimatorHelpers.areAllRequiredMeasurementsCompleteForShape(shapeValues);

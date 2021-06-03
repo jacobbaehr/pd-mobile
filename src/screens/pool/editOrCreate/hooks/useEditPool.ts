@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { HeaderInfo } from '../../components/PoolPopover';
 import { EditPoolHelpers } from '../edit/EditPoolHelpers';
+import { toPool } from '../shared';
 
 export type MenuItemId =
     | 'name'
@@ -47,7 +48,8 @@ export const useEditPool = (pool: Partial<Pool>, toggleVisible: () => void): Edi
     };
 
     const handleExportButtonPressed = async () => {
-        const validatedPool = Pool.make(pool as Pool);
+        const validatedPool = toPool(pool);
+        if (!validatedPool) { return; }
         try {
             await ExportService.generateAndShareCSV(validatedPool);
         } catch (e) {

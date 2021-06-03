@@ -1,14 +1,14 @@
 import React, { useContext, useState } from 'react';
-import { Pool } from '~/models/Pool';
+import { IPool } from '~/models/Pool';
 import { useTypedSelector } from '~/redux/AppState';
 import { RecipeService } from '~/services/RecipeService';
 
 interface PartialPoolContext {
-    pool: Partial<Pool>;
-    setPool: React.Dispatch<React.SetStateAction<Partial<Pool>>>;
+    pool: Partial<IPool>;
+    setPool: React.Dispatch<React.SetStateAction<Partial<IPool>>>;
 }
 
-const createPoolDefaults: Partial<Pool> = {
+const createPoolDefaults: Partial<IPool> = {
     gallons: undefined,
     name: undefined,
     waterType: undefined,
@@ -27,7 +27,7 @@ const PartialPoolContext = React.createContext<PartialPoolContext>({
 });
 
 interface PoolProviderProps {
-    initialPool: Pool | null;
+    initialPool: IPool | null;
 }
 
 export const PoolProvider: React.FC<PoolProviderProps> = (props) => {
@@ -56,7 +56,7 @@ export const useEntryPool = () => {
 
     const isRequiredFilledOut: boolean = !!pool.name && !!pool.gallons && !!pool.waterType;
 
-    const setPoolValue = (newValue: Partial<Pool>) => {
+    const setPoolValue = (newValue: Partial<IPool>) => {
         setPool({ ...pool, ...newValue });
     };
 

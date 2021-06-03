@@ -1,11 +1,12 @@
 import { FormulaKey } from '../recipe/FormulaKey';
+import { IPool } from './IPool';
 import { WallTypeValue } from './WallType';
 import { WaterTypeValue } from './WaterType';
 
 /**
  * Represents a swimming pool (duh).
  */
-export class PoolV1 {
+export class PoolV1 implements IPool {
     // The pool's volume, in gallons.
     gallons!: number;
 
@@ -41,21 +42,4 @@ export class PoolV1 {
             email: 'string?',
         },
     };
-
-    static make(newPool: PoolV1): PoolV1 {
-        const pool = new PoolV1();
-        pool.name = newPool.name;
-        pool.gallons = newPool.gallons;
-        pool.waterType = newPool.waterType;
-        pool.recipeKey = newPool.recipeKey;
-        pool.wallType = newPool.wallType;
-        pool.email = newPool.email;
-
-        // what the heck is this??? is the edit logic busted?
-        if (newPool.objectId) {
-            pool.objectId = newPool.objectId;
-        }
-
-        return pool;
-    }
 }

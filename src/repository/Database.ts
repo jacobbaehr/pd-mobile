@@ -1,6 +1,7 @@
 import Realm from 'realm';
 import { LogEntry } from '~/models/logs/LogEntry';
-import { Pool } from '~/models/Pool';
+import { IPool, Pool } from '~/models/Pool';
+import { IPoolNoId } from '~/models/Pool/IPool';
 import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
 import { Util } from '~/services/Util';
 
@@ -45,9 +46,12 @@ export class Database {
         return results;
     };
 
-    static saveNewPool = (pool: Pool) => {
+    static saveNewPool = (poolWithoutId: IPoolNoId): IPool => {
         const realm = Database.realm;
-        pool.objectId = Util.generateUUID();
+        const pool: IPool = {
+            ...poolWithoutId,
+            objectId: Util.generateUUID(),
+        };
         try {
             realm.write(() => {
                 realm.create(Pool.schema.name, {
@@ -107,7 +111,7 @@ export class Database {
         return realm.objects<LogEntry>(LogEntry.schema.name).filtered(query);
     };
 
-    static deletePool = (pool: Pool) => {
+    static deletePool = (pool: IPool) => {
         const realm = Database.realm;
         try {
             // We have to delete the actual realm object

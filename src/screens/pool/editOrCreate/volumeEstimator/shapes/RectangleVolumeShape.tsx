@@ -25,10 +25,10 @@ export const RectangleVolumeShape:  React.FC<ShapesProps> = (props) => {
         shallowest: '',
     });
     const [inputFocus, setInputFocus] = useState<keyof RectangleMeasurements>('length');
-    const lengthRef = React.createRef<TextInput>();
-    const widthRef = React.createRef<TextInput>();
-    const deepestRef = React.createRef<TextInput>();
-    const shallowestRef = React.createRef<TextInput>();
+    const lengthRef = React.useRef<TextInput>(null);
+    const widthRef = React.useRef<TextInput>(null);
+    const deepestRef = React.useRef<TextInput>(null);
+    const shallowestRef = React.useRef<TextInput>(null);
 
     const primaryColor = VolumeEstimatorHelpers.getPrimaryColorByShapeId(params.shapeId, theme);
 

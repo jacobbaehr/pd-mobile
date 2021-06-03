@@ -25,10 +25,10 @@ export const OvalVolumeShape:  React.FC<ShapesProps> = (props) => {
     });
 
     const [inputFocus, setInputFocus] = useState<keyof OvalMeasurements>('length');
-    const lengthRef = React.createRef<TextInput>();
-    const widthRef = React.createRef<TextInput>();
-    const deepestRef = React.createRef<TextInput>();
-    const shallowestRef = React.createRef<TextInput>();
+    const lengthRef = React.useRef<TextInput>(null);
+    const widthRef = React.useRef<TextInput>(null);
+    const deepestRef = React.useRef<TextInput>(null);
+    const shallowestRef = React.useRef<TextInput>(null);
 
 
     useEffect(() => {

@@ -6,7 +6,6 @@ import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
-import { Pool } from '~/models/Pool';
 import { useThunkDispatch, useTypedSelector } from '~/redux/AppState';
 import { saveNewPool } from '~/redux/selectedPool/Actions';
 import { useCreatePool } from '~/screens/pool/editOrCreate/hooks/useCreatePool';
@@ -17,6 +16,7 @@ import { useNavigation } from '@react-navigation/core';
 
 import { MenuItemButton } from '../../components/MenuItemButton';
 import { useSafeArea } from 'react-native-safe-area-context';
+import { toPoolNoId } from '../shared';
 
 export const CreatePoolScreen: React.FunctionComponent = () => {
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
@@ -28,10 +28,11 @@ export const CreatePoolScreen: React.FunctionComponent = () => {
     const navigation = useNavigation();
 
     const handleCreatePoolPressed = () => {
-        if (isRequiredFilledOut) {
-            const newPool = Pool.make(pool as Pool);
-            Haptic.heavy();
-            dispatch(saveNewPool(newPool));
+        Haptic.heavy();
+
+        const newPoolNoId = toPoolNoId(pool);
+        if (newPoolNoId) {
+            dispatch(saveNewPool(newPoolNoId));
             navigation.goBack();
         }
     };

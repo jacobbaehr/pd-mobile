@@ -1,12 +1,12 @@
 // import { AnyAction } from 'redux';
 
-import { Pool } from '~/models/Pool';
+import { IPool } from '~/models/Pool';
 
 import { createReducer } from '@reduxjs/toolkit';
 
 import { clearPool, selectPool, updatePool, deletePool } from './Actions';
 
-export const selectedPoolReducer = createReducer(null as Pool | null, (builder) => {
+export const selectedPoolReducer = createReducer(null as IPool | null, (builder) => {
     builder
         .addCase(selectPool, (state, action) => {
             state = action.payload;
