@@ -125,7 +125,6 @@ export const TreatmentListScreen: React.FC = () => {
         const tes = CalculationService.mapTreatmentStatesToTreatmentEntries(finalTreatmentStates);
 
         const readingEntries = RealmUtil.createReadingEntriesFromReadingValues(readings, recipe);
-        console.log('recipe name: ' + recipe.name);
         const logEntry = LogEntry.make(id, pool.objectId, ts, readingEntries, tes, recipeKey, recipe.name, notes);
 
         await Database.saveNewLogEntry(logEntry);
@@ -138,7 +137,6 @@ export const TreatmentListScreen: React.FC = () => {
         updateDS({ treatments: newTreatments });
         dispatch(clearReadings());
         const navigateBackScreen = routesInNavStack.includes('PoolScreen') ? 'PoolScreen' : 'PoolList';
-        console.log(routesInNavStack);
         navigate(navigateBackScreen);
     };
 

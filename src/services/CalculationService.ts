@@ -13,7 +13,7 @@ export interface CalculationResult {
 }
 
 export class CalculationService {
-    /// Hermes is the thing that runs the formulas, obviously.
+    /// Hermes is the thing that runs the functions, obviously.
     static getHtmlStringForLocalHermes = (
         recipe: Recipe,
         pool: Pool,
@@ -51,10 +51,10 @@ export class CalculationService {
                     \${previousTreatmentsAsArgs}
                     \${customTargetsAsArgs}
                     \${skippedAsArgs}
-                    \${t.formula}
+                    \${t.function}
                 \`;
 
-                // Fire away (for each formula)!
+                // Fire away (for each function)!
                 let result = null;
                 try {
                     result = new Function(f)();
