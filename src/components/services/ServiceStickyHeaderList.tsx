@@ -21,7 +21,7 @@ export const ServiceStickyHeaderList: React.FC<ReadingListStickyHeaderProps> = (
     return (
         <PDView style={ styles.container } bgColor="white">
             <PDText type="bodyBold" color="grey" style={ styles.stepsText }>
-                {completedLength} of {missingLength} readings completed
+                {completedLength} of {missingLength} completed
             </PDText>
             <PDProgressBar
                 progress={ progress }
