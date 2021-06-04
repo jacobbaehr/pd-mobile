@@ -79,7 +79,7 @@ export const PoolListScreen = () => {
 
     return (
         <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never' } }>
-            <SearchHeader numPools={ pools.length }>
+            <SearchHeader numPools={ pools.length } searchText={ keyboard }>
                 <SearchInput value={ keyboard } onChangeText={ handleKeyboardChanged } />
             </SearchHeader>
             <FlatList

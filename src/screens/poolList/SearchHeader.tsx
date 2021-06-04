@@ -15,6 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 
 interface SearchHeaderProps {
     numPools: number;
+    searchText?: string;
 }
 
 export const SearchHeader: React.FC<SearchHeaderProps> = (props) => {
@@ -57,7 +58,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = (props) => {
         navigate('Settings');
     };
 
-    const shouldShowSearch = props.numPools > 0;
+    const shouldShowSearch = (props.numPools > 0) || (props.searchText);
     const searchBar = shouldShowSearch && (
         <PDView style={ styles.containerSearch }>
             {props.children}
