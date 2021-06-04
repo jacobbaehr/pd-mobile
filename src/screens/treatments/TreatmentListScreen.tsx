@@ -51,7 +51,7 @@ export const TreatmentListScreen: React.FC = () => {
     const [concentrationTreatmentVar, updateConcentrationTreatment] = React.useState<string | null>(null);
     const recipe = useLoadRecipeHook(recipeKey);
     const targetRangeOverridesForPool = useRealmPoolTargetRangesForPool(pool.objectId);
-    const navRoutes = useNavigationState(state => state.routeNames);
+    const routesInNavStack = useNavigationState(state => state.routes.map(r => r.name));
 
     const allScoops = ds.scoops;
 
@@ -137,7 +137,8 @@ export const TreatmentListScreen: React.FC = () => {
         );
         updateDS({ treatments: newTreatments });
         dispatch(clearReadings());
-        const navigateBackScreen = navRoutes.includes('PoolScreen') ? 'PoolScreen' : 'PoolList';
+        const navigateBackScreen = routesInNavStack.includes('PoolScreen') ? 'PoolScreen' : 'PoolList';
+        console.log(routesInNavStack);
         navigate(navigateBackScreen);
     };
 
