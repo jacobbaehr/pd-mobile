@@ -71,7 +71,7 @@ export class DeviceSettingsService {
         // Special-case: User purchased app on _old_ version, and this property was not set.
         // In this case, if the expiration is in the future AND sub_will_renew has never been set,
         // give them the benefit of the doubt (we'll also refresh this via RevenueCat later).
-        if (raw.sub_will_renew === undefined && raw.sub_exp !== null) {
+        if ((raw.sub_will_renew === undefined) && raw.sub_exp !== null) {
             sub_will_renew = raw.sub_exp > Date.now();
         }
 

@@ -55,7 +55,7 @@ export const EntryWallType = () => {
                     <PDText type="bodySemiBold" color={ wallType === wall.value ? 'white' : 'greyDarker' }>
                         {wall.display}
                     </PDText>
-                    {wallType === wall.value && (
+                    {!!(wallType === wall.value) && (
                         <SVG.IconCheckmark width={ 24 } height={ 24 } fill="white" style={ styles.checkmark } />
                     )}
                 </ButtonWithChildren>

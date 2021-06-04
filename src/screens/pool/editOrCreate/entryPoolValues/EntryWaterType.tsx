@@ -53,7 +53,7 @@ export const EntryWaterType = () => {
                     <PDText type="bodySemiBold" color={ waterType === water.value ? 'white' : 'greyDarker' }>
                         {water.display}
                     </PDText>
-                    {waterType === water.value && (
+                    {!!(waterType === water.value) && (
                         <SVG.IconCheckmark width={ 24 } height={ 24 } fill="white" style={ styles.checkmark } />
                     )}
                 </ButtonWithChildren>

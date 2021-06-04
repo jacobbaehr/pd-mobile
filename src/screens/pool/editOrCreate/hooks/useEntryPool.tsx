@@ -54,7 +54,7 @@ export const useEntryPool = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedFormulaKey]);
 
-    const isRequiredFilledOut: boolean = !!pool.name && !!pool.gallons && !!pool.waterType;
+    const isRequiredFilledOut = !!pool.name && !!pool.gallons && !!pool.waterType;
 
     const setPoolValue = (newValue: Partial<IPool>) => {
         setPool({ ...pool, ...newValue });

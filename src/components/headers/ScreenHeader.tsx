@@ -55,7 +55,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
     return (
         <PDView style={ containerStyles } bgColor="white">
             <PDView style={ styles.sideContainer }>
-                {hasBackButton && (
+                {!!hasBackButton && (
                     <TouchableScale { ...touchableProps } onPress={ handleBackButtonPressed }>
                         <SVG.IconCircleBack height={ 32 } width={ 32 } fill={ svgColor } />
                     </TouchableScale>
@@ -67,12 +67,12 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
                 </PDText>
             </PDView>
             <PDView style={ styles.sideContainer }>
-                {hasAddButton && (
+                {!!hasAddButton && (
                     <TouchableScale { ...touchableProps } onPress={ handlePressedAdd }>
                         <SVG.IconCircleAdd height={ 32 } width={ 32 } fill={ svgColor } />
                     </TouchableScale>
                 )}
-                {hasEditButton && (
+                {!!hasEditButton && (
                     <TouchableScale { ...touchableProps } onPress={ handlePressedEdit }>
                         <SVG.IconCircleEdit height={ 32 } width={ 32 } fill={ svgColor } />
                     </TouchableScale>

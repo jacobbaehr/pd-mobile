@@ -58,7 +58,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = (props) => {
         navigate('Settings');
     };
 
-    const shouldShowSearch = (props.numPools > 0) || (props.searchText);
+    const shouldShowSearch = !!((props.numPools > 0) || (props.searchText));
     const searchBar = shouldShowSearch && (
         <PDView style={ styles.containerSearch }>
             {props.children}

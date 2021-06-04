@@ -46,7 +46,7 @@ export const PDButtonSolid: React.FC<PDButtonProps> = (props) => {
     return (
         <TouchableScale { ...touchableProps } onPress={ onPress }>
             <PDView style={ [styles.container, viewStyles] } { ...rest }>
-                {icon && (
+                {!!icon && (
                     <PDView style={ styles.iconContainer }>
                         {icon}
                     </PDView>
