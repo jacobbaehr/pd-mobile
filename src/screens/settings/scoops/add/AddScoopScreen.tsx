@@ -93,7 +93,7 @@ export const AddScoopScreen = () => {
                 </PDView>
                 <KeyboardButton
                     nativeID={ keyboardId }
-                    bgColor={ true ? 'pink' : 'greyVeryLight' }
+                    bgColor={ true ? 'pink' : 'greyLighter' }
                     hitSlop={ { top: 5, left: 5, bottom: 5, right: 5 } }
                     disabled={ false }
                     onPress={ handleSavePressed }>

@@ -4,7 +4,7 @@ import TouchableScale from 'react-native-touchable-scale';
 import { useDispatch } from 'react-redux';
 import { SVG } from '~/assets/images';
 import { PDText } from '~/components/PDText';
-import { PDSpacing } from '~/components/PDTheme';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { clearPool } from '~/redux/selectedPool/Actions';
@@ -22,7 +22,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = (props) => {
     const { navigate } = useNavigation<PDStackNavigationProps>();
     const { ds } = useDeviceSettings();
     const dispatch = useDispatch();
-
+    const theme = useTheme();
 
     const promptUpgrade = () => {
         Alert.alert(
@@ -66,21 +66,21 @@ export const SearchHeader: React.FC<SearchHeaderProps> = (props) => {
     );
 
     return (
-        <PDView bgColor="white" style={ styles.containerBottom }>
+        <PDView bgColor="white" style={ [styles.containerBottom, {  borderBottomColor: theme.border }] }>
             <PDView  style={ styles.container  }>
                 <PDView style={ styles.sideContainer }>
                     <TouchableScale  onPress={ handleSettingButtonPressed } hitSlop={ { top: 7, bottom: 7, left: 7, right: 7 } }>
-                        <SVG.IconSettings height={ 32 } width={ 32 } fill={ 'blue' } />
+                        <SVG.IconSettings height={ 32 } width={ 32 } fill={ theme.blue } />
                     </TouchableScale>
                 </PDView>
                 <PDView style={ styles.centerContainer }>
-                    <PDText type={ 'heading' } color="black" style={ styles.text }>
+                    <PDText type={ 'heading' } color="black" textAlign="center">
                         My Pools
                     </PDText>
                 </PDView>
                 <PDView style={ styles.sideContainer }>
                     <TouchableScale onPress={ handleAddButtonPressed }>
-                        <SVG.IconCircleAdd height={ 32 } width={ 32 } fill={ 'blue' } />
+                        <SVG.IconCircleAdd height={ 32 } width={ 32 } fill={ theme.blue } />
                     </TouchableScale>
                 </PDView>
             </PDView>
@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
         marginBottom: PDSpacing.md,
     },
     containerBottom: {
-        borderBottomColor: '#EDEDED',
         borderBottomWidth: 2,
     },
     sideContainer: {
@@ -110,8 +109,5 @@ const styles = StyleSheet.create({
     },
     centerContainer: {
         flexGrow: 2,
-    },
-    text: {
-        textAlign: 'center',
     },
 });

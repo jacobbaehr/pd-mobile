@@ -29,19 +29,19 @@ export interface PDMainColors {
 export interface PDThemeColors {
     background: string
     card: string
-    text: string
     border: string
-    notification: string
 }
 
 /// For now, this is all colors, named after day-mode:
 export interface PDTheme extends PDMainColors, PDThemeColors {
+    darkMode: boolean;
     white: string;
-    black: string;
-    grey: string;
-    greyDarker: string;
+    greyLighter: string
     greyLight: string;
-    greyVeryLight: string,
+    grey: string;
+    greyDark: string
+    greyDarker: string;
+    black: string;
 
     // Status bar
     statusBarDefault: StatusBarStyle;
@@ -95,45 +95,46 @@ export const MainColors: PDMainColors = {
 
 // TODO: Complete Colors Pallets
 export const lightTheme: PDTheme = {
+    darkMode: false,
     white: '#FFFFFF',
-    black: '#000000',
-    grey: '#737373',
-    greyDarker: '#262626',
+    greyLighter: '#F7F7F7',
     greyLight: '#EDEDED',
-    greyVeryLight: '#FAFAFA',
-    background: '',
-    card: '',
-    text: '',
+    grey: '#BBBBBB',
+    greyDark: '#737373',
+    greyDarker: '#262626',
+    black: '#000000',
+
+    background: '#FAFAFA',
+    card: '#FFFFFF',
     border: '#EDEDED',
-    notification: '',
+
     transparent: 'transparent',
     statusBarDefault: 'dark-content',
-
     statusBarContrast: 'light-content',
     ...MainColors,
 
 };
-/// This is fake, don't use it yet:
-export const darkTheme: PDTheme = {
-    white: '#FFFFFF',
-    black: '#000000',
-    grey: '#BBBBBB',
-    greyDarker: '#262626',
-    greyLight: '#EDEDED',
-    greyVeryLight: '#FAFAFA',
-    background: '',
-    card: '',
-    text: '',
-    border: '#1F1F1F',
-    notification: '',
-    transparent: 'transparent',
-    statusBarDefault: 'light-content',
-    statusBarContrast: 'dark-content',
 
+export const darkTheme: PDTheme = {
+    darkMode: true,
+    white: '#000000' ,
+    greyLighter: '#080808',
+    greyLight: '#1F1F1F',
+    grey: '#454545',
+    greyDark: '#949494',
+    greyDarker: '#E6E6E6',
+    black: '#FFFFFF',
+
+    background: '#0D0D0D',
+    card: '#000000',
+    border: '#1F1F1F',
+
+    transparent: 'transparent',
+    statusBarDefault: 'dark-content',
+    statusBarContrast: 'light-content',
     ...MainColors,
 };
 
-export const PDThemeContext = React.createContext<PDTheme>(lightTheme);
-
+export const PDThemeContext = React.createContext<PDTheme>(darkTheme);
 export const useTheme = () => React.useContext(PDThemeContext);
 

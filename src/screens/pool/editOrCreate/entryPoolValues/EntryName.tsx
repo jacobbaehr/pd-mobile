@@ -45,7 +45,7 @@ export const EntryName: React.FC = () => {
             <KeyboardButton
                 nativeID={ keyboardAccessoryViewId }
                 onPress={ handleOnPressSaveButton }
-                bgColor={ !hasPoolNameChanged ? 'blue' : 'greyVeryLight' }
+                bgColor={ !hasPoolNameChanged ? 'blue' : 'greyLighter' }
                 activeOpacity={ !hasPoolNameChanged ? 0 : 1 }
                 hitSlop={ { top: 5, left: 5, bottom: 5, right: 5 } }
                 disabled={ hasPoolNameChanged }>

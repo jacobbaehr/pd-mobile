@@ -2,11 +2,12 @@ import React from 'react';
 import { StyleSheet, TextInputProps } from 'react-native';
 import { SVG } from '~/assets/images';
 
-import { PDSpacing } from '../PDTheme';
+import { PDSpacing, useTheme } from '../PDTheme';
 import { PDView } from '../PDView';
 import { PDTextInput } from './PDTextInput';
 
 export const SearchInput: React.FC<TextInputProps> = (props) => {
+    const theme = useTheme();
     return (
         <PDView bgColor="greyLight" style={ styles.container }>
             <PDView>
@@ -14,9 +15,9 @@ export const SearchInput: React.FC<TextInputProps> = (props) => {
             </PDView>
             <PDTextInput
                 { ...props }
-                style={ styles.textInput }
+                style={ [ styles.textInput, { color: theme.black } ] }
                 placeholder="Search"
-                placeholderTextColor="#909090"
+                placeholderTextColor={ theme.greyDark }
                 keyboardType="default"
                 hitSlop={ { top: 5, bottom: 5, left: 20, right: 5 } }
             />

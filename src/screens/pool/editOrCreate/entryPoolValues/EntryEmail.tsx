@@ -52,7 +52,7 @@ export const EntryEmail: React.FC = () => {
             <KeyboardButton
                 nativeID={ keyboardAccessoryViewId }
                 onPress={ handleOnPressSaveButton }
-                bgColor={ validateEmail() ? 'blue' : 'greyVeryLight' }
+                bgColor={ validateEmail() ? 'blue' : 'greyLighter' }
                 hitSlop={ { top: 5, left: 5, bottom: 5, right: 5 } }
                 disabled={ !validateEmail() }>
                 Save

@@ -102,7 +102,7 @@ export const EntryVolume = () => {
             <KeyboardButton
                 onPress={ handleOnPressSaveButton }
                 disabled={ !hasVolumeChanged }
-                bgColor={ hasVolumeChanged ? 'pink' : 'greyVeryLight' }
+                bgColor={ hasVolumeChanged ? 'pink' : 'greyLighter' }
                 textColor={ hasVolumeChanged ? 'white' : 'grey' }
                 nativeID={ keyboardAccessoryViewId }
                 activeOpacity={ hasVolumeChanged ? 0 : 1 }

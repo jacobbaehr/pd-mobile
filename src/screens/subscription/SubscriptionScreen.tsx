@@ -4,11 +4,11 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { ScreenHeader } from '~/components/headers/ScreenHeader';
 import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { PDSpacing, useTheme } from '~/components/PDTheme';
+import { DS } from '~/services/DSUtil';
 
+import { usePurchaseState } from '../../services/subscription/SubHooks';
 import { SubscriptionOptions } from './components/prompt/SubscriptionOptions';
 import { SubscriptionSuccess } from './components/success/SubscriptionSucces';
-import { usePurchaseState } from '../../services/subscription/SubHooks';
-import { DS } from '~/services/DSUtil';
 
 export const SubscriptionScreen: React.FC = () => {
     const theme = useTheme();
@@ -26,7 +26,7 @@ export const SubscriptionScreen: React.FC = () => {
             <ScreenHeader color="blue" textType="heading">
                 Pooldash+
             </ScreenHeader>
-            <ScrollView style={ [styles.content, { backgroundColor: theme.greyVeryLight } ] }>
+            <ScrollView style={ [styles.content, { backgroundColor: theme.greyLighter } ] }>
                 { content }
             </ScrollView>
         </PDSafeAreaView>

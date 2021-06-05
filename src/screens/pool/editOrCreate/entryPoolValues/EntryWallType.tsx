@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        backgroundColor: '#F7F7F7',
+        backgroundColor: '#FAFAFA',
         borderRadius: 24,
         paddingVertical: PDSpacing.md,
         paddingHorizontal: PDSpacing.lg,

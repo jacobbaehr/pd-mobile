@@ -5,12 +5,15 @@ import { useDispatch } from 'react-redux';
 import { SearchInput } from '~/components/inputs/SearchInput';
 import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { PDText } from '~/components/PDText';
-import { PDSpacing } from '~/components/PDTheme';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
+import { useStandardStatusBar } from '~/hooks/useStatusBar';
 import { Pool } from '~/models/Pool';
+import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { selectPool } from '~/redux/selectedPool/Actions';
 import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
+import { Haptic } from '~/services/HapticService';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
 import { useNavigation } from '@react-navigation/native';
@@ -19,9 +22,6 @@ import { ChipButton } from './ChipButton';
 import { PoolListFooter } from './PoolListFooter';
 import { SearchHeader } from './SearchHeader';
 import { usePoolSearch } from './usePoolSearch';
-import { getDisplayForWaterType } from '~/models/Pool/WaterType';
-import { Haptic } from '~/services/HapticService';
-import { useStandardStatusBar } from '~/hooks/useStatusBar';
 
 export const PoolListScreen = () => {
     const { ds } = useDeviceSettings();
@@ -30,6 +30,7 @@ export const PoolListScreen = () => {
     const [keyboard, setKeyboard] = useState<string>('');
     const pools = usePoolSearch(keyboard);
     useStandardStatusBar();
+    const theme = useTheme();
 
     const handleItemPressed = (item: Pool) => {
         Haptic.light();
@@ -64,11 +65,11 @@ export const PoolListScreen = () => {
         const volume = VolumeUnitsUtil.getAbbreviatedDisplayVolume(item.gallons, ds);
         return (
             <TouchableScale onPress={ () => handleItemPressed(item) } activeScale={ 0.97 } key={ item.objectId }>
-                <PDView bgColor="white" style={ styles.containerItem }>
-                    <PDText type="bodyBold" numberOfLines={ 3 }>
+                <PDView bgColor="white" borderColor="border" style={ styles.containerItem }>
+                    <PDText type="bodyBold" color="black" numberOfLines={ 3 }>
                         {item.name}
                     </PDText>
-                    <PDText type="bodyMedium" color="grey">
+                    <PDText type="bodyMedium" color="greyDark">
                         { getDisplayForWaterType(item.waterType) }, {volume}
                     </PDText>
                     <ChipButton onPress={ () => handleChipPressed(item) } />
@@ -83,7 +84,7 @@ export const PoolListScreen = () => {
                 <SearchInput value={ keyboard } onChangeText={ handleKeyboardChanged } />
             </SearchHeader>
             <FlatList
-                style={ styles.container }
+                style={ {  backgroundColor:theme.background  } }
                 contentContainerStyle={ styles.content }
                 keyExtractor={ (item: Pool, index: number) => item.objectId + index }
                 keyboardShouldPersistTaps={ 'handled' }
@@ -104,7 +105,7 @@ export const PoolListScreen = () => {
                     if (pools.length === 0 && keyboard) {
                         return (
                             <PDView>
-                                <PDText style={ styles.emptyText }>🤷‍♂️🤷‍♀️</PDText>
+                                <PDText style={ styles.emptyText } textAlign="center">🤷‍♂️🤷‍♀️</PDText>
                             </PDView>
                         );
                     }
@@ -116,9 +117,6 @@ export const PoolListScreen = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#FAFAFA',
-    },
     content: {
         marginHorizontal: PDSpacing.sm,
         marginTop: PDSpacing.sm,
@@ -129,11 +127,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: PDSpacing.lg,
         borderWidth: 2,
         borderRadius: 24,
-        borderColor: '#EDEDED',
         marginBottom: PDSpacing.xs,
     },
     emptyText: {
         fontSize: 72,
-        textAlign: 'center',
     },
 });

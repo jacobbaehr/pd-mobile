@@ -1,41 +1,28 @@
 import * as React from 'react';
-import { StyleSheet, View, TouchableHighlight, Image, Dimensions } from 'react-native';
-
-import { PDText } from '~/components/PDText';
-import { DeviceSettings } from '~/models/DeviceSettings';
-import { AppState } from '~/redux/AppState';
-import { connect } from 'react-redux';
-import { DS } from '~/services/DSUtil';
+import { Dimensions, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { images } from '~/assets/images';
+import { PDText } from '~/components/PDText';
+import { PDSpacing } from '~/components/PDTheme';
+import { PDView } from '~/components/PDView';
+import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
+import { DS } from '~/services/DSUtil';
+import { Util } from '~/services/Util';
 
-interface PoolListFooterNonEmptyPropsInternal {
-    deviceSettings: DeviceSettings;
-}
-interface PoolListFooterNonEmptyPropsExternal {
+interface PoolListFooterNonEmptyProps {
     pressedUpgrade: () => void;
 }
-type PoolListFooterNonEmptyProps = PoolListFooterNonEmptyPropsInternal & PoolListFooterNonEmptyPropsExternal;
 
-const mapStateToProps = (
-    state: AppState,
-    ownProps: PoolListFooterNonEmptyPropsExternal,
-): PoolListFooterNonEmptyProps => {
-    return {
-        ...ownProps,
-        deviceSettings: state.deviceSettings,
-    };
-};
 
-const PoolListFooterNonEmptyComponent: React.FunctionComponent<PoolListFooterNonEmptyProps> = (props) => {
+export const PoolListFooterNonEmpty: React.FunctionComponent<PoolListFooterNonEmptyProps> = (props) => {
     const [isChangeButtonPressed, setIsChangeButtonPressed] = React.useState(false);
-    const isPlus = DS.isSubscriptionValid(props.deviceSettings, Date.now());
+    const { ds } = useDeviceSettings();
+    const isPlus = DS.isSubscriptionValid(ds, Date.now());
 
     if (isPlus) {
         // I don't know if this is necessary:
         const imageWidth = Dimensions.get('window').width - 20;
         const imageHeight = imageWidth * 0.3108;
         return (
-            <View>
                 <Image
                     style={ styles.image }
                     source={ images.logoGreenPlus }
@@ -43,40 +30,38 @@ const PoolListFooterNonEmptyComponent: React.FunctionComponent<PoolListFooterNon
                     height={ imageHeight }
                     resizeMode={ 'contain' }
                 />
-            </View>
         );
     }
 
-    const changeButtonStyles = isChangeButtonPressed ? styles.recipeLinkPressed : styles.recipeLinkNormal;
+    const toggleChangeButtonPressed = () => {
+        setIsChangeButtonPressed(!isChangeButtonPressed);
+    };
 
     return (
-        <View style={ styles.container }>
-            <View style={ styles.topRow }>
-                <TouchableHighlight
-                    onPressIn={ () => setIsChangeButtonPressed(true) }
-                    onPressOut={ () => setIsChangeButtonPressed(false) }
+        <PDView bgColor="transparent" style={ styles.container } >
+            <PDView style={ styles.topRow }>
+                <TouchableOpacity
+                    onPressIn={ toggleChangeButtonPressed }
+                    onPressOut={ toggleChangeButtonPressed }
                     onPress={ props.pressedUpgrade }>
-                    <PDText type="default" style={ changeButtonStyles }>
+                    <PDText type="default" style={ Util.excludeFalsy([styles.recipeLinkNormal, isChangeButtonPressed && styles.recipeLinkPressed]) }>
                         Upgrade
                     </PDText>
-                </TouchableHighlight>
-                <PDText type="default" style={ styles.changeRecipeIntro }>
-                    {' '}
-                    to add more pools.
+                </TouchableOpacity>
+                <PDText type="default" color="greyDark" style={ styles.changeRecipeIntro }>
+                    {' '} to add more pools.
                 </PDText>
-            </View>
-        </View>
+            </PDView>
+        </PDView>
     );
 };
 
-export const PoolListFooterNonEmpty = connect(mapStateToProps)(PoolListFooterNonEmptyComponent);
 
 const styles = StyleSheet.create({
     container: {
         marginTop: 20,
-        marginHorizontal: 16,
+        marginHorizontal: PDSpacing.md,
         marginBottom: 40,
-        backgroundColor: 'transparent',
     },
     topRow: {
         flexDirection: 'row',
@@ -84,33 +69,16 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     changeRecipeIntro: {
-        color: 'rgba(0,0,0,.6)',
         fontSize: 18,
     },
     recipeLinkPressed: {
-        backgroundColor: 'transparent',
-        color: '#3910E8',
-        fontSize: 18,
+        textDecorationLine: 'none',
     },
     recipeLinkNormal: {
         backgroundColor: 'transparent',
         color: '#3910E8',
         fontSize: 18,
         textDecorationLine: 'underline',
-    },
-    recipeNameIntroText: {
-        color: 'rgba(0,0,0,.6)',
-        fontSize: 18,
-    },
-    recipeNameText: {
-        color: 'rgba(0,0,0,.6)',
-        fontWeight: '700',
-        fontSize: 18,
-    },
-    recipeDescriptionText: {
-        color: 'rgba(0,0,0,.6)',
-        fontSize: 18,
-        marginTop: 12,
     },
     image: {
         marginTop: 10,
