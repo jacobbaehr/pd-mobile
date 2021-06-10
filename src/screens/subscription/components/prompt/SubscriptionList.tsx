@@ -80,7 +80,7 @@ export const SubscriptionList = () => {
                 <PDButton
                     onPress={ handlePurchase }
                     bgColor={ !selectedSku ? 'greyLight' : 'blue' }
-                    textStyle={ { color: theme.white } }
+                    textStyle={ { color: theme.colors.white } }
                     touchableProps={ {
                         disabled: !selectedSku,
                     } }>
@@ -93,7 +93,7 @@ export const SubscriptionList = () => {
                     } }
                     bgColor="transparent"
                     textType="tooltip"
-                    textStyle={ { color: theme.grey, fontWeight: 'bold' } }>
+                    textStyle={ { color: theme.colors.grey, fontWeight: 'bold' } }>
                     Restore Purchases
                 </PDButton>
             </PDView>

@@ -15,9 +15,9 @@ export const SearchInput: React.FC<TextInputProps> = (props) => {
             </PDView>
             <PDTextInput
                 { ...props }
-                style={ [ styles.textInput, { color: theme.black } ] }
+                style={ [ styles.textInput, { color: theme.colors.black } ] }
                 placeholder="Search"
-                placeholderTextColor={ theme.greyDark }
+                placeholderTextColor={ theme.colors.greyDark }
                 keyboardType="default"
                 hitSlop={ { top: 5, bottom: 5, left: 20, right: 5 } }
             />

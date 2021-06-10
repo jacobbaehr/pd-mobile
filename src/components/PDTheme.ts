@@ -4,9 +4,7 @@ import { StatusBarStyle } from 'react-native';
 // --------------------------------------------------------------
 // ---------------------- Theme Types  --------------------------
 // --------------------------------------------------------------
-
-
-export interface PDMainColors {
+export interface PDColorPalette {
     // Blurred Colors
     blurredRed: string;
     blurredBlue: string;
@@ -24,17 +22,11 @@ export interface PDMainColors {
     teal: string;
     blue: string;
     purple: string;
-}
 
-export interface PDThemeColors {
     background: string
     card: string
     border: string
-}
 
-/// For now, this is all colors, named after day-mode:
-export interface PDTheme extends PDMainColors, PDThemeColors {
-    darkMode: boolean;
     white: string;
     greyLighter: string
     greyLight: string;
@@ -43,16 +35,23 @@ export interface PDTheme extends PDMainColors, PDThemeColors {
     greyDarker: string;
     black: string;
 
-    // Status bar
-    statusBarDefault: StatusBarStyle;
-    statusBarContrast: StatusBarStyle;
-
     transparent: string
 }
 
-/// Represents all the possible colors in the app. We'll probably change these names soon --
-/// for instance, in night mode, 'white' will actually be black & vice-versa... so that's a bad name.
-export type PDColor = keyof PDTheme;
+export type PDColor = keyof PDColorPalette;
+
+/// For now, this is all colors, named after day-mode:
+export interface PDTheme {
+    // Sometimes we just need custom logic:
+    isDarkMode: boolean;
+
+    colors: PDColorPalette;
+
+    // Status bar
+    statusBarDefault: StatusBarStyle;
+    statusBarContrast: StatusBarStyle;
+}
+
 export type PDTextType =
     | 'default'
     | 'tooltip'
@@ -75,7 +74,7 @@ export const PDSpacing = {
     xl: 40,
 };
 
-export const MainColors: PDMainColors = {
+const universalColors = {
     blurredRed: '#F9000007',
     blurredBlue: '#1E6BFF07',
     blurredOrange: '#FF750207',
@@ -90,49 +89,50 @@ export const MainColors: PDMainColors = {
     teal: '#00AEA0',
     blue: '#1E6BFF',
     purple: '#B21FF1',
+    transparent: 'transparent',
 };
 
 
-// TODO: Complete Colors Pallets
 export const lightTheme: PDTheme = {
-    darkMode: false,
-    white: '#FFFFFF',
-    greyLighter: '#F7F7F7',
-    greyLight: '#EDEDED',
-    grey: '#BBBBBB',
-    greyDark: '#737373',
-    greyDarker: '#262626',
-    black: '#000000',
-
-    background: '#FAFAFA',
-    card: '#FFFFFF',
-    border: '#EDEDED',
-
-    transparent: 'transparent',
+    isDarkMode: false,
     statusBarDefault: 'dark-content',
     statusBarContrast: 'light-content',
-    ...MainColors,
 
+    colors: {
+        white: '#FFFFFF',
+        greyLighter: '#F7F7F7',
+        greyLight: '#EDEDED',
+        grey: '#BBBBBB',
+        greyDark: '#737373',
+        greyDarker: '#262626',
+        black: '#000000',
+
+        background: '#FAFAFA',
+        card: '#FFFFFF',
+        border: '#EDEDED',
+
+        ...universalColors,
+    },
 };
 
 export const darkTheme: PDTheme = {
-    darkMode: true,
-    white: '#000000' ,
-    greyLighter: '#080808',
-    greyLight: '#1F1F1F',
-    grey: '#454545',
-    greyDark: '#949494',
-    greyDarker: '#E6E6E6',
-    black: '#FFFFFF',
+    isDarkMode: true,
+    statusBarDefault: 'light-content',
+    statusBarContrast: 'dark-content',
+    colors: {
+        white: '#000000' ,
+        greyLighter: '#080808',
+        greyLight: '#1F1F1F',
+        grey: '#454545',
+        greyDark: '#949494',
+        greyDarker: '#E6E6E6',
+        black: '#FFFFFF',
 
-    background: '#0D0D0D',
-    card: '#000000',
-    border: '#1F1F1F',
-
-    transparent: 'transparent',
-    statusBarDefault: 'dark-content',
-    statusBarContrast: 'light-content',
-    ...MainColors,
+        background: '#0D0D0D',
+        card: '#000000',
+        border: '#1F1F1F',
+        ...universalColors,
+    },
 };
 
 export const PDThemeContext = React.createContext<PDTheme>(darkTheme);

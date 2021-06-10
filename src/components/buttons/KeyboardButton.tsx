@@ -2,14 +2,14 @@ import React from 'react';
 import { InputAccessoryView, StyleSheet, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 
 import { PDText } from '../PDText';
-import { PDSpacing, PDTheme, useTheme } from '../PDTheme';
+import { PDSpacing, PDColor, useTheme } from '../PDTheme';
 import { PDView } from '../PDView';
 import { PlatformSpecific } from '../PlatformSpecific';
 
 interface KeyboardButtonProps extends TouchableOpacityProps {
     nativeID: string;
-    bgColor?: keyof PDTheme
-    textColor?: keyof PDTheme
+    bgColor?: PDColor;
+    textColor?: PDColor
 }
 
 
@@ -22,7 +22,7 @@ export const KeyboardButton : React.FC<KeyboardButtonProps> = (props) => {
     return (
         <PlatformSpecific include={ ['ios'] }>
             <InputAccessoryView nativeID={ nativeID } >
-                <PDView style={ [styles.keyboardAccessoryContainer, { backgroundColor: theme.white }] }>
+                <PDView style={ [styles.keyboardAccessoryContainer, { backgroundColor: theme.colors.white }] }>
                     <TouchableOpacity { ...touchableProps }  style={ [styles.buttonContainer, { backgroundColor }] } >
                         <PDText type="heading" color={ textColor } >
                             {children}

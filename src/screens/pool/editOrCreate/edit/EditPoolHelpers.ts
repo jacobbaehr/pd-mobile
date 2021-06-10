@@ -1,4 +1,4 @@
-import { PDTheme } from '~/components/PDTheme';
+import { PDColor } from '~/components/PDTheme';
 
 import { EntryPoolElements } from '../entryPoolValues/EntryPoolHelpers';
 import { PoolHeader } from '../shared';
@@ -17,7 +17,7 @@ export interface EditPoolListItem {
     label: string;
     image: string;
     onPress: () => void;
-    valueColor: keyof PDTheme;
+    valueColor: PDColor;
 }
 
 export interface EditPoolList {

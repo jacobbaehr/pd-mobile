@@ -79,12 +79,12 @@ export const PoolListScreen = () => {
     };
 
     return (
-        <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never' } }>
+        <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never' } } style={ { backgroundColor: theme.colors.white } }>
             <SearchHeader numPools={ pools.length } searchText={ keyboard }>
                 <SearchInput value={ keyboard } onChangeText={ handleKeyboardChanged } />
             </SearchHeader>
             <FlatList
-                style={ {  backgroundColor:theme.background  } }
+                style={ {  backgroundColor:theme.colors.background  } }
                 contentContainerStyle={ styles.content }
                 keyExtractor={ (item: Pool, index: number) => item.objectId + index }
                 keyboardShouldPersistTaps={ 'handled' }
@@ -117,6 +117,9 @@ export const PoolListScreen = () => {
 };
 
 const styles = StyleSheet.create({
+    container: {
+        backgroundColor: 'white',
+    },
     content: {
         marginHorizontal: PDSpacing.sm,
         marginTop: PDSpacing.sm,

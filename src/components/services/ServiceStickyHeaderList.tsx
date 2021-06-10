@@ -16,7 +16,7 @@ export const ServiceStickyHeaderList: React.FC<ReadingListStickyHeaderProps> = (
     const { completedLength, missingLength, color } = props;
     const theme = useTheme();
     const progress = missingLength === 0 ? 1 : completedLength / missingLength;
-    const progressColor = theme[color];
+    const progressColor = theme.colors[color];
 
     return (
         <PDView style={ styles.container } bgColor="white">
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         paddingTop: PDSpacing.xs,
         paddingHorizontal: PDSpacing.md,
         paddingBottom: PDSpacing.md,
-        borderBottomColor: lightTheme.greyLight,
+        borderBottomColor: lightTheme.colors.greyLight,
         borderBottomWidth: 2,
         marginBottom: PDSpacing.md,
     },

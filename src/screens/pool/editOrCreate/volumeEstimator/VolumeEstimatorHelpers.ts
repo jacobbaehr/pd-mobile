@@ -1,4 +1,4 @@
-import { PDTheme } from '~/components/PDTheme';
+import { PDColor, PDTheme } from '~/components/PDTheme';
 import { PoolUnit } from '~/models/Pool/PoolUnit';
 
 export interface RectangleMeasurements {
@@ -82,10 +82,10 @@ export class VolumeEstimatorHelpers {
 
     static getPrimaryColorByShapeId = (shapeId: ShapeId, theme: PDTheme): string => {
         const shapeByPrimaryColor: Record<ShapeId, string> = {
-            rectangle: theme.blue,
-            circle: theme.green,
-            oval: theme.orange,
-            other: theme.purple,
+            rectangle: theme.colors.blue,
+            circle: theme.colors.green,
+            oval: theme.colors.orange,
+            other: theme.colors.purple,
         };
 
         return shapeByPrimaryColor[shapeId];
@@ -93,17 +93,17 @@ export class VolumeEstimatorHelpers {
 
     static getPrimaryBlurredColorByShapeId = (shapeId: ShapeId, theme: PDTheme): string => {
         const shapeByPrimaryColor: Record<ShapeId, string> = {
-            rectangle: theme.blurredBlue,
-            circle: theme.blurredGreen,
-            oval: theme.blurredOrange,
-            other: theme.blurredPurple,
+            rectangle: theme.colors.blurredBlue,
+            circle: theme.colors.blurredGreen,
+            oval: theme.colors.blurredOrange,
+            other: theme.colors.blurredPurple,
         };
 
         return shapeByPrimaryColor[shapeId];
     };
 
-    static getPrimaryThemKeyByShapeId = (shapeId: ShapeId): keyof PDTheme => {
-        const shapeByPrimaryColor: Record<ShapeId,keyof PDTheme> = {
+    static getPrimaryThemKeyByShapeId = (shapeId: ShapeId): PDColor => {
+        const shapeByPrimaryColor: Record<ShapeId, PDColor> = {
             rectangle: 'blue',
             circle: 'green',
             oval: 'orange',

@@ -4,7 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
 import { App } from '~/App';
-import { darkTheme, PDThemeContext } from '~/components/PDTheme';
+import { lightTheme, PDThemeContext } from '~/components/PDTheme';
 import { store } from '~/redux/AppState';
 
 enableScreens();
@@ -17,7 +17,7 @@ const PoolDash: React.FunctionComponent<{}> = () => {
     return (
         <Provider store={ store }>
             <SafeAreaProvider>
-                <PDThemeContext.Provider value={ darkTheme }>
+                <PDThemeContext.Provider value={ lightTheme }>
                     <App />
                 </PDThemeContext.Provider>
             </SafeAreaProvider>

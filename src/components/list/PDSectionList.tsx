@@ -2,7 +2,7 @@ import React from 'react';
 import { SectionList as RnSectionList, SectionListData, StyleSheet } from 'react-native';
 
 import { PDText } from '../PDText';
-import { PDSpacing, PDTheme } from '../PDTheme';
+import { PDColor, PDSpacing } from '../PDTheme';
 import { PDSectionItemList } from './PDSectionItemList';
 
 // TODO: Use generics to identify the id
@@ -12,7 +12,7 @@ export interface PDSectionListItemProps {
     label: string;
     image: string;
     onPress: () => void;
-    valueColor: keyof PDTheme;
+    valueColor: PDColor;
 }
 
 export interface PDSectionListProps {

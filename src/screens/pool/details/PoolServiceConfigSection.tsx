@@ -15,7 +15,7 @@ import { PDNavParams } from '~/navigator/shared';
 import { AppState, useTypedSelector } from '~/redux/AppState';
 import { getCustomTargetsBySelectedPool } from '~/redux/selectedPool/Selectors';
 import {
-    VolumeEstimatorHelpers
+    VolumeEstimatorHelpers,
 } from '~/screens/pool/editOrCreate/volumeEstimator/VolumeEstimatorHelpers';
 import { RecipeService } from '~/services/RecipeService';
 import { Util } from '~/services/Util';
@@ -84,7 +84,7 @@ const PoolServiceConfigSection = () => {
     return (
         <>
             <PDView bgColor="white" style={ styles.poolNameContainer }>
-                <PDText type="heading" numberOfLines={ 4 }>{selectedPool.name}</PDText>
+                <PDText type="heading" numberOfLines={ 0 }>{selectedPool.name}</PDText>
             </PDView>
             <PDView bgColor="white" style={ styles.container }>
                 <PDView>

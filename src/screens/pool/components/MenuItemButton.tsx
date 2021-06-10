@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    Pressable, PressableStateCallbackType, StyleProp, StyleSheet, ViewStyle
+    Pressable, PressableStateCallbackType, StyleProp, StyleSheet, ViewStyle,
 } from 'react-native';
 import { SVG } from '~/assets/images';
 import { PDText } from '~/components/PDText';
@@ -22,7 +22,7 @@ export const MenuItemButton: React.FC<MenuItemButtonProps> = (props) => {
     const lastItem =  props.index === props.sectionLength - 1 && { borderBottomLeftRadius: 14, borderBottomRightRadius: 14 };
 
     const getWrapperStyles = ({ pressed }: PressableStateCallbackType): StyleProp<ViewStyle> => [
-        { backgroundColor: pressed ? theme.greyLight : 'white' },
+        { backgroundColor: pressed ? theme.colors.greyLight : 'white' },
         ...Util.excludeFalsy([firstItem, lastItem]),
     ];
 

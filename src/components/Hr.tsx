@@ -6,11 +6,10 @@ import { PDView } from './PDView';
 
 export const HR = () =>{
     const theme = useTheme();
+    const style = [ styles.hr, { borderColor: theme.colors.border }];
 
-    return (
-        <PDView style={ [ styles.hr, { borderColor: theme.border }] }/>
-    );
-    };
+    return <PDView style={ style } />;
+};
 
 
 const styles = StyleSheet.create({

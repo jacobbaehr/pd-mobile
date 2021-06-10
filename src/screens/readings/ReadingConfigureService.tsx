@@ -30,7 +30,7 @@ export const ReadingConfigureService: React.FC<ReadingConfigureServiceProps> = (
             <PDText type="subHeading">{pool.name}</PDText>
             <PDView style={ styles.row }>
                 <PDView style={ styles.containerIcon }>
-                    <SVG.IconInformation fill={ theme.grey } />
+                    <SVG.IconInformation fill={ theme.colors.grey } />
                 </PDView>
                 <PDText type="bodyRegular" color="grey">
                     {volumeDisplay}, {detailsText}
@@ -42,7 +42,7 @@ export const ReadingConfigureService: React.FC<ReadingConfigureServiceProps> = (
                 </PDText>
                 <PDProgressBar
                     progress={ progress }
-                    foregroundColor={ theme.blue }
+                    foregroundColor={ theme.colors.blue }
                     style={ { height: 4, backgroundColor: 'rgba(0,0,0,0.2)' } }
                 />
             </PDView>
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         paddingTop: PDSpacing.lg,
         paddingHorizontal: PDSpacing.md,
         paddingBottom: PDSpacing.md,
-        borderBottomColor: lightTheme.greyLight,
+        borderBottomColor: lightTheme.colors.greyLight,
         borderBottomWidth: 2,
         marginBottom: PDSpacing.md,
     },

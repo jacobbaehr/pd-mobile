@@ -26,7 +26,7 @@ const ReadingRow: React.FC<{ re: ReadingEntry }> = (props) => {
     const theme = useTheme();
     return (
         <PDView style={ styles.rowItemContainer }>
-            <SVG.IconCircleCheckmark width={ 16 } height={ 16 } fill={ theme.green } />
+            <SVG.IconCircleCheckmark width={ 16 } height={ 16 } fill={ theme.colors.green } />
             <PDText type="bodyRegular" style={ styles.lineItem }>
                 {re.readingName}: {re.value} {re.units}
             </PDText>
@@ -79,7 +79,7 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
         ));
 
         expandedContent = <>
-            <PDView style={ { borderWidth: 1, borderColor: theme.border, marginTop: PDSpacing.xs } } />
+            <PDView style={ { borderWidth: 1, borderColor: theme.colors.border, marginTop: PDSpacing.xs } } />
             <PDView style={ styles.sectionContainer } >
                 <Conditional condition={ !!formulaName }>
                     <PDText type="buttonSmall" color="grey" >
@@ -115,7 +115,7 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
                 <PDButtonSolid
                     bgColor="red"
                     onPress={ () => props.handleDeletePressed(props.logEntry.objectId) }
-                    icon={ <SVG.IconDeleteOutline fill={ theme.white } /> }
+                    icon={ <SVG.IconDeleteOutline fill={ theme.colors.white } /> }
                     title="Delete" />
             </View>
         </>;

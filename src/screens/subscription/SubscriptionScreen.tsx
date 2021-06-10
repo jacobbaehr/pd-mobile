@@ -26,7 +26,7 @@ export const SubscriptionScreen: React.FC = () => {
             <ScreenHeader color="blue" textType="heading">
                 Pooldash+
             </ScreenHeader>
-            <ScrollView style={ [styles.content, { backgroundColor: theme.greyLighter } ] }>
+            <ScrollView style={ [styles.content, { backgroundColor: theme.colors.greyLighter } ] }>
                 { content }
             </ScrollView>
         </PDSafeAreaView>

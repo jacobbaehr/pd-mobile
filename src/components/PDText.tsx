@@ -12,14 +12,20 @@ interface PDTextProps extends TextProps {
 const BaseText: React.FC<PDTextProps> = (props) => {
     // The "style" below is possible because PDTextProps extends TextProps.
     // Similarly, "...restProps" is a catch-all so that any other Text props will be passed along...
-    const { children, style, textAlign = 'auto', ...restProps } = props;
+    const {
+        children,
+        style,
+        textAlign = 'auto',
+        color,
+        ...restProps
+    } = props;
     const theme = useTheme();
 
     /// Default styles are derived from the "style" of text (from our design system, expressed via the prop)
     const defaultStyles = props.type && styles[props.type];
     /// The default color is applied based on the active PDTheme object
-    const color = props.color !== undefined ? theme[props.color] : theme.black;
-    const colorStylesFromTheme = { color };
+    const textColor = theme.colors[color ?? 'black'];
+    const colorStylesFromTheme = { color: textColor };
     /// Any custom TextStyle properties are also applied at the end, via the "style" prop:
     const textStyles = StyleSheet.flatten([defaultStyles, colorStylesFromTheme, { textAlign }, style]);
 

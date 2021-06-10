@@ -73,7 +73,7 @@ export const AddScoopScreen = () => {
                 <PDView style={ styles.row }>
                     <BorderInputWithLabel
                         label="Amount"
-                        textInputStyleProps={ { minWidth: 200 , color: theme.pink } }
+                        textInputStyleProps={ { minWidth: 200 , color: theme.colors.pink } }
                         containerStyles={ { marginRight: 'auto' } }
                         inputAccessoryViewID={ keyboardId }
                         keyboardType="numeric"

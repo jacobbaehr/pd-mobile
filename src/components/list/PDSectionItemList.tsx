@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    Pressable, PressableStateCallbackType, StyleProp, StyleSheet, ViewStyle
+    Pressable, PressableStateCallbackType, StyleProp, StyleSheet, ViewStyle,
 } from 'react-native';
 import { SVG } from '~/assets/images';
 import { PDText } from '~/components/PDText';
@@ -25,7 +25,7 @@ export const PDSectionItemList: React.FC<PDSectionItemListProps> = (props) => {
 
     const getWrapperStyles = ({ pressed }: PressableStateCallbackType): StyleProp<ViewStyle> => {
         const wrapStyles: ViewStyle[] = [{
-          backgroundColor: pressed ? theme.greyLight : theme.white,
+          backgroundColor: pressed ? theme.colors.greyLight : theme.colors.white,
         }];
         if (isFirstItem) {
             wrapStyles.push(styles.roundTopCorners);

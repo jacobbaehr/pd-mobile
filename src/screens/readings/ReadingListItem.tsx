@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#F8F8F8',
         borderRadius: 6,
-        color: lightTheme.blue,
+        color: lightTheme.colors.blue,
         fontFamily: 'Poppins-Regular',
         fontWeight: '600',
         fontSize: 22,

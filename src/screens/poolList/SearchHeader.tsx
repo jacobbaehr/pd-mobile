@@ -66,11 +66,11 @@ export const SearchHeader: React.FC<SearchHeaderProps> = (props) => {
     );
 
     return (
-        <PDView bgColor="white" style={ [styles.containerBottom, {  borderBottomColor: theme.border }] }>
+        <PDView bgColor="white" style={ [styles.containerBottom, {  borderBottomColor: theme.colors.border }] }>
             <PDView  style={ styles.container  }>
                 <PDView style={ styles.sideContainer }>
                     <TouchableScale  onPress={ handleSettingButtonPressed } hitSlop={ { top: 7, bottom: 7, left: 7, right: 7 } }>
-                        <SVG.IconSettings height={ 32 } width={ 32 } fill={ theme.blue } />
+                        <SVG.IconSettings height={ 32 } width={ 32 } fill={ theme.colors.blue } />
                     </TouchableScale>
                 </PDView>
                 <PDView style={ styles.centerContainer }>
@@ -80,7 +80,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = (props) => {
                 </PDView>
                 <PDView style={ styles.sideContainer }>
                     <TouchableScale onPress={ handleAddButtonPressed }>
-                        <SVG.IconCircleAdd height={ 32 } width={ 32 } fill={ theme.blue } />
+                        <SVG.IconCircleAdd height={ 32 } width={ 32 } fill={ theme.colors.blue } />
                     </TouchableScale>
                 </PDView>
             </PDView>

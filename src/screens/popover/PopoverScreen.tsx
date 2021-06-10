@@ -6,7 +6,7 @@ import { SVG } from '~/assets/images';
 import { ScreenHeader } from '~/components/headers/ScreenHeader';
 import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { PDText } from '~/components/PDText';
-import { PDSpacing, PDTheme } from '~/components/PDTheme';
+import { PDColor, PDSpacing } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { useContrastStatusBar } from '~/hooks/useStatusBar';
 import { PDRootNavigatorParams } from '~/navigator/PDRootNavigator';
@@ -19,7 +19,7 @@ type Item = { name: string; value: string };
 export interface PopoverRouteProps {
     title: string;
     description?: string;
-    color: keyof PDTheme;
+    color: PDColor;
     items?: Item[];
     prevSelection?: string;
     popoverKey?: string;
@@ -42,7 +42,9 @@ export const PopoverScreen = () => {
     const renderItem = (item: Item) => {
         return (
             <TouchableScale key={ item.value } onPress={ () => handleItemPressed(item) }>
-                <PDView bgColor={ prevSelection === item.value ? color : 'greyLight' } style={ styles.itemContainer }>
+                <PDView
+                    bgColor={ prevSelection === item.value ? color : 'greyLight' }
+                    style={ styles.itemContainer }>
                     <PDText type="bodySemiBold" color={ prevSelection === item.value ? 'white' : 'black' }>
                         {item.name}
                     </PDText>

@@ -19,8 +19,8 @@ export const ChipButton: React.FC<ChipButtonProps> = (props) => {
         props.onPress();
     };
 
-    const backgroundColor = theme.blurredBlue;
-    const foregroundColor = theme.blue;
+    const backgroundColor = theme.colors.blurredBlue;
+    const foregroundColor = theme.colors.blue;
 
     return (
         <TouchableScale onPress={ handlePressed } activeScale={ 0.95 } style={ { marginRight: 'auto' } }>

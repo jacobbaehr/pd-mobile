@@ -39,7 +39,7 @@ export const ScoopsListScreen = () => {
             <FlatList
                 data={ ds.scoops }
                 keyExtractor={ (item) => item.guid }
-                style={ [{ backgroundColor: theme.blurredPink }] }
+                style={ [{ backgroundColor: theme.colors.blurredPink }] }
                 contentContainerStyle={ { paddingTop: PDSpacing.md } }
                 renderItem={ ({ item }) => (
                     <ScoopListItem key={ item.guid } scoop={ item } handlePressedScoop={ handleScoopItemPressed }/>

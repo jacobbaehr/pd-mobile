@@ -191,7 +191,7 @@ export const ReadingListScreen: React.FC = () => {
             <ScreenHeader textType="heading" color="blue">Readings</ScreenHeader>
             <PDView style={ styles.container } bgColor="white">
                 <KeyboardAwareSectionList
-                    style={ StyleSheet.flatten([styles.sectionList, { backgroundColor: theme.blurredBlue }]) }
+                    style={ StyleSheet.flatten([styles.sectionList, { backgroundColor: theme.colors.blurredBlue }]) }
                     scrollEnabled={ !isSliding }
                     keyboardDismissMode={ 'interactive' }
                     keyboardShouldPersistTaps={ 'handled' }
@@ -240,7 +240,7 @@ export const ReadingListScreen: React.FC = () => {
                 />
                 <PDView style={ styles.bottomButtonContainer } bgColor="white">
                     <BoringButton
-                        containerStyles={ StyleSheet.flatten([styles.button, { backgroundColor: theme.blue }]) }
+                        containerStyles={ StyleSheet.flatten([styles.button, { backgroundColor: theme.colors.blue }]) }
                         onPress={ handleCalculatePressed }
                         title="Calculate"
                     />
@@ -252,7 +252,7 @@ export const ReadingListScreen: React.FC = () => {
                         <BoringButton
                             containerStyles={ StyleSheet.flatten([
                                 styles.keyboardAccessoryButton,
-                                { backgroundColor: theme.blue },
+                                { backgroundColor: theme.colors.blue },
                             ]) }
                             textStyles={ styles.keyboardAccessoryButtonText }
                             onPress={ handleDismissedKeyboard }
