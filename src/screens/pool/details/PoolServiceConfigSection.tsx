@@ -10,17 +10,14 @@ import { useLoadRecipeHook, useRealmPoolHistoryHook } from '~/hooks/RealmPoolHoo
 import { Pool } from '~/models/Pool';
 import { PDNavParams } from '~/navigator/shared';
 import { AppState, useTypedSelector } from '~/redux/AppState';
-import {
-    VolumeEstimatorHelpers,
-} from '~/screens/pool/editOrCreate/volumeEstimator/VolumeEstimatorHelpers';
 import { RecipeService } from '~/services/RecipeService';
-import { Util } from '~/services/Util';
 
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ChipButton } from '~/screens/poolList/ChipButton';
 import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
 import { Haptic } from '~/services/HapticService';
+import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
 /**
  * Displays info about the recipe & customizations in the SectionList on the pool details screen.
@@ -41,10 +38,12 @@ const PoolServiceConfigSection = () => {
         navigate('ReadingList');
     };
 
-    const lastTimeUpdate = () =>
-        history.length > 0 ? `Last Serviced: ${formatDistanceStrict(history[0].ts, Date.now())} ago` : '';
+    const getLastTimeUpdate = () =>
+        history.length > 0
+            ? `Last Serviced: ${formatDistanceStrict(history[0].ts, Date.now())} ago`
+            : '';
 
-    const abbreviateGallons = `${Util.abbreviate(selectedPool.gallons)} ${VolumeEstimatorHelpers.getResultLabelForUnit(deviceSettings.units)}`;
+    const abbreviateVolume = VolumeUnitsUtil.getDisplayVolume(selectedPool.gallons, deviceSettings);
 
     return (
         <>
@@ -56,7 +55,7 @@ const PoolServiceConfigSection = () => {
                     <SVG.IconWater height={ 16 } width={ 16 } />
                 </PDView>
                 <PDText type="bodyBold" color="greyDark">
-                    {abbreviateGallons}
+                    {abbreviateVolume}
                 </PDText>
                 </PDView>
                 <PDView>
@@ -85,8 +84,8 @@ const PoolServiceConfigSection = () => {
                 <SVG.IconPlayWhite height={ 21 } width={ 15 } style={ styles.buttonIcon } />
                 <PDText type="subHeading" style={ { color: 'white' } }>Enter Readings</PDText>
             </ButtonWithChildren>
-            <PDText type="default" style={ styles.lastUpdateText }>
-                {lastTimeUpdate()}
+            <PDText type="content" style={ styles.lastUpdateText } color="greyDark">
+                { getLastTimeUpdate() }
             </PDText>
         </PDView>
         </>
@@ -132,12 +131,7 @@ const styles = StyleSheet.create({
         marginRight: 4,
     },
     lastUpdateText: {
-        fontStyle: 'normal',
-        fontWeight: '500',
-        fontSize: 16,
-        lineHeight: 24,
-        color: '#8C8C8C',
-        marginBottom: 18,
+        marginBottom: PDSpacing.md,
     },
 });
 

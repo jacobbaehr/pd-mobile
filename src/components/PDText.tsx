@@ -107,4 +107,10 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Bold',
         fontSize: 14,
     },
+    content: {
+        fontFamily: 'Poppins-Medium',
+        fontStyle: 'normal',
+        lineHeight: 24,
+        fontSize: 16,
+    },
 });

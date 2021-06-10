@@ -63,7 +63,8 @@ export type PDTextType =
     | 'bodyGreyBold'
     | 'subHeading'
     | 'heading'
-    | 'buttonSmall';
+    | 'buttonSmall'
+    | 'content';
 
 /// Defines some constants for margins / padding / etc...
 export const PDSpacing = {

@@ -34,7 +34,7 @@ export const ChipButton: React.FC<ChipButtonProps> = (props) => {
     return (
         <TouchableScale onPress={ handlePressed } activeScale={ 0.95 } style={ { marginRight: 'auto' } } hitSlop={ { top: 5, bottom: 5, left: 5, right: 5 } }>
             <PDView style={ [styles.container, { backgroundColor, borderColor: `${foregroundColor}33` }] }>
-                <PDView style={ { marginHorizontal: 4 } }>
+                <PDView style={ { marginLeft: 4, marginRight: 8 } }>
                     { icon }
                 </PDView>
                     <PDText type="buttonSmall" color={ 'blue' } numberOfLines={ 2 }>
