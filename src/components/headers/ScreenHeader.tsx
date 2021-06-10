@@ -50,7 +50,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
         hitSlop: { top: hitSlop, left: hitSlop, bottom: hitSlop, right: hitSlop },
     };
 
-    const svgColor = theme[color];
+    const svgColor = theme.colors[color];
     const containerStyles = Util.excludeFalsy([styles.container, hasBottomLine && styles.containerBottom]);
     return (
         <PDView style={ containerStyles } bgColor="white">

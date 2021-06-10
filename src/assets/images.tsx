@@ -25,6 +25,10 @@ import IconForward from './images/icons/icon_forward.svg';
 import IconImportData from './images/icons/icon_import_data.svg';
 import IconInformation from './images/icons/icon_information.svg';
 import IconMail from './images/icons/icon_mail.svg';
+import IconWater from './images/icons/icon_water.svg';
+import IconClipboard from './images/icons/icon_clipboard.svg';
+import IconLevels from './images/icons/icon_levels.svg';
+import IconPlayWhite from './images/icons/icon_play_white.svg';
 // Pool
 import IconCustomTargets from './images/pool/icon_custom_targets.svg';
 import IconPoolEmail from './images/pool/icon_email.svg';
@@ -139,6 +143,10 @@ export const SVG: Record<string, (props: OverrideSvgProps) => JSX.Element> = {
     IconDeleteOutline: (props) => <IconDeleteOutline { ...props } />,
     IconMail: (props) => <IconMail { ...props } />,
     IconCircleCheckmark: (props) => <IconCircleCheckmark { ...props } />,
+    IconWater: (props) => <IconWater { ...props } />,
+    IconClipboard: (props) => <IconClipboard { ...props } />,
+    IconLevels: (props) => <IconLevels { ...props } />,
+    IconPlayWhite: (props) => <IconPlayWhite { ...props } />,
 
     // Pool Icons
     IconCustomTargets: (props) => <IconCustomTargets { ...props } />,

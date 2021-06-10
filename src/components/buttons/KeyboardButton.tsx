@@ -12,12 +12,11 @@ interface KeyboardButtonProps extends TouchableOpacityProps {
     textColor?: PDColor
 }
 
-
 export const KeyboardButton : React.FC<KeyboardButtonProps> = (props) => {
     const { nativeID, bgColor = 'greyLight', textColor = 'white', children, ...touchableProps } = props;
     const theme = useTheme();
 
-    const backgroundColor = theme[bgColor];
+    const backgroundColor = theme.colors[bgColor];
 
     return (
         <PlatformSpecific include={ ['ios'] }>
@@ -33,7 +32,6 @@ export const KeyboardButton : React.FC<KeyboardButtonProps> = (props) => {
         </PlatformSpecific>
     );
 };
-
 
 const styles = StyleSheet.create({
     keyboardAccessoryContainer: {

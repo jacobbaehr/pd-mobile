@@ -31,7 +31,7 @@ export const Button:React.FC<ButtonProps> = (props) => {
         props.onPress();
     };
 
-    const bgColor = props.bgColor !== undefined ? theme[props.bgColor] : 'transparent';
+    const bgColor = theme.colors[props.bgColor ?? 'transparent'];
     const slop = props.hitSlop || 0;
 
     return (

@@ -72,7 +72,7 @@ export const PoolListScreen = () => {
                     <PDText type="bodyMedium" color="greyDark">
                         { getDisplayForWaterType(item.waterType) }, {volume}
                     </PDText>
-                    <ChipButton onPress={ () => handleChipPressed(item) } />
+                    <ChipButton onPress={ () => handleChipPressed(item) } icon="play" title="Enter Readings" />
                 </PDView>
             </TouchableScale>
         );

@@ -28,7 +28,7 @@ export const PDButton: React.FC<PDButtonProps> = (props) => {
     } = props;
     const theme = useTheme();
 
-    const backgroundColor = bgColor !== undefined ? theme[bgColor] : 'transparent';
+    const backgroundColor = bgColor !== undefined ? theme.colors[bgColor] : 'transparent';
     const colorStylesFromTheme = { backgroundColor };
 
     const viewStyles = StyleSheet.flatten([colorStylesFromTheme, style]);

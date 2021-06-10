@@ -7,8 +7,12 @@ import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { Haptic } from '~/services/HapticService';
 
+type ChipIcon = 'play' | 'levels';
+
 interface ChipButtonProps {
     onPress: () => void;
+    title: string;
+    icon: ChipIcon;
 }
 
 export const ChipButton: React.FC<ChipButtonProps> = (props) => {
@@ -22,14 +26,19 @@ export const ChipButton: React.FC<ChipButtonProps> = (props) => {
     const backgroundColor = theme.colors.blurredBlue;
     const foregroundColor = theme.colors.blue;
 
+    let icon = <SVG.IconPlay width={ 15 } height={ 15 } fill={ foregroundColor } />;
+    if (props.icon === 'levels') {
+        icon = <SVG.IconLevels height={ 21 } width={ 16 } />;
+    }
+
     return (
-        <TouchableScale onPress={ handlePressed } activeScale={ 0.95 } style={ { marginRight: 'auto' } }>
+        <TouchableScale onPress={ handlePressed } activeScale={ 0.95 } style={ { marginRight: 'auto' } } hitSlop={ { top: 5, bottom: 5, left: 5, right: 5 } }>
             <PDView style={ [styles.container, { backgroundColor, borderColor: `${foregroundColor}33` }] }>
                 <PDView style={ { marginHorizontal: 4 } }>
-                    <SVG.IconPlay width={ 15 } height={ 15 } fill={ foregroundColor } />
+                    { icon }
                 </PDView>
                     <PDText type="buttonSmall" color={ 'blue' } numberOfLines={ 2 }>
-                        Enter Readings
+                        { props.title }
                     </PDText>
             </PDView>
         </TouchableScale>
@@ -39,12 +48,14 @@ export const ChipButton: React.FC<ChipButtonProps> = (props) => {
 const styles = StyleSheet.create({
     container: {
         borderWidth: 2,
-        padding: PDSpacing.xs,
+        paddingLeft: PDSpacing.xs,
         paddingRight: PDSpacing.sm,
+        paddingTop: 4,
+        paddingBottom: 4,
         borderRadius: 48,
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: PDSpacing.xs,
+        marginTop: 4,
         marginRight: 'auto',
     },
 });
