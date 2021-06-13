@@ -51,7 +51,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = (props) => {
     };
 
     const svgColor = theme.colors[color];
-    const containerStyles = Util.excludeFalsy([styles.container, hasBottomLine && styles.containerBottom]);
+    const containerStyles = Util.excludeFalsy([styles.container, hasBottomLine && [styles.containerBottom, { borderBottomColor: theme.colors.border }]]);
     return (
         <PDView style={ containerStyles } bgColor="white">
             <PDView style={ styles.sideContainer }>

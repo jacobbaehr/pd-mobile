@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { PDProgressBar } from '~/components/PDProgressBar';
 import { PDText } from '~/components/PDText';
-import { lightTheme, PDColor, PDSpacing, useTheme } from '~/components/PDTheme';
+import { PDColor, PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 
 interface ReadingListStickyHeaderProps {
@@ -19,8 +19,8 @@ export const ServiceStickyHeaderList: React.FC<ReadingListStickyHeaderProps> = (
     const progressColor = theme.colors[color];
 
     return (
-        <PDView style={ styles.container } bgColor="white">
-            <PDText type="bodyBold" color="grey" style={ styles.stepsText }>
+        <PDView style={ [styles.container , { borderBottomColor: theme.colors.border }] } bgColor="white">
+            <PDText type="bodyBold" color="greyDark" style={ styles.stepsText }>
                 {completedLength} of {missingLength} completed
             </PDText>
             <PDProgressBar
@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
         paddingTop: PDSpacing.xs,
         paddingHorizontal: PDSpacing.md,
         paddingBottom: PDSpacing.md,
-        borderBottomColor: lightTheme.colors.greyLight,
         borderBottomWidth: 2,
         marginBottom: PDSpacing.md,
     },

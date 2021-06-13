@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    Image, NativeSyntheticEvent, StyleSheet, TextInputEndEditingEventData, TextStyle, View,
+    Image, NativeSyntheticEvent, StyleSheet, TextInputEndEditingEventData, TextStyle
 } from 'react-native';
 // import Slider from '@react-native-community/slider';
 // @ts-ignore
@@ -9,10 +9,10 @@ import Slider from 'react-native-slider';
 import TouchableScale from 'react-native-touchable-scale';
 import { images } from '~/assets/images';
 import { PDTextInput } from '~/components/inputs/PDTextInput';
-import { lightTheme } from '~/components/PDTheme';
-
-import { PDText } from '../../components/PDText';
-import { Reading } from '../../models/recipe/Reading';
+import { PDText } from '~/components/PDText';
+import { useTheme } from '~/components/PDTheme';
+import { PDView } from '~/components/PDView';
+import { Reading } from '~/models/recipe/Reading';
 
 export interface ReadingState {
     reading: Reading;
@@ -36,6 +36,7 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
     const [textIsEditing, setTextIsEditing] = React.useState(false);
 
     const isEditing = isSliding || textIsEditing;
+    const theme = useTheme();
 
     const rs = props.readingState;
     const r = rs.reading;
@@ -56,10 +57,8 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
         readingUnitsText = ` (${r.units})`;
     }
 
-    const textInputStyles: TextStyle[] = [styles.textInput];
-    if (!rs.isOn && !isEditing) {
-        textInputStyles.push(styles.textInputDisabled);
-    }
+    const textInputStyles: TextStyle[] = [styles.textInput, { borderColor: theme.colors.border , color: !rs.isOn && !isEditing ? theme.colors.greyDark : theme.colors.blue }];
+
 
     const onTextBeginEditing = () => {
         setTextIsEditing(true);
@@ -85,15 +84,17 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
         props.onSlidingComplete(r.var);
     };
 
+
+
     return (
-        <View style={ styles.container }>
+        <PDView style={ styles.container }>
             <TouchableScale onPress={ () => props.handleIconPressed(r.var) } activeScale={ 0.98 }>
-                <View style={ styles.content }>
-                    <View style={ styles.topRow }>
+                <PDView bgColor="white" borderColor="border" style={ styles.content }>
+                    <PDView style={ styles.topRow }>
                         <Image style={ styles.circleImage } source={ leftImageSource } width={ 28 } height={ 28 } />
-                        <PDText type="bodySemiBold" style={ styles.readingName }>
+                        <PDText type="bodySemiBold" color="black" style={ styles.readingName }>
                             {r.name}
-                            <PDText type="bodySemiBold" style={ styles.readingUnits }>{readingUnitsText}</PDText>
+                            <PDText type="bodySemiBold"  color="greyDark" style={ styles.readingUnits }>{readingUnitsText}</PDText>
                         </PDText>
                         <PDTextInput
                             style={ textInputStyles }
@@ -104,15 +105,14 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
                             inputAccessoryViewID={ props.inputAccessoryId }
                             value={ rs.value }
                         />
-                    </View>
+                    </PDView>
                     <Slider
                         style={ styles.slider }
                         minimumValue={ r.sliderMin }
                         maximumValue={ r.sliderMax }
-                        minimumTrackTintColor="#E3E3E3"
-                        maximumTrackTintColor="#E3E3E3"
-                        thumbImage={ images.sliderThumbBlue }
-                        thumbStyle={ { width: 23, height: 23, backgroundColor: 'transparent' } }
+                        minimumTrackTintColor={ theme.colors.greyDark }
+                        maximumTrackTintColor={ theme.colors.greyDark }
+                        thumbImage={ theme.isDarkMode ? images.sliderThumbBlueDark : images.sliderThumbBlue }
                         onSlidingStart={ onSliderStart }
                         onSlidingComplete={ onSliderEnd }
                         onValueChange={ (value: number) => props.onSliderUpdatedValue(r.var, value) }
@@ -122,24 +122,21 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
                         allowFontScaling
                         maxFontSizeMultiplier={ 1.4 }
                     />
-                </View>
+                </PDView>
             </TouchableScale>
-        </View>
+        </PDView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'transparent',
         alignContent: 'stretch',
         borderRadius: 10,
     },
     content: {
-        backgroundColor: 'white',
         flex: 1,
         borderRadius: 24,
-        borderColor: '#F0F0F0',
         borderWidth: 2,
         elevation: 2,
         marginBottom: 12,
@@ -162,13 +159,11 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     readingName: {
-        color: 'black',
         fontSize: 18,
         flex: 1,
         marginTop: 3,
     },
     readingUnits: {
-        color: 'gray',
         fontSize: 18,
         flex: 1,
         marginTop: 3,
@@ -176,15 +171,11 @@ const styles = StyleSheet.create({
     textInput: {
         width: 80,
         borderWidth: 2,
-        borderColor: '#F8F8F8',
         borderRadius: 6,
-        color: lightTheme.colors.blue,
         fontFamily: 'Poppins-Regular',
         fontWeight: '600',
         fontSize: 22,
         textAlign: 'center',
     },
-    textInputDisabled: {
-        color: '#BEBEBE',
-    },
+
 });

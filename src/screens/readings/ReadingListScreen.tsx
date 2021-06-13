@@ -1,14 +1,12 @@
 import * as React from 'react';
-import {
-    InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet,
-} from 'react-native';
+import { LayoutAnimation, SectionListData, StyleSheet } from 'react-native';
 import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
 import { BoringButton } from '~/components/buttons/BoringButton';
+import { KeyboardButton } from '~/components/buttons/KeyboardButton';
 import { ScreenHeader } from '~/components/headers/ScreenHeader';
 import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
-import { PlatformSpecific } from '~/components/PlatformSpecific';
 import { ServiceNonStickyHeader } from '~/components/services/ServiceNonStickyHeader';
 import { ServiceStickyHeaderList } from '~/components/services/ServiceStickyHeaderList';
 import { useLoadRecipeHook } from '~/hooks/RealmPoolHook';
@@ -169,10 +167,6 @@ export const ReadingListScreen: React.FC = () => {
     const handleChangeRecipePressed = () => {
         navigate('RecipeList', { prevScreen: 'ReadingList' });
     };
-    const handleDismissedKeyboard = () => {
-        Keyboard.dismiss();
-        Haptic.light();
-    };
 
     // The first section is just a dummy header thing to enable some fancy scrolling behavior
     let sections: SectionListData<ReadingState>[] = [
@@ -238,7 +232,7 @@ export const ReadingListScreen: React.FC = () => {
                         }
                     } }
                 />
-                <PDView style={ styles.bottomButtonContainer } bgColor="white">
+                <PDView style={ [styles.bottomButtonContainer, { backgroundColor: theme.colors.border } ] } bgColor="white">
                     <BoringButton
                         containerStyles={ StyleSheet.flatten([styles.button, { backgroundColor: theme.colors.blue }]) }
                         onPress={ handleCalculatePressed }
@@ -246,21 +240,9 @@ export const ReadingListScreen: React.FC = () => {
                     />
                 </PDView>
             </PDView>
-            <PlatformSpecific include={ ['ios'] }>
-                <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
-                    <PDView style={ styles.keyboardAccessoryContainer }>
-                        <BoringButton
-                            containerStyles={ StyleSheet.flatten([
-                                styles.keyboardAccessoryButton,
-                                { backgroundColor: theme.colors.blue },
-                            ]) }
-                            textStyles={ styles.keyboardAccessoryButtonText }
-                            onPress={ handleDismissedKeyboard }
-                            title="Done Typing"
-                        />
-                    </PDView>
-                </InputAccessoryView>
-            </PlatformSpecific>
+            <KeyboardButton nativeID={ keyboardAccessoryViewId } bgColor="purple" textColor="black" >
+                Done Typing
+            </KeyboardButton>
         </PDSafeAreaView>
     );
 };
@@ -273,23 +255,11 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     bottomButtonContainer: {
-        borderTopColor: '#F0F0F0',
         borderTopWidth: 2,
     },
     button: {
         alignSelf: 'stretch',
         margin: 12,
         marginBottom: 24,
-    },
-    keyboardAccessoryContainer: {
-        backgroundColor: '#F8F8F8',
-        padding: 12,
-    },
-    keyboardAccessoryButton: {
-        marginHorizontal: 24,
-    },
-    keyboardAccessoryButtonText: {
-        color: 'white',
-        fontSize: 18,
     },
 });

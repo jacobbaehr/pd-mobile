@@ -17,6 +17,7 @@ import IconBack from './images/icons/icon_circle_back.svg';
 import IconCircleCheckmark from './images/icons/icon_circle_checkmark.svg';
 import IconCircleEdit from './images/icons/icon_circle_edit.svg';
 import IconCircleForward from './images/icons/icon_circle_forward.svg';
+import IconClipboard from './images/icons/icon_clipboard.svg';
 import IconCloseButton from './images/icons/icon_close.svg';
 import IconDelete from './images/icons/icon_delete.svg';
 import IconDeleteOutline from './images/icons/icon_delete_outline.svg';
@@ -24,11 +25,10 @@ import IconExportData from './images/icons/icon_export_data.svg';
 import IconForward from './images/icons/icon_forward.svg';
 import IconImportData from './images/icons/icon_import_data.svg';
 import IconInformation from './images/icons/icon_information.svg';
-import IconMail from './images/icons/icon_mail.svg';
-import IconWater from './images/icons/icon_water.svg';
-import IconClipboard from './images/icons/icon_clipboard.svg';
 import IconLevels from './images/icons/icon_levels.svg';
+import IconMail from './images/icons/icon_mail.svg';
 import IconPlayWhite from './images/icons/icon_play_white.svg';
+import IconWater from './images/icons/icon_water.svg';
 // Pool
 import IconCustomTargets from './images/pool/icon_custom_targets.svg';
 import IconPoolEmail from './images/pool/icon_email.svg';
@@ -83,6 +83,7 @@ export const images = {
     sliderThumb: require('./images/thumb.png'),
     sliderThumbSmall: require('./images/thumb_small.png'),
     sliderThumbBlue: require('./images/thumb_blue.png'),
+    sliderThumbBlueDark: require('./images/thumb_black.png'),
     greenCheck: require('./images/green_check.png'),
     incomplete: require('./images/incomplete.png'),
     trends: require('./images/trends.png'),

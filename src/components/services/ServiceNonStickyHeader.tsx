@@ -19,12 +19,12 @@ export const ServiceNonStickyHeader: React.FC<{}> = () => {
 
     return (
         <PDView style={ styles.container } bgColor="white">
-            <PDText type="subHeading">{pool.name}</PDText>
+            <PDText type="subHeading" >{pool.name}</PDText>
             <PDView style={ styles.row }>
                 <PDView style={ styles.containerIcon }>
-                    <SVG.IconInformation fill={ theme.colors.grey } />
+                    <SVG.IconInformation fill={ theme.colors.greyDark } />
                 </PDView>
-                <PDText type="bodyRegular" color="grey">
+                <PDText type="bodyRegular" color="greyDark">
                     {volumeDisplay}, {detailsText}
                 </PDText>
             </PDView>
