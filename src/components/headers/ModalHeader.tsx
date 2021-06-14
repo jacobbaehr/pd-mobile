@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import TouchableScale from 'react-native-touchable-scale';
 import { SVG } from '~/assets/images';
 import { PDText } from '~/components/PDText';
-import { PDSpacing } from '~/components/PDTheme';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { PDStackNavigationProps } from '~/navigator/shared';
 
@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/core';
 const ModalHeader: React.FC = (props) => {
     const { children } = props;
     const navigation = useNavigation<PDStackNavigationProps>();
+    const theme = useTheme();
 
     const goBack = () => {
         navigation.goBack();
@@ -21,7 +22,7 @@ const ModalHeader: React.FC = (props) => {
         <PDView style={ styles.container }>
             <PDView style={ styles.sideContainer }>
                 <TouchableScale onPress={ goBack }>
-                    <SVG.IconCloseButton fill={ 'black' } />
+                    <SVG.IconCloseButton fill={ theme.colors.black } />
                 </TouchableScale>
             </PDView>
             <PDView style={ styles.centerContainer }>

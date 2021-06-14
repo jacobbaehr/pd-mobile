@@ -1,7 +1,9 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { PDTextInput } from '~/components/inputs/PDTextInput';
 import { PDText } from '~/components/PDText';
+import { useTheme } from '~/components/PDTheme';
+import { PDView } from '~/components/PDView';
 
 interface TreatmentListFooterProps {
     text: string;
@@ -9,14 +11,16 @@ interface TreatmentListFooterProps {
 }
 
 export const TreatmentListFooter: React.FunctionComponent<TreatmentListFooterProps> = (props) => {
+    const theme = useTheme();
+
     return (
-        <View style={ { paddingHorizontal: 16 } }>
-            <PDText type="default" style={ styles.sectionTitle }>
+        <PDView  style={ { paddingHorizontal: 16 } }>
+            <PDText type="default" color="purple" style={ styles.sectionTitle }>
                 Notes
             </PDText>
-            <View style={ styles.container }>
+            <PDView bgColor="background" borderColor="border" style={ styles.container }>
                 <PDTextInput
-                    style={ styles.text }
+                    style={ [styles.text , { borderColor: theme.colors.border, color: theme.colors.black }] }
                     value={ props.text }
                     onChangeText={ props.updatedText }
                     multiline={ true }
@@ -24,17 +28,14 @@ export const TreatmentListFooter: React.FunctionComponent<TreatmentListFooterPro
                     maxFontSizeMultiplier={ 1.4 }
                     allowFontScaling
                 />
-            </View>
-        </View>
+            </PDView>
+        </PDView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
         borderRadius: 24,
-        overflow: 'hidden',
-        borderColor: '#F0F0F0',
         borderWidth: 2,
         paddingVertical: 12,
         paddingHorizontal: 16,
@@ -45,11 +46,8 @@ const styles = StyleSheet.create({
         fontSize: 28,
         marginTop: 6,
         marginBottom: 4,
-        color: '#B700F8',
     },
     text: {
-        color: 'black',
-        backgroundColor: 'white',
         minHeight: 50,
         fontSize: 22,
         fontWeight: '600',

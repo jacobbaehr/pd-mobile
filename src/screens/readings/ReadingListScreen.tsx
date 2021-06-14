@@ -232,7 +232,7 @@ export const ReadingListScreen: React.FC = () => {
                         }
                     } }
                 />
-                <PDView style={ [styles.bottomButtonContainer, { backgroundColor: theme.colors.border } ] } bgColor="white">
+                <PDView bgColor="white" style={ [styles.bottomButtonContainer, { backgroundColor: theme.colors.background, borderColor: theme.colors.border } ] } >
                     <BoringButton
                         containerStyles={ StyleSheet.flatten([styles.button, { backgroundColor: theme.colors.blue }]) }
                         onPress={ handleCalculatePressed }

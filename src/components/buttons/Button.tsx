@@ -2,7 +2,6 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
-
 import { PDText } from '~/components/PDText';
 import { PDColor, useTheme } from '~/components/PDTheme';
 
@@ -36,7 +35,7 @@ export const Button:React.FC<ButtonProps> = (props) => {
 
     return (
         <TouchableScale
-            style={ [styles.container, { backgroundColor: bgColor }, props.styles] }
+            style={ [{ backgroundColor: bgColor }, props.styles] }
             onPress={ handleButtonPress }
             disabled={ props.disabled }
             activeScale={ 0.97 }
@@ -52,7 +51,6 @@ export const Button:React.FC<ButtonProps> = (props) => {
 };
 
 const styles = StyleSheet.create({
-    container: {},
     text: {
         flex: 1,
         textAlign: 'center',

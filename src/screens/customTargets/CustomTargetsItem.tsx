@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { TextButton } from '~/components/buttons/TextButton';
 import BorderInputWithLabel from '~/components/inputs/BorderInputWithLabel';
 import { PDText } from '~/components/PDText';
-import { PDSpacing } from '~/components/PDTheme';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { useRealmPoolTargetRange } from '~/hooks/RealmPoolHook';
 import { Pool } from '~/models/Pool';
@@ -31,6 +31,7 @@ interface TargetFormFields {
 const CustomTargetsItem: React.FC<CustomTargetsItemProps> = ({ tr }) => {
     const pool = useSelector<AppState>((state) => state.selectedPool) as Pool;
     const locallySavedOverride = useRealmPoolTargetRange(pool.objectId, tr.var); // ?? ({} as TargetRangeOverride);
+    const theme = useTheme();
 
     // The min & max will sometimes be equal to the defaults, but we need to determine both for the sake of comparison
     const recipeDefaults = TargetsHelper.resolveMinMax(tr, pool.wallType, null);
@@ -98,8 +99,8 @@ const CustomTargetsItem: React.FC<CustomTargetsItemProps> = ({ tr }) => {
     const enableResetButton = !isDefault('min') || !isDefault('max');
 
     return (
-        <PDView style={ styles.container } bgColor="white">
-            <PDView style={ styles.topRow }>
+        <PDView style={ styles.container } bgColor="white" borderColor="border">
+            <PDView style={ styles.topRow }  borderColor="border">
                 <PDText type="bodyMedium" color="black">
                     {tr.name}
                 </PDText>
@@ -107,8 +108,9 @@ const CustomTargetsItem: React.FC<CustomTargetsItemProps> = ({ tr }) => {
                     text="Reset"
                     onPress={ reset }
                     disabled={ !enableResetButton }
-                    containerStyles={ styles.buttonContainer }
-                    textStyles={ [styles.buttonText, enableResetButton && styles.activeButton] }
+                    containerStyles={ [ styles.buttonContainer , { backgroundColor: theme.colors.greyLight }] }
+                    textStyles={ [styles.buttonText,{ color: theme.colors.greyDark }, enableResetButton && { color: theme.colors.black }] }
+
                 />
             </PDView>
             <PDView>
@@ -116,18 +118,20 @@ const CustomTargetsItem: React.FC<CustomTargetsItemProps> = ({ tr }) => {
                     <BorderInputWithLabel
                         label="min"
                         placeholder={ `${recipeDefaults.min}` }
-                        placeholderTextColor={ '#BBBBBB' }
+                        placeholderTextColor={ theme.colors.grey }
                         onChangeText={ (text) => handleTextChange('min', text) }
                         value={ formValues.min }
+                        color="blue"
                         keyboardType="numeric"
                         onBlur={ handleBlur }
                     />
                     <BorderInputWithLabel
                         label="max"
                         placeholder={ `${recipeDefaults.max}` }
-                        placeholderTextColor={ '#BBBBBB' }
+                        placeholderTextColor={ theme.colors.grey }
                         onChangeText={ (text) => handleTextChange('max', text) }
                         value={ formValues.max }
+                        color="blue"
                         keyboardType="numeric"
                         onBlur={ handleBlur }
                     />
@@ -153,7 +157,6 @@ const styles = StyleSheet.create({
     container: {
         borderRadius: 24,
         borderWidth: 2,
-        borderColor: '#EDEDED',
         padding: PDSpacing.lg,
         marginBottom: PDSpacing.sm,
     },
@@ -161,7 +164,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         borderBottomWidth: 2,
-        borderColor: '#F5F5F5',
         marginBottom: PDSpacing.sm,
         paddingBottom: PDSpacing.sm,
     },
@@ -181,7 +183,6 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         borderRadius: 12.5,
-        backgroundColor: '#00000004',
         minHeight: 34,
         minWidth: 75,
     },
@@ -189,9 +190,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontStyle: 'normal',
         color: '#7C7C7C',
-    },
-    activeButton: {
-        color: '#000000',
     },
     isOverride: {
         color: '#1E6BFF',

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { SectionList, StyleSheet } from 'react-native';
+import { useSafeArea } from 'react-native-safe-area-context';
 import { PDButton } from '~/components/buttons/PDButton';
 import ModalHeader from '~/components/headers/ModalHeader';
 import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { PDText } from '~/components/PDText';
-import { PDSpacing } from '~/components/PDTheme';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { useThunkDispatch, useTypedSelector } from '~/redux/AppState';
 import { saveNewPool } from '~/redux/selectedPool/Actions';
@@ -15,7 +16,6 @@ import { Haptic } from '~/services/HapticService';
 import { useNavigation } from '@react-navigation/core';
 
 import { MenuItemButton } from '../../components/MenuItemButton';
-import { useSafeArea } from 'react-native-safe-area-context';
 import { toPoolNoId } from '../shared';
 
 export const CreatePoolScreen: React.FunctionComponent = () => {
@@ -23,6 +23,7 @@ export const CreatePoolScreen: React.FunctionComponent = () => {
     const createPoolSectionInfo = useCreatePool(deviceSettings);
     const dispatch = useThunkDispatch();
     const insets = useSafeArea();
+    const theme = useTheme();
 
     const { pool, isRequiredFilledOut } = useEntryPool();
     const navigation = useNavigation();
@@ -53,7 +54,7 @@ export const CreatePoolScreen: React.FunctionComponent = () => {
                 keyExtractor={ (item, index) => item.id + index }
                 stickySectionHeadersEnabled={ false }
                 contentContainerStyle={ styles.listContent }
-                style={ styles.listContainer }
+                style={ [styles.listContainer, { backgroundColor: theme.colors.background }] }
             />
             <PDView style={ { paddingBottom: insets.bottom + PDSpacing.sm } }>
                 <PDButton

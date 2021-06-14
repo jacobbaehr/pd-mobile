@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
-import SafeAreaView from 'react-native-safe-area-view';
 import { useSelector } from 'react-redux';
 import { ScreenHeader } from '~/components/headers/ScreenHeader';
+import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { PDText } from '~/components/PDText';
-import { PDSpacing } from '~/components/PDTheme';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { useLoadRecipeHook } from '~/hooks/RealmPoolHook';
 import { Pool } from '~/models/Pool';
 import { TargetRange } from '~/models/recipe/TargetRange';
@@ -17,11 +17,11 @@ import CustomTargetsItem from './CustomTargetsItem';
 export const CustomTargetsScreen : React.FC = () => {
     const selectedPool = useSelector<AppState>((state) => state.selectedPool) as Pool;
     const recipe = useLoadRecipeHook(selectedPool?.recipeKey || RecipeService.defaultFormulaKey);
-
+    const theme = useTheme();
     const targets = recipe?.custom ?? [];
 
     return (
-        <SafeAreaView forceInset={ { bottom: 'never' } } style={ styles.safeArea }>
+        <PDSafeAreaView forceInset={ { bottom: 'never' } } >
             <ScreenHeader textType="heading" color="blue">
                 Custom Targets
             </ScreenHeader>
@@ -36,22 +36,17 @@ export const CustomTargetsScreen : React.FC = () => {
                         {recipe?.name}
                     </PDText>
                 ) }
-                style={ styles.container }
+                style={ [styles.container , { backgroundColor: theme.colors.background }] }
                 contentContainerStyle={ styles.content }
                 automaticallyAdjustContentInsets
             />
-        </SafeAreaView>
+        </PDSafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: {
-        flex: 1,
-        backgroundColor: '#ffffff',
-    },
     container: {
         flex: 1,
-        backgroundColor: '#F8F8F8',
     },
     content: {
         paddingHorizontal: 18,

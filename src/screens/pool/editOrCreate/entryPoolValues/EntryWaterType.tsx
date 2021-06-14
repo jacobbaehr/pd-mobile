@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { SVG } from '~/assets/images';
 import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
 import { PDText } from '~/components/PDText';
-import { PDSpacing } from '~/components/PDTheme';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { waterTypeOptions, WaterTypeValue } from '~/models/Pool/WaterType';
 import { PDStackNavigationProps } from '~/navigator/shared';
@@ -18,6 +18,7 @@ export const EntryWaterType = () => {
     const { pool, setPool } = useEntryPool();
     const [waterType, setWaterType] = useState(pool?.waterType ?? 'chlorine');
     const navigation = useNavigation<PDStackNavigationProps>();
+    const theme = useTheme();
 
     const handleBackNavigation = useCallback(
         () =>
@@ -46,8 +47,9 @@ export const EntryWaterType = () => {
                 <ButtonWithChildren
                     key={ water.value }
                     styles={ Util.excludeFalsy([
+                        { backgroundColor: theme.colors.greyLight },
                         styles.buttonContainer,
-                        waterType === water.value && styles.selectedButtonContainer,
+                        waterType === water.value && { backgroundColor: theme.colors.green },
                     ]) }
                     onPress={ () => handleButtonSelected(water.value) }>
                     <PDText type="bodySemiBold" color={ waterType === water.value ? 'white' : 'greyDarker' }>
@@ -70,14 +72,10 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        backgroundColor: '#FAFAFA',
         borderRadius: 24,
         paddingVertical: PDSpacing.md,
         paddingHorizontal: PDSpacing.lg,
         marginBottom: PDSpacing.xs,
-    },
-    selectedButtonContainer: {
-        backgroundColor: '#00B25C',
     },
     checkmark: {
         marginRight: PDSpacing.md,

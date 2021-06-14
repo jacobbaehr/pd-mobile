@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, ViewStyle } from 'react-native';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
-
 import { PDText } from '~/components/PDText';
 
 interface ChoosyButtonProps {
     title: string;
     onPress: () => void;
-    styles?: any;
+    styles?: ViewStyle | ViewStyle[];
     textStyles?: any;
     disabled?: boolean;
 }

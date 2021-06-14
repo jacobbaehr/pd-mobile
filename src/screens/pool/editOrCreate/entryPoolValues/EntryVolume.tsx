@@ -6,7 +6,7 @@ import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
 import { KeyboardButton } from '~/components/buttons/KeyboardButton';
 import BorderInputWithLabel from '~/components/inputs/BorderInputWithLabel';
 import { PDText } from '~/components/PDText';
-import { PDSpacing } from '~/components/PDTheme';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { getDisplayForPoolValue, PoolUnit } from '~/models/Pool/PoolUnit';
 import { PDStackNavigationProps } from '~/navigator/shared';
@@ -27,7 +27,7 @@ export const EntryVolume = () => {
     const [units, setUnits] = useState<PoolUnit>(ds.units);
     const navigation = useNavigation<PDStackNavigationProps>();
     const { estimation, clear } = useVolumeEstimator();
-
+    const theme = useTheme();
     const keyboardAccessoryViewId = 'keyboardaccessoryidpooleditscreen2';
 
     const handleOnPressSaveButton = () => {
@@ -75,14 +75,13 @@ export const EntryVolume = () => {
                     inputAccessoryViewID={ keyboardAccessoryViewId }
                     returnKeyType="done"
                     onSubmitEditing={ handleOnPressSaveButton }
-                    enablesReturnKeyAutomatically
                 />
-                <PDView style={ { flex: 1 } }>
-                    <PDText type="bodyGreyBold" style={ styles.unit }>
+                <PDView style={ { flexShrink: 1 } }>
+                    <PDText type="bodyGreyBold" color="grey">
                         unit
                     </PDText>
                     <Button
-                        styles={ styles.unitButton }
+                        styles={ [styles.unitButton,  { borderColor: theme.colors.border }] }
                         textStyles={ styles.unitButtonText }
                         textColor="pink"
                         title={ unitText }
@@ -90,13 +89,13 @@ export const EntryVolume = () => {
                     />
                 </PDView>
             </PDView>
-            <PDText type="bodyGreyBold" style={ styles.notSure }>
+            <PDText type="bodyGreyBold" color="grey" style={ styles.notSure }>
                 not sure?
             </PDText>
             <ButtonWithChildren onPress={ handleEstimatorButtonPressed }>
                 <PDView style={ styles.estimatorButtonContainer } bgColor="greyLight">
-                    <SVG.IconEstimator width={ 16 } height={ 16 } fill="#000000" />
-                    <PDText type="subHeading"> Use Volume Estimator</PDText>
+                    <SVG.IconEstimator width={ 16 } height={ 16 } fill={ theme.colors.black } />
+                    <PDText type="subHeading" color="black"> Use Volume Estimator</PDText>
                 </PDView>
             </ButtonWithChildren>
             <KeyboardButton
@@ -120,7 +119,6 @@ const styles = StyleSheet.create({
     },
     textInput: {
         flex: 1,
-        borderColor: '#EDEDED',
         borderWidth: 2,
         borderRadius: 8,
         paddingVertical: 6,
@@ -132,25 +130,17 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
         color: '#FF0073',
     },
-    unit: {
-        color: '#737373',
-    },
     unitButton: {
         paddingVertical: PDSpacing.xs,
         paddingHorizontal: 20,
         borderRadius: 24,
-        borderColor: '#EDEDED',
         borderWidth: 2,
-        justifyContent: 'center',
-        alignItems: 'center',
-        minWidth: 100,
     },
     unitButtonText: {
         fontWeight: '600',
         fontSize: 16,
     },
     notSure: {
-        color: '#737373',
         marginTop: PDSpacing.sm,
         marginBottom: PDSpacing.xs,
     },

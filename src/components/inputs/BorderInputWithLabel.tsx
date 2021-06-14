@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, TextInput, TextInputProps, TextStyle, ViewStyle } from 'react-native';
 
 import { PDText } from '../PDText';
+import { PDColor, useTheme } from '../PDTheme';
 import { PDView } from '../PDView';
 
 interface BorderInputWithLabel extends TextInputProps {
@@ -9,11 +10,13 @@ interface BorderInputWithLabel extends TextInputProps {
     labelStyleProps?: TextStyle | TextStyle[];
     textInputStyleProps?: TextStyle | TextStyle[];
     containerStyles?: ViewStyle;
+    color?: PDColor
 }
 
 const BorderInputWithLabel = React.forwardRef<TextInput, BorderInputWithLabel>((props, ref) => {
-    const { label, labelStyleProps, textInputStyleProps, ...restTextInputProps } = props;
-    const defaultStyle = { ...styles.textInput, ...textInputStyleProps };
+    const { label, labelStyleProps, style,  textInputStyleProps, color, ...restTextInputProps } = props;
+    const theme = useTheme();
+    const defaultStyle = [ styles.textInput, { borderColor: theme.colors.border, color: theme.colors[color] },  textInputStyleProps, style ];
 
     return (
         <PDView style={ props.containerStyles }>
@@ -23,7 +26,7 @@ const BorderInputWithLabel = React.forwardRef<TextInput, BorderInputWithLabel>((
             <TextInput
                 ref={ ref }
                 style={ defaultStyle }
-                placeholderTextColor="#BBBBBB"
+                placeholderTextColor={ theme.colors.grey }
                 blurOnSubmit
                 allowFontScaling
                 maxFontSizeMultiplier={ 1.4 }
@@ -33,16 +36,18 @@ const BorderInputWithLabel = React.forwardRef<TextInput, BorderInputWithLabel>((
     );
 });
 
+BorderInputWithLabel.defaultProps = {
+    color: 'black',
+};
+
 const styles = StyleSheet.create({
     textInput: {
-        borderColor: '#F0F0F0',
         borderWidth: 2,
         borderRadius: 6,
         paddingVertical: 8,
         fontSize: 16,
         fontStyle: 'normal',
         fontWeight: '600',
-        color: '#1E6BFF',
         paddingLeft: 8,
         minWidth: 100,
     },

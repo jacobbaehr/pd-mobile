@@ -4,7 +4,7 @@ import { useSafeArea } from 'react-native-safe-area-context';
 import ModalHeader from '~/components/headers/ModalHeader';
 import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { PDText } from '~/components/PDText';
-import { PDSpacing } from '~/components/PDTheme';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { useModal } from '~/hooks/useModal';
 import { useThunkDispatch } from '~/redux/AppState';
@@ -22,6 +22,7 @@ export const EditPoolScreen: React.FunctionComponent = () => {
     const dispatchThunk = useThunkDispatch();
     const editPoolSectionInfo = useEditPool(pool, toggleVisible);
     const insets = useSafeArea();
+    const theme = useTheme();
 
     /// Whenever the pool context changes, persist them in the db:
     React.useEffect(() => {
@@ -38,7 +39,7 @@ export const EditPoolScreen: React.FunctionComponent = () => {
             <SectionList
                 sections={ editPoolSectionInfo }
                 renderSectionHeader={ ({ section: { title } }) => (
-                    <PDText type="bodyGreyBold" style={ styles.sectionHeaderText }>
+                    <PDText type="bodyGreyBold" color="greyDark" style={ styles.sectionHeaderText }>
                         {title}
                     </PDText>
                 ) }
@@ -53,7 +54,7 @@ export const EditPoolScreen: React.FunctionComponent = () => {
                 keyExtractor={ (item, index) => item.id + index }
                 stickySectionHeadersEnabled={ false }
                 contentContainerStyle={ styles.listContent }
-                style={ styles.listContainer }
+                style={ [styles.listContainer, { backgroundColor: theme.colors.background }] }
                 contentInset={ { bottom: insets.bottom } }
             />
             <PDView>
@@ -72,7 +73,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: PDSpacing.md,
     },
     sectionHeaderText: {
-        color: '#737373',
         marginBottom:  PDSpacing.md,
         marginTop:  PDSpacing.lg,
         textTransform: 'uppercase',

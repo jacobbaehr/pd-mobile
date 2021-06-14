@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { SVG } from '~/assets/images';
 import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
 import { PDText } from '~/components/PDText';
-import { PDSpacing } from '~/components/PDTheme';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { wallTypeOptions, WallTypeValue } from '~/models/Pool/WallType';
 import { PDStackNavigationProps } from '~/navigator/shared';
@@ -17,6 +17,7 @@ import { useEntryPool } from '../hooks/useEntryPool';
 export const EntryWallType = () => {
     const { pool, setPool } = useEntryPool();
     const [wallType, setWallType] = useState(pool?.wallType ?? '');
+    const theme = useTheme();
 
     const navigation = useNavigation<PDStackNavigationProps>();
 
@@ -48,15 +49,16 @@ export const EntryWallType = () => {
                 <ButtonWithChildren
                     key={ wall.value }
                     styles={ Util.excludeFalsy([
+                        { backgroundColor: theme.colors.greyLight },
                         styles.buttonContainer,
-                        wallType === wall.value && styles.selectedButtonContainer,
+
                     ]) }
                     onPress={ () => handleButtonSelected(wall.value) }>
                     <PDText type="bodySemiBold" color={ wallType === wall.value ? 'white' : 'greyDarker' }>
                         {wall.display}
                     </PDText>
                     {!!(wallType === wall.value) && (
-                        <SVG.IconCheckmark width={ 24 } height={ 24 } fill="white" style={ styles.checkmark } />
+                        <SVG.IconCheckmark width={ 24 } height={ 24 } fill={ theme.colors.white } style={ styles.checkmark } />
                     )}
                 </ButtonWithChildren>
             ))}
@@ -72,15 +74,12 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        backgroundColor: '#FAFAFA',
         borderRadius: 24,
         paddingVertical: PDSpacing.md,
         paddingHorizontal: PDSpacing.lg,
         marginBottom: PDSpacing.xs,
     },
-    selectedButtonContainer: {
-        backgroundColor: '#B21FF1',
-    },
+
     checkmark: {
         marginRight: PDSpacing.md,
     },

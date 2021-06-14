@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { StyleSheet, View, TouchableHighlight } from 'react-native';
-
+import { StyleSheet, TouchableHighlight } from 'react-native';
 import { PDText } from '~/components/PDText';
+import { PDView } from '~/components/PDView';
 import { Recipe } from '~/models/recipe/Recipe';
 
 interface ReadingListFooterProps {
@@ -19,15 +19,15 @@ export const ReadingListFooter: React.FunctionComponent<ReadingListFooterProps> 
     const changeButtonStyles = isChangeButtonPressed ? styles.recipeLinkPressed : styles.recipeLinkNormal;
 
     return (
-        <View style={ styles.container }>
-            <PDText type="default" style={ styles.recipeNameIntroText }>
+        <PDView style={ styles.container }>
+            <PDText type="default" color="greyDark" style={ styles.recipeNameIntroText }>
                 Current formula:{' '}
-                <PDText type="default" style={ styles.recipeNameText }>
+                <PDText type="default" color="greyDark" style={ styles.recipeNameText }>
                     {props.recipe.name}
                 </PDText>
             </PDText>
-            <View style={ styles.topRow }>
-                <PDText type="default" style={ styles.changeRecipeIntro }>
+            <PDView style={ styles.topRow }>
+                <PDText type="default" color="greyDark"  style={ styles.changeRecipeIntro }>
                     Want different readings?{' '}
                 </PDText>
                 <TouchableHighlight
@@ -38,8 +38,8 @@ export const ReadingListFooter: React.FunctionComponent<ReadingListFooterProps> 
                         Change formula.
                     </PDText>
                 </TouchableHighlight>
-            </View>
-        </View>
+            </PDView>
+        </PDView>
     );
 };
 
@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
     },
     changeRecipeIntro: {
-        color: 'rgba(0,0,0,.6)',
         fontSize: 18,
     },
     recipeLinkPressed: {
@@ -70,16 +69,13 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline',
     },
     recipeNameIntroText: {
-        color: 'rgba(0,0,0,.6)',
         fontSize: 18,
     },
     recipeNameText: {
-        color: 'rgba(0,0,0,.6)',
         fontWeight: '700',
         fontSize: 18,
     },
     recipeDescriptionText: {
-        color: 'rgba(0,0,0,.6)',
         fontSize: 18,
         marginTop: 12,
     },

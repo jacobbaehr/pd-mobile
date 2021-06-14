@@ -1,7 +1,7 @@
 import pluralize from 'pluralize';
 import * as React from 'react';
 import {
-    Image, NativeSyntheticEvent, StyleSheet, TextInputEndEditingEventData, TextStyle, View
+    Image, NativeSyntheticEvent, StyleSheet, TextInputEndEditingEventData, TextStyle
 } from 'react-native';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
@@ -10,6 +10,8 @@ import { ChoosyButton } from '~/components/buttons/ChoosyButton';
 import { CycleButton } from '~/components/buttons/CycleButton';
 import { Conditional } from '~/components/Conditional';
 import { PDTextInput } from '~/components/inputs/PDTextInput';
+import { useTheme } from '~/components/PDTheme';
+import { PDView } from '~/components/PDView';
 import { Util } from '~/services/Util';
 
 import { PDText } from '../../components/PDText';
@@ -27,6 +29,7 @@ interface TreatmentListItemProps {
 
 export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> = (props) => {
     const [textIsEditing, setTextIsEditing] = React.useState(false);
+    const theme = useTheme();
 
     const isEditing = textIsEditing;
 
@@ -36,15 +39,17 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
     const treatmentTaken = ts.isOn;
     const leftImageSource = treatmentTaken ? images.greenCheck : images.incomplete;
 
-    const textInputStyles: TextStyle[] = [styles.textInput];
-    const unitsTextStyles: TextStyle[] = [styles.unitsText];
+    const textInputStyles: TextStyle[] = [styles.textInput, { color: theme.colors.purple, borderColor: theme.colors.border }];
+    const unitsTextStyles: TextStyle[] = [styles.unitsText ];
+
     const treatmentNameTextStyles: TextStyle[] = [styles.treatmentNameText];
+
     if (ts.isOn || isEditing) {
-        textInputStyles.push(styles.textDone);
+        textInputStyles.push({ color: theme.colors.black });
     }
     if (ts.isOn) {
-        unitsTextStyles.push(styles.textDone);
-        treatmentNameTextStyles.push(styles.textDone);
+        unitsTextStyles.push({ color: theme.colors.black });
+        treatmentNameTextStyles.push({ color: theme.colors.black });
     }
 
     // I thought this next line would come out cleaner, whoops:
@@ -74,15 +79,15 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
     };
 
     return (
-        <View style={ styles.container }>
+        <PDView style={ styles.container }>
             <TouchableScale
                 onPress={ () => props.handleIconPressed(t.var) }
                 activeScale={ 0.98 }
                 disabled={ t.type === 'calculation' }>
-                <View style={ styles.content }>
-                    <View style={ styles.topRow }>
+                <PDView style={ styles.content } borderColor="border" bgColor="white">
+                    <PDView style={ styles.topRow }>
                         <Conditional condition={ t.type === 'calculation' }>
-                            <PDText type="default" style={ styles.ofLabel }>
+                            <PDText type="default" color="black" style={ styles.ofLabel }>
                                 {t.name}
                             </PDText>
                             <PDTextInput
@@ -97,9 +102,8 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
                         </Conditional>
                         <Conditional condition={ t.type !== 'calculation' }>
                             <Image style={ styles.circleImage } source={ leftImageSource } width={ 28 } height={ 28 } />
-
                             <Conditional condition={ ['dryChemical', 'liquidChemical'].some((x) => t.type === x) }>
-                                <PDText type="default" style={ styles.addLabel }>
+                                <PDText type="default" color="black" style={ styles.addLabel }>
                                     Add
                                 </PDText>
                                 <PDTextInput
@@ -115,7 +119,7 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
                                     title={ pluralize(ts.units, parseFloat(valueText)) }
                                     onPress={ onPressedUnitsButton }
                                     textStyles={ unitsTextStyles }
-                                    styles={ styles.unitsButton }
+                                    styles={ [styles.unitsButton, {  borderColor: theme.colors.border  }] }
                                 />
                                 <PDText type="default" style={ styles.ofLabel }>
                                     of
@@ -124,35 +128,30 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
                                     title={ treatmentName }
                                     onPress={ onPressedTreatmentNameButton }
                                     textStyles={ treatmentNameTextStyles }
-                                    styles={ styles.treatmentNameButton }
+                                    styles={ [styles.unitsButton, {  borderColor: theme.colors.border  }] }
                                 />
                             </Conditional>
-
                             <Conditional condition={ t.type === 'task' }>
                                 <PDText type="default" style={ treatmentNameTextStyles }>
                                     {t.name}
                                 </PDText>
                             </Conditional>
                         </Conditional>
-                    </View>
-                </View>
+                    </PDView>
+                </PDView>
             </TouchableScale>
-        </View>
+        </PDView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'transparent',
-        alignContent: 'stretch',
         borderRadius: 10,
     },
     content: {
-        backgroundColor: 'white',
         flex: 1,
         borderRadius: 24,
-        borderColor: '#F0F0F0',
         borderWidth: 2,
         elevation: 2,
         marginBottom: 12,
@@ -172,7 +171,6 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     addLabel: {
-        color: 'black',
         fontSize: 18,
         fontWeight: '600',
         textAlignVertical: 'center',
@@ -180,7 +178,6 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     ofLabel: {
-        color: 'black',
         fontSize: 18,
         fontWeight: '600',
         textAlignVertical: 'center',
@@ -212,7 +209,6 @@ const styles = StyleSheet.create({
         minWidth: 60,
         paddingHorizontal: 12,
         borderWidth: 2,
-        borderColor: '#F8F8F8',
         borderRadius: 6,
         color: '#B700F8',
         fontFamily: 'Poppins-Regular',
@@ -222,8 +218,5 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
         paddingTop: 2,
         marginBottom: 16,
-    },
-    textDone: {
-        color: '#000',
     },
 });

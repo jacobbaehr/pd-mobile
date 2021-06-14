@@ -1,13 +1,13 @@
 import * as React from 'react';
-import {
-    InputAccessoryView, Keyboard, LayoutAnimation, SectionListData, StyleSheet, View,
-} from 'react-native';
+import { Keyboard, LayoutAnimation, SectionListData, StyleSheet, View } from 'react-native';
 import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import { BoringButton } from '~/components/buttons/BoringButton';
+import { KeyboardButton } from '~/components/buttons/KeyboardButton';
 import { ScreenHeader } from '~/components/headers/ScreenHeader';
 import { PDSafeAreaView } from '~/components/PDSafeAreaView';
-import { PlatformSpecific } from '~/components/PlatformSpecific';
+import { useTheme } from '~/components/PDTheme';
+import { PDView } from '~/components/PDView';
 import { ServiceNonStickyHeader } from '~/components/services/ServiceNonStickyHeader';
 import { ServiceStickyHeaderList } from '~/components/services/ServiceStickyHeaderList';
 import { useLoadRecipeHook, useRealmPoolTargetRangesForPool } from '~/hooks/RealmPoolHook';
@@ -23,6 +23,7 @@ import { CalculationService } from '~/services/CalculationService';
 import { Config } from '~/services/Config';
 import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
 import { Haptic } from '~/services/HapticService';
+import { RealmUtil } from '~/services/RealmUtil';
 import { RecipeService } from '~/services/RecipeService';
 import { Converter } from '~/services/TreatmentUnitsService';
 import { Util } from '~/services/Util';
@@ -35,7 +36,6 @@ import { PDPickerRouteProps } from '../picker/PickerScreen';
 import { TreatmentListFooter } from './TreatmentListFooter';
 import { TreatmentListHelpers, TreatmentState } from './TreatmentListHelpers';
 import { TreatmentListItem } from './TreatmentListItem';
-import { RealmUtil } from '~/services/RealmUtil';
 
 export const TreatmentListScreen: React.FC = () => {
     const readings = useTypedSelector((state) => state.readingEntries);
@@ -52,7 +52,7 @@ export const TreatmentListScreen: React.FC = () => {
     const recipe = useLoadRecipeHook(recipeKey);
     const targetRangeOverridesForPool = useRealmPoolTargetRangesForPool(pool.objectId);
     const routesInNavStack = useNavigationState(state => state.routes.map(r => r.name));
-
+    const theme = useTheme();
     const allScoops = ds.scoops;
 
     const keyboardAccessoryViewId = 'dedgumThisIsSomeReallyUniqueTextTreatmentListKeyboard';
@@ -406,24 +406,15 @@ export const TreatmentListScreen: React.FC = () => {
                 } }
             />
             <WebView containerStyle={ styles.webview } onMessage={ onMessage } source={ { html: htmlString } } androidHardwareAccelerationDisabled />
-            <View style={ styles.bottomButtonContainer }>
-                <BoringButton containerStyles={ styles.button } onPress={ save } title={ hasSelectedAnyTreatments ? 'Save' : 'Save All' } />
-            </View>
-            <PlatformSpecific include={ ['ios'] }>
-                <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
-                    <View style={ styles.keyboardAccessoryContainer }>
-                        <BoringButton
-                            containerStyles={ styles.keyboardAccessoryButton }
-                            textStyles={ styles.keyboardAccessoryButtonText }
-                            onPress={ () => {
-                                Keyboard.dismiss();
-                                Haptic.light();
-                            } }
-                            title="Done Typing"
-                        />
-                    </View>
-                </InputAccessoryView>
-            </PlatformSpecific>
+            <PDView bgColor="background" borderColor="border" style={ styles.bottomButtonContainer }>
+                <BoringButton
+                    containerStyles={ [ styles.button, { backgroundColor:theme.colors.purple }] }
+                    onPress={ save }
+                    title={ hasSelectedAnyTreatments ? 'Save' : 'Save All' } />
+            </PDView>
+            <KeyboardButton nativeID={ keyboardAccessoryViewId } bgColor="purple" textColor="black" >
+                Done Typing
+            </KeyboardButton>
         </PDSafeAreaView>
     );
 };
@@ -431,26 +422,15 @@ export const TreatmentListScreen: React.FC = () => {
 const styles = StyleSheet.create({
     sectionList: {
         flex: 1,
-        backgroundColor: '#B21FF105',
     },
     webview: {
-        backgroundColor: 'red',
-        height: 1,
         flex: 0,
     },
-    text: {
-        margin: 15,
-        justifyContent: 'center',
-        color: 'black',
-    },
     bottomButtonContainer: {
-        backgroundColor: 'white',
-        borderTopColor: '#F0F0F0',
         borderTopWidth: 2,
     },
     button: {
         alignSelf: 'stretch',
-        backgroundColor: '#B700F8',
         margin: 12,
         marginBottom: 24,
     },
@@ -460,17 +440,5 @@ const styles = StyleSheet.create({
         marginTop: 6,
         marginBottom: 4,
         marginLeft: 16,
-    },
-    keyboardAccessoryContainer: {
-        backgroundColor: '#F8F8F8',
-        padding: 12,
-    },
-    keyboardAccessoryButton: {
-        backgroundColor: 'rgba(57, 16, 232, 0.6)',
-        marginHorizontal: 24,
-    },
-    keyboardAccessoryButtonText: {
-        color: 'white',
-        fontSize: 18,
     },
 });
