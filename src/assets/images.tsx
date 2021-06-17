@@ -30,6 +30,9 @@ import IconMail from './images/icons/icon_mail.svg';
 import IconPlayWhite from './images/icons/icon_play_white.svg';
 import IconWater from './images/icons/icon_water.svg';
 import IconBadge from './images/icons/icon_badge.svg';
+import IconBeaker from './images/beaker_plain.svg';
+import IconFeedback from './images/icons/icon_feedback.svg';
+import RightArrow from './images/right_arrow.svg';
 // Pool
 import IconCustomTargets from './images/pool/icon_custom_targets.svg';
 import IconPoolEmail from './images/pool/icon_email.svg';
@@ -150,6 +153,9 @@ export const SVG: Record<string, (props: OverrideSvgProps) => JSX.Element> = {
     IconLevels: (props) => <IconLevels { ...props } />,
     IconPlayWhite: (props) => <IconPlayWhite { ...props } />,
     IconBadge: (props) => <IconBadge { ...props } />,
+    IconBeaker: (props) => <IconBeaker { ...props }/>,
+    IconFeedback: (props) => <IconFeedback { ...props }/>,
+    IconRightArrow: (props) => <RightArrow { ...props }/>,
 
     // Pool Icons
     IconCustomTargets: (props) => <IconCustomTargets { ...props } />,

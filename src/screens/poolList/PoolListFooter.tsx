@@ -3,7 +3,7 @@ import { StyleSheet, View, Image, Dimensions } from 'react-native';
 
 import { PDText } from '~/components/PDText';
 import { images } from '~/assets/images';
-import { PoolListFooterNonEmpty } from './PoolListFooterNonEmpty';
+import { ForumPrompt } from './footer/ForumPrompt';
 
 interface PoolListFooterProps {
     isEmpty: boolean;
@@ -19,7 +19,7 @@ export const PoolListFooter: React.FunctionComponent<PoolListFooterProps> = (pro
         width: imageWidth,
     };
     if (!props.isEmpty) {
-        return <PoolListFooterNonEmpty pressedUpgrade={ props.handlePressedUpgrade } />;
+        return <ForumPrompt />;
     }
     return (
         <View>

@@ -131,6 +131,6 @@ export class Util {
     }
 
     static doAsync = async (cb: () => void) => {
-        setTimeout(cb, 0);
+        setTimeout(cb, 1);
     }
 }

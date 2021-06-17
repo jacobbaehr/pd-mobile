@@ -86,7 +86,7 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
                         Formula
                     </PDText>
                     <PDView style={ styles.rowItemContainer }>
-                        <SVG.IconFormulaV2 width={ 16 } height={ 16 } />
+                        <SVG.IconBeaker width={ 16 } height={ 16 } />
                         <PDText type="bodyRegular" color="black" style={ styles.lineItem }>
                             {formulaName}
                         </PDText>

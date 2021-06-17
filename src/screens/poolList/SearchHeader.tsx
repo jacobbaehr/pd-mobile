@@ -26,8 +26,8 @@ export const SearchHeader: React.FC<SearchHeaderProps> = (props) => {
 
     const promptUpgrade = () => {
         Alert.alert(
-            'Sorry, but...',
-            'You must upgrade the app to add multiple pools.',
+            'Upgrade Required',
+            'Want to add unlimited pools, view charts, and support our small team?',
             [
                 {
                     text: 'Cancel',

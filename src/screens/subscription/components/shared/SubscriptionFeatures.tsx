@@ -32,7 +32,7 @@ const features: Feature[] = [
 export const SubscriptionFeatures = () => {
     return (
         <PDView>
-            <PDText type="bodySemiBold" color="grey">
+            <PDText type="bodySemiBold" color="greyDark">
                 BENEFITS
             </PDText>
             {features.map((feature: Feature) => {

@@ -65,7 +65,7 @@ const PoolServiceConfigSection = () => {
                         </PDText>
                         <PDView style={ styles.row }>
                             <PDView style={ styles.sectionIcon }>
-                                <SVG.IconClipboard height={ 16 } width={ 16 } />
+                                <SVG.IconBeaker height={ 16 } width={ 16 }/>
                             </PDView>
                             <PDText type="bodyBold" color="greyDark" numberOfLines={ 1 } ellipsizeMode="tail">
                                 {recipe?.name}
