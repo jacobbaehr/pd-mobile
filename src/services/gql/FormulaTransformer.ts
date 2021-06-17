@@ -24,6 +24,7 @@ export class FormulaTransformer {
                     wallType: d.wallType as WallTypeValue,
                 })),
             })),
+            isOfficial: apiFormula.isOfficial,
         };
     };
 

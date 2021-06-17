@@ -8,10 +8,11 @@
 // ====================================================
 
 export interface FetchLatestFormulaMeta_latestPublishedMeta {
-  __typename: "FormulaMeta";
+  __typename: "RecipeMeta";
   ts: number;
   appVersion: string;
   id: string;
+  isOfficial: boolean;
 }
 
 export interface FetchLatestFormulaMeta {

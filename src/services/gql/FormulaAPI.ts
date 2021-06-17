@@ -24,6 +24,7 @@ export class FormulaAPI {
                     desc
                     ts
                     appVersion
+                    isOfficial
                 }
             }
         `;
@@ -42,6 +43,7 @@ export class FormulaAPI {
                     description
                     ts
                     appVersion
+                    isOfficial
                     readings {
                         name
                         var
@@ -97,6 +99,7 @@ export class FormulaAPI {
                     ts
                     appVersion
                     id
+                    isOfficial
                 }
             }
         `;

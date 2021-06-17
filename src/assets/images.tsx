@@ -29,11 +29,11 @@ import IconLevels from './images/icons/icon_levels.svg';
 import IconMail from './images/icons/icon_mail.svg';
 import IconPlayWhite from './images/icons/icon_play_white.svg';
 import IconWater from './images/icons/icon_water.svg';
+import IconBadge from './images/icons/icon_badge.svg';
 // Pool
 import IconCustomTargets from './images/pool/icon_custom_targets.svg';
 import IconPoolEmail from './images/pool/icon_email.svg';
 import IconPoolFormula from './images/pool/icon_formula.svg';
-import IconFormulaV2 from './images/pool/icon_formula_v2.svg';
 import IconPoolName from './images/pool/icon_name.svg';
 import IconPoolVolume from './images/pool/icon_volume.svg';
 import IconPoolWallType from './images/pool/icon_wall_type.svg';
@@ -56,6 +56,7 @@ import IconVolume from './images/shapes/icon_volume.svg';
 import IconCharts from './images/subscription/icon_charts.svg';
 import IconHeart from './images/subscription/icon_heart.svg';
 import IconInfinitive from './images/subscription/icon_infinitive.svg';
+
 
 export const images = {
     back: require('./images/back.png'),
@@ -148,6 +149,7 @@ export const SVG: Record<string, (props: OverrideSvgProps) => JSX.Element> = {
     IconClipboard: (props) => <IconClipboard { ...props } />,
     IconLevels: (props) => <IconLevels { ...props } />,
     IconPlayWhite: (props) => <IconPlayWhite { ...props } />,
+    IconBadge: (props) => <IconBadge { ...props } />,
 
     // Pool Icons
     IconCustomTargets: (props) => <IconCustomTargets { ...props } />,
@@ -157,7 +159,6 @@ export const SVG: Record<string, (props: OverrideSvgProps) => JSX.Element> = {
     IconPoolVolume: (props) => <IconPoolVolume { ...props } />,
     IconPoolWallType: (props) => <IconPoolWallType { ...props } />,
     IconPoolWaterType: (props) => <IconPoolWaterType { ...props } />,
-    IconFormulaV2: (props) => <IconFormulaV2 { ...props } />,
 
     // Settings
     IconPooldashPlus: (props) => <IconPooldashPlus { ...props } />,

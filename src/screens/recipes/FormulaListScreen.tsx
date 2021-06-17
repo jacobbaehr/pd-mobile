@@ -14,22 +14,37 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { useEntryPool } from '../pool/editOrCreate/hooks/useEntryPool';
-import { RecipeListHeader } from './RecipeListHeader';
-import { RecipeListItem } from './RecipeListItem';
+import { FormulaListItem } from './FormulaListItem';
+import { ScreenHeader } from '~/components/headers/ScreenHeader';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
+import { useContrastStatusBar } from '~/hooks/useStatusBar';
 
-export interface RecipeListNavParams {
+export interface FormulaListNavParams {
     poolName?: string;
     prevScreen: 'ReadingList' | 'EditOrCreatePoolScreen' | 'PoolScreen';
 }
 
-export const RecipeListScreen: React.FC = () => {
+export const FormulaListScreen: React.FC = () => {
     const { data } = FormulaAPI.useFormulaList();
-    const { navigate } = useNavigation<StackNavigationProp<PDNavParams, 'RecipeList'>>();
+    const { navigate } = useNavigation<StackNavigationProp<PDNavParams, 'FormulaList'>>();
+    const theme = useTheme();
+    useContrastStatusBar();
 
     const { pool } = useEntryPool();
+    // gross
+    const activeFormulaId = RS.reverseKey(pool.recipeKey ?? '0|0').id;
 
     const currentRecipe = useLoadRecipeHook(pool?.recipeKey || RecipeService.defaultFormulaKey);
-    const { params } = useRoute<RouteProp<PDNavParams, 'RecipeList'>>();
+    const { params } = useRoute<RouteProp<PDNavParams, 'FormulaList'>>();
+
+    // Filter the current recipe from the list
+    const allFormulas = (data?.listFormulas ?? [])
+        .filter(f => f.id !== activeFormulaId);
+    const officialFormulas = allFormulas.filter(f => RS.isOfficial(f));
+    const communityFormulas = allFormulas.filter(f => !RS.isOfficial(f));
+
+    // const fillColor = theme.colors.orange;
+    const backgroundColor = theme.colors.blurredOrange;
 
     const handleUpdatePressed = () => {
         Linking.openURL(Config.appStoreListing);
@@ -60,7 +75,7 @@ export const RecipeListScreen: React.FC = () => {
             promptUpdate();
         } else {
             const key = RS.getKey(recipe);
-            navigate('RecipeDetails', { recipeKey: key, prevScreen: params.prevScreen });
+            navigate('FormulaDetails', { formulaKey: key, prevScreen: params.prevScreen });
         }
     };
 
@@ -70,32 +85,42 @@ export const RecipeListScreen: React.FC = () => {
         id: currentRecipe?.id || '',
         desc: currentRecipe?.description || '',
         appVersion: currentRecipe?.appVersion || '1.0.0',
+        // yuck
+        isOfficial: !!currentRecipe && RS.isOfficial(currentRecipe),
     };
 
     const sections = [
         {
-            title: 'Current',
+            title: '',
+            subTitle: 'This controls what readings you\'ll take.',
             data: [currentMeta],
         },
         {
-            title: 'Community Recipes',
-            data: data?.listFormulas || [],
+            title: 'Official Formulas',
+            subTitle: 'The Pooldash team has made some formulas for popular pool-types.',
+            data: officialFormulas,
+        },
+        {
+            title: 'Community Formulas',
+            subTitle: 'People from all over the world have made their own formulas.',
+            data: communityFormulas,
         },
     ];
 
     return (
         <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } } forceInset={ { bottom: 'never' } }>
-            <RecipeListHeader poolName={ pool.name ?? 'Back' }/>
+            <ScreenHeader color="orange" hasBackButton hasBottomLine>Change Formula</ScreenHeader>
             <SectionList
-                style={ styles.scrollView }
+                style={ { ...styles.scrollView, backgroundColor } }
                 sections={ sections }
                 renderItem={ ({ item }) => (
-                    <RecipeListItem formula={ item } onFormulaSelected={ handleRecipeSelected } key={ item.id } />
+                    <FormulaListItem formula={ item } onFormulaSelected={ handleRecipeSelected } key={ item.id } isActiveFormula={ item.id === activeFormulaId } />
                 ) }
-                renderSectionHeader={ ({ section: { title } }) => (
-                    <PDText type="default" style={ styles.sectionTitle }>
-                        {title}
-                    </PDText>
+                renderSectionHeader={ ({ section: { title, subTitle } }) => (
+                    <>
+                        <PDText type="default" style={ styles.sectionTitle }>{title}</PDText>
+                        <PDText type="content" color="greyDark" style={ styles.explainerText }>{subTitle}</PDText>
+                    </>
                 ) }
                 contentInset={ { bottom: 34 } }
                 stickySectionHeadersEnabled={ false }
@@ -116,5 +141,9 @@ const styles = StyleSheet.create({
         fontSize: 28,
         fontWeight: '700',
         color: 'black',
+    },
+    explainerText: {
+        marginBottom: PDSpacing.sm,
+        marginHorizontal: PDSpacing.md,
     },
 });

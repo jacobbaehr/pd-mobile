@@ -23,7 +23,7 @@ export const CustomTargetsScreen : React.FC = () => {
     return (
         <PDSafeAreaView forceInset={ { bottom: 'never' } } >
             <ScreenHeader textType="heading" color="blue">
-                Custom Targets
+                Target Levels
             </ScreenHeader>
             <KeyboardAwareFlatList
                 keyboardDismissMode={ 'interactive' }

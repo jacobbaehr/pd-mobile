@@ -25,15 +25,15 @@ export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolList[] 
         navigate('EditPoolModal', { headerInfo });
     };
 
-    const handleNavigateToRecipeListScreen = () => {
-        navigate('RecipeList', { prevScreen: 'EditOrCreatePoolScreen', poolName: pool.name });
+    const handleNavigateToFormulaListScreen = () => {
+        navigate('FormulaList', { prevScreen: 'EditOrCreatePoolScreen', poolName: pool.name });
     };
 
     const volume: number = pool?.gallons || Number(estimation);
 
     return [
         {
-            title: 'POOL SETUP',
+            title: 'basic info',
             data: [
                 {
                     label: 'Name: ',
@@ -44,20 +44,20 @@ export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolList[] 
                     onPress: () => handleNavigateToPopover('name'),
                 },
                 {
-                    label: 'Water Type: ',
-                    image: 'IconPoolWaterType',
-                    valueColor: pool?.waterType ? 'green' : 'grey',
-                    id: 'waterType',
-                    value: pool?.waterType ? getDisplayForWaterType(pool?.waterType) : ' Required',
-                    onPress: () => handleNavigateToPopover('waterType'),
-                },
-                {
                     label: 'Volume: ',
                     image: 'IconPoolVolume',
                     valueColor: volume ? 'pink' : 'grey',
                     id: 'gallons',
                     value: volume ? VolumeUnitsUtil.getDisplayVolume(volume, deviceSettings) : 'Required',
                     onPress: () => handleNavigateToPopover('gallons'),
+                },
+                {
+                    label: 'Water Type: ',
+                    image: 'IconPoolWaterType',
+                    valueColor: pool?.waterType ? 'green' : 'grey',
+                    id: 'waterType',
+                    value: pool?.waterType ? getDisplayForWaterType(pool?.waterType) : ' Required',
+                    onPress: () => handleNavigateToPopover('waterType'),
                 },
                 {
                     label: 'Wall Type: ',
@@ -67,14 +67,19 @@ export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolList[] 
                     value: pool?.wallType ? getDisplayForWallType(pool?.wallType) : ' Vinyl',
                     onPress: () => handleNavigateToPopover('wallType'),
                 },
-                {
-                    label: 'Formula: ',
-                    image: 'IconPoolFormula',
-                    valueColor: recipe?.name ? 'orange' : 'grey',
-                    id: 'recipe',
-                    value: recipe?.name ? recipe?.name : ' Default',
-                    onPress: handleNavigateToRecipeListScreen,
-                },
+            ],
+        },
+        {
+            title: 'chemistry',
+            data: [
+            {
+                label: 'Formula: ',
+                image: 'IconPoolFormula',
+                valueColor: recipe?.name ? 'orange' : 'grey',
+                id: 'recipe',
+                value: recipe?.name ? recipe?.name : ' Default',
+                onPress: handleNavigateToFormulaListScreen,
+            },
             ],
         },
         {

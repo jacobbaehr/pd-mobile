@@ -26,7 +26,7 @@ export const ServiceStickyHeaderList: React.FC<ReadingListStickyHeaderProps> = (
             <PDProgressBar
                 progress={ progress }
                 foregroundColor={ progressColor }
-                style={ { height: 4, backgroundColor: theme.colors.grey } }
+                style={ { height: 4, backgroundColor: theme.colors.greyLight } }
             />
         </PDView>
     );

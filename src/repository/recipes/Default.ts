@@ -6,6 +6,7 @@ export const defaultRecipe: Recipe = {
       'description': 'Targeted at salt & chlorine pools, this plan takes 6 readings & uses calcium hypochlorite as the sanitizer. ',
       'id': 'vast_argument_756',
       'appVersion': '1.3.0',
+      'isOfficial': true,
       'treatments': [
         {
           'name': 'Calcium Hypochlorite',

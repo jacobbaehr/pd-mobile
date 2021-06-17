@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LayoutAnimation, SectionListData, StyleSheet } from 'react-native';
+import { Keyboard, LayoutAnimation, SectionListData, StyleSheet } from 'react-native';
 import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { KeyboardButton } from '~/components/buttons/KeyboardButton';
@@ -164,8 +164,8 @@ export const ReadingListScreen: React.FC = () => {
         setReadingStates(rs);
     };
 
-    const handleChangeRecipePressed = () => {
-        navigate('RecipeList', { prevScreen: 'ReadingList' });
+    const handleChangeFormulaPressed = () => {
+        navigate('FormulaList', { prevScreen: 'ReadingList' });
     };
 
     // The first section is just a dummy header thing to enable some fancy scrolling behavior
@@ -213,7 +213,7 @@ export const ReadingListScreen: React.FC = () => {
                             return (
                                 <ReadingListFooter
                                     recipe={ recipe || null }
-                                    pressedChangeRecipe={ handleChangeRecipePressed }
+                                    pressedChangeRecipe={ handleChangeFormulaPressed }
                                 />
                             );
                         }
@@ -232,7 +232,12 @@ export const ReadingListScreen: React.FC = () => {
                         }
                     } }
                 />
-                <PDView bgColor="white" style={ [styles.bottomButtonContainer, { backgroundColor: theme.colors.background, borderColor: theme.colors.border } ] } >
+                <PDView
+                    style={ [
+                        styles.bottomButtonContainer,
+                        { borderColor: theme.colors.border },
+                    ] }
+                    bgColor="white">
                     <BoringButton
                         containerStyles={ StyleSheet.flatten([styles.button, { backgroundColor: theme.colors.blue }]) }
                         onPress={ handleCalculatePressed }
@@ -240,7 +245,11 @@ export const ReadingListScreen: React.FC = () => {
                     />
                 </PDView>
             </PDView>
-            <KeyboardButton nativeID={ keyboardAccessoryViewId } bgColor="purple" textColor="black" >
+            <KeyboardButton
+                nativeID={ keyboardAccessoryViewId }
+                bgColor={ 'blue' }
+                textColor="white"
+                onPress={ () => Keyboard.dismiss() }>
                 Done Typing
             </KeyboardButton>
         </PDSafeAreaView>

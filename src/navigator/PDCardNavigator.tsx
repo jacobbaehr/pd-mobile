@@ -3,8 +3,8 @@ import { CustomTargetsScreen } from '~/screens/customTargets/CustomTargetsScreen
 import { PoolScreen } from '~/screens/pool/details/PoolScreen';
 import { PoolListScreen } from '~/screens/poolList/PoolListScreen';
 import { ReadingListScreen } from '~/screens/readings/ReadingListScreen';
-import { RecipeListNavParams, RecipeListScreen } from '~/screens/recipes/RecipeListScreen';
-import { RecipeDetailsNavParams, RecipeScreen } from '~/screens/recipes/RecipeScreen';
+import { FormulaListNavParams, FormulaListScreen } from '~/screens/recipes/FormulaListScreen';
+import { FormulaDetailsNavParams, FormulaScreen } from '~/screens/recipes/FormulaScreen';
 import { ScoopsListScreen } from '~/screens/settings/scoops/list/ScoopsListScreen';
 import { SettingsScreen } from '~/screens/settings/SettingsScreen';
 import { SubscriptionScreen } from '~/screens/subscription/SubscriptionScreen';
@@ -24,8 +24,8 @@ export type PDCardNavigatorParams = {
     ReadingList: undefined;
     TreatmentList: undefined;
     Settings: undefined;
-    RecipeList: RecipeListNavParams;
-    RecipeDetails: RecipeDetailsNavParams;
+    FormulaList: FormulaListNavParams;
+    FormulaDetails: FormulaDetailsNavParams;
     PoolHistory: undefined;
     Subscription: undefined;
     CustomTargets: { prevScreen: 'ReadingList' | 'EditPoolNavigator' };
@@ -43,8 +43,8 @@ export const PDCardNavigator = (): JSX.Element => {
             <CardStack.Screen name="PoolScreen" component={ PoolScreen } />
             <CardStack.Screen name="ReadingList" component={ ReadingListScreen } />
             <CardStack.Screen name="TreatmentList" component={ TreatmentListScreen } />
-            <CardStack.Screen name="RecipeList" component={ RecipeListScreen } />
-            <CardStack.Screen name="RecipeDetails" component={ RecipeScreen } />
+            <CardStack.Screen name="FormulaList" component={ FormulaListScreen } />
+            <CardStack.Screen name="FormulaDetails" component={ FormulaScreen } />
             <CardStack.Screen name="PoolHistory" component={ PoolHistoryScreen } />
             <CardStack.Screen
                 name="Settings"

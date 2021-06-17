@@ -8,10 +8,11 @@ import { PoolHeader } from '~/screens/pool/editOrCreate/shared';
 import EntryShapeScreen from '~/screens/pool/editOrCreate/volumeEstimator/EntryShapeScreen';
 import SelectShapeScreen from '~/screens/pool/editOrCreate/volumeEstimator/SelectShapeScreen';
 import { ShapeId } from '~/screens/pool/editOrCreate/volumeEstimator/VolumeEstimatorHelpers';
-import { RecipeListNavParams, RecipeListScreen } from '~/screens/recipes/RecipeListScreen';
-import { RecipeDetailsNavParams, RecipeScreen } from '~/screens/recipes/RecipeScreen';
+import { FormulaListNavParams, FormulaListScreen } from '~/screens/recipes/FormulaListScreen';
+import { FormulaDetailsNavParams, FormulaScreen } from '~/screens/recipes/FormulaScreen';
 
 import { createStackNavigator } from '@react-navigation/stack';
+import { CustomTargetsScreen } from '~/screens/customTargets/CustomTargetsScreen';
 
 export type PDPoolParams = {
     EditOrCreatePoolScreen: undefined;
@@ -20,8 +21,9 @@ export type PDPoolParams = {
     EntryShape: {
         shapeId: ShapeId;
     };
-    RecipeList: RecipeListNavParams,
-    RecipeDetails: RecipeDetailsNavParams;
+    FormulaList: FormulaListNavParams;
+    FormulaDetails: FormulaDetailsNavParams;
+    CustomTargets: { prevScreen: 'ReadingList' | 'EditPoolNavigator' };
 };
 
 const PoolStackNavigator = createStackNavigator<PDPoolParams>();
@@ -38,8 +40,9 @@ export const EditPoolNavigator: React.FC = () => {
                     <PoolStackNavigator.Screen name="EditPoolModal" component={ PoolPopover } />
                     <PoolStackNavigator.Screen name="SelectShape" component={ SelectShapeScreen } />
                     <PoolStackNavigator.Screen name="EntryShape" component={ EntryShapeScreen } />
-                    <PoolStackNavigator.Screen name="RecipeList" component={ RecipeListScreen } />
-                    <PoolStackNavigator.Screen name="RecipeDetails" component={ RecipeScreen } />
+                    <PoolStackNavigator.Screen name="FormulaList" component={ FormulaListScreen } />
+                    <PoolStackNavigator.Screen name="FormulaDetails" component={ FormulaScreen } />
+                    <PoolStackNavigator.Screen name="CustomTargets" component={ CustomTargetsScreen } />
                 </PoolStackNavigator.Navigator>
             </ShapeProvider>
         </PoolProvider>

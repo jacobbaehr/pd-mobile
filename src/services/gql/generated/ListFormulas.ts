@@ -14,6 +14,7 @@ export interface ListFormulas_listFormulas {
   desc: string;
   ts: number;
   appVersion: string;
+  isOfficial: boolean;
 }
 
 export interface ListFormulas {

@@ -46,9 +46,6 @@ export const AddScoopScreen = () => {
 
     const handleSavePressed = () => {
         Keyboard.dismiss();
-
-
-
     };
 
     const keyboardId = 'thisistheuniquekeyboardidforscoops';

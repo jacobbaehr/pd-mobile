@@ -4,4 +4,5 @@ export interface FormulaMeta {
     desc: string;
     ts: number;
     appVersion: string;
+    isOfficial: boolean;
 }

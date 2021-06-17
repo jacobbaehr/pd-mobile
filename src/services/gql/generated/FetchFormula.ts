@@ -54,6 +54,7 @@ export interface FetchFormula_formulaVersion {
   description: string;
   ts: number;
   appVersion: string;
+  isOfficial: boolean;
   readings: FetchFormula_formulaVersion_readings[];
   treatments: FetchFormula_formulaVersion_treatments[];
   custom: FetchFormula_formulaVersion_custom[];

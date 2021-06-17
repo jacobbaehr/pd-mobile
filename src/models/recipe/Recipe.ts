@@ -30,6 +30,8 @@ export interface Recipe {
 
     // All The default values fro custom targets
     custom: TargetRange[];
+
+    isOfficial: boolean;
 }
 
 export type Formula = Recipe;

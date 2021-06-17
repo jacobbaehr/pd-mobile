@@ -39,8 +39,8 @@ export const useEditPool = (pool: Partial<Pool>, toggleVisible: () => void): Edi
         navigation.navigate('EditPoolModal', { headerInfo });
     };
 
-    const handleNavigateToRecipeListScreen = () => {
-        navigation.navigate('RecipeList', { prevScreen: 'EditOrCreatePoolScreen', poolName: pool?.name });
+    const handleNavigateToFormulaListScreen = () => {
+        navigation.navigate('FormulaList', { prevScreen: 'EditOrCreatePoolScreen', poolName: pool?.name });
     };
 
     const handleNavigateToCustomTargets = () => {
@@ -63,7 +63,7 @@ export const useEditPool = (pool: Partial<Pool>, toggleVisible: () => void): Edi
 
     return [
         {
-            title: 'basic information',
+            title: 'basic info',
             data: [
                 {
                     id: 'name',
@@ -74,20 +74,20 @@ export const useEditPool = (pool: Partial<Pool>, toggleVisible: () => void): Edi
                     onPress: () => handleNavigateToPopover('name'),
                 },
                 {
-                    id: 'waterType',
-                    label: 'Water Type: ',
-                    image: 'IconPoolWaterType',
-                    value: getDisplayForWaterType(pool.waterType ?? 'chlorine'),
-                    valueColor: 'green',
-                    onPress: () => handleNavigateToPopover('waterType'),
-                },
-                {
                     id: 'gallons',
                     label: 'Volume: ',
                     image: 'IconPoolVolume',
                     value: VolumeUnitsUtil.getDisplayVolume(pool.gallons ?? 0, deviceSettings),
                     valueColor: 'pink',
                     onPress: () => handleNavigateToPopover('gallons'),
+                },
+                {
+                    id: 'waterType',
+                    label: 'Water Type: ',
+                    image: 'IconPoolWaterType',
+                    value: getDisplayForWaterType(pool.waterType ?? 'chlorine'),
+                    valueColor: 'green',
+                    onPress: () => handleNavigateToPopover('waterType'),
                 },
                 {
                     id: 'wallType',
@@ -100,7 +100,7 @@ export const useEditPool = (pool: Partial<Pool>, toggleVisible: () => void): Edi
             ],
         },
         {
-            title: 'service',
+            title: 'advanced chemistry',
             data: [
                 {
                     id: 'recipe',
@@ -108,11 +108,11 @@ export const useEditPool = (pool: Partial<Pool>, toggleVisible: () => void): Edi
                     image: 'IconPoolFormula',
                     value: recipe?.name,
                     valueColor: 'orange',
-                    onPress: handleNavigateToRecipeListScreen,
+                    onPress: handleNavigateToFormulaListScreen,
                 },
                 {
                     id: 'customTargets',
-                    label: 'Custom Targets: ',
+                    label: 'Target Levels: ',
                     image: 'IconCustomTargets',
                     value: `${targetsSelected} Selected`,
                     valueColor: 'teal',

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    Image, NativeSyntheticEvent, StyleSheet, TextInputEndEditingEventData, TextStyle
+    Image, NativeSyntheticEvent, StyleSheet, TextInputEndEditingEventData, TextStyle,
 } from 'react-native';
 // import Slider from '@react-native-community/slider';
 // @ts-ignore
@@ -110,8 +110,8 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
                         style={ styles.slider }
                         minimumValue={ r.sliderMin }
                         maximumValue={ r.sliderMax }
-                        minimumTrackTintColor={ theme.colors.grey }
-                        maximumTrackTintColor={ theme.colors.grey }
+                        minimumTrackTintColor={ theme.colors.greyLight }
+                        maximumTrackTintColor={ theme.colors.greyLight }
                         thumbImage={ theme.isDarkMode ? images.sliderThumbBlueDark : images.sliderThumbBlue }
                         onSlidingStart={ onSliderStart }
                         onSlidingComplete={ onSliderEnd }

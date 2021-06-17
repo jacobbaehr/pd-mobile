@@ -11,6 +11,7 @@ export class RS {
             desc: recipe.description,
             ts: recipe.ts,
             appVersion: recipe.appVersion,
+            isOfficial: recipe.isOfficial,
         };
     };
 
@@ -25,6 +26,11 @@ export class RS {
             ts: parseFloat(parts[1]),
         };
     };
+
+    static isOfficial = (meta: {isOfficial: boolean, id: string}): boolean => {
+        // Hack to get this property right for old recipes that were saved before we ever pulled down this information.
+        return meta.isOfficial || meta.id === 'vast_argument_756';
+    }
 
     static needUpdateToUseRecipe = (recipeOrMeta: { appVersion: string }, appVersion: string): boolean => {
         return compareVersions.compare(recipeOrMeta.appVersion, appVersion, '>');
