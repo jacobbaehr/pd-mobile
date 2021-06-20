@@ -5,7 +5,6 @@ import {
 import SafeAreaView from 'react-native-safe-area-view';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
-import { BoringButton } from '~/components/buttons/BoringButton';
 import { ChartCard } from '~/components/charts/ChartCard';
 import { ScreenHeader } from '~/components/headers/ScreenHeader';
 import { PDText } from '~/components/PDText';
@@ -18,7 +17,6 @@ import { updatePool } from '~/redux/selectedPool/Actions';
 import { Database } from '~/repository/Database';
 import { DS } from '~/services/DSUtil';
 import { EmailService } from '~/services/EmailService';
-import { ExportService } from '~/services/ExportService';
 import { Haptic } from '~/services/HapticService';
 import { RecipeService } from '~/services/RecipeService';
 import { Util } from '~/services/Util';
@@ -28,6 +26,7 @@ import { useNavigation } from '@react-navigation/native';
 import { PoolHistoryListItem } from './PoolHistoryListItem';
 import PoolServiceConfigSection from './PoolServiceConfigSection';
 import { usePoolChart } from './usePoolChart';
+import { ForumPrompt } from '~/screens/poolList/footer/ForumPrompt';
 
 export const PoolScreen: React.FC = () => {
     useStandardStatusBar();
@@ -133,17 +132,6 @@ export const PoolScreen: React.FC = () => {
         EmailService.emailLogEntry(logEntry, selectedPool?.email ?? '');
     };
 
-    const handleDataButtonPressed = async () => {
-        try {
-            if (!selectedPool) {
-                return;
-            }
-            await ExportService.generateAndShareCSV(selectedPool);
-        } catch (e) {
-            console.warn(e);
-        }
-    };
-
     const renderItem = (section: SectionListData<any>, item: any): JSX.Element => {
         let titleElement = (
             <PDText type="default" style={ styles.sectionTitle }>
@@ -198,14 +186,7 @@ export const PoolScreen: React.FC = () => {
         if (section.key !== 'history_section' || history.length === 0) {
             return <></>;
         }
-        return (
-            <BoringButton
-                containerStyles={ styles.dataButton }
-                textStyles={ styles.dataButtonText }
-                onPress={ handleDataButtonPressed }
-                title="Export as CSV"
-            />
-        );
+        return <ForumPrompt />;
     };
 
     const sections: SectionListData<any>[] = [
