@@ -14,7 +14,7 @@ import { RecipeService } from '~/services/RecipeService';
 
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { ChipButton } from '~/screens/poolList/ChipButton';
+import { ChipButton } from '~/screens/home/ChipButton';
 import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
 import { Haptic } from '~/services/HapticService';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';

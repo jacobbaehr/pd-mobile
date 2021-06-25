@@ -31,7 +31,7 @@ export const DeletePool: React.FC<DeletePoolModal> = (props ) => {
     }
     const onPressDelete = () => {
         toggleVisible();
-        navigation.navigate('PoolList');
+        navigation.navigate('Home');
 
         dispatch(deletePool(selectedPool));
     };

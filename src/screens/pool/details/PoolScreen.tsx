@@ -26,7 +26,7 @@ import { useNavigation } from '@react-navigation/native';
 import { PoolHistoryListItem } from './PoolHistoryListItem';
 import PoolServiceConfigSection from './PoolServiceConfigSection';
 import { usePoolChart } from './usePoolChart';
-import { ForumPrompt } from '~/screens/poolList/footer/ForumPrompt';
+import { ForumPrompt } from '~/screens/home/footer/ForumPrompt';
 
 export const PoolScreen: React.FC = () => {
     useStandardStatusBar();

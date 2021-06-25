@@ -59,7 +59,10 @@ import IconVolume from './images/shapes/icon_volume.svg';
 import IconCharts from './images/subscription/icon_charts.svg';
 import IconHeart from './images/subscription/icon_heart.svg';
 import IconInfinitive from './images/subscription/icon_infinitive.svg';
-
+// Home
+import HomeWelcomeText from './images/home/welcome_text.svg';
+import HomeDescriptionText from './images/home/home_pce.svg';
+import HomeWaves from './images/home/waves_home.svg';
 
 export const images = {
     back: require('./images/back.png'),
@@ -71,7 +74,6 @@ export const images = {
     backTrans: require('./images/back_trans.png'),
     closeDark: require('./images/close_dark.png'),
     history: require('./images/history.png'),
-    poolListEmpty: require('./images/pd_bg_2.png'),
     star: require('./images/star.png'),
     waterType: require('./images/water_type.png'),
     greenAuthenticationBackground: require('./images/green_authentication_background.png'),
@@ -102,6 +104,7 @@ export const images = {
     importIcon: require('~/assets/images/icon-import.png'),
     deleteIcon: require('~/assets/images/icon-delete.png'),
     menuChevronIcon: require('~/assets/images/icon-menu-chevron.png'),
+    homeWelcomeText: require('~/assets/images/home/welcome_text.png'),
 };
 
 export interface OverrideSvgProps extends SvgProps {
@@ -172,4 +175,9 @@ export const SVG: Record<string, (props: OverrideSvgProps) => JSX.Element> = {
     IconUnits: (props) => <IconUnits { ...props } />,
     IconSettings: (props) => <IconSettings { ...props } />,
     IconSearch: (props) => <IconSearch { ...props } />,
+
+    // Home
+    HomeWelcomeText: (props) => <HomeWelcomeText { ...props } />,
+    HomeDescriptionText: (props) => <HomeDescriptionText { ...props } />,
+    HomeWaves: (props) => <HomeWaves { ...props } />,
 };

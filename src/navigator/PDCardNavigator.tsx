@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CustomTargetsScreen } from '~/screens/customTargets/CustomTargetsScreen';
 import { PoolScreen } from '~/screens/pool/details/PoolScreen';
-import { PoolListScreen } from '~/screens/poolList/PoolListScreen';
+import { HomeScreen } from '~/screens/home/HomeScreen';
 import { ReadingListScreen } from '~/screens/readings/ReadingListScreen';
 import { FormulaListNavParams, FormulaListScreen } from '~/screens/recipes/FormulaListScreen';
 import { FormulaDetailsNavParams, FormulaScreen } from '~/screens/recipes/FormulaScreen';
@@ -19,7 +19,7 @@ import { PrivacyScreen } from '~/screens/subscription/PrivacyScreen';
 
 // This defines the navigation params accepted by each possible screen in PDCardNavigator
 export type PDCardNavigatorParams = {
-    PoolList: undefined;
+    Home: undefined;
     PoolScreen: undefined;
     ReadingList: undefined;
     TreatmentList: undefined;
@@ -39,7 +39,7 @@ const CardStack = createStackNavigator<PDCardNavigatorParams>();
 export const PDCardNavigator = (): JSX.Element => {
     return (
         <CardStack.Navigator headerMode="none" mode="card">
-            <CardStack.Screen name="PoolList" component={ PoolListScreen } />
+            <CardStack.Screen name="Home" component={ HomeScreen } />
             <CardStack.Screen name="PoolScreen" component={ PoolScreen } />
             <CardStack.Screen name="ReadingList" component={ ReadingListScreen } />
             <CardStack.Screen name="TreatmentList" component={ TreatmentListScreen } />

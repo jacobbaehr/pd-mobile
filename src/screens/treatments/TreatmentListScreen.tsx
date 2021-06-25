@@ -136,7 +136,7 @@ export const TreatmentListScreen: React.FC = () => {
         );
         updateDS({ treatments: newTreatments });
         dispatch(clearReadings());
-        const navigateBackScreen = routesInNavStack.includes('PoolScreen') ? 'PoolScreen' : 'PoolList';
+        const navigateBackScreen = routesInNavStack.includes('PoolScreen') ? 'PoolScreen' : 'Home';
         navigate(navigateBackScreen);
     };
 
