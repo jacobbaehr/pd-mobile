@@ -1,15 +1,13 @@
 import { formatDistanceStrict } from 'date-fns';
 import React from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
 import { SVG } from '~/assets/images';
 import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { useLoadRecipeHook, useRealmPoolHistoryHook } from '~/hooks/RealmPoolHook';
-import { Pool } from '~/models/Pool';
 import { PDNavParams } from '~/navigator/shared';
-import { AppState, useTypedSelector } from '~/redux/AppState';
+import { useTypedSelector } from '~/redux/AppState';
 import { RecipeService } from '~/services/RecipeService';
 
 import { useNavigation } from '@react-navigation/native';
@@ -24,10 +22,12 @@ import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
  */
 const PoolServiceConfigSection = () => {
     const { navigate } = useNavigation<StackNavigationProp<PDNavParams>>();
-    const selectedPool = useSelector<AppState>((state) => state.selectedPool) as Pool;
+    const selectedPool = useTypedSelector(state => state.selectedPool);
     const recipe = useLoadRecipeHook(selectedPool?.recipeKey || RecipeService.defaultFormulaKey);
-    const history = useRealmPoolHistoryHook(selectedPool?.objectId);
+    const history = useRealmPoolHistoryHook(selectedPool?.objectId ?? null);
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
+
+    if (!selectedPool) { return <></>; }
 
     const navigateToCustomTargets = () => {
         navigate('CustomTargets', { prevScreen: 'EditPoolNavigator' });

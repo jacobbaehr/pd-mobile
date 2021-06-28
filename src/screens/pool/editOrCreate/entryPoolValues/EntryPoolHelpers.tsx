@@ -6,7 +6,7 @@ import { EntryVolume } from './EntryVolume';
 import { EntryWallType } from './EntryWallType';
 import { EntryWaterType } from './EntryWaterType';
 
-export type EntryPoolElements = 'name' | 'waterType'| 'gallons' | 'wallType' | 'email'
+export type EntryPoolElements = 'name' | 'waterType'| 'gallons' | 'wallType' | 'email';
 
 type RecordEntryPool = Record<EntryPoolElements, () => JSX.Element>
 

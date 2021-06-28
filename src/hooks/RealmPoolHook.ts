@@ -3,7 +3,7 @@ import ApolloClient from 'apollo-client';
 import { useEffect, useState } from 'react';
 import Realm from 'realm';
 import { LogEntry } from '~/models/logs/LogEntry';
-import { Pool } from '~/models/Pool';
+import { IPool, Pool } from '~/models/Pool';
 import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
 import { Recipe } from '~/models/recipe/Recipe';
 import { FormulaKey } from '~/models/recipe/FormulaKey';
@@ -15,8 +15,8 @@ import { useApolloClient } from '@apollo/react-hooks';
 
 import { RealmUtil } from '../services/RealmUtil';
 
-export const useRealmPoolsHook = (): Pool[] => {
-    const [data, setData] = useState<Pool[]>(() => {
+export const useRealmPoolsHook = (): IPool[] => {
+    const [data, setData] = useState<IPool[]>(() => {
         const realmPools = Database.loadPools();
         return RealmUtil.poolsToPojo(realmPools);
     });
@@ -89,17 +89,19 @@ export const useLoadRecipeHook = (formulaKey: FormulaKey): Recipe | null => {
 };
 
 /// This pulls all target range overrides for a given pool
-export const useRealmPoolTargetRangesForPool = (poolId: string): TargetRangeOverride[] => {
+export const useRealmPoolTargetRangesForPool = (poolId: string | null): TargetRangeOverride[] => {
     const [data, setData] = useState<TargetRangeOverride[]>(() => {
+        if (!poolId) { return []; }
         const realmCustomTarget = Database.loadCustomTargets(poolId);
         const parserData = RealmUtil.customTargetToPojo(realmCustomTarget);
         return parserData;
     });
 
     useEffect(() => {
+        if (!poolId) { return () => {}; }
+
         const handleChange = (newData: Realm.Collection<TargetRangeOverride>) => {
             const parserData = RealmUtil.customTargetToPojo(newData);
-
             setData(parserData);
         };
         const dataQuery = Database.loadCustomTargets(poolId);
@@ -115,7 +117,7 @@ export const useRealmPoolTargetRangesForPool = (poolId: string): TargetRangeOver
 };
 
 /// This pulls a single target range override for a given pool & variable.
-export const useRealmPoolTargetRange = (poolId: string, variable: string): TargetRangeOverride | null => {
-    const data = useRealmPoolTargetRangesForPool(poolId);
+export const useRealmPoolTargetRange = (variable: string, poolId?: string): TargetRangeOverride | null => {
+    const data = useRealmPoolTargetRangesForPool(poolId ?? null);
     return Util.firstOrNull(data.filter((ct) => ct.var === variable));
 };

@@ -2,10 +2,13 @@ import React, { useContext, useState } from 'react';
 import { IPool } from '~/models/Pool';
 import { useTypedSelector } from '~/redux/AppState';
 import { RecipeService } from '~/services/RecipeService';
+import { Util } from '~/services/Util';
+
+export type PartialPoolWithId = Partial<IPool> & Pick<IPool, 'objectId'>;
 
 interface PartialPoolContext {
-    pool: Partial<IPool>;
-    setPool: React.Dispatch<React.SetStateAction<Partial<IPool>>>;
+    pool: PartialPoolWithId;
+    setPool: React.Dispatch<React.SetStateAction<PartialPoolWithId>>;
 }
 
 const createPoolDefaults: Partial<IPool> = {
@@ -13,13 +16,25 @@ const createPoolDefaults: Partial<IPool> = {
     name: undefined,
     waterType: undefined,
     email: undefined,
-    objectId: undefined,
     recipeKey: RecipeService.defaultFormulaKey,
-    wallType: 'vinyl',
+    wallType: 'plaster',
+};
+
+const quickStartPoolDefaults: Partial<IPool> = {
+    gallons: undefined,
+    name: 'House Pool',
+    waterType: 'chlorine',
+    email: undefined,
+    recipeKey: RecipeService.defaultFormulaKey,
+    wallType: 'plaster',
 };
 
 const PartialPoolContext = React.createContext<PartialPoolContext>({
-    pool: createPoolDefaults,
+    pool: {
+        ...createPoolDefaults,
+        objectId: 'invalid_pool_id',        // gross!
+    },
+
     // We're going to override this with the setState call in the PoolProvider component
     setPool: () => {
         console.log('this is the default issue');
@@ -27,11 +42,25 @@ const PartialPoolContext = React.createContext<PartialPoolContext>({
 });
 
 interface PoolProviderProps {
-    initialPool: IPool | null;
+    isQuickStart: boolean;
 }
 
+const getInitialPool = (reduxPool: IPool | null, isQuickStart: boolean): PartialPoolWithId => {
+    if (reduxPool) {
+        return reduxPool;
+    }
+    const initialPool = isQuickStart ? quickStartPoolDefaults : createPoolDefaults;
+    return {
+        ...initialPool,
+        objectId: Util.generateUUID(),
+    };
+};
+
 export const PoolProvider: React.FC<PoolProviderProps> = (props) => {
-    const [pool, setPool] = useState(props.initialPool ?? createPoolDefaults);
+    const reduxPool = useTypedSelector((state) => state.selectedPool);
+
+    const initialPool = getInitialPool(reduxPool, props.isQuickStart);
+    const [pool, setPool] = useState(initialPool);
 
     const context = {
         pool,

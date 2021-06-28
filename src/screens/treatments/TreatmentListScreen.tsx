@@ -12,7 +12,6 @@ import { ServiceNonStickyHeader } from '~/components/services/ServiceNonStickyHe
 import { ServiceStickyHeaderList } from '~/components/services/ServiceStickyHeaderList';
 import { useLoadRecipeHook, useRealmPoolTargetRangesForPool } from '~/hooks/RealmPoolHook';
 import { LogEntry } from '~/models/logs/LogEntry';
-import { Pool } from '~/models/Pool';
 import { DryChemicalUnits, Units, WetChemicalUnits } from '~/models/TreatmentUnits';
 import { PDNavParams } from '~/navigator/shared';
 import { dispatch, useTypedSelector } from '~/redux/AppState';
@@ -39,7 +38,7 @@ import { TreatmentListItem } from './TreatmentListItem';
 
 export const TreatmentListScreen: React.FC = () => {
     const readings = useTypedSelector((state) => state.readingEntries);
-    const pool = useTypedSelector((state) => state.selectedPool) as Pool;
+    const pool = useTypedSelector(state => state.selectedPool);
     const pickerState = useTypedSelector((state) => state.pickerState);
     const { ds, updateDS } = useDeviceSettings();
     const recipeKey = pool?.recipeKey || RecipeService.defaultFormulaKey;
@@ -50,7 +49,7 @@ export const TreatmentListScreen: React.FC = () => {
     // I hate this... it's dirty. We should move this into the picker screen maybe?
     const [concentrationTreatmentVar, updateConcentrationTreatment] = React.useState<string | null>(null);
     const recipe = useLoadRecipeHook(recipeKey);
-    const targetRangeOverridesForPool = useRealmPoolTargetRangesForPool(pool.objectId);
+    const targetRangeOverridesForPool = useRealmPoolTargetRangesForPool(pool?.objectId ?? null);
     const routesInNavStack = useNavigationState(state => state.routes.map(r => r.name));
     const theme = useTheme();
     const allScoops = ds.scoops;
@@ -103,11 +102,14 @@ export const TreatmentListScreen: React.FC = () => {
         }
     });
 
-    if (!recipe) {
+    if (!recipe || !pool) {
         return <View />;
     }
 
     const save = async () => {
+        // sanity check (to appease typescript):
+        if (!pool?.objectId) { return; }
+
         const shouldSaveAllTreatments = !hasSelectedAnyTreatments;
 
         /// setState hooks don't modify the value in the current context -- so to actually turn the treatment entries "on",

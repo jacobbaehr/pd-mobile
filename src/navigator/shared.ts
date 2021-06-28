@@ -10,4 +10,3 @@ export type PDNavParams = PDCardNavigatorParams & PDRootNavigatorParams & PDPool
 export type PDStackNavigationProps = StackNavigationProp<PDNavParams>;
 
 export type EstimateRoute = RouteProp<PDPoolParams, 'EntryShape'>;
-

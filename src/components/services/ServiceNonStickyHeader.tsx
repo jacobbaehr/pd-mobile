@@ -4,7 +4,6 @@ import { SVG } from '~/assets/images';
 import { PDText } from '~/components/PDText';
 import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
-import { Pool } from '~/models/Pool';
 import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { useTypedSelector } from '~/redux/AppState';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
@@ -12,8 +11,11 @@ import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 /// The reading list header is partially scrollable -- this is the part that disappears under the navbar:
 export const ServiceNonStickyHeader: React.FC<{}> = () => {
     const theme = useTheme();
-    const pool = useTypedSelector((state) => state.selectedPool) as Pool;
+    const pool = useTypedSelector((state) => state.selectedPool);
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
+
+    if (!pool) { return <></>; }
+
     const volumeDisplay = VolumeUnitsUtil.getDisplayVolume(pool.gallons, deviceSettings);
     const detailsText = getDisplayForWaterType(pool.waterType);
 

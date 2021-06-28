@@ -1,11 +1,9 @@
-import { IPool } from '~/models/Pool';
 import { Database } from '~/repository/Database';
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { IPoolNoId } from '~/models/Pool/IPool';
+import { IPool } from '~/models/Pool';
 
-export const saveNewPool = createAsyncThunk('pool/save', (pool: IPoolNoId) => {
-    Database.saveNewPool(pool);
-    return pool;
+export const saveNewPool = createAsyncThunk('pool/save', (pool: IPool) => {
+    return Database.saveNewPool(pool);
 });
 
 export const updatePool = createAsyncThunk('pool/update', (pool: IPool) => {

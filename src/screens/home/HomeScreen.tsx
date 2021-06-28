@@ -4,15 +4,17 @@ import { SearchInput } from '~/components/inputs/SearchInput';
 import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { useTheme } from '~/components/PDTheme';
 import { useStandardStatusBar } from '~/hooks/useStatusBar';
-import { Pool } from '~/models/Pool';
 import { PDStackNavigationProps } from '~/navigator/shared';
-import { selectPool } from '~/redux/selectedPool/Actions';
+import { clearPool, selectPool } from '~/redux/selectedPool/Actions';
 import { Haptic } from '~/services/HapticService';
 import { useNavigation } from '@react-navigation/native';
 import { SearchHeader } from './SearchHeader';
 import { usePoolSearch } from './usePoolSearch';
 import { PoolList, PoolListProps } from './PoolList';
 import { QuickStartView } from './QuickStartView';
+import { beginQuickStart, endQuickStart } from '~/redux/quickStart/Actions';
+import { useTypedSelector } from '~/redux/AppState';
+import { IPool } from '~/models/Pool';
 
 export const HomeScreen = () => {
     const { navigate } = useNavigation<PDStackNavigationProps>();
@@ -21,14 +23,32 @@ export const HomeScreen = () => {
     const pools = usePoolSearch(searchText);
     useStandardStatusBar();
     const theme = useTheme();
+    const isQuickStart = useTypedSelector(state => state.isQuickStart);
 
-    const handlePoolPressed = (item: Pool) => {
+    // There has got to be a better way to handle this:
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    React.useEffect(() => {
+        if (isQuickStart && pools.length === 1) {
+            dispatch(endQuickStart());
+            dispatch(selectPool(pools[0]));
+            navigate('ReadingList');
+        }
+    });
+
+    const handleQuickStartPressed = () => {
+        Haptic.medium();
+        dispatch(clearPool());
+        dispatch(beginQuickStart());
+        navigate('EditPoolNavigator');
+    };
+
+    const handlePoolPressed = (item: IPool) => {
         Haptic.light();
         dispatch(selectPool(item));
         navigate('PoolScreen');
     };
 
-    const handleEnterReadingsPressed = (item: Pool) => {
+    const handleEnterReadingsPressed = (item: IPool) => {
         Haptic.medium();
         dispatch(selectPool(item));
         navigate('ReadingList');
@@ -61,7 +81,7 @@ export const HomeScreen = () => {
 
     const isEmpty = (!searchText) && (pools.length === 0);
     const content = isEmpty
-        ? <QuickStartView />
+        ? <QuickStartView handleQuickStartPressed={ handleQuickStartPressed } />
         : <PoolList { ...poolListProps }/>;
 
     return (

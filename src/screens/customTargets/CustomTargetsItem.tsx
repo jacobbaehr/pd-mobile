@@ -1,23 +1,22 @@
 import React, { useCallback } from 'react';
-import { StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
+import { StyleSheet, Text } from 'react-native';
 import { TextButton } from '~/components/buttons/TextButton';
 import BorderInputWithLabel from '~/components/inputs/BorderInputWithLabel';
 import { PDText } from '~/components/PDText';
 import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { useRealmPoolTargetRange } from '~/hooks/RealmPoolHook';
-import { Pool } from '~/models/Pool';
 import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
 import { TargetRange } from '~/models/recipe/TargetRange';
-import { AppState } from '~/redux/AppState';
 import { Database } from '~/repository/Database';
 import { Util } from '~/services/Util';
+import { PartialPoolWithId } from '../pool/editOrCreate/hooks/useEntryPool';
 
 import { TargetsHelper } from './TargetHelper';
 
 interface CustomTargetsItemProps {
     tr: TargetRange;
+    pool: PartialPoolWithId;
 }
 
 interface TargetFormFields {
@@ -28,20 +27,30 @@ interface TargetFormFields {
 /**
  *  List Item for Custom Targets by Defaults values from each wallType.
  */
-const CustomTargetsItem: React.FC<CustomTargetsItemProps> = ({ tr }) => {
-    const pool = useSelector<AppState>((state) => state.selectedPool) as Pool;
-    const locallySavedOverride = useRealmPoolTargetRange(pool.objectId, tr.var); // ?? ({} as TargetRangeOverride);
+const CustomTargetsItem: React.FC<CustomTargetsItemProps> = ({ tr, pool }) => {
+    const locallySavedOverride = useRealmPoolTargetRange(tr.var, pool?.objectId); // ?? ({} as TargetRangeOverride);
     const theme = useTheme();
 
     // The min & max will sometimes be equal to the defaults, but we need to determine both for the sake of comparison
-    const recipeDefaults = TargetsHelper.resolveMinMax(tr, pool.wallType, null);
-    const { min, max } = TargetsHelper.resolveMinMax(tr, pool.wallType, locallySavedOverride);
+    const recipeDefaults = TargetsHelper.resolveMinMax(tr, pool?.wallType ?? 'plaster', null);
+    const { min, max } = TargetsHelper.resolveMinMax(tr, pool?.wallType ?? 'plaster', locallySavedOverride);
 
     // We use empty-strings for defaults (to show the placeholder)
     const [formValues, setFormValues] = React.useState<TargetFormFields>({
         min: min === recipeDefaults.min ? '' : `${min}`,
         max: max === recipeDefaults.max ? '' : `${max}`,
     });
+
+    const handleTextChange = useCallback(
+        (fieldName: 'min' | 'max', newValue: string) => {
+            const newFormValues = Util.deepCopy(formValues);
+            newFormValues[fieldName] = newValue;
+            setFormValues(newFormValues);
+        },
+        [formValues]
+    );
+
+    if (!pool) { return <></>; }
 
     // Check for errors:
     const effectiveMinValue = formValues.min.length ? +formValues.min : recipeDefaults.min;
@@ -80,15 +89,6 @@ const CustomTargetsItem: React.FC<CustomTargetsItemProps> = ({ tr }) => {
         const mapCustomTarget = TargetRangeOverride.make(newLocalOverride);
         await Database.saveNewCustomTarget(mapCustomTarget);
     };
-
-    const handleTextChange = useCallback(
-        (fieldName: 'min' | 'max', newValue: string) => {
-            const newFormValues = Util.deepCopy(formValues);
-            newFormValues[fieldName] = newValue;
-            setFormValues(newFormValues);
-        },
-        [formValues]
-    );
 
     const handleBlur = () => {
         if (isValid) {

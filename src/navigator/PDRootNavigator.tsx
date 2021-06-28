@@ -4,7 +4,7 @@ import { PDPickerRouteProps, PickerScreen } from '~/screens/picker/PickerScreen'
 import { PopoverRouteProps, PopoverScreen } from '~/screens/popover/PopoverScreen';
 import { AddScoopScreen } from '~/screens/settings/scoops/add/AddScoopScreen';
 import {
-    ScoopDetailsRouteProps, ScoopDetailsScreen
+    ScoopDetailsRouteProps, ScoopDetailsScreen,
 } from '~/screens/settings/scoops/ScoopDetailsScreen';
 
 import { NavigationContainer } from '@react-navigation/native';

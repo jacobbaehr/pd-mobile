@@ -3,7 +3,7 @@ import { PDColor } from '~/components/PDTheme';
 import { EntryPoolElements } from '../entryPoolValues/EntryPoolHelpers';
 import { PoolHeader } from '../shared';
 
-export type CreatePoolField = EntryPoolElements | 'recipe';
+export type CreatePoolField = EntryPoolElements | 'recipe' | 'customTargets';
 
 export type RecordCreateList = Record<CreatePoolField, PoolHeader>;
 
@@ -18,7 +18,7 @@ export interface CreatePoolListItem {
 
 export interface CreatePoolList {
     title: string;
-    data: CreatePoolListItem[]
+    data: CreatePoolListItem[];
 }
 
 export namespace CreatePoolHelpers {
@@ -27,12 +27,12 @@ export namespace CreatePoolHelpers {
         name: {
             id: 'name',
             title: 'Pool Name',
-            description: 'Choose a name that best describes your pool',
+            description: 'Every pool deserves a name',
         },
         waterType: {
             id: 'waterType',
             title: 'Water Type',
-            description: "Select your pool's sanitization method",
+            description: 'Every pool is different. This will help us pick a pool-care formula for you.',
         },
         gallons: {
             id: 'gallons',
@@ -42,7 +42,7 @@ export namespace CreatePoolHelpers {
         wallType: {
             id: 'wallType',
             title: 'Wall Type',
-            description: 'This choice might affect the target range for some of your chemical readings',
+            description: 'This will help us pick target-levels for some chemicals, but you can still override them later.',
         },
         recipe: {
             id: 'recipe',
@@ -51,6 +51,9 @@ export namespace CreatePoolHelpers {
             id: 'email',
             title: 'Email Address',
             description: 'If you email a log entry, we’ll pre-populate the “to” field with this address.',
+        },
+        customTargets: {
+            id: 'customTargets',
         },
     };
 }

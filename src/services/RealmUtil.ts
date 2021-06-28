@@ -22,8 +22,7 @@ export class RealmUtil {
      * @returns array plain pool
      */
     static poolsToPojo = (rawPools: Realm.Collection<Pool>): IPool[] => {
-        const parserData = Util.toArrayPojo<IPool>(PoolProps, rawPools);
-        return parserData;
+        return Util.toArrayPojo<IPool>(PoolProps, rawPools);
     };
 
     /**

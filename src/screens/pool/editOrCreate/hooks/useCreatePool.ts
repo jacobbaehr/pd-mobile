@@ -14,11 +14,14 @@ import { useNavigation } from '@react-navigation/native';
 import { useEntryPool } from './useEntryPool';
 import { useVolumeEstimator } from './useVolumeEstimator';
 
+/// In quickStart mode, some of the fields will be pre-populated.
 export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolList[] => {
     const { pool } = useEntryPool();
     const { estimation } = useVolumeEstimator();
     const { navigate } = useNavigation<PDStackNavigationProps>();
     const recipe = useLoadRecipeHook(pool.recipeKey ?? RecipeService.defaultFormulaKey);
+
+    const numberOfTargetLevels = recipe?.custom?.length ?? 0;
 
     const handleNavigateToPopover = (id: CreatePoolField) => {
         const headerInfo = CreatePoolHelpers.createPoolList[id];
@@ -29,11 +32,16 @@ export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolList[] 
         navigate('FormulaList', { prevScreen: 'EditOrCreatePoolScreen', poolName: pool.name });
     };
 
+    const handleNavigateToCustomTargets = () => {
+        // TODO: fix these targets, there is no "real" selected pool so I'm not sure if this even works:
+        navigate('CustomTargets', { prevScreen: 'EditPoolNavigator' });
+    };
+
     const volume: number = pool?.gallons || Number(estimation);
 
     return [
         {
-            title: 'basic info',
+            title: 'basic',
             data: [
                 {
                     label: 'Name: ',
@@ -48,7 +56,7 @@ export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolList[] 
                     image: 'IconPoolVolume',
                     valueColor: volume ? 'pink' : 'grey',
                     id: 'gallons',
-                    value: volume ? VolumeUnitsUtil.getDisplayVolume(volume, deviceSettings) : 'Required',
+                    value: volume ? VolumeUnitsUtil.getDisplayVolume(volume, deviceSettings) : ' Required',
                     onPress: () => handleNavigateToPopover('gallons'),
                 },
                 {
@@ -56,7 +64,7 @@ export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolList[] 
                     image: 'IconPoolWaterType',
                     valueColor: pool?.waterType ? 'green' : 'grey',
                     id: 'waterType',
-                    value: pool?.waterType ? getDisplayForWaterType(pool?.waterType) : ' Required',
+                    value: pool?.waterType ? getDisplayForWaterType(pool.waterType) : ' Required',
                     onPress: () => handleNavigateToPopover('waterType'),
                 },
                 {
@@ -64,13 +72,13 @@ export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolList[] 
                     image: 'IconPoolWallType',
                     valueColor: pool?.wallType ? 'purple' : 'grey',
                     id: 'wallType',
-                    value: pool?.wallType ? getDisplayForWallType(pool?.wallType) : ' Vinyl',
+                    value: pool?.wallType ? getDisplayForWallType(pool.wallType) : ' Required',
                     onPress: () => handleNavigateToPopover('wallType'),
                 },
             ],
         },
         {
-            title: 'chemistry',
+            title: 'advanced',
             data: [
             {
                 label: 'Formula: ',
@@ -79,6 +87,14 @@ export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolList[] 
                 id: 'recipe',
                 value: recipe?.name ? recipe?.name : ' Default',
                 onPress: handleNavigateToFormulaListScreen,
+            },
+            {
+                id: 'customTargets',
+                label: 'Target Levels: ',
+                image: 'IconCustomTargets',
+                value: `${numberOfTargetLevels} options`,
+                valueColor: 'teal',
+                onPress: handleNavigateToCustomTargets,
             },
             ],
         },

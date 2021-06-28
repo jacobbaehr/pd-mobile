@@ -1,9 +1,7 @@
 import Realm from 'realm';
 import { LogEntry } from '~/models/logs/LogEntry';
-import { IPool, Pool } from '~/models/Pool';
-import { IPoolNoId } from '~/models/Pool/IPool';
+import { Pool, IPool } from '~/models/Pool';
 import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
-import { Util } from '~/services/Util';
 
 import { Migrator } from './Migrator';
 
@@ -46,11 +44,10 @@ export class Database {
         return results;
     };
 
-    static saveNewPool = (poolWithoutId: IPoolNoId): IPool => {
+    static saveNewPool = (unsavedPool: IPool): IPool => {
         const realm = Database.realm;
         const pool: IPool = {
-            ...poolWithoutId,
-            objectId: Util.generateUUID(),
+            ...unsavedPool,
         };
         try {
             realm.write(() => {

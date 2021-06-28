@@ -3,14 +3,14 @@ import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { PDText } from '~/components/PDText';
 import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
-import { Pool } from '~/models/Pool';
+import { IPool, Pool } from '~/models/Pool';
 import { PoolListFooterUpgrade } from './footer/PoolListFooterUpgrade';
 import { PoolListItem } from './PoolListItem';
 
 export interface PoolListProps {
-    pools: Pool[];
-    handlePoolPressed: (p: Pool) => void;
-    handleEnterReadingsPressed: (p: Pool) => void;
+    pools: IPool[];
+    handlePoolPressed: (p: IPool) => void;
+    handleEnterReadingsPressed: (p: IPool) => void;
     searchText: string;
     handleSeeAllPressed: () => void;
     handleUpgradePressed: () => void;

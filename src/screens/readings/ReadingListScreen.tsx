@@ -10,7 +10,6 @@ import { PDView } from '~/components/PDView';
 import { ServiceNonStickyHeader } from '~/components/services/ServiceNonStickyHeader';
 import { ServiceStickyHeaderList } from '~/components/services/ServiceStickyHeaderList';
 import { useLoadRecipeHook } from '~/hooks/RealmPoolHook';
-import { Pool } from '~/models/Pool';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { dispatch, useTypedSelector } from '~/redux/AppState';
 import { clearReadings, recordInput } from '~/redux/readingEntries/Actions';
@@ -27,8 +26,8 @@ import { ReadingListItem, ReadingState } from './ReadingListItem';
 export const ReadingListScreen: React.FC = () => {
     const [isSliding, setIsSliding] = React.useState(false);
     const [readingStates, setReadingStates] = React.useState<ReadingState[]>([]);
-    const pool = useTypedSelector((state) => state.selectedPool) as Pool;
-    const recipe = useLoadRecipeHook(pool.recipeKey || RecipeService.defaultFormulaKey);
+    const pool = useTypedSelector(state => state.selectedPool);
+    const recipe = useLoadRecipeHook(pool?.recipeKey || RecipeService.defaultFormulaKey);
     const { setOptions, navigate } = useNavigation<PDStackNavigationProps>();
     const theme = useTheme();
 

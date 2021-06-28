@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native';
 import { BackButton } from '~/components/buttons/BackButton';
 import { PDProgressBar } from '~/components/PDProgressBar';
 import { PDText } from '~/components/PDText';
-import { Pool } from '~/models/Pool';
 import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { useTypedSelector } from '~/redux/AppState';
@@ -17,7 +16,7 @@ interface ReadingListHeaderProps {
 
 export const ReadingListHeader: React.FunctionComponent<ReadingListHeaderProps> = (props) => {
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
-    const pool = useTypedSelector((state) => state.selectedPool) as Pool;
+    const pool = useTypedSelector(state => state.selectedPool);
     const navigation = useNavigation<PDStackNavigationProps>();
 
     const goBack = () => {
@@ -25,12 +24,12 @@ export const ReadingListHeader: React.FunctionComponent<ReadingListHeaderProps> 
     };
 
     // const percentText = `${(this.percentComplete * 100).toFixed(0)}% Complete`;
-    const volumeDisplay = VolumeUnitsUtil.getDisplayVolume(pool.gallons, deviceSettings);
-    const detailsText = `${getDisplayForWaterType(pool.waterType)} | ${volumeDisplay}`;
+    const volumeDisplay = VolumeUnitsUtil.getDisplayVolume(pool?.gallons || 0, deviceSettings);
+    const detailsText = `${getDisplayForWaterType(pool?.waterType || 'chlorine')} | ${volumeDisplay}`;
 
     return (
         <View style={ styles.container }>
-            <BackButton title={ pool.name } onPress={ goBack } color={ 'readingsBlue' } />
+            <BackButton title={ pool?.name } onPress={ goBack } color={ 'readingsBlue' } />
             <PDText type="default" style={ styles.gradientText }>
                 Treatments
             </PDText>

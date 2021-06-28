@@ -8,7 +8,6 @@ import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
 import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
-import { Pool } from '~/models/Pool';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { useThunkDispatch, useTypedSelector } from '~/redux/AppState';
 import { deletePool } from '~/redux/selectedPool/Actions';
@@ -19,10 +18,9 @@ interface DeletePoolModal {
 
 }
 
-
 export const DeletePool: React.FC<DeletePoolModal> = (props ) => {
     const { visible, toggleVisible } = props;
-    const selectedPool = useTypedSelector((state) => state.selectedPool) as Pool;
+    const selectedPool = useTypedSelector((state) => state.selectedPool);
     const navigation = useNavigation<PDStackNavigationProps>();
     const dispatch = useThunkDispatch();
 
@@ -33,7 +31,9 @@ export const DeletePool: React.FC<DeletePoolModal> = (props ) => {
         toggleVisible();
         navigation.navigate('Home');
 
-        dispatch(deletePool(selectedPool));
+        if (selectedPool) {
+            dispatch(deletePool(selectedPool));
+        }
     };
 
     return (

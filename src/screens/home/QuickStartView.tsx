@@ -6,20 +6,18 @@ import { images, SVG } from '~/assets/images';
 import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
 import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
-import { Haptic } from '~/services/HapticService';
 
+interface QuickStartViewProps {
+    handleQuickStartPressed: () => void;
+}
 
-export const QuickStartView: React.FC = () => {
+export const QuickStartView: React.FC<QuickStartViewProps> = (props) => {
 
     const startButtonXOffset = useRef(new Animated.Value(-400)).current;
     const welcomeTextPosition = useRef(new Animated.ValueXY({ x: 100, y: 0 })).current;
     const logoTextPosition = useRef(new Animated.ValueXY({ x: -100, y: 0 })).current;
     const waterPosition = useRef(new Animated.ValueXY({ x: 0, y: 100 })).current;
     const opacity = useRef(new Animated.Value(0)).current;
-
-    const handlePressedQuickStart = () => {
-        Haptic.light();
-    };
 
     useEffect(() => {
         Animated.sequence([
@@ -77,7 +75,7 @@ export const QuickStartView: React.FC = () => {
             </Animated.View>
             {/* Start button */}
             <Animated.View style={ { transform: [{ translateX: startButtonXOffset }] } }>
-                <ButtonWithChildren onPress={ handlePressedQuickStart } styles={ styles.buttonContainer } hitSlop={ 5 }>
+                <ButtonWithChildren onPress={ props.handleQuickStartPressed } styles={ styles.buttonContainer } hitSlop={ 5 }>
                     <SVG.IconPlayWhite height={ 21 } width={ 15 } style={ styles.buttonIcon } />
                     <PDText type="subHeading" style={ { color: 'white' } }>Quick Start</PDText>
                 </ButtonWithChildren>

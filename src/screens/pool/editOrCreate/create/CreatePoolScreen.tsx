@@ -18,7 +18,8 @@ import { useNavigation } from '@react-navigation/core';
 import { MenuItemButton } from '../../components/MenuItemButton';
 import { toPoolNoId } from '../shared';
 
-export const CreatePoolScreen: React.FunctionComponent = () => {
+
+export const CreatePoolScreen: React.FC = () => {
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
     const createPoolSectionInfo = useCreatePool(deviceSettings);
     const dispatch = useThunkDispatch();
@@ -31,9 +32,9 @@ export const CreatePoolScreen: React.FunctionComponent = () => {
     const handleCreatePoolPressed = () => {
         Haptic.heavy();
 
-        const newPoolNoId = toPoolNoId(pool);
-        if (newPoolNoId) {
-            dispatch(saveNewPool(newPoolNoId));
+        const newPoolNotSaved = toPoolNoId(pool);
+        if (newPoolNotSaved) {
+            dispatch(saveNewPool(newPoolNotSaved));
             navigation.goBack();
         }
     };

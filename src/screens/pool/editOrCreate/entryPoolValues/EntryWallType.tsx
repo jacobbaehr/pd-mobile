@@ -51,7 +51,7 @@ export const EntryWallType = () => {
                     styles={ Util.excludeFalsy([
                         { backgroundColor: theme.colors.greyLight },
                         styles.buttonContainer,
-
+                        wallType === wall.value && { backgroundColor: theme.colors.purple },
                     ]) }
                     onPress={ () => handleButtonSelected(wall.value) }>
                     <PDText type="bodySemiBold" color={ wallType === wall.value ? 'white' : 'greyDarker' }>

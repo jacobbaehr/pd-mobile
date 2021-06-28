@@ -4,16 +4,16 @@ import TouchableScale from 'react-native-touchable-scale';
 import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
-import { Pool } from '~/models/Pool';
+import { IPool } from '~/models/Pool';
 import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 import { ChipButton } from './ChipButton';
 
 interface PoolListItemProps {
-    pool: Pool;
-    handlePoolPressed: (p: Pool) => void;
-    handleEnterReadingsPressed: (p: Pool) => void;
+    pool: IPool;
+    handlePoolPressed: (p: IPool) => void;
+    handleEnterReadingsPressed: (p: IPool) => void;
 }
 
 export const PoolListItem: React.FC<PoolListItemProps> = (props) => {

@@ -1,5 +1,5 @@
 import { IPool } from '~/models/Pool';
-import { IPoolNoId } from '~/models/Pool/IPool';
+import { Util } from '~/services/Util';
 import { CreatePoolField } from './create/CreatePoolHelpers';
 import { EditPoolField } from './edit/EditPoolHelpers';
 
@@ -11,15 +11,16 @@ export interface PoolHeader {
     description?: string;
 }
 
-export const toPoolNoId = (pool: Partial<IPool>): IPoolNoId | null => {
+export const toPoolNoId = (pool: Partial<IPool>): IPool | null => {
     if (!!pool.name && !!pool.gallons && !!pool.waterType) {
         return {
             name: pool.name ?? 'My Pool',
             gallons: pool.gallons ?? 0,
             waterType: pool.waterType ?? 'chlorine',
-            wallType: pool.wallType ?? 'vinyl',
+            wallType: pool.wallType ?? 'plaster',
             email: pool.email,
             recipeKey: pool.recipeKey,
+            objectId: pool.objectId ?? Util.generateUUID(),
         };
     }
     return null;

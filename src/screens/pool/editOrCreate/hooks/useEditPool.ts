@@ -32,7 +32,7 @@ export const useEditPool = (pool: Partial<Pool>, toggleVisible: () => void): Edi
     const recipe = useLoadRecipeHook(pool?.recipeKey ?? RecipeService.defaultFormulaKey);
     const navigation = useNavigation<PDStackNavigationProps>();
 
-    const targetsSelected = recipe?.custom.length ?? 0;
+    const numberOfTargetLevels = recipe?.custom.length ?? 0;
 
     const handleNavigateToPopover = (id: EditPoolField) => {
         const headerInfo = EditPoolHelpers.editPoolList[id];
@@ -63,7 +63,7 @@ export const useEditPool = (pool: Partial<Pool>, toggleVisible: () => void): Edi
 
     return [
         {
-            title: 'basic info',
+            title: 'basic',
             data: [
                 {
                     id: 'name',
@@ -100,7 +100,7 @@ export const useEditPool = (pool: Partial<Pool>, toggleVisible: () => void): Edi
             ],
         },
         {
-            title: 'advanced chemistry',
+            title: 'advanced',
             data: [
                 {
                     id: 'recipe',
@@ -114,7 +114,7 @@ export const useEditPool = (pool: Partial<Pool>, toggleVisible: () => void): Edi
                     id: 'customTargets',
                     label: 'Target Levels: ',
                     image: 'IconCustomTargets',
-                    value: `${targetsSelected} Selected`,
+                    value: `${numberOfTargetLevels} options`,
                     valueColor: 'teal',
                     onPress: handleNavigateToCustomTargets,
                 },

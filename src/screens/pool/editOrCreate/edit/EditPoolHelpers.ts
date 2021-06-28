@@ -31,7 +31,7 @@ export namespace EditPoolHelpers {
         name: {
             id: 'name',
             title: 'Pool Name',
-            description: 'Choose a name that best describes your pool',
+            description: 'Every pool deserves a name',
         },
         waterType: {
             id: 'waterType',
@@ -46,7 +46,7 @@ export namespace EditPoolHelpers {
         wallType: {
             id: 'wallType',
             title: 'Wall Type',
-            description: 'This choice might affect the target range for some of your chemical readings',
+            description: 'This will help us pick target-levels for some chemicals, but you can still override them later.',
         },
         email: {
             id: 'email',

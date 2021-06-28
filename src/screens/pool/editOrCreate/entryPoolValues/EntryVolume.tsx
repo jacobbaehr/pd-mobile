@@ -56,7 +56,8 @@ export const EntryVolume = () => {
     };
 
     const unitText = getDisplayForPoolValue(units);
-    const volumesFixed = estimation ? Number(estimation).toFixed(0) : volume.toFixed(0);
+    let volumeString = estimation ? Number(estimation).toFixed(0) : volume.toFixed(0);
+    if (volumeString === '0') { volumeString = ''; }
 
     const hasVolumeChanged = VolumeUnitsUtil.getUsGallonsByUnit(volume, units) !== pool?.gallons || estimation;
 
@@ -64,7 +65,7 @@ export const EntryVolume = () => {
         <>
             <PDView style={ styles.inputContainer }>
                 <BorderInputWithLabel
-                    value={ volumesFixed }
+                    value={ volumeString }
                     placeholder="Pool Volume"
                     label="Volume"
                     style={ styles.textInput }
