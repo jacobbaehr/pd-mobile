@@ -20,7 +20,7 @@ import { toPoolNoId } from '../shared';
 
 
 export const CreatePoolScreen: React.FC = () => {
-    const deviceSettings = useTypedSelector((state) => state.deviceSettings);
+    const deviceSettings = useTypedSelector(state => state.deviceSettings);
     const createPoolSectionInfo = useCreatePool(deviceSettings);
     const dispatch = useThunkDispatch();
     const insets = useSafeArea();

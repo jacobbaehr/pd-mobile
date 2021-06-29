@@ -23,7 +23,7 @@ export const KeyboardButton : React.FC<KeyboardButtonProps> = (props) => {
             <InputAccessoryView nativeID={ nativeID } >
                 <PDView style={ [styles.keyboardAccessoryContainer, { backgroundColor: theme.colors.white }] }>
                     <TouchableOpacity { ...touchableProps }  style={ [styles.buttonContainer, { backgroundColor }] } >
-                        <PDText type="heading" color={ textColor } >
+                        <PDText type="subHeading" color={ textColor } >
                             {children}
                         </PDText>
                     </TouchableOpacity>
@@ -35,13 +35,14 @@ export const KeyboardButton : React.FC<KeyboardButtonProps> = (props) => {
 
 const styles = StyleSheet.create({
     keyboardAccessoryContainer: {
-        padding: PDSpacing.lg,
+        paddingHorizontal: PDSpacing.lg,
+        paddingVertical: PDSpacing.md,
     },
     keyboardAccessoryButton: {
         marginHorizontal: PDSpacing.lg,
     },
     buttonContainer: {
-        height: 55,
+        height: 40,
         borderRadius: 27.5,
         justifyContent: 'center',
         alignItems: 'center',

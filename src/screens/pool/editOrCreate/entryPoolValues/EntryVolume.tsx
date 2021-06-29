@@ -96,7 +96,7 @@ export const EntryVolume = () => {
             <ButtonWithChildren onPress={ handleEstimatorButtonPressed }>
                 <PDView style={ styles.estimatorButtonContainer } bgColor="greyLight">
                     <SVG.IconEstimator width={ 16 } height={ 16 } fill={ theme.colors.black } />
-                    <PDText type="subHeading" color="black"> Use Volume Estimator</PDText>
+                    <PDText type="subHeading" color="black" style={ { marginLeft: 5 } }>Volume Estimator</PDText>
                 </PDView>
             </ButtonWithChildren>
             <KeyboardButton

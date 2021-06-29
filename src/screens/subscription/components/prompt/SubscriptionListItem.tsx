@@ -39,7 +39,7 @@ export const SubscriptionListItem: React.FC<SubscriptionListItemProps> = (props)
                     <PDText type="bodySemiBold" color="black">
                         {product.title}
                     </PDText>
-                    <PDText type="bodyRegular" color="grey">
+                    <PDText type="bodyRegular" color="greyDark">
                         {product.price_string} per {product.identifier === Products.MONTHLY ? 'month' : 'year'}
                     </PDText>
                 </PDView>

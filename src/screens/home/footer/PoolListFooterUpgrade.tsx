@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { Dimensions, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useEffect, useRef } from 'react';
+import { Animated, Dimensions, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { images } from '~/assets/images';
+import { AV } from '~/components/animation/AnimationHelpers';
 import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
@@ -11,18 +13,21 @@ import { Util } from '~/services/Util';
 
 interface PoolListFooterNonEmptyProps {
     pressedUpgrade: () => void;
+    numPools: number;
 }
 
 export const PoolListFooterUpgrade: React.FunctionComponent<PoolListFooterNonEmptyProps> = (props) => {
     const [isChangeButtonPressed, setIsChangeButtonPressed] = React.useState(false);
     const { ds } = useDeviceSettings();
     const isPlus = DS.isSubscriptionValid(ds, Date.now());
+    const a = useAnimation(props.numPools);
 
     if (isPlus) {
         // I don't know if this is necessary:
         const imageWidth = Dimensions.get('window').width - 20;
         const imageHeight = imageWidth * 0.3108;
         return (
+            <AV opacity={ a.opacity } style={ { alignSelf: 'center' } }>
                 <Image
                     style={ styles.image }
                     source={ images.logoGreenPlus }
@@ -30,6 +35,7 @@ export const PoolListFooterUpgrade: React.FunctionComponent<PoolListFooterNonEmp
                     height={ imageHeight }
                     resizeMode={ 'contain' }
                 />
+            </AV>
         );
     }
 
@@ -38,21 +44,23 @@ export const PoolListFooterUpgrade: React.FunctionComponent<PoolListFooterNonEmp
     };
 
     return (
-        <PDView bgColor="transparent" style={ styles.container } >
-            <PDView style={ styles.topRow }>
-                <TouchableOpacity
-                    onPressIn={ toggleChangeButtonPressed }
-                    onPressOut={ toggleChangeButtonPressed }
-                    onPress={ props.pressedUpgrade }>
-                    <PDText type="default" style={ Util.excludeFalsy([styles.recipeLinkNormal, isChangeButtonPressed && styles.recipeLinkPressed]) }>
-                        Upgrade
+        <AV opacity={ a.opacity }>
+            <PDView bgColor="transparent" style={ styles.container } >
+                <PDView style={ styles.topRow }>
+                    <TouchableOpacity
+                        onPressIn={ toggleChangeButtonPressed }
+                        onPressOut={ toggleChangeButtonPressed }
+                        onPress={ props.pressedUpgrade }>
+                        <PDText type="default" style={ Util.excludeFalsy([styles.recipeLinkNormal, isChangeButtonPressed && styles.recipeLinkPressed]) }>
+                            Upgrade
+                        </PDText>
+                    </TouchableOpacity>
+                    <PDText type="default" color="greyDark" style={ styles.changeRecipeIntro }>
+                        {' '} to add more pools.
                     </PDText>
-                </TouchableOpacity>
-                <PDText type="default" color="greyDark" style={ styles.changeRecipeIntro }>
-                    {' '} to add more pools.
-                </PDText>
+                </PDView>
             </PDView>
-        </PDView>
+        </AV>
     );
 };
 
@@ -86,3 +94,25 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
 });
+
+const useAnimation = (numPools: number) => {
+    const opacity = useRef(new Animated.Value(0)).current;
+
+    const additionalDelayForStaggeredPools = numPools * 150;
+
+    useEffect(() => {
+        Animated.sequence([
+            Animated.delay(350 + additionalDelayForStaggeredPools),
+            Animated.timing(opacity, {
+                toValue: 1,
+                duration: 600,
+                useNativeDriver: true,
+            }),
+          ]).start();
+    /* eslint-disable react-hooks/exhaustive-deps */
+    }, []);
+
+    return {
+        opacity,
+    };
+};

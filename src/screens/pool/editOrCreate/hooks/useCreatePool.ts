@@ -13,6 +13,8 @@ import { useNavigation } from '@react-navigation/native';
 
 import { useEntryPool } from './useEntryPool';
 import { useVolumeEstimator } from './useVolumeEstimator';
+import { useEffect } from 'react';
+import { useTypedSelector } from '~/redux/AppState';
 
 /// In quickStart mode, some of the fields will be pre-populated.
 export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolList[] => {
@@ -20,8 +22,10 @@ export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolList[] 
     const { estimation } = useVolumeEstimator();
     const { navigate } = useNavigation<PDStackNavigationProps>();
     const recipe = useLoadRecipeHook(pool.recipeKey ?? RecipeService.defaultFormulaKey);
+    const isQuickStart = useTypedSelector(state => state.isQuickStart);
 
     const numberOfTargetLevels = recipe?.custom?.length ?? 0;
+
 
     const handleNavigateToPopover = (id: CreatePoolField) => {
         const headerInfo = CreatePoolHelpers.createPoolList[id];
@@ -36,6 +40,13 @@ export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolList[] 
         // TODO: fix these targets, there is no "real" selected pool so I'm not sure if this even works:
         navigate('CustomTargets', { prevScreen: 'EditPoolNavigator' });
     };
+
+    useEffect(() => {
+        if (isQuickStart) {
+            handleNavigateToPopover('gallons');
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const volume: number = pool?.gallons || Number(estimation);
 

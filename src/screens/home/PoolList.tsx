@@ -36,8 +36,9 @@ export const PoolList: React.FC<PoolListProps> = (props) => {
             keyboardShouldPersistTaps={ 'handled' }
             keyboardDismissMode={ 'interactive' }
             data={ pools }
-            renderItem={ ({ item }) => <PoolListItem
+            renderItem={ ({ item, index }) => <PoolListItem
                 pool={ item }
+                index={ index }
                 handleEnterReadingsPressed={ handleEnterReadingsPressed }
                 handlePoolPressed={ handlePoolPressed }/>
             }
@@ -50,7 +51,7 @@ export const PoolList: React.FC<PoolListProps> = (props) => {
                     );
                 }
                 if (pools.length > 0) {
-                    return <PoolListFooterUpgrade pressedUpgrade={ handleUpgradePressed } />;
+                    return <PoolListFooterUpgrade pressedUpgrade={ handleUpgradePressed } numPools={ pools.length } />;
                 }
                 return null;
             } }

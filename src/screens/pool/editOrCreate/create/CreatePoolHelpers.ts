@@ -37,7 +37,7 @@ export namespace CreatePoolHelpers {
         gallons: {
             id: 'gallons',
             title: 'Pool Volume',
-            description: 'Don\'t know your pool\'s volume? Tap "Use Volume Estimator" below.',
+            description: 'How big is your pool?',
         },
         wallType: {
             id: 'wallType',
