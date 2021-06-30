@@ -13,6 +13,7 @@ import { Util } from '~/services/Util';
 import { useNavigation } from '@react-navigation/native';
 
 import { useEntryPool } from '../hooks/useEntryPool';
+import { RecipeService } from '~/services/RecipeService';
 
 export const EntryWaterType = () => {
     const { pool, setPool } = useEntryPool();
@@ -36,7 +37,11 @@ export const EntryWaterType = () => {
 
     const handleButtonSelected = (menuItem: WaterTypeValue) => {
         setWaterType(menuItem);
-        setPool({ waterType: menuItem });
+        const recipeKey = RecipeService.getFormulaKeyForWaterType(menuItem);
+        setPool({
+            waterType: menuItem,
+            recipeKey,
+        });
         Haptic.medium();
         handleBackNavigation();
     };

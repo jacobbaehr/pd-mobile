@@ -9,10 +9,20 @@ import { Config } from './Config/AppConfig';
 
 import { FormulaAPI } from './gql/FormulaAPI';
 import { RS } from './RecipeUtil';
+import { WaterTypeValue } from '~/models/Pool/WaterType';
+import { Util } from './Util';
 
 export class RecipeService {
     private static fallbackFormula = Config.preloadedFormulas.formulas[0];
     static defaultFormulaKey = RS.getKey(RecipeService.fallbackFormula);
+
+    static getFormulaKeyForWaterType = (wt: WaterTypeValue): FormulaKey => {
+        // This should never really be null... but just in-case:
+        const bestOrNull = Util.firstOrNull(
+            Config.preloadedFormulas.defaultFormulaKeys[wt]
+        );
+        return bestOrNull ?? RS.getKey(RecipeService.fallbackFormula);
+    }
 
     /// First, tries to load the recipe locally. If not found, it fetches, saves, then returns the recipe from the API.
     static resolveRecipeWithKey = async (
