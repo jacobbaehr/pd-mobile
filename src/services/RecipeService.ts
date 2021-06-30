@@ -5,14 +5,14 @@ import { Recipe } from '~/models/recipe/Recipe';
 import { FormulaKey } from '~/models/recipe/FormulaKey';
 import { Database } from '~/repository/Database';
 import { RecipeRepo } from '~/repository/RecipeRepo';
-import { defaultRecipe } from '~/repository/recipes/Default';
-import { Config } from './Config';
+import { Config } from './Config/AppConfig';
 
 import { FormulaAPI } from './gql/FormulaAPI';
 import { RS } from './RecipeUtil';
 
 export class RecipeService {
-    static defaultFormulaKey = RS.getKey(defaultRecipe);
+    private static fallbackFormula = Config.preloadedFormulas.formulas[0];
+    static defaultFormulaKey = RS.getKey(RecipeService.fallbackFormula);
 
     /// First, tries to load the recipe locally. If not found, it fetches, saves, then returns the recipe from the API.
     static resolveRecipeWithKey = async (

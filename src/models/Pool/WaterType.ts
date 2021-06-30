@@ -1,6 +1,6 @@
 import { DisplayValueOption } from '../Util';
 
-export type WaterTypeValue = 'chlorine' | 'salt_water' | 'bromine' | 'copper' | 'ozone';
+export type WaterTypeValue = 'chlorine' | 'salt_water' | 'bromine' | 'copper' | 'ozone' | 'uv';
 
 export const waterTypeOptions: DisplayValueOption<WaterTypeValue>[] = [
     {
@@ -22,6 +22,10 @@ export const waterTypeOptions: DisplayValueOption<WaterTypeValue>[] = [
     {
         display: 'Ozone',
         value: 'ozone',
+    },
+    {
+        display: 'UV',
+        value: 'uv',
     },
 ];
 

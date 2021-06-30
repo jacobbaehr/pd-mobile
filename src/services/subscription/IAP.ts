@@ -3,7 +3,7 @@ import Purchases, {
 } from 'react-native-purchases';
 import { KNOWN_PRODUCTS, ProductId } from '~/models/InAppPurchase';
 
-import { Config } from '../Config';
+import { Config } from '../Config/AppConfig';
 import { Util } from '../Util';
 
 export interface PurchaseState {

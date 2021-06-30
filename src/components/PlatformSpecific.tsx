@@ -1,6 +1,6 @@
 import React from 'react';
 import { PlatformOSType } from 'react-native';
-import { Config } from '~/services/Config';
+import { Config } from '~/services/Config/AppConfig';
 
 interface PlatformSpecificProps {
     exclude?: PlatformOSType[];

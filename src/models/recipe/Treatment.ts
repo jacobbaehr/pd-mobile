@@ -23,4 +23,5 @@ export interface Treatment {
     type: TreatmentType;
 }
 
-export type TreatmentType = 'dryChemical' | 'liquidChemical' | 'task' | 'calculation';
+// export type TreatmentType = 'dryChemical' | 'liquidChemical' | 'task' | 'calculation';
+export type TreatmentType = string;

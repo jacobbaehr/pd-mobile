@@ -13,7 +13,7 @@ import { useLoadRecipeHook } from '~/hooks/RealmPoolHook';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { dispatch, useTypedSelector } from '~/redux/AppState';
 import { clearReadings, recordInput } from '~/redux/readingEntries/Actions';
-import { Config } from '~/services/Config';
+import { Config } from '~/services/Config/AppConfig';
 import { Haptic } from '~/services/HapticService';
 import { RecipeService } from '~/services/RecipeService';
 import { Util } from '~/services/Util';

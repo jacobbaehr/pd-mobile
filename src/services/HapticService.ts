@@ -1,5 +1,5 @@
 import ReactNativeHapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { Config } from './Config';
+import { Config } from './Config/AppConfig';
 
 export class Haptic {
     private static options = {

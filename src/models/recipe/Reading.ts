@@ -27,4 +27,5 @@ export interface Reading {
     idealMin: number | null;
 }
 
-export type ReadingType = 'number';
+// export type ReadingType = 'number';
+export type ReadingType = string;

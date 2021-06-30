@@ -11,7 +11,7 @@ import { PDCardNavigatorParams } from '~/navigator/PDCardNavigator';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { dispatch } from '~/redux/AppState';
 import { updateSelectedRecipe } from '~/redux/selectedRecipe/Actions';
-import { Config } from '~/services/Config';
+import { Config } from '~/services/Config/AppConfig';
 import { RS } from '~/services/RecipeUtil';
 
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';

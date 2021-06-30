@@ -1,12 +1,12 @@
 import * as RNFS from 'react-native-fs';
-import { Recipe } from '~/models/recipe/Recipe';
-import { defaultRecipe } from '~/repository/recipes/Default';
+import { Formula, Recipe } from '~/models/recipe/Recipe';
 import { FormulaKey, getFormulaKey } from '~/models/recipe/FormulaKey';
 import { Util } from '~/services/Util';
 import { RS } from '~/services/RecipeUtil';
+import { Config } from '~/services/Config/AppConfig';
 
 const recipeFolderName = 'recipes';
-const defaultRecipes: Recipe[] = [defaultRecipe];
+const defaultFormulas: Formula[] = Config.preloadedFormulas.formulas;
 
 export namespace RecipeRepo {
     /// Attempts to load the recipes from the Recipe folder
@@ -43,14 +43,17 @@ export namespace RecipeRepo {
         }
         const latestLocalFormulaMetas = (await loadLatestLocalFormulaKeys()).map((rk) => RS.reverseKey(rk));
 
-        const promises = defaultRecipes.map((r) => {
+        const promises = defaultFormulas.map((r) => {
             return new Promise<void>(async (resolve) => {
                 /// If we've already saved the same (or later) local recipe, skip it.
                 const existingNewerFormulaMeta = latestLocalFormulaMetas.filter(
                     (meta) => meta.id === r.id && meta.ts >= r.ts,
                 );
                 if (existingNewerFormulaMeta.length === 0) {
+                    console.log('saving new');
                     await RecipeRepo.saveRecipe(r);
+                } else {
+                    console.log('nah already got it');
                 }
                 resolve();
             });

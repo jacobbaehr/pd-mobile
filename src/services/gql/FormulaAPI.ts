@@ -116,4 +116,48 @@ export class FormulaAPI {
 
         return result.data.latestPublishedMeta;
     };
+
+    static fetchLatestFormulaQuery = gql`
+        query LatestFormula($id: String!) {
+            latestFormula(id: $id) {
+                id
+                author_id
+                author_username
+                name
+                description
+                ts
+                appVersion
+                isOfficial
+                readings {
+                    name
+                    var
+                    sliderMin
+                    sliderMax
+                    idealMin
+                    idealMax
+                    type
+                    decimalPlaces
+                    units
+                    defaultValue
+                }
+                treatments {
+                    name
+                    var
+                    function
+                    type
+                    concentration
+                }
+                custom {
+                    name
+                    var
+                    description
+                    defaults {
+                        wallType
+                        min
+                        max
+                    }
+                }
+            }
+        }
+    `;
 }

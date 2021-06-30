@@ -6,7 +6,7 @@ import { PDText } from '~/components/PDText';
 import { PDSpacing, useTheme } from '~/components/PDTheme';
 
 import { PDView } from '~/components/PDView';
-import { Config } from '~/services/Config';
+import { Config } from '~/services/Config/AppConfig';
 import { Haptic } from '~/services/HapticService';
 import { Util } from '~/services/Util';
 

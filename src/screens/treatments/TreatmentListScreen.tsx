@@ -19,7 +19,7 @@ import { clearPickerState } from '~/redux/picker/Actions';
 import { clearReadings } from '~/redux/readingEntries/Actions';
 import { Database } from '~/repository/Database';
 import { CalculationService } from '~/services/CalculationService';
-import { Config } from '~/services/Config';
+import { Config } from '~/services/Config/AppConfig';
 import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
 import { Haptic } from '~/services/HapticService';
 import { RealmUtil } from '~/services/RealmUtil';

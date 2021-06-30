@@ -5,7 +5,7 @@ import { PDText } from '~/components/PDText';
 import { useLoadRecipeHook } from '~/hooks/RealmPoolHook';
 import { FormulaMeta } from '~/models/recipe/FormulaMeta';
 import { PDNavParams } from '~/navigator/shared';
-import { Config } from '~/services/Config';
+import { Config } from '~/services/Config/AppConfig';
 import { FormulaAPI } from '~/services/gql/FormulaAPI';
 import { RecipeService } from '~/services/RecipeService';
 import { RS } from '~/services/RecipeUtil';

@@ -9,7 +9,8 @@
         "test": "jest",
         "lint": "eslint . --ext .ts,.tsx",
         "generate": "npx apollo codegen:generate --endpoint https://dev-api.pooldash.com/graphql --target typescript --tagName=gql --outputFlat src/services/gql/generated --globalTypesFile /_garbage.txt",
-        "debug": "open \"rndebugger://set-debugger-loc?host=localhost&port=8081\""
+        "debug": "open \"rndebugger://set-debugger-loc?host=localhost&port=8081\"",
+        "preload": "npx ts-node -T src/services/formulas/preload/preloader.ts"
     },
     "dependencies": {
         "@apollo/react-hooks": "^3.1.5",
@@ -80,6 +81,7 @@
         "prettier": "^2.0.2",
         "react-native-svg-transformer": "^0.14.3",
         "react-test-renderer": "16.11.0",
+        "ts-node": "^8.10.2",
         "typescript": "^3.8.3"
     },
     "lint-staged": {

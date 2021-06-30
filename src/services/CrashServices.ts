@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/react-native';
-import { Config } from '~/services/Config';
+import { Config } from '~/services/Config/AppConfig';
 
 // https://docs.sentry.io/platforms/react-native
 export namespace CrashServices {

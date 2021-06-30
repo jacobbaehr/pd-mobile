@@ -6,7 +6,7 @@ import TouchableScale from 'react-native-touchable-scale';
 import { images } from '~/assets/images';
 import { PDText } from '~/components/PDText';
 import { PlatformSpecific } from '../PlatformSpecific';
-import { Config } from '~/services/Config';
+import { Config } from '~/services/Config/AppConfig';
 
 type BackButtonColor = 'blue' | 'readingsBlue' | 'treatmentsPurple' | 'recipesGreen';
 

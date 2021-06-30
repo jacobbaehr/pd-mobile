@@ -2,7 +2,7 @@ import Share, { MultipleOptions, Options } from 'react-native-share';
 import { Pool } from '~/models/Pool';
 import { TempCsvRepo } from '~/repository/TempCsvRepo';
 
-import { Config } from './Config';
+import { Config } from './Config/AppConfig';
 import { DataService } from './DataService';
 import { Util } from './Util';
 
