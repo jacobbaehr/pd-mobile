@@ -13,6 +13,11 @@ import {
     EntryPoolElements, EntryPoolHelpers,
 } from '../editOrCreate/entryPoolValues/EntryPoolHelpers';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useMemo } from 'react';
+
+export interface EditPoolModalNavParams {
+    headerInfo: HeaderInfo;
+}
 
 export interface HeaderInfo {
     id: EntryPoolElements;
@@ -25,7 +30,8 @@ export const PoolPopover: React.FC = () => {
     const route = useRoute<RouteProp<PDPoolParams, 'EditPoolModal'>>();
     const { headerInfo } = route.params;
 
-    const EntryField = EntryPoolHelpers.getEntryElementById(headerInfo.id as EntryPoolElements);
+    const EntryComponent = useMemo(() => EntryPoolHelpers.getEntryElementById(headerInfo.id), [headerInfo.id]);
+
     return (
         <PDView style={ styles.container } bgColor="white">
             <ScreenHeader textType="subHeading" hasBackButton hasBottomLine={ false }>
@@ -40,12 +46,16 @@ export const PoolPopover: React.FC = () => {
                     {headerInfo.description}
                 </PDText>
                 <PDView style={ styles.content }>
-                    <EntryField/>
+                    <EntryComponent />
                 </PDView>
             </KeyboardAwareScrollView>
         </PDView>
     );
 };
+
+// TODO: what the heck was causing this to re-render? Some navigation event?
+// export const PoolPopover = React.memo(PoolPopoverTest);
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

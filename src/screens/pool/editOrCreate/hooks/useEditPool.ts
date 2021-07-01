@@ -11,9 +11,8 @@ import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { HeaderInfo } from '../../components/PoolPopover';
-import { EditPoolHelpers } from '../edit/EditPoolHelpers';
 import { toPool } from '../shared';
+import { EntryPoolHelpers } from '../entryPoolValues/EntryPoolHelpers';
 
 export type MenuItemId =
     | 'name'
@@ -25,8 +24,6 @@ export type MenuItemId =
     | 'export'
     | 'delete';
 
-export type NavigationProps = { headerInfo: HeaderInfo } | { prevScreen: string };
-
 export const useEditPool = (pool: Partial<Pool>, toggleVisible: () => void): EditPoolList[] => {
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
     const recipe = useLoadRecipeHook(pool?.recipeKey ?? RecipeService.defaultFormulaKey);
@@ -35,7 +32,7 @@ export const useEditPool = (pool: Partial<Pool>, toggleVisible: () => void): Edi
     const numberOfTargetLevels = recipe?.custom.length ?? 0;
 
     const handleNavigateToPopover = (id: EditPoolField) => {
-        const headerInfo = EditPoolHelpers.editPoolList[id];
+        const headerInfo = EntryPoolHelpers.entryHeaderInfo[id];
         navigation.navigate('EditPoolModal', { headerInfo });
     };
 

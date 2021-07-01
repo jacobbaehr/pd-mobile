@@ -1,15 +1,5 @@
 import { IPool } from '~/models/Pool';
 import { Util } from '~/services/Util';
-import { CreatePoolField } from './create/CreatePoolHelpers';
-import { EditPoolField } from './edit/EditPoolHelpers';
-
-type ID = CreatePoolField | EditPoolField
-
-export interface PoolHeader {
-    id: ID;
-    title?: string;
-    description?: string;
-}
 
 export const toPoolNoId = (pool: Partial<IPool>): IPool | null => {
     if (!!pool.name && !!pool.gallons && !!pool.waterType) {

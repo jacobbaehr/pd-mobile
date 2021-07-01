@@ -39,8 +39,10 @@ export const CreatePoolScreen: React.FC = () => {
         }
     };
 
+    console.log('so many renders');
+
     return (
-        <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never' } }>
+        <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never', top: 'never' } }>
             <ModalHeader>Create Pool</ModalHeader>
             <SectionList
                 sections={ createPoolSectionInfo }

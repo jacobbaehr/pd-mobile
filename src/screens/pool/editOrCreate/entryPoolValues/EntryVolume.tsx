@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { Keyboard, StyleSheet } from 'react-native';
 import { SVG } from '~/assets/images';
 import { Button } from '~/components/buttons/Button';
 import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
@@ -30,15 +30,18 @@ export const EntryVolume = () => {
     const theme = useTheme();
     const keyboardAccessoryViewId = 'keyboardaccessoryidpooleditscreen2';
 
-    const handleOnPressSaveButton = () => {
+    const handleOnPressSaveButton = async () => {
         let gallons = VolumeUnitsUtil.getUsGallonsByUnit(volume, units);
         setPool({ gallons });
         clear();
+        Keyboard.dismiss();
         navigation.goBack();
     };
 
     const handleTextChanged = useCallback((text: string) => {
-        setVolume(+text);
+        // strip commas
+        const cleanText = text.replace(',', '');
+        setVolume(+cleanText);
     }, []);
 
     const handleUnitButtonPressed = () => {
@@ -56,7 +59,9 @@ export const EntryVolume = () => {
     };
 
     const unitText = getDisplayForPoolValue(units);
-    let volumeString = estimation ? Number(estimation).toFixed(0) : volume.toFixed(0);
+
+    const roundedVolume = estimation ? +estimation : volume;
+    let volumeString = roundedVolume.toLocaleString('en-US', { maximumFractionDigits: 0 });
     if (volumeString === '0') { volumeString = ''; }
 
     const hasVolumeChanged = VolumeUnitsUtil.getUsGallonsByUnit(volume, units) !== pool?.gallons || estimation;
@@ -105,7 +110,7 @@ export const EntryVolume = () => {
                 bgColor={ hasVolumeChanged ? 'pink' : 'greyLighter' }
                 textColor={ hasVolumeChanged ? 'white' : 'grey' }
                 nativeID={ keyboardAccessoryViewId }
-                activeOpacity={ hasVolumeChanged ? 0 : 1 }
+                activeOpacity={ 0.6 }
                 hitSlop={ { top: 5, left: 5, bottom: 5, right: 5 } }>
                 Save
             </KeyboardButton>

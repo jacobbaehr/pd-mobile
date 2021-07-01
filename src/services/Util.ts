@@ -133,4 +133,10 @@ export class Util {
     static doAsync = async (cb: () => void) => {
         setTimeout(cb, 1);
     }
+
+    static delay = async (seconds: number) => {
+        return new Promise((resolve) => {
+            setTimeout(resolve, seconds * 1000);
+        });
+    }
 }

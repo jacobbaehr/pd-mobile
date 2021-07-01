@@ -3,9 +3,7 @@ import { DeviceSettings } from '~/models/DeviceSettings';
 import { getDisplayForWallType } from '~/models/Pool/WallType';
 import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { PDStackNavigationProps } from '~/navigator/shared';
-import {
-    CreatePoolField, CreatePoolHelpers, CreatePoolList,
-} from '~/screens/pool/editOrCreate/create/CreatePoolHelpers';
+import { CreatePoolField, CreatePoolList } from '~/screens/pool/editOrCreate/create/CreatePoolHelpers';
 import { RecipeService } from '~/services/RecipeService';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
@@ -15,6 +13,7 @@ import { useEntryPool } from './useEntryPool';
 import { useVolumeEstimator } from './useVolumeEstimator';
 import { useEffect } from 'react';
 import { useTypedSelector } from '~/redux/AppState';
+import { EntryPoolHelpers } from '../entryPoolValues/EntryPoolHelpers';
 
 /// In quickStart mode, some of the fields will be pre-populated.
 export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolList[] => {
@@ -28,7 +27,7 @@ export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolList[] 
 
 
     const handleNavigateToPopover = (id: CreatePoolField) => {
-        const headerInfo = CreatePoolHelpers.createPoolList[id];
+        const headerInfo = EntryPoolHelpers.entryHeaderInfo[id];
         navigate('EditPoolModal', { headerInfo });
     };
 
