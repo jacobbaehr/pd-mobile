@@ -33,6 +33,7 @@ export const preload = async (isProd: boolean) => {
     });
 
     const fetchAll = formulaIdList.map(async f => {
+        console.log('fetching: ' + f);
         const result = await client.query<LatestFormula>({ query: FormulaAPI.fetchLatestFormulaQuery, variables: { id: f } });
         return result.data.latestFormula;
     });
@@ -55,11 +56,13 @@ export const preload = async (isProd: boolean) => {
 };
 
 const getIdsFromMap = (input: FormulaMap): string[] => {
-    const waterTypes = Object.keys(input);
+    const waterTypes = Object.keys(input) as WaterTypeValue[];
     let uniqueIds = new Set<string>();
 
     waterTypes.forEach(wt => {
-        uniqueIds.add(input[wt]);
+        input[wt].forEach(fid => {
+            uniqueIds.add(fid);
+        });
     });
 
     return Array.from(uniqueIds);
