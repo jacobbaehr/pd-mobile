@@ -14,7 +14,7 @@ export interface CreatePoolListItem {
     valueColor: PDColor;
 }
 
-export interface CreatePoolList {
+export interface CreatePoolListSection {
     title: string;
     data: CreatePoolListItem[];
 }

@@ -16,7 +16,7 @@ export interface EditPoolListItem {
     valueColor: PDColor;
 }
 
-export interface EditPoolList {
+export interface EditPoolListSection {
     title: string;
     data: EditPoolListItem[]
 }

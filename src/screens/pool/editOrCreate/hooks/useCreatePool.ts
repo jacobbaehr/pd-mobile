@@ -3,7 +3,7 @@ import { DeviceSettings } from '~/models/DeviceSettings';
 import { getDisplayForWallType } from '~/models/Pool/WallType';
 import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { PDStackNavigationProps } from '~/navigator/shared';
-import { CreatePoolField, CreatePoolList } from '~/screens/pool/editOrCreate/create/CreatePoolHelpers';
+import { CreatePoolField, CreatePoolListSection } from '~/screens/pool/editOrCreate/create/CreatePoolHelpers';
 import { RecipeService } from '~/services/RecipeService';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 
@@ -16,7 +16,7 @@ import { useTypedSelector } from '~/redux/AppState';
 import { EntryPoolHelpers } from '../entryPoolValues/EntryPoolHelpers';
 
 /// In quickStart mode, some of the fields will be pre-populated.
-export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolList[] => {
+export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolListSection[] => {
     const { pool } = useEntryPool();
     const { estimation } = useVolumeEstimator();
     const { navigate } = useNavigation<PDStackNavigationProps>();
@@ -49,7 +49,7 @@ export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolList[] 
 
     const volume: number = pool?.gallons || Number(estimation);
 
-    return [
+    let content: CreatePoolListSection[] = [
         {
             title: 'basic',
             data: [
@@ -122,4 +122,10 @@ export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolList[] 
             ],
         },
     ];
+
+    if (isQuickStart) {
+        content = [{ title: 'quick-start', data: [] }, ...content];
+    }
+
+    return content;
 };
