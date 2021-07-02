@@ -124,7 +124,7 @@ export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolListSec
     ];
 
     if (isQuickStart) {
-        content = [{ title: 'instruction', data: [] }, ...content];
+        content = [{ title: 'quick-start', data: [] }, ...content];
     }
 
     return content;

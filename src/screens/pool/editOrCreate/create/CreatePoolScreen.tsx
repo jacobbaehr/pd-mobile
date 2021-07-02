@@ -19,6 +19,7 @@ import { MenuItemButton } from '../../components/MenuItemButton';
 import { toPoolNoId } from '../shared';
 import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
 import { SVG } from '~/assets/images';
+import { QuickStartText } from './QuickStartText';
 
 
 export const CreatePoolScreen: React.FC = () => {
@@ -50,7 +51,7 @@ export const CreatePoolScreen: React.FC = () => {
             return (
             <ButtonWithChildren onPress={ handleCreatePoolPressed } styles={ styles.buttonContainer }>
                 <SVG.IconPlayWhite height={ 21 } width={ 15 } style={ styles.buttonIcon } />
-                <PDText type="subHeading" style={ { color: 'white' } }>Enter Readings</PDText>
+                <PDText type="subHeading" style={ { color: 'white' } }>Continue</PDText>
             </ButtonWithChildren>
             );
         } else {
@@ -68,15 +69,19 @@ export const CreatePoolScreen: React.FC = () => {
     };
 
     return (
-        <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never', top: 'never' } }>
+        <PDSafeAreaView bgColor="greyLighter" forceInset={ { bottom: 'never', top: 'never' } }>
             <ModalHeader>Create Pool</ModalHeader>
             <SectionList
                 sections={ createPoolSectionInfo }
-                renderSectionHeader={ ({ section: { title } }) => (
-                    <PDText type="bodyGreyBold" style={ styles.sectionHeaderText }>
+                renderSectionHeader={ ({ section: { title } }) => {
+                    if (isQuickStart && title === 'quick-start') {
+                        return <QuickStartText />;
+                    } else {
+                        return <PDText type="bodyGreyBold" style={ styles.sectionHeaderText }>
                         {title}
-                    </PDText>
-                ) }
+                    </PDText>;
+                    }
+                } }
                 renderItem={ ({ item, index, section }) => (
                     <MenuItemButton { ...item } index={ index } sectionLength={ section.data.length } />
                 ) }
@@ -94,7 +99,6 @@ export const CreatePoolScreen: React.FC = () => {
 const styles = StyleSheet.create({
     listContainer: {
         flex: 1,
-        backgroundColor: '#FAFAFA',
     },
     listContent: {
         paddingHorizontal: PDSpacing.md,
@@ -116,8 +120,9 @@ const styles = StyleSheet.create({
     buttonContainer: {
         display: 'flex',
         flexDirection: 'row',
-        marginBottom: PDSpacing.sm,
-        marginTop: PDSpacing.lg,
+        // marginBottom: PDSpacing.sm,
+        marginHorizontal: PDSpacing.lg,
+        // marginTop: PDSpacing.lg,
         backgroundColor: '#1E6BFF',
         justifyContent: 'center',
         paddingTop: 9,

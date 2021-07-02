@@ -19,7 +19,7 @@ const ModalHeader: React.FC = (props) => {
     };
 
     return (
-        <PDView style={ styles.container }>
+        <PDView style={ styles.container } bgColor="white">
             <PDView style={ styles.sideContainer }>
                 <TouchableScale onPress={ goBack }>
                     <SVG.IconCloseButton fill={ theme.colors.black } />
