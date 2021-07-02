@@ -20,11 +20,10 @@ import { toPoolNoId } from '../shared';
 import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
 import { SVG } from '~/assets/images';
 import { QuickStartText } from './QuickStartText';
-import { ListView } from 'react-native';
 
-look at volume if they dont enter it
-look at background color of ListView
-thats all i think.
+// look cdat volume if they dont enter it
+// look at background color of ListView
+// thats all i think.
 
 export const CreatePoolScreen: React.FC = () => {
     // are there performance implications to just returning the whole state from this?
