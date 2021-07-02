@@ -50,10 +50,7 @@ export namespace RecipeRepo {
                     (meta) => meta.id === r.id && meta.ts >= r.ts,
                 );
                 if (existingNewerFormulaMeta.length === 0) {
-                    console.log('saving new');
                     await RecipeRepo.saveRecipe(r);
-                } else {
-                    console.log('nah already got it');
                 }
                 resolve();
             });

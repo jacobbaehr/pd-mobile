@@ -17,10 +17,16 @@ import { useNavigation } from '@react-navigation/core';
 
 import { MenuItemButton } from '../../components/MenuItemButton';
 import { toPoolNoId } from '../shared';
+import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
+import { SVG } from '~/assets/images';
 
 
 export const CreatePoolScreen: React.FC = () => {
-    const deviceSettings = useTypedSelector(state => state.deviceSettings);
+    // are there performance implications to just returning the whole state from this?
+    const { deviceSettings, isQuickStart } = useTypedSelector(state => ({
+        deviceSettings: state.deviceSettings,
+        isQuickStart: state.isQuickStart,
+    }));
     const createPoolSectionInfo = useCreatePool(deviceSettings);
     const dispatch = useThunkDispatch();
     const insets = useSafeArea();
@@ -39,7 +45,27 @@ export const CreatePoolScreen: React.FC = () => {
         }
     };
 
-    console.log('so many renders');
+    const getButtonComponent = () => {
+        if (isQuickStart) {
+            return (
+            <ButtonWithChildren onPress={ handleCreatePoolPressed } styles={ styles.buttonContainer }>
+                <SVG.IconPlayWhite height={ 21 } width={ 15 } style={ styles.buttonIcon } />
+                <PDText type="subHeading" style={ { color: 'white' } }>Enter Readings</PDText>
+            </ButtonWithChildren>
+            );
+        } else {
+            return (
+            <PDButton
+                textStyle={ styles.text }
+                onPress={ handleCreatePoolPressed }
+                touchableProps={ { disabled: !isRequiredFilledOut } }
+                style={ styles.saveButton }
+                bgColor={ !isRequiredFilledOut ? 'greyLight' : 'blue' }>
+                Create Pool
+            </PDButton>
+            );
+        }
+    };
 
     return (
         <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never', top: 'never' } }>
@@ -59,16 +85,8 @@ export const CreatePoolScreen: React.FC = () => {
                 contentContainerStyle={ styles.listContent }
                 style={ [styles.listContainer, { backgroundColor: theme.colors.background }] }
             />
-            <PDView style={ { paddingBottom: insets.bottom + PDSpacing.sm } }>
-                <PDButton
-                    textStyle={ styles.text }
-                    onPress={ handleCreatePoolPressed }
-                    touchableProps={ { disabled: !isRequiredFilledOut } }
-                    style={ styles.saveButton }
-                    bgColor={ !isRequiredFilledOut ? 'greyLight' : 'blue' }>
-                    Create Pool
-                </PDButton>
-            </PDView>
+            { getButtonComponent() }
+            <PDView style={ { paddingBottom: insets.bottom + PDSpacing.sm } } />
         </PDSafeAreaView>
     );
 };
@@ -86,15 +104,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginTop: 15,
     },
-    buttonContainer: {
-        borderRadius: 27.5,
-        justifyContent: 'center',
-        alignSelf: 'center',
-        opacity: 0.3,
-        marginBottom: PDSpacing.lg,
-        overflow: 'visible',
-        width: '87%',
-    },
     saveButton: {
         borderRadius: 27.5,
         paddingVertical: PDSpacing.xs,
@@ -103,5 +112,21 @@ const styles = StyleSheet.create({
     text: {
         textAlign: 'center',
         color: 'white',
+    },
+    buttonContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        marginBottom: PDSpacing.sm,
+        marginTop: PDSpacing.lg,
+        backgroundColor: '#1E6BFF',
+        justifyContent: 'center',
+        paddingTop: 9,
+        paddingBottom: 9,
+        borderRadius: 27.5,
+    },
+    buttonIcon: {
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        marginRight: PDSpacing.xs,
     },
 });

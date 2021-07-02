@@ -7,7 +7,7 @@ import { useStandardStatusBar } from '~/hooks/useStatusBar';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { clearPool, selectPool } from '~/redux/selectedPool/Actions';
 import { Haptic } from '~/services/HapticService';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { SearchHeader } from './SearchHeader';
 import { usePoolSearch } from './usePoolSearch';
 import { PoolList, PoolListProps } from './PoolList';
@@ -27,7 +27,7 @@ export const HomeScreen = () => {
 
     // There has got to be a better way to handle this:
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    React.useEffect(() => {
+    useFocusEffect(() => {
         if (isQuickStart && pools.length === 1) {
             dispatch(endQuickStart());
             dispatch(selectPool(pools[0]));

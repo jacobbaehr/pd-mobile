@@ -4,7 +4,7 @@ import { getDisplayForWallType } from '~/models/Pool/WallType';
 import { getDisplayForWaterType } from '~/models/Pool/WaterType';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { useTypedSelector } from '~/redux/AppState';
-import { EditPoolField, EditPoolList } from '~/screens/pool/editOrCreate/edit/EditPoolHelpers';
+import { EditPoolField, EditPoolListSection } from '~/screens/pool/editOrCreate/edit/EditPoolHelpers';
 import { ExportService } from '~/services/ExportService';
 import { RecipeService } from '~/services/RecipeService';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
@@ -24,7 +24,7 @@ export type MenuItemId =
     | 'export'
     | 'delete';
 
-export const useEditPool = (pool: Partial<Pool>, toggleVisible: () => void): EditPoolList[] => {
+export const useEditPool = (pool: Partial<Pool>, toggleVisible: () => void): EditPoolListSection[] => {
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
     const recipe = useLoadRecipeHook(pool?.recipeKey ?? RecipeService.defaultFormulaKey);
     const navigation = useNavigation<PDStackNavigationProps>();
