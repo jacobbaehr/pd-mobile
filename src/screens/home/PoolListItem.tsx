@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { useEffect, useRef } from 'react';
-import { Animated, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import TouchableScale from 'react-native-touchable-scale';
-import { AV } from '~/components/animation/AnimationHelpers';
+import { AV, useStandardListAnimation } from '~/components/animation/AnimationHelpers';
 import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
@@ -26,7 +25,7 @@ export const PoolListItem: React.FC<PoolListItemProps> = (props) => {
     const { ds } = useDeviceSettings();
     const volume = VolumeUnitsUtil.getAbbreviatedDisplayVolume(pool.gallons, ds);
 
-    const a = useAnimation(props.index);
+    const a = useStandardListAnimation(props.index);
 
     return (
         <AV y={ a.containerY } opacity={ a.opacity }>
@@ -56,36 +55,3 @@ const styles = StyleSheet.create({
     },
 });
 
-
-const useAnimation = (indexInList: number) => {
-    const containerY = useRef(new Animated.Value(200)).current;
-    const opacity = useRef(new Animated.Value(0)).current;
-
-    useEffect(() => {
-        Animated.sequence([
-            // Create a sort-of bubbling up effect where not every item is in unison
-            Animated.delay(indexInList * 150),
-            Animated.parallel([
-                Animated.spring(containerY, {
-                    toValue: 0,
-                    useNativeDriver: true,
-                    stiffness: 40,
-                }),
-                Animated.sequence([
-                    Animated.delay(250),
-                    Animated.timing(opacity, {
-                        toValue: 1,
-                        useNativeDriver: true,
-                        duration: 100,
-                    }),
-                ]),
-            ]),
-        ]).start();
-    /* eslint-disable react-hooks/exhaustive-deps */
-    }, []);
-
-    return {
-        containerY,
-        opacity,
-    };
-};

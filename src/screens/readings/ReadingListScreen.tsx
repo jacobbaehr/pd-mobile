@@ -21,6 +21,7 @@ import { ReadingListItem, ReadingState } from './ReadingListItem';
 import { ReadingListHeader } from './ReadingListHeader';
 import { PlayButton } from '~/components/buttons/PlayButton';
 import { useSafeArea } from 'react-native-safe-area-context';
+import { useStandardStatusBar } from '~/hooks/useStatusBar';
 
 export const ReadingListScreen: React.FC = () => {
     const [isSliding, setIsSliding] = React.useState(false);
@@ -31,6 +32,7 @@ export const ReadingListScreen: React.FC = () => {
     const theme = useTheme();
     const lastLogEntry = useLastLogEntryHook(pool?.objectId ?? '');
     const insets = useSafeArea();
+    useStandardStatusBar();
 
     const keyboardAccessoryViewId = 'wowThisIsSomeReallyUniqueTextReadingListKeyboard';
 
@@ -191,7 +193,7 @@ export const ReadingListScreen: React.FC = () => {
                     scrollEnabled={ !isSliding }
                     keyboardDismissMode={ 'interactive' }
                     keyboardShouldPersistTaps={ 'handled' }
-                    renderItem={ ({ item }) => (
+                    renderItem={ ({ item, index }) => (
                         <ReadingListItem
                             readingState={ item }
                             onTextboxUpdated={ handleTextboxUpdated }
@@ -201,6 +203,7 @@ export const ReadingListScreen: React.FC = () => {
                             onSliderUpdatedValue={ handleSliderUpdatedValue }
                             handleIconPressed={ handleIconPressed }
                             inputAccessoryId={ keyboardAccessoryViewId }
+                            index={ index }
                         />
                     ) }
                     sections={ sections }

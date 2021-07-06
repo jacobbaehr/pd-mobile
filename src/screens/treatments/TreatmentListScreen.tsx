@@ -36,8 +36,10 @@ import { PlayButton } from '~/components/buttons/PlayButton';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { TreatmentListHeader } from './TreatmentListHeader';
 import { PDProgressBar } from '~/components/PDProgressBar';
+import { useStandardStatusBar } from '~/hooks/useStatusBar';
 
 export const TreatmentListScreen: React.FC = () => {
+    useStandardStatusBar();
     const readings = useTypedSelector((state) => state.readingEntries);
     const pool = useTypedSelector(state => state.selectedPool);
     const pickerState = useTypedSelector((state) => state.pickerState);
@@ -56,6 +58,7 @@ export const TreatmentListScreen: React.FC = () => {
     const insets = useSafeArea();
     const [isSavingDebounce, setIsSavingDebounce] = React.useState(false);
     const allScoops = ds.scoops;
+    const [haveCalculationsProcessed, setHaveCalculationsProcessed] = React.useState(false);
 
     const keyboardAccessoryViewId = 'dedgumThisIsSomeReallyUniqueTextTreatmentListKeyboard';
 
@@ -211,6 +214,7 @@ export const TreatmentListScreen: React.FC = () => {
             .filter(Util.notEmpty);
 
         setTreatmentStates(tss);
+        setHaveCalculationsProcessed(true);
     };
 
     const handleIconPressed = (varName: string) => {
@@ -387,7 +391,7 @@ export const TreatmentListScreen: React.FC = () => {
                 style={ StyleSheet.flatten([styles.sectionList, { backgroundColor: theme.colors.blurredBlue }]) }
                 keyboardDismissMode="interactive"
                 keyboardShouldPersistTaps="handled"
-                renderItem={ ({ item }) => (
+                renderItem={ ({ item, index }) => (
                     <TreatmentListItem
                         treatmentState={ item }
                         onTextboxUpdated={ handleTextUpdated }
@@ -396,6 +400,7 @@ export const TreatmentListScreen: React.FC = () => {
                         handleIconPressed={ handleIconPressed }
                         handleTreatmentNameButtonPressed={ handleTreatmentNameButtonPressed }
                         inputAccessoryId={ keyboardAccessoryViewId }
+                        index={ index }
                     />
                 ) }
                 sections={ sections }
@@ -411,10 +416,11 @@ export const TreatmentListScreen: React.FC = () => {
                     }
                 } }
                 renderSectionFooter={ ({ section }) => {
-                    if (section.isHeader) {
+                    // The second part is just to wait on the animation until after the treatments have all been loaded up.
+                    if (section.isHeader || !haveCalculationsProcessed) {
                         return <></>;
                     } else {
-                        return <TreatmentListFooter text={ notes } updatedText={ setNotes } />;
+                        return <TreatmentListFooter text={ notes } updatedText={ setNotes } index={ treatmentStates.length } />;
                     }
                 } }
             />

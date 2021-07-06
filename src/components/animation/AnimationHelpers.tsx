@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, ViewProps } from 'react-native';
 
 // Never set (x | y) and xy at the same time:
@@ -37,4 +37,38 @@ export const AV: React.FC<AVProps> = (props) => {
     };
 
     return <Animated.View style={ finalStyle } { ...restProps } />;
+};
+
+/// Helper for listviews that use the same animation
+export const useStandardListAnimation = (indexInList: number) => {
+    const containerY = useRef(new Animated.Value(200)).current;
+    const opacity = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+        Animated.sequence([
+            // Create a sort-of bubbling up effect where not every item is in unison
+            Animated.delay(indexInList * 150),
+            Animated.parallel([
+                Animated.spring(containerY, {
+                    toValue: 0,
+                    useNativeDriver: true,
+                    stiffness: 40,
+                }),
+                Animated.sequence([
+                    Animated.delay(150),
+                    Animated.timing(opacity, {
+                        toValue: 1,
+                        useNativeDriver: true,
+                        duration: 100,
+                    }),
+                ]),
+            ]),
+        ]).start();
+    /* eslint-disable react-hooks/exhaustive-deps */
+    }, []);
+
+    return {
+        containerY,
+        opacity,
+    };
 };

@@ -8,6 +8,7 @@ import Slider from 'react-native-slider';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
 import { images } from '~/assets/images';
+import { AV, useStandardListAnimation } from '~/components/animation/AnimationHelpers';
 import { PDTextInput } from '~/components/inputs/PDTextInput';
 import { PDText } from '~/components/PDText';
 import { useTheme } from '~/components/PDTheme';
@@ -29,6 +30,7 @@ interface ReadingListItemProps {
     onTextboxFinished: (varName: string, text: string) => void;
     handleIconPressed: (varName: string) => void;
     inputAccessoryId?: string;
+    index: number;
 }
 
 export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (props) => {
@@ -84,47 +86,49 @@ export const ReadingListItem: React.FunctionComponent<ReadingListItemProps> = (p
         props.onSlidingComplete(r.var);
     };
 
-
+    const a = useStandardListAnimation(props.index);
 
     return (
-        <PDView style={ styles.container }>
-            <TouchableScale onPress={ () => props.handleIconPressed(r.var) } activeScale={ 0.98 }>
-                <PDView bgColor="white" borderColor="border" style={ styles.content }>
-                    <PDView style={ styles.topRow }>
-                        <Image style={ styles.circleImage } source={ leftImageSource } width={ 28 } height={ 28 } />
-                        <PDText type="bodySemiBold" color="black" style={ styles.readingName }>
-                            {r.name}
-                            <PDText type="bodySemiBold"  color="greyDark" style={ styles.readingUnits }>{readingUnitsText}</PDText>
-                        </PDText>
-                        <PDTextInput
-                            style={ textInputStyles }
-                            onFocus={ onTextBeginEditing }
-                            onChangeText={ onTextChange }
-                            onEndEditing={ onTextEndEditing }
-                            keyboardType={ 'decimal-pad' }
-                            inputAccessoryViewID={ props.inputAccessoryId }
-                            value={ rs.value }
+        <AV y={ a.containerY } opacity={ a.opacity }>
+            <PDView style={ styles.container }>
+                <TouchableScale onPress={ () => props.handleIconPressed(r.var) } activeScale={ 0.98 }>
+                    <PDView bgColor="white" borderColor="border" style={ styles.content }>
+                        <PDView style={ styles.topRow }>
+                            <Image style={ styles.circleImage } source={ leftImageSource } width={ 28 } height={ 28 } />
+                            <PDText type="bodySemiBold" color="black" style={ styles.readingName }>
+                                {r.name}
+                                <PDText type="bodySemiBold"  color="greyDark" style={ styles.readingUnits }>{readingUnitsText}</PDText>
+                            </PDText>
+                            <PDTextInput
+                                style={ textInputStyles }
+                                onFocus={ onTextBeginEditing }
+                                onChangeText={ onTextChange }
+                                onEndEditing={ onTextEndEditing }
+                                keyboardType={ 'decimal-pad' }
+                                inputAccessoryViewID={ props.inputAccessoryId }
+                                value={ rs.value }
+                            />
+                        </PDView>
+                        <Slider
+                            style={ styles.slider }
+                            minimumValue={ r.sliderMin }
+                            maximumValue={ r.sliderMax }
+                            minimumTrackTintColor={ theme.colors.greyLight }
+                            maximumTrackTintColor={ theme.colors.greyLight }
+                            thumbImage={ theme.isDarkMode ? images.sliderThumbBlueDark : images.sliderThumbBlue }
+                            onSlidingStart={ onSliderStart }
+                            onSlidingComplete={ onSliderEnd }
+                            onValueChange={ (value: number) => props.onSliderUpdatedValue(r.var, value) }
+                            value={ sliderValue }
+                            step={ sliderStep }
+                            thumbTouchSize={ { width: 55, height: 55 } }
+                            allowFontScaling
+                            maxFontSizeMultiplier={ 1.4 }
                         />
                     </PDView>
-                    <Slider
-                        style={ styles.slider }
-                        minimumValue={ r.sliderMin }
-                        maximumValue={ r.sliderMax }
-                        minimumTrackTintColor={ theme.colors.greyLight }
-                        maximumTrackTintColor={ theme.colors.greyLight }
-                        thumbImage={ theme.isDarkMode ? images.sliderThumbBlueDark : images.sliderThumbBlue }
-                        onSlidingStart={ onSliderStart }
-                        onSlidingComplete={ onSliderEnd }
-                        onValueChange={ (value: number) => props.onSliderUpdatedValue(r.var, value) }
-                        value={ sliderValue }
-                        step={ sliderStep }
-                        thumbTouchSize={ { width: 55, height: 55 } }
-                        allowFontScaling
-                        maxFontSizeMultiplier={ 1.4 }
-                    />
-                </PDView>
-            </TouchableScale>
-        </PDView>
+                </TouchableScale>
+            </PDView>
+        </AV>
     );
 };
 

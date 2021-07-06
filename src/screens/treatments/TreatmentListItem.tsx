@@ -1,11 +1,12 @@
 import pluralize from 'pluralize';
 import * as React from 'react';
 import {
-    Image, NativeSyntheticEvent, StyleSheet, TextInputEndEditingEventData, TextStyle
+    Image, NativeSyntheticEvent, StyleSheet, TextInputEndEditingEventData, TextStyle,
 } from 'react-native';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
 import { images } from '~/assets/images';
+import { AV, useStandardListAnimation } from '~/components/animation/AnimationHelpers';
 import { ChoosyButton } from '~/components/buttons/ChoosyButton';
 import { CycleButton } from '~/components/buttons/CycleButton';
 import { Conditional } from '~/components/Conditional';
@@ -25,11 +26,13 @@ interface TreatmentListItemProps {
     handleUnitsButtonPressed: (varName: string) => void;
     handleTreatmentNameButtonPressed: (varName: string) => void;
     inputAccessoryId?: string;
+    index: number;
 }
 
 export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> = (props) => {
     const [textIsEditing, setTextIsEditing] = React.useState(false);
     const theme = useTheme();
+    const a = useStandardListAnimation(props.index);
 
     const isEditing = textIsEditing;
 
@@ -78,33 +81,20 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
         props.handleTreatmentNameButtonPressed(t.var);
     };
 
+
+
     return (
-        <PDView style={ styles.container }>
-            <TouchableScale
-                onPress={ () => props.handleIconPressed(t.var) }
-                activeScale={ 0.98 }
-                disabled={ t.type === 'calculation' }>
-                <PDView style={ styles.content } borderColor="border" bgColor="white">
-                    <PDView style={ styles.topRow }>
-                        <Conditional condition={ t.type === 'calculation' }>
-                            <PDText type="default" color="black" style={ styles.ofLabel }>
-                                {t.name}
-                            </PDText>
-                            <PDTextInput
-                                style={ textInputStyles }
-                                onFocus={ onTextBeginEditing }
-                                onChangeText={ onTextChange }
-                                onEndEditing={ onTextEndEditing }
-                                keyboardType={ 'decimal-pad' }
-                                inputAccessoryViewID={ props.inputAccessoryId }
-                                value={ valueText }
-                            />
-                        </Conditional>
-                        <Conditional condition={ t.type !== 'calculation' }>
-                            <Image style={ styles.circleImage } source={ leftImageSource } width={ 28 } height={ 28 } />
-                            <Conditional condition={ ['dryChemical', 'liquidChemical'].some((x) => t.type === x) }>
-                                <PDText type="default" color="black" style={ styles.addLabel }>
-                                    Add
+        <AV y={ a.containerY } opacity={ a.opacity }>
+            <PDView style={ styles.container }>
+                <TouchableScale
+                    onPress={ () => props.handleIconPressed(t.var) }
+                    activeScale={ 0.98 }
+                    disabled={ t.type === 'calculation' }>
+                    <PDView style={ styles.content } borderColor="border" bgColor="white">
+                        <PDView style={ styles.topRow }>
+                            <Conditional condition={ t.type === 'calculation' }>
+                                <PDText type="default" color="black" style={ styles.ofLabel }>
+                                    {t.name}
                                 </PDText>
                                 <PDTextInput
                                     style={ textInputStyles }
@@ -115,32 +105,49 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
                                     inputAccessoryViewID={ props.inputAccessoryId }
                                     value={ valueText }
                                 />
-                                <CycleButton
-                                    title={ pluralize(ts.units, parseFloat(valueText)) }
-                                    onPress={ onPressedUnitsButton }
-                                    textStyles={ unitsTextStyles }
-                                    styles={ [styles.unitsButton, {  borderColor: theme.colors.border  }] }
-                                />
-                                <PDText type="default" style={ styles.ofLabel }>
-                                    of
-                                </PDText>
-                                <ChoosyButton
-                                    title={ treatmentName }
-                                    onPress={ onPressedTreatmentNameButton }
-                                    textStyles={ treatmentNameTextStyles }
-                                    styles={ [styles.unitsButton, {  borderColor: theme.colors.border  }] }
-                                />
                             </Conditional>
-                            <Conditional condition={ t.type === 'task' }>
-                                <PDText type="default" style={ treatmentNameTextStyles }>
-                                    {t.name}
-                                </PDText>
+                            <Conditional condition={ t.type !== 'calculation' }>
+                                <Image style={ styles.circleImage } source={ leftImageSource } width={ 28 } height={ 28 } />
+                                <Conditional condition={ ['dryChemical', 'liquidChemical'].some((x) => t.type === x) }>
+                                    <PDText type="default" color="black" style={ styles.addLabel }>
+                                        Add
+                                    </PDText>
+                                    <PDTextInput
+                                        style={ textInputStyles }
+                                        onFocus={ onTextBeginEditing }
+                                        onChangeText={ onTextChange }
+                                        onEndEditing={ onTextEndEditing }
+                                        keyboardType={ 'decimal-pad' }
+                                        inputAccessoryViewID={ props.inputAccessoryId }
+                                        value={ valueText }
+                                    />
+                                    <CycleButton
+                                        title={ pluralize(ts.units, parseFloat(valueText)) }
+                                        onPress={ onPressedUnitsButton }
+                                        textStyles={ unitsTextStyles }
+                                        styles={ [styles.unitsButton, {  borderColor: theme.colors.border  }] }
+                                    />
+                                    <PDText type="default" style={ styles.ofLabel }>
+                                        of
+                                    </PDText>
+                                    <ChoosyButton
+                                        title={ treatmentName }
+                                        onPress={ onPressedTreatmentNameButton }
+                                        textStyles={ treatmentNameTextStyles }
+                                        styles={ [styles.unitsButton, {  borderColor: theme.colors.border  }] }
+                                    />
+                                </Conditional>
+                                <Conditional condition={ t.type === 'task' }>
+                                    <PDText type="default" style={ treatmentNameTextStyles }>
+                                        {t.name}
+                                    </PDText>
+                                </Conditional>
                             </Conditional>
-                        </Conditional>
+                        </PDView>
                     </PDView>
-                </PDView>
-            </TouchableScale>
-        </PDView>
+                </TouchableScale>
+            </PDView>
+        </AV>
     );
 };
 
