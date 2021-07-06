@@ -2,14 +2,11 @@ import * as React from 'react';
 import { Keyboard, LayoutAnimation, SectionListData, StyleSheet, View } from 'react-native';
 import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
-import { BoringButton } from '~/components/buttons/BoringButton';
 import { KeyboardButton } from '~/components/buttons/KeyboardButton';
 import { ScreenHeader } from '~/components/headers/ScreenHeader';
 import { PDSafeAreaView } from '~/components/PDSafeAreaView';
-import { useTheme } from '~/components/PDTheme';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
-import { ServiceNonStickyHeader } from '~/components/services/ServiceNonStickyHeader';
-import { ServiceStickyHeaderList } from '~/components/services/ServiceStickyHeaderList';
 import { useLoadRecipeHook, useRealmPoolTargetRangesForPool } from '~/hooks/RealmPoolHook';
 import { LogEntry } from '~/models/logs/LogEntry';
 import { DryChemicalUnits, Units, WetChemicalUnits } from '~/models/TreatmentUnits';
@@ -35,6 +32,10 @@ import { PDPickerRouteProps } from '../picker/PickerScreen';
 import { TreatmentListFooter } from './TreatmentListFooter';
 import { TreatmentListHelpers, TreatmentState } from './TreatmentListHelpers';
 import { TreatmentListItem } from './TreatmentListItem';
+import { PlayButton } from '~/components/buttons/PlayButton';
+import { useSafeArea } from 'react-native-safe-area-context';
+import { TreatmentListHeader } from './TreatmentListHeader';
+import { PDProgressBar } from '~/components/PDProgressBar';
 
 export const TreatmentListScreen: React.FC = () => {
     const readings = useTypedSelector((state) => state.readingEntries);
@@ -52,6 +53,8 @@ export const TreatmentListScreen: React.FC = () => {
     const targetRangeOverridesForPool = useRealmPoolTargetRangesForPool(pool?.objectId ?? null);
     const routesInNavStack = useNavigationState(state => state.routes.map(r => r.name));
     const theme = useTheme();
+    const insets = useSafeArea();
+    const [isSavingDebounce, setIsSavingDebounce] = React.useState(false);
     const allScoops = ds.scoops;
 
     const keyboardAccessoryViewId = 'dedgumThisIsSomeReallyUniqueTextTreatmentListKeyboard';
@@ -107,6 +110,10 @@ export const TreatmentListScreen: React.FC = () => {
     }
 
     const save = async () => {
+        // manual debouncing
+        if (isSavingDebounce) { return; }
+        setIsSavingDebounce(true);
+
         // sanity check (to appease typescript):
         if (!pool?.objectId) { return; }
 
@@ -116,10 +123,14 @@ export const TreatmentListScreen: React.FC = () => {
         /// we have to do it somewhat manually (yuck, I should clean this up).
         let finalTreatmentStates = Util.deepCopy(treatmentStates);
         if (shouldSaveAllTreatments) {
+            Haptic.heavy();
             finalTreatmentStates = finalTreatmentStates.map(x => ({ ...x, isOn: true }));
 
             /// This just updates the UI so the user can sort-of see everything being selected (for a fleeting moment, anyways)
             finalTreatmentStates.forEach(x => toggleTreatmentSelected(x.treatment.var));
+            await Util.delay(0.15);
+        } else {
+            Haptic.medium();
         }
 
         const id = Util.generateUUID();
@@ -327,6 +338,8 @@ export const TreatmentListScreen: React.FC = () => {
     };
 
     const handleTreatmentNameButtonPressed = (varName: string) => {
+        Haptic.light();
+
         const t = TreatmentListHelpers.getTreatmentFromRecipe(varName, recipe);
         const concentration =
             TreatmentListHelpers.getConcentrationForTreatment(varName, ds) || t?.concentration || 100;
@@ -363,11 +376,15 @@ export const TreatmentListScreen: React.FC = () => {
         completed = countedTreatmentStates.filter((ts) => ts.isOn);
     }
 
+    const progress = (countedTreatmentStates.length === 0)
+        ? 0
+        : completed.length / countedTreatmentStates.length;
+
     return (
-        <PDSafeAreaView bgColor="white">
+        <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never' } }>
             <ScreenHeader textType="heading" color="purple">Treatments</ScreenHeader>
             <KeyboardAwareSectionList
-                style={ styles.sectionList }
+                style={ StyleSheet.flatten([styles.sectionList, { backgroundColor: theme.colors.blurredBlue }]) }
                 keyboardDismissMode="interactive"
                 keyboardShouldPersistTaps="handled"
                 renderItem={ ({ item }) => (
@@ -385,18 +402,12 @@ export const TreatmentListScreen: React.FC = () => {
                 keyExtractor={ (item) => item.treatment.var }
                 contentInsetAdjustmentBehavior="always"
                 canCancelContentTouches
-                stickySectionHeadersEnabled
+                stickySectionHeadersEnabled={ false }
                 renderSectionHeader={ ({ section }) => {
                     if (section.isHeader) {
-                        return <ServiceNonStickyHeader />;
+                        return <TreatmentListHeader />;
                     } else {
-                        return (
-                            <ServiceStickyHeaderList
-                                completedLength={ completed.length }
-                                missingLength={ countedTreatmentStates.length }
-                                color="purple"
-                            />
-                        );
+                        return <></>;
                     }
                 } }
                 renderSectionFooter={ ({ section }) => {
@@ -408,11 +419,15 @@ export const TreatmentListScreen: React.FC = () => {
                 } }
             />
             <WebView containerStyle={ styles.webview } onMessage={ onMessage } source={ { html: htmlString } } androidHardwareAccelerationDisabled />
-            <PDView bgColor="background" borderColor="border" style={ styles.bottomButtonContainer }>
-                <BoringButton
-                    containerStyles={ [ styles.button, { backgroundColor:theme.colors.purple }] }
-                    onPress={ save }
-                    title={ hasSelectedAnyTreatments ? 'Save' : 'Save All' } />
+            <PDProgressBar
+                progress={ progress }
+                foregroundColor={ theme.colors.purple }
+                style={ { height: 4, backgroundColor: theme.colors.greyLight } }
+            />
+            <PDView
+                borderColor="border"
+                style={ [styles.bottomButtonContainer, { paddingBottom: insets.bottom }] }>
+                <PlayButton title={ hasSelectedAnyTreatments ? 'Save' : 'Save All' } onPress={ save } buttonStyles={ { backgroundColor: theme.colors.purple } } />
             </PDView>
             <KeyboardButton nativeID={ keyboardAccessoryViewId } bgColor="purple" textColor="black" >
                 Done Typing
@@ -429,18 +444,7 @@ const styles = StyleSheet.create({
         flex: 0,
     },
     bottomButtonContainer: {
-        borderTopWidth: 2,
-    },
-    button: {
-        alignSelf: 'stretch',
-        margin: 12,
-        marginBottom: 24,
-    },
-    sectionTitle: {
-        fontWeight: '700',
-        fontSize: 28,
-        marginTop: 6,
-        marginBottom: 4,
-        marginLeft: 16,
+        // borderTopWidth: 2,
+        paddingHorizontal: PDSpacing.lg,
     },
 });

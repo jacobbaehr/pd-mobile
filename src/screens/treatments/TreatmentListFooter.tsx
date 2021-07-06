@@ -18,7 +18,7 @@ export const TreatmentListFooter: React.FunctionComponent<TreatmentListFooterPro
             <PDText type="default" color="purple" style={ styles.sectionTitle }>
                 Notes
             </PDText>
-            <PDView bgColor="background" borderColor="border" style={ styles.container }>
+            <PDView bgColor="white" borderColor="border" style={ styles.container }>
                 <PDTextInput
                     style={ [styles.text , { borderColor: theme.colors.border, color: theme.colors.black }] }
                     value={ props.text }

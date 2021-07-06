@@ -13,9 +13,9 @@ import { RecipeService } from '~/services/RecipeService';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ChipButton } from '~/screens/home/ChipButton';
-import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
 import { Haptic } from '~/services/HapticService';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
+import { PlayButton } from '~/components/buttons/PlayButton';
 
 /**
  * Displays info about the recipe & customizations in the SectionList on the pool details screen.
@@ -80,10 +80,7 @@ const PoolServiceConfigSection = () => {
                     </PDView>
                 </PDView>
             </PDView>
-            <ButtonWithChildren onPress={ navigateToReadings } styles={ styles.buttonContainer }>
-                <SVG.IconPlayWhite height={ 21 } width={ 15 } style={ styles.buttonIcon } />
-                <PDText type="subHeading" style={ { color: 'white' } }>Enter Readings</PDText>
-            </ButtonWithChildren>
+            <PlayButton onPress={ navigateToReadings } title="Enter Readings" />
             <PDText type="content" style={ styles.lastUpdateText } color="greyDark">
                 { getLastTimeUpdate() }
             </PDText>
@@ -98,22 +95,6 @@ const styles = StyleSheet.create({
         paddingTop: PDSpacing.md,
         borderBottomColor: '#F0F0F0',
         borderBottomWidth: 2,
-    },
-    buttonContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        marginBottom: PDSpacing.sm,
-        marginTop: PDSpacing.lg,
-        backgroundColor: '#1E6BFF',
-        justifyContent: 'center',
-        paddingTop: 9,
-        paddingBottom: 9,
-        borderRadius: 27.5,
-    },
-    buttonIcon: {
-        marginTop: 'auto',
-        marginBottom: 'auto',
-        marginRight: PDSpacing.xs,
     },
     subTitle: {
         lineHeight: 21,

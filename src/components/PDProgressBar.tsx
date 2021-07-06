@@ -20,7 +20,7 @@ export const PDProgressBar: React.FunctionComponent<PDProgressBarProps> = (props
     };
     return (
         <View style={ containerStyle }>
-            <View style={ { flex: foregroundFlex, backgroundColor: props.foregroundColor, borderRadius: 8 } } />
+            <View style={ { flex: foregroundFlex, backgroundColor: props.foregroundColor /*borderRadius: 8*/ } } />
             <View style={ backgroundStyle } />
         </View>
     );
@@ -29,7 +29,7 @@ export const PDProgressBar: React.FunctionComponent<PDProgressBarProps> = (props
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        borderRadius: 8,
+        // borderRadius: 8,
         overflow: 'hidden',
     },
 });

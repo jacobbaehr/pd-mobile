@@ -97,6 +97,7 @@ export const PickerScreen: React.FunctionComponent<PickerScreenProps> = (props: 
         };
 
         const handleSavePressed = () => {
+            Haptic.medium();
             Keyboard.dismiss();
             const pickerState: PickerState = {
                 key: pickerKey,

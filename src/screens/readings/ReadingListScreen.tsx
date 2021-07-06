@@ -1,14 +1,11 @@
 import * as React from 'react';
 import { Keyboard, LayoutAnimation, SectionListData, StyleSheet } from 'react-native';
 import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
-import { BoringButton } from '~/components/buttons/BoringButton';
 import { KeyboardButton } from '~/components/buttons/KeyboardButton';
 import { ScreenHeader } from '~/components/headers/ScreenHeader';
 import { PDSafeAreaView } from '~/components/PDSafeAreaView';
-import { useTheme } from '~/components/PDTheme';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
-import { ServiceNonStickyHeader } from '~/components/services/ServiceNonStickyHeader';
-import { ServiceStickyHeaderList } from '~/components/services/ServiceStickyHeaderList';
 import { useLastLogEntryHook, useLoadRecipeHook } from '~/hooks/RealmPoolHook';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { dispatch, useTypedSelector } from '~/redux/AppState';
@@ -20,8 +17,10 @@ import { Util } from '~/services/Util';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { ReadingListFooter } from './ReadingListFooter';
 import { ReadingListItem, ReadingState } from './ReadingListItem';
+import { ReadingListHeader } from './ReadingListHeader';
+import { PlayButton } from '~/components/buttons/PlayButton';
+import { useSafeArea } from 'react-native-safe-area-context';
 
 export const ReadingListScreen: React.FC = () => {
     const [isSliding, setIsSliding] = React.useState(false);
@@ -31,6 +30,7 @@ export const ReadingListScreen: React.FC = () => {
     const { setOptions, navigate } = useNavigation<PDStackNavigationProps>();
     const theme = useTheme();
     const lastLogEntry = useLastLogEntryHook(pool?.objectId ?? '');
+    const insets = useSafeArea();
 
     const keyboardAccessoryViewId = 'wowThisIsSomeReallyUniqueTextReadingListKeyboard';
 
@@ -68,6 +68,7 @@ export const ReadingListScreen: React.FC = () => {
     }, [recipe?.id, recipe?.ts, pool]);
 
     const handleCalculatePressed = (): void => {
+        Haptic.medium();
         dispatch(clearReadings());
         readingStates.forEach((rs) => {
             if (rs.isOn && rs.value !== undefined) {
@@ -173,10 +174,6 @@ export const ReadingListScreen: React.FC = () => {
         setReadingStates(rs);
     };
 
-    const handleChangeFormulaPressed = () => {
-        navigate('FormulaList', { prevScreen: 'ReadingList' });
-    };
-
     // The first section is just a dummy header thing to enable some fancy scrolling behavior
     let sections: SectionListData<ReadingState>[] = [
         // dummy header
@@ -185,12 +182,8 @@ export const ReadingListScreen: React.FC = () => {
         { data: readingStates, isHeader: false },
     ];
 
-    let completed: ReadingState[] = [];
-    if (recipe) {
-        completed = readingStates.filter((r) => r.isOn);
-    }
     return (
-        <PDSafeAreaView style={ { flex: 1 } } bgColor="white">
+        <PDSafeAreaView style={ { flex: 1 } } bgColor="white" forceInset={ { bottom: 'never' } }>
             <ScreenHeader textType="heading" color="blue">Readings</ScreenHeader>
             <PDView style={ styles.container } bgColor="white">
                 <KeyboardAwareSectionList
@@ -213,45 +206,26 @@ export const ReadingListScreen: React.FC = () => {
                     sections={ sections }
                     keyExtractor={ (item) => item.reading.var }
                     contentInsetAdjustmentBehavior="always"
-                    stickySectionHeadersEnabled={ true }
+                    stickySectionHeadersEnabled={ false }
                     canCancelContentTouches={ true }
-                    renderSectionFooter={ ({ section }) => {
-                        if (section.isHeader) {
-                            return <></>;
-                        } else {
-                            return (
-                                <ReadingListFooter
-                                    recipe={ recipe || null }
-                                    pressedChangeRecipe={ handleChangeFormulaPressed }
-                                />
-                            );
-                        }
-                    } }
                     renderSectionHeader={ ({ section }) => {
                         if (section.isHeader) {
-                            return <ServiceNonStickyHeader />;
+                            return <ReadingListHeader />;
                         } else {
-                            return (
-                                <ServiceStickyHeaderList
-                                    completedLength={ completed.length }
-                                    missingLength={ readingStates.length }
-                                    color="blue"
-                                />
-                            );
+                            return <></>;
                         }
                     } }
                 />
                 <PDView
                     style={ [
                         styles.bottomButtonContainer,
-                        { borderColor: theme.colors.border },
+                        {
+                            borderColor: theme.colors.border,
+                            paddingBottom: insets.bottom,
+                        },
                     ] }
                     bgColor="white">
-                    <BoringButton
-                        containerStyles={ StyleSheet.flatten([styles.button, { backgroundColor: theme.colors.blue }]) }
-                        onPress={ handleCalculatePressed }
-                        title="Calculate"
-                    />
+                    <PlayButton onPress={ handleCalculatePressed } title="Calculate" />
                 </PDView>
             </PDView>
             <KeyboardButton
@@ -273,11 +247,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     bottomButtonContainer: {
-        borderTopWidth: 2,
-    },
-    button: {
-        alignSelf: 'stretch',
-        margin: 12,
-        marginBottom: 24,
+        borderTopWidth: 4,
+        paddingHorizontal: PDSpacing.lg,
     },
 });

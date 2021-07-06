@@ -4,11 +4,11 @@ import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 
-export const TreatmentListHeader: React.FC = () => {
+export const ReadingListHeader: React.FC = () => {
     return (
         <PDView style={ styles.container }>
             <PDText type="bodyMedium" color="greyDark" >
-                Tap on the units to change them.
+                Use any test-kit to take these readings. They're all optional, just uncheck the ones you don't take.
             </PDText>
         </PDView>
     );
