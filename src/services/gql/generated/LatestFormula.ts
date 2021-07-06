@@ -19,6 +19,7 @@ export interface LatestFormula_latestFormula_readings {
   decimalPlaces: number | null;
   units: string | null;
   defaultValue: number;
+  isDefaultOn: boolean;
 }
 
 export interface LatestFormula_latestFormula_treatments {

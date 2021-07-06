@@ -9,7 +9,7 @@ import { useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { ServiceNonStickyHeader } from '~/components/services/ServiceNonStickyHeader';
 import { ServiceStickyHeaderList } from '~/components/services/ServiceStickyHeaderList';
-import { useLoadRecipeHook } from '~/hooks/RealmPoolHook';
+import { useLastLogEntryHook, useLoadRecipeHook } from '~/hooks/RealmPoolHook';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { dispatch, useTypedSelector } from '~/redux/AppState';
 import { clearReadings, recordInput } from '~/redux/readingEntries/Actions';
@@ -30,16 +30,26 @@ export const ReadingListScreen: React.FC = () => {
     const recipe = useLoadRecipeHook(pool?.recipeKey || RecipeService.defaultFormulaKey);
     const { setOptions, navigate } = useNavigation<PDStackNavigationProps>();
     const theme = useTheme();
+    const lastLogEntry = useLastLogEntryHook(pool?.objectId ?? '');
 
     const keyboardAccessoryViewId = 'wowThisIsSomeReallyUniqueTextReadingListKeyboard';
 
     React.useEffect(() => {
         setOptions({ gestureResponseDistance: { horizontal: 5 } });
         if (recipe) {
+            const readingsOnByDefault = new Set<string>();
+            if (lastLogEntry) {
+                lastLogEntry.readingEntries
+                    .forEach(r => readingsOnByDefault.add(r.var));
+            } else {
+                recipe.readings
+                    .filter(r => r.isDefaultOn)
+                    .forEach(r => readingsOnByDefault.add(r.var));
+            }
             const initialReadingStates = recipe.readings.map((r) => ({
                 reading: r,
                 value: r.defaultValue.toFixed(r.decimalPlaces),
-                isOn: false,
+                isOn: readingsOnByDefault.has(r.var),
             }));
 
             // Just incase we had some old reading entries laying around:

@@ -31,6 +31,12 @@ export namespace RecipeRepo {
             t.function = t.function ?? t.formula;
         });
 
+        /// some old formulas might not have a value for reading.isDefaultOn, so we
+        /// default it to true here:
+        recipe.readings.forEach(r => {
+            r.isDefaultOn = (r.isDefaultOn === undefined) || r.isDefaultOn;
+        });
+
         return recipe;
     };
 

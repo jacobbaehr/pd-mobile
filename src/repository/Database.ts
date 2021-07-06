@@ -108,6 +108,15 @@ export class Database {
         return realm.objects<LogEntry>(LogEntry.schema.name).filtered(query);
     };
 
+    /// returns a Realm collection with either 1 or 0 elements
+    static loadLastLogEntryForPool = (
+        poolId: string,
+    ): Realm.Collection<LogEntry> => {
+        const realm = Database.realm;
+        const query = `poolId = "${poolId}" SORT(ts DESC) LIMIT(1)`;
+        return realm.objects<LogEntry>(LogEntry.schema.name).filtered(query);
+    };
+
     static deletePool = (pool: IPool) => {
         const realm = Database.realm;
         try {

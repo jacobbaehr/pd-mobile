@@ -8,7 +8,7 @@
 // ====================================================
 
 export interface FetchLatestFormulaMeta_latestPublishedMeta {
-  __typename: "RecipeMeta";
+  __typename: "FormulaMeta";
   ts: number;
   appVersion: string;
   id: string;

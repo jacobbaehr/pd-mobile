@@ -19,6 +19,7 @@ export interface FetchFormula_formulaVersion_readings {
   decimalPlaces: number | null;
   units: string | null;
   defaultValue: number;
+  isDefaultOn: boolean;
 }
 
 export interface FetchFormula_formulaVersion_treatments {

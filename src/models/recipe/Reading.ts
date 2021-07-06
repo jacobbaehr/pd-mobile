@@ -25,6 +25,9 @@ export interface Reading {
     // The ideal values
     idealMax: number | null;
     idealMin: number | null;
+
+    // Whether the slider is enabled the first time the user sees this formula
+    isDefaultOn: boolean;
 }
 
 // export type ReadingType = 'number';

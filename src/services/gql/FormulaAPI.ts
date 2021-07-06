@@ -55,6 +55,7 @@ export class FormulaAPI {
                         decimalPlaces
                         units
                         defaultValue
+                        isDefaultOn
                     }
                     treatments {
                         name
@@ -139,6 +140,7 @@ export class FormulaAPI {
                     decimalPlaces
                     units
                     defaultValue
+                    isDefaultOn
                 }
                 treatments {
                     name

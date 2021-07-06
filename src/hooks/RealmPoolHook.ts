@@ -67,6 +67,17 @@ export const useRealmPoolHistoryHook = (poolId: string | null): LogEntry[] => {
     return data; // this hook will return only the data from realm
 };
 
+/// This runs once and does NOT listen for any changes.
+export const useLastLogEntryHook = (poolId: string): LogEntry | null => {
+    const [data] = useState<LogEntry | null>(() => {
+        if (!poolId) { return null; }
+        const realmLogEntries = Database.loadLastLogEntryForPool(poolId);
+        const logEntries = RealmUtil.logEntriesToPojo(realmLogEntries);
+        return Util.firstOrNull(logEntries);
+    });
+    return data;
+};
+
 // WARNING: this is susceptible to race-conditions (if you request a remote recipe, and then a local one, the remote one might finish last & stomp the second call).
 export const useLoadRecipeHook = (formulaKey: FormulaKey): Recipe | null => {
     const [recipe, setRecipe] = useState<Recipe | null>(null);
