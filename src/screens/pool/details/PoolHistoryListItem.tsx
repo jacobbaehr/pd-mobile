@@ -105,6 +105,14 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
                 </PDText>
                 {treatments}
             </PDView>
+            <PDView style={ styles.sectionContainer } key={ '9o8a2388' + props.logEntry.objectId }>
+                <PDText type="buttonSmall" color="grey" >
+                    Notes
+                </PDText>
+                <PDText type="bodyRegular" style={ styles.lineItem }>
+                    { props.logEntry.notes ?? '' }
+                </PDText>
+            </PDView>
             <View style={ styles.buttonRow }>
                 <PDButtonSolid
                     bgColor="greyLight"

@@ -4,11 +4,19 @@ import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 
-export const TreatmentListHeader: React.FC = () => {
+interface TreatmentListHeaderProps {
+    totalActionableTreatments: number;
+}
+
+export const TreatmentListHeader: React.FC<TreatmentListHeaderProps> = ({ totalActionableTreatments }) => {
+    const text = (totalActionableTreatments === 0)
+        ? 'Congrats, your pool chemistry is balanced!'
+        : 'Tap on the units to change them.';
+
     return (
         <PDView style={ styles.container }>
             <PDText type="bodyMedium" color="greyDark" >
-                Tap on the units to change them.
+                { text }
             </PDText>
         </PDView>
     );

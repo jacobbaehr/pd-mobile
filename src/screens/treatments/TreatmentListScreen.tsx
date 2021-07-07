@@ -410,7 +410,7 @@ export const TreatmentListScreen: React.FC = () => {
                 stickySectionHeadersEnabled={ false }
                 renderSectionHeader={ ({ section }) => {
                     if (section.isHeader) {
-                        return <TreatmentListHeader />;
+                        return <TreatmentListHeader totalActionableTreatments={ countedTreatmentStates.length }/>;
                     } else {
                         return <></>;
                     }
@@ -433,7 +433,10 @@ export const TreatmentListScreen: React.FC = () => {
             <PDView
                 borderColor="border"
                 style={ [styles.bottomButtonContainer, { paddingBottom: insets.bottom }] }>
-                <PlayButton title={ hasSelectedAnyTreatments ? 'Save' : 'Save All' } onPress={ save } buttonStyles={ { backgroundColor: theme.colors.purple } } />
+                <PlayButton
+                    title={ (hasSelectedAnyTreatments || countedTreatmentStates.length === 0) ? 'Save' : 'Save All' }
+                    onPress={ save }
+                    buttonStyles={ { backgroundColor: theme.colors.purple } } />
             </PDView>
             <KeyboardButton nativeID={ keyboardAccessoryViewId } bgColor="purple" textColor="black" >
                 Done Typing
