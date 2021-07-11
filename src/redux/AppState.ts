@@ -11,7 +11,6 @@ import { popoverReducer } from './popover/Reducer';
 import { readingEntriesReducer } from './readingEntries/Reducer';
 import { selectedPoolReducer } from './selectedPool/Reducer';
 import { selectedRecipeReducer } from './selectedRecipe/Reducer';
-import { quickStartReducer } from './quickStart/Reducer';
 
 const reducer = combineReducers({
     readingEntries: readingEntriesReducer,
@@ -19,7 +18,6 @@ const reducer = combineReducers({
     selectedPool: selectedPoolReducer,
     hasValidSubscription: hasValidSubscriptionReducer,
     pickerState: pickerStateReducer,
-    isQuickStart: quickStartReducer,
     deviceSettings: deviceSettingsReducer,
     selectedFormulaKey: selectedRecipeReducer,
     popover: popoverReducer,

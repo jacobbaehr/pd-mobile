@@ -107,10 +107,10 @@ const useAnimation = (numPools: number) => {
                 toValue: 1,
                 duration: 600,
                 useNativeDriver: true,
+                isInteraction: false,
             }),
           ]).start();
-    /* eslint-disable react-hooks/exhaustive-deps */
-    }, []);
+    }, [additionalDelayForStaggeredPools, opacity]);
 
     return {
         opacity,

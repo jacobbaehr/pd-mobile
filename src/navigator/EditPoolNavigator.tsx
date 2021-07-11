@@ -11,7 +11,6 @@ import { FormulaDetailsNavParams, FormulaScreen } from '~/screens/recipes/Formul
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { CustomTargetsScreen } from '~/screens/customTargets/CustomTargetsScreen';
-import { useTypedSelector } from '~/redux/AppState';
 
 export type PDPoolParams = {
     EditOrCreatePoolScreen: undefined;
@@ -31,10 +30,9 @@ const PoolStackNavigator = createStackNavigator<PDPoolParams>();
 /// Also surrounds navigator with providers for EntryPool hooks & VolumeEstimator hooks.
 /// Because of how component trees & navigators work, the providers should wrap the whole navigator
 export const EditPoolNavigator: React.FC = () => {
-    const isQuickStart = useTypedSelector(state => state.isQuickStart);
 
     return (
-        <PoolProvider isQuickStart={ isQuickStart }>
+        <PoolProvider>
             <ShapeProvider>
                 <PoolStackNavigator.Navigator headerMode="none" mode="card">
                     <PoolStackNavigator.Screen name="EditOrCreatePoolScreen" component={ EditOrCreatePoolScreen } />

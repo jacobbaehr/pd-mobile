@@ -42,6 +42,7 @@ export class ChartCard extends React.PureComponent<ChartCardProps, ChartCardStat
                 toValue: 1,
                 duration: 500,
                 useNativeDriver: true,
+                isInteraction: false,
             }).start();
         }
     }

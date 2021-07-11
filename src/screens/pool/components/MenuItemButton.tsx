@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    Pressable, PressableStateCallbackType, StyleProp, StyleSheet, ViewStyle
+    Pressable, PressableStateCallbackType, StyleProp, StyleSheet, ViewStyle,
 } from 'react-native';
 import { SVG } from '~/assets/images';
 import { PDText } from '~/components/PDText';

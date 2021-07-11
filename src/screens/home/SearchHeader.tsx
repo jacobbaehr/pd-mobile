@@ -12,7 +12,6 @@ import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
 import { DS } from '~/services/DSUtil';
 
 import { useNavigation } from '@react-navigation/native';
-import { endQuickStart } from '~/redux/quickStart/Actions';
 
 interface SearchHeaderProps {
     numPools: number;
@@ -38,7 +37,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = (props) => {
                 {
                     text: 'Upgrade',
                     onPress: () => {
-                        dispatch(endQuickStart());
                         navigate('Subscription');
                     },
                     style: 'default',
@@ -51,7 +49,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = (props) => {
     const handleAddButtonPressed = () => {
         const hasUpgraded = DS.isSubscriptionValid(ds, Date.now());
         if (hasUpgraded || (props.numPools === 0)) {
-            dispatch(endQuickStart());
             dispatch(clearPool());
             navigate('EditPoolNavigator');
         } else {
@@ -60,7 +57,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = (props) => {
     };
 
     const handleSettingButtonPressed = () => {
-        dispatch(endQuickStart());
         navigate('Settings');
     };
 

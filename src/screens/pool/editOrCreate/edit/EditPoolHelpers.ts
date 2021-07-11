@@ -18,6 +18,6 @@ export interface EditPoolListItem {
 
 export interface EditPoolListSection {
     title: string;
-    data: EditPoolListItem[]
+    data: EditPoolListItem[];
 }
 

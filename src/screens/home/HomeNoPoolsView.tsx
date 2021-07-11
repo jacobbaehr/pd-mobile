@@ -9,11 +9,11 @@ import { PDText } from '~/components/PDText';
 import { PDSpacing } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 
-interface QuickStartViewProps {
-    handleQuickStartPressed: () => void;
+interface HomeNoPoolsViewProps {
+    handleAddPoolPressed: () => void;
 }
 
-export const QuickStartView: React.FC<QuickStartViewProps> = (props) => {
+export const HomeNoPoolsView: React.FC<HomeNoPoolsViewProps> = (props) => {
 
     const a = useHomeScreenAnimation();
 
@@ -31,9 +31,9 @@ export const QuickStartView: React.FC<QuickStartViewProps> = (props) => {
                 <SVG.HomeDescriptionText style={ styles.bottomText }/>
             </AV>
             <AV x={ a.startButtonX }>
-                <ButtonWithChildren onPress={ props.handleQuickStartPressed } styles={ styles.buttonContainer } hitSlop={ 5 }>
+                <ButtonWithChildren onPress={ props.handleAddPoolPressed } styles={ styles.buttonContainer } hitSlop={ 5 }>
                     <SVG.IconPlayWhite height={ 21 } width={ 15 } style={ styles.buttonIcon } />
-                    <PDText type="subHeading" style={ { color: 'white' } }>Quick Start</PDText>
+                    <PDText type="subHeading" style={ { color: 'white' } }>Add Pool</PDText>
                 </ButtonWithChildren>
             </AV>
             <AV y={ a.waterY } opacity={ a.opacity } style={ [styles.waveContainer, { height: imageHeight }] } pointerEvents="none">
@@ -99,16 +99,19 @@ const useHomeScreenAnimation = () => {
                     toValue: { x: 0, y: 0 },
                     useNativeDriver: true,
                     duration: 700,
+                    isInteraction: false,
                 }),
                 Animated.timing(logoXY, {
                     toValue: { x: 0, y: 0 },
                     useNativeDriver: true,
                     duration: 700,
+                    isInteraction: false,
                 }),
                 Animated.timing(waterY, {
                     toValue: 0,
                     useNativeDriver: true,
                     duration: 700,
+                    isInteraction: false,
                 }),
                 Animated.sequence([
                     Animated.delay(100),
@@ -116,6 +119,7 @@ const useHomeScreenAnimation = () => {
                         toValue: 1,
                         useNativeDriver: true,
                         duration: 700,
+                        isInteraction: false,
                     }),
                 ]),
             ]),
@@ -123,10 +127,10 @@ const useHomeScreenAnimation = () => {
             Animated.spring(startButtonX, {
                 toValue: 0,
                 useNativeDriver: true,
+                isInteraction: false,
             }),
           ]).start();
-    /* eslint-disable react-hooks/exhaustive-deps */
-    }, []);
+    }, [descriptionXY, logoXY, waterY, opacity, startButtonX]);
 
     return {
         logoXY,

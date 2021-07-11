@@ -44,15 +44,19 @@ export const useStandardListAnimation = (indexInList: number) => {
     const containerY = useRef(new Animated.Value(200)).current;
     const opacity = useRef(new Animated.Value(0)).current;
 
+    const delayPerRow = 150;
+    const initialDelay = indexInList * delayPerRow;
+
     useEffect(() => {
         Animated.sequence([
             // Create a sort-of bubbling up effect where not every item is in unison
-            Animated.delay(indexInList * 150),
+            Animated.delay(initialDelay),
             Animated.parallel([
                 Animated.spring(containerY, {
                     toValue: 0,
                     useNativeDriver: true,
                     stiffness: 40,
+                    isInteraction: false,
                 }),
                 Animated.sequence([
                     Animated.delay(150),
@@ -60,12 +64,13 @@ export const useStandardListAnimation = (indexInList: number) => {
                         toValue: 1,
                         useNativeDriver: true,
                         duration: 100,
+                        isInteraction: false,
                     }),
                 ]),
             ]),
         ]).start();
-    /* eslint-disable react-hooks/exhaustive-deps */
-    }, []);
+
+    }, [initialDelay, containerY, opacity]);
 
     return {
         containerY,

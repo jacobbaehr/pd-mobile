@@ -33,12 +33,12 @@ export namespace EntryPoolHelpers {
         name: {
             id: 'name',
             title: 'Pool Name',
-            description: 'Every pool deserves a name',
+            description: 'Every pool deserves a great name.',
         },
         waterType: {
             id: 'waterType',
             title: 'Water Type',
-            description: "Select your pool's sanitization method",
+            description: "Select your pool's sanitization method.",
         },
         gallons: {
             id: 'gallons',

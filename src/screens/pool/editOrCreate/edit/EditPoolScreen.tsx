@@ -3,7 +3,6 @@ import { SectionList, StyleSheet } from 'react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
 import ModalHeader from '~/components/headers/ModalHeader';
 import { PDSafeAreaView } from '~/components/PDSafeAreaView';
-import { PDText } from '~/components/PDText';
 import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { useModal } from '~/hooks/useModal';
@@ -11,6 +10,7 @@ import { useThunkDispatch } from '~/redux/AppState';
 import { updatePool } from '~/redux/selectedPool/Actions';
 import { MenuItemButton } from '~/screens/pool/components/MenuItemButton';
 import { useEditPool } from '~/screens/pool/editOrCreate/hooks/useEditPool';
+import { EditOrCreateSectionHeader } from '../EditOrCreateHeader';
 
 import { useEntryPool } from '../hooks/useEntryPool';
 import { toPool } from '../shared';
@@ -38,11 +38,9 @@ export const EditPoolScreen: React.FunctionComponent = () => {
             <ModalHeader>Edit Pool</ModalHeader>
             <SectionList
                 sections={ editPoolSectionInfo }
-                renderSectionHeader={ ({ section: { title } }) => (
-                    <PDText type="bodyGreyBold" color="greyDark" style={ styles.sectionHeaderText }>
-                        {title}
-                    </PDText>
-                ) }
+                renderSectionHeader={ ({ section: { title } }) =>
+                    <EditOrCreateSectionHeader title={ title } />
+                }
                 renderItem={ ({ item, index, section }) => (
                     <MenuItemButton
                         { ...item }

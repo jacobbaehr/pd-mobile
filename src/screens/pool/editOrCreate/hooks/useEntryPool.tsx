@@ -13,15 +13,6 @@ interface PartialPoolContext {
 
 const createPoolDefaults: Partial<IPool> = {
     gallons: undefined,
-    name: undefined,
-    waterType: undefined,
-    email: undefined,
-    recipeKey: RecipeService.defaultFormulaKey,
-    wallType: 'plaster',
-};
-
-const quickStartPoolDefaults: Partial<IPool> = {
-    gallons: undefined,
     name: 'House Pool',
     waterType: 'chlorine',
     email: undefined,
@@ -41,25 +32,21 @@ const PartialPoolContext = React.createContext<PartialPoolContext>({
     },
 });
 
-interface PoolProviderProps {
-    isQuickStart: boolean;
-}
-
-const getInitialPool = (reduxPool: IPool | null, isQuickStart: boolean): PartialPoolWithId => {
+const getInitialPool = (reduxPool: IPool | null): PartialPoolWithId => {
     if (reduxPool) {
         return reduxPool;
     }
-    const initialPool = isQuickStart ? quickStartPoolDefaults : createPoolDefaults;
+    const initialPool = createPoolDefaults;
     return {
         ...initialPool,
         objectId: Util.generateUUID(),
     };
 };
 
-export const PoolProvider: React.FC<PoolProviderProps> = (props) => {
+export const PoolProvider: React.FC = (props) => {
     const reduxPool = useTypedSelector((state) => state.selectedPool);
 
-    const initialPool = getInitialPool(reduxPool, props.isQuickStart);
+    const initialPool = getInitialPool(reduxPool);
     const [pool, setPool] = useState(initialPool);
 
     const context = {

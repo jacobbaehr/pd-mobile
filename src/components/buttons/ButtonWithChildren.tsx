@@ -24,9 +24,10 @@ export const ButtonWithChildren: React.FunctionComponent<ButtonProps> = (props) 
     };
 
     const slop = props.hitSlop || 0;
+    const propStyles = StyleSheet.flatten(props.styles);
     return (
         <TouchableScale
-            style={ [styles.container, props.styles] }
+            style={ [styles.container, propStyles] }
             onPress={ handleButtonPress }
             disabled={ props.disabled }
             activeScale={ 0.97 }

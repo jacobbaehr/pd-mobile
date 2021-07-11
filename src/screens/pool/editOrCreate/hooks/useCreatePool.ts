@@ -11,17 +11,14 @@ import { useNavigation } from '@react-navigation/native';
 
 import { useEntryPool } from './useEntryPool';
 import { useVolumeEstimator } from './useVolumeEstimator';
-import { useEffect } from 'react';
-import { useTypedSelector } from '~/redux/AppState';
 import { EntryPoolHelpers } from '../entryPoolValues/EntryPoolHelpers';
 
-/// In quickStart mode, some of the fields will be pre-populated.
+
 export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolListSection[] => {
     const { pool } = useEntryPool();
     const { estimation } = useVolumeEstimator();
     const { navigate } = useNavigation<PDStackNavigationProps>();
     const recipe = useLoadRecipeHook(pool.recipeKey ?? RecipeService.defaultFormulaKey);
-    const isQuickStart = useTypedSelector(state => state.isQuickStart);
 
     const numberOfTargetLevels = recipe?.custom?.length ?? 0;
 
@@ -40,16 +37,13 @@ export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolListSec
         navigate('CustomTargets', { prevScreen: 'EditPoolNavigator' });
     };
 
-    useEffect(() => {
-        if (isQuickStart) {
-            handleNavigateToPopover('gallons');
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     const volume: number = pool?.gallons || Number(estimation);
 
-    let content: CreatePoolListSection[] = [
+    return [
+        {
+            title: 'header',
+            data: [],
+        },
         {
             title: 'basic',
             data: [
@@ -122,10 +116,4 @@ export const useCreatePool = (deviceSettings: DeviceSettings): CreatePoolListSec
             ],
         },
     ];
-
-    if (isQuickStart) {
-        content = [{ title: 'quick-start', data: [] }, ...content];
-    }
-
-    return content;
 };

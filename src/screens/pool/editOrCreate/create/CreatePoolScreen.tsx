@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { SectionList, StyleSheet } from 'react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
-import { PDButton } from '~/components/buttons/PDButton';
 import ModalHeader from '~/components/headers/ModalHeader';
 import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { PDText } from '~/components/PDText';
@@ -19,13 +18,13 @@ import { MenuItemButton } from '../../components/MenuItemButton';
 import { toPoolNoId } from '../shared';
 import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
 import { SVG } from '~/assets/images';
-import { QuickStartText } from './QuickStartText';
+import { EditOrCreateSectionHeader } from '../EditOrCreateHeader';
+import { CreateListHeader } from './CreateListHeader';
 
 export const CreatePoolScreen: React.FC = () => {
     // are there performance implications to just returning the whole state from this?
-    const { deviceSettings, isQuickStart } = useTypedSelector(state => ({
+    const { deviceSettings } = useTypedSelector(state => ({
         deviceSettings: state.deviceSettings,
-        isQuickStart: state.isQuickStart,
     }));
     const createPoolSectionInfo = useCreatePool(deviceSettings);
     const dispatch = useThunkDispatch();
@@ -46,25 +45,17 @@ export const CreatePoolScreen: React.FC = () => {
     };
 
     const getButtonComponent = () => {
-        if (isQuickStart) {
-            return (
-            <ButtonWithChildren onPress={ handleCreatePoolPressed } styles={ styles.buttonContainer }>
+        return (
+            <ButtonWithChildren
+                onPress={ handleCreatePoolPressed }
+                styles={ [
+                    { backgroundColor: isRequiredFilledOut ? theme.colors.blue : theme.colors.greyLight },
+                    styles.buttonContainer,
+                ] }>
                 <SVG.IconPlayWhite height={ 21 } width={ 15 } style={ styles.buttonIcon } />
-                <PDText type="subHeading" style={ { color: 'white' } }>Continue</PDText>
+                <PDText type="subHeading" style={ { color: 'white' } }>Save Pool</PDText>
             </ButtonWithChildren>
             );
-        } else {
-            return (
-            <PDButton
-                textStyle={ styles.text }
-                onPress={ handleCreatePoolPressed }
-                touchableProps={ { disabled: !isRequiredFilledOut } }
-                style={ styles.saveButton }
-                bgColor={ !isRequiredFilledOut ? 'greyLight' : 'blue' }>
-                Create Pool
-            </PDButton>
-            );
-        }
     };
 
     return (
@@ -73,16 +64,17 @@ export const CreatePoolScreen: React.FC = () => {
             <SectionList
                 sections={ createPoolSectionInfo }
                 renderSectionHeader={ ({ section: { title } }) => {
-                    if (isQuickStart && title === 'quick-start') {
-                        return <QuickStartText />;
+                    if (title === 'header') {
+                        return <CreateListHeader />;
                     } else {
-                        return <PDText type="bodyGreyBold" style={ styles.sectionHeaderText }>
-                        {title}
-                    </PDText>;
+                        return <EditOrCreateSectionHeader title={ title } />;
                     }
                 } }
                 renderItem={ ({ item, index, section }) => (
-                    <MenuItemButton { ...item } index={ index } sectionLength={ section.data.length } />
+                    <MenuItemButton
+                        { ...item }
+                        index={ index }
+                        sectionLength={ section.data.length } />
                 ) }
                 keyExtractor={ (item, index) => item.id + index }
                 stickySectionHeadersEnabled={ false }
@@ -102,11 +94,6 @@ const styles = StyleSheet.create({
     listContent: {
         paddingHorizontal: PDSpacing.md,
     },
-    sectionHeaderText: {
-        color: '#737373',
-        marginBottom: 10,
-        marginTop: 15,
-    },
     saveButton: {
         borderRadius: 27.5,
         paddingVertical: PDSpacing.xs,
@@ -119,11 +106,9 @@ const styles = StyleSheet.create({
     buttonContainer: {
         display: 'flex',
         flexDirection: 'row',
-        // marginBottom: PDSpacing.sm,
         marginHorizontal: PDSpacing.lg,
-        // marginTop: PDSpacing.lg,
-        backgroundColor: '#1E6BFF',
         justifyContent: 'center',
+        marginTop: PDSpacing.xs,
         paddingTop: 9,
         paddingBottom: 9,
         borderRadius: 27.5,
