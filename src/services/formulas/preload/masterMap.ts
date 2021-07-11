@@ -22,7 +22,7 @@ export const devFormulaMap: FormulaMap = {
 export const prodFormulaMap: FormulaMap = {
     chlorine: ['vast_argument_756', 'glum_marriage_172'],
     uv: ['academic_mouth_0', 'vast_argument_756', 'enraged_secret_755'],         // TODO: actually do these!
-    salt_water: ['motherly_mind_741'],
+    salt_water: ['jumpy_bear_993'],
     bromine: ['meaty_start_588', 'moist_western_543'],
     ozone: ['enraged_secret_755'],      // TODO: fix this up!!
     copper: ['gleaming_guard_569'],
