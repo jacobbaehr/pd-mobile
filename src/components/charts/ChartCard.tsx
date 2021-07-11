@@ -112,7 +112,6 @@ export class ChartCard extends React.PureComponent<ChartCardProps, ChartCardStat
                     <Upgrade
                         style={ styles.upgradeContainer }
                         onPress={ () => {} }
-                        isUnlocked={ this.props.viewModel.isUnlocked }
                     />
                 </Animated.View>
             </PDView>

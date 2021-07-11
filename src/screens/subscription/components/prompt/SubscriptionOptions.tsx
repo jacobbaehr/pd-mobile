@@ -18,7 +18,7 @@ export const SubscriptionOptions: React.FC = () => {
                 </PDText>
             </PDView>
             <HR/>
-                <SubscriptionFeatures/>
+                <SubscriptionFeatures showTitle={ true }/>
             <HR/>
                 <SubscriptionList/>
             <HR />
