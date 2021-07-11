@@ -409,7 +409,7 @@ export const TreatmentListScreen: React.FC = () => {
                 canCancelContentTouches
                 stickySectionHeadersEnabled={ false }
                 renderSectionHeader={ ({ section }) => {
-                    if (section.isHeader) {
+                    if (section.isHeader && haveCalculationsProcessed) {
                         return <TreatmentListHeader totalActionableTreatments={ countedTreatmentStates.length }/>;
                     } else {
                         return <></>;
