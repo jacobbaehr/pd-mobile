@@ -14,7 +14,7 @@ export const SubscriptionOptions: React.FC = () => {
                     👋 Hi, I'm John!
                 </PDText>
                 <PDText type="bodyRegular" color="greyDark" numberOfLines={ 0 } style={ { marginTop: PDSpacing.xs } }>
-                    I used to be a lifeguard, and now I'm an engineer. If you like the app, please consider subscribing!
+                    I used to clean pools, and now I'm an engineer. I love working on Pooldash, and I'll keep improving it for years to come.
                 </PDText>
             </PDView>
             <HR/>
