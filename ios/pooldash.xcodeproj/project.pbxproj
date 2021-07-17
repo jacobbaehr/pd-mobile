@@ -18,7 +18,10 @@
 		6A8A0E7718854AAD893BADD9 /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF043E491C9C430E9FB13F57 /* Poppins-SemiBoldItalic.ttf */; };
 		6EF61F579E114A93AC84BFA8 /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3107A826CB184EF29919E41F /* Poppins-Black.ttf */; };
 		76184A022475A1E000A57235 /* web.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 76184A012475A1E000A57235 /* web.bundle */; };
+		764E121226A244DD008C9C7B /* PoolDoctor.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 764E120E26A244DD008C9C7B /* PoolDoctor.xcdatamodeld */; };
 		7679F19F24A2F043008F71C2 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7679F19E24A2F043008F71C2 /* StoreKit.framework */; };
+		76A10DC9269DF1340045A391 /* RCTPDMigrator.m in Sources */ = {isa = PBXBuildFile; fileRef = 76A10DC8269DF1340045A391 /* RCTPDMigrator.m */; };
+		76E1AB5626A216B6001819C4 /* CoreDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 76E1AB5526A216B6001819C4 /* CoreDataHelper.m */; };
 		788EC7A1842E4D48B672D3B7 /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A52D43D7B3B445EFBD337EC0 /* Poppins-MediumItalic.ttf */; };
 		A70676DECF8749459B9377C1 /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F48A1B1251CB4B828D932887 /* Poppins-ExtraBold.ttf */; };
 		B07364DF14154BC8AF9F06BC /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 631AB28590604E38BEB895A9 /* Poppins-Bold.ttf */; };
@@ -57,7 +60,15 @@
 		6A91E608466D6899D52ABB3D /* libPods-pooldash.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-pooldash.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F0FD7ECD15AD0F2F86797B0 /* Pods-pooldash.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pooldash.release.xcconfig"; path = "Target Support Files/Pods-pooldash/Pods-pooldash.release.xcconfig"; sourceTree = "<group>"; };
 		76184A012475A1E000A57235 /* web.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = web.bundle; path = ../web.bundle; sourceTree = "<group>"; };
+		764E120F26A244DD008C9C7B /* PoolDoctor 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PoolDoctor 2.xcdatamodel"; sourceTree = "<group>"; };
+		764E121026A244DD008C9C7B /* PoolDoctor.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PoolDoctor.xcdatamodel; sourceTree = "<group>"; };
+		764E121126A244DD008C9C7B /* PoolDoctor 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PoolDoctor 3.xcdatamodel"; sourceTree = "<group>"; };
 		7679F19E24A2F043008F71C2 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		76A10DC7269DEB8B0045A391 /* RCTPDMigrator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTPDMigrator.h; sourceTree = "<group>"; };
+		76A10DC8269DF1340045A391 /* RCTPDMigrator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTPDMigrator.m; sourceTree = "<group>"; };
+		76E1AB5526A216B6001819C4 /* CoreDataHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoreDataHelper.m; sourceTree = "<group>"; };
+		76E1AB5926A21855001819C4 /* CoreDataHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreDataHelper.h; sourceTree = "<group>"; };
+		76E1AB5A26A218A7001819C4 /* dev pd.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "dev pd.entitlements"; path = "pooldash/dev pd.entitlements"; sourceTree = "<group>"; };
 		794C1C6F8F73E317F0E5BF1D /* Pods-pooldash.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pooldash.debug.xcconfig"; path = "Target Support Files/Pods-pooldash/Pods-pooldash.debug.xcconfig"; sourceTree = "<group>"; };
 		7B399148FA304899A6BDB166 /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BlackItalic.ttf"; path = "../src/assets/fonts/Poppins-BlackItalic.ttf"; sourceTree = "<group>"; };
 		7E914D29B258472B8C212049 /* Poppins-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Italic.ttf"; path = "../src/assets/fonts/Poppins-Italic.ttf"; sourceTree = "<group>"; };
@@ -87,6 +98,7 @@
 		13B07FAE1A68108700A75B9A /* pooldash */ = {
 			isa = PBXGroup;
 			children = (
+				76E1AB5A26A218A7001819C4 /* dev pd.entitlements */,
 				76184A012475A1E000A57235 /* web.bundle */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -113,6 +125,7 @@
 		3E9240C30708409599BCBB78 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				764E120E26A244DD008C9C7B /* PoolDoctor.xcdatamodeld */,
 				3107A826CB184EF29919E41F /* Poppins-Black.ttf */,
 				7B399148FA304899A6BDB166 /* Poppins-BlackItalic.ttf */,
 				631AB28590604E38BEB895A9 /* Poppins-Bold.ttf */,
@@ -154,6 +167,10 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				76E1AB5926A21855001819C4 /* CoreDataHelper.h */,
+				76E1AB5526A216B6001819C4 /* CoreDataHelper.m */,
+				76A10DC7269DEB8B0045A391 /* RCTPDMigrator.h */,
+				76A10DC8269DF1340045A391 /* RCTPDMigrator.m */,
 				31B867EB2644500A006ACFB4 /* Configuration.storekit */,
 				13B07FAE1A68108700A75B9A /* pooldash */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -209,6 +226,7 @@
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = 48DG894L4C;
 						LastSwiftMigration = 1120;
 						ProvisioningStyle = Automatic;
 					};
@@ -359,6 +377,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				76A10DC9269DF1340045A391 /* RCTPDMigrator.m in Sources */,
+				764E121226A244DD008C9C7B /* PoolDoctor.xcdatamodeld in Sources */,
+				76E1AB5626A216B6001819C4 /* CoreDataHelper.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -384,10 +405,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "pooldash/dev pd.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 167;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 48DG894L4C;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -419,6 +441,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "pooldash/dev pd.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 167;
@@ -578,6 +601,21 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		764E120E26A244DD008C9C7B /* PoolDoctor.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				764E120F26A244DD008C9C7B /* PoolDoctor 2.xcdatamodel */,
+				764E121026A244DD008C9C7B /* PoolDoctor.xcdatamodel */,
+				764E121126A244DD008C9C7B /* PoolDoctor 3.xcdatamodel */,
+			);
+			currentVersion = 764E121126A244DD008C9C7B /* PoolDoctor 3.xcdatamodel */;
+			path = PoolDoctor.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
 }

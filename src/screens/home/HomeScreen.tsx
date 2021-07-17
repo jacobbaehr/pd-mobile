@@ -28,6 +28,12 @@ export const HomeScreen = () => {
         navigate('EditPoolNavigator');
     };
 
+    const handleImportPressed = () => {
+        Haptic.medium();
+        dispatch(clearPool());
+        navigate('PoolDoctorImport');
+    };
+
     const handlePoolPressed = (item: IPool) => {
         Haptic.light();
         dispatch(selectPool(item));
@@ -67,7 +73,7 @@ export const HomeScreen = () => {
 
     const isEmpty = (!searchText) && (pools.length === 0);
     const content = isEmpty
-        ? <HomeNoPoolsView handleAddPoolPressed={ handleAddPoolPressed } />
+        ? <HomeNoPoolsView handleAddPoolPressed={ handleAddPoolPressed } handleImportPressed={ handleImportPressed } />
         : <PoolList { ...poolListProps }/>;
 
     return (

@@ -35,12 +35,15 @@ export class Database {
             });
     };
 
-    static loadPools = (): Realm.Collection<Pool> => {
+    static loadPools = (query?: string): Realm.Collection<Pool> => {
         if (Database.realm === undefined) {
             console.error('wait on realm to load');
         }
 
-        const results = Database.realm.objects<Pool>(Pool.schema.name);
+        let results = Database.realm.objects<Pool>(Pool.schema.name);
+        if (query) {
+            results = results.filtered(query);
+        }
         return results;
     };
 
@@ -59,6 +62,7 @@ export class Database {
                     recipeKey: pool.recipeKey,
                     wallType: pool.wallType,
                     email: pool.email,
+                    poolDoctorId: pool.poolDoctorId,
                 });
             });
         } catch (e) {
@@ -163,6 +167,7 @@ export class Database {
                     existingPool.waterType = pool.waterType;
                     existingPool.wallType = pool.wallType;
                     existingPool.email = pool.email;
+                    existingPool.poolDoctorId = pool.poolDoctorId;
                 }
             });
             return Promise.resolve();

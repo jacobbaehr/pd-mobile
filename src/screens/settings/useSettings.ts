@@ -43,6 +43,9 @@ export const useSettings = () => {
     const handleNavigationSubscription = () =>{
         navigate('Subscription');
     };
+    const handleNavigatePoolDoctorImport = () => {
+        navigate('PoolDoctorImport');
+    };
 
     const handleExportData = async () => {
         try {
@@ -102,13 +105,13 @@ export const useSettings = () => {
                     valueColor: 'black',
                     onPress: handleExportData,
                 },
-                // {
-                //     id: 'importData',
-                //     image: 'IconImportData',
-                //     label: 'Import data',
-                //     valueColor: 'black',
-                //     onPress: () => {},
-                // },
+                {
+                    id: 'importData',
+                    image: 'IconImportData',
+                    label: 'Import Pools',
+                    valueColor: 'black',
+                    onPress: handleNavigatePoolDoctorImport,
+                },
             ],
         },
     ];

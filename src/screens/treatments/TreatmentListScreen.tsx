@@ -128,9 +128,8 @@ export const TreatmentListScreen: React.FC = () => {
         if (shouldSaveAllTreatments) {
             Haptic.heavy();
             finalTreatmentStates = finalTreatmentStates.map(x => ({ ...x, isOn: true }));
-
-            /// This just updates the UI so the user can sort-of see everything being selected (for a fleeting moment, anyways)
-            finalTreatmentStates.forEach(x => toggleTreatmentSelected(x.treatment.var));
+            setTreatmentStates(tss => tss.map(x => ({ ...x, isOn: true })));
+            Haptic.heavy();
             await Util.delay(0.15);
         } else {
             Haptic.medium();

@@ -5,6 +5,7 @@ import { ReadingEntry } from '~/models/logs/ReadingEntry';
 import { TreatmentEntry } from '~/models/logs/TreatmentEntry';
 import { PoolV0 } from '~/models/Pool/PoolV0';
 import { PoolV1 } from '~/models/Pool/PoolV1';
+import { PoolV2 } from '~/models/Pool/PoolV2';
 import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
 
 /**
@@ -23,6 +24,10 @@ export const schemas = [
     {
         schema: [PoolV1.schema, LogEntryV1.schema, ReadingEntry.schema, TreatmentEntry.schema, TargetRangeOverride.schema],
         schemaVersion: 2,
+    },
+    {
+        schema: [PoolV2.schema, LogEntryV1.schema, ReadingEntry.schema, TreatmentEntry.schema, TargetRangeOverride.schema],
+        schemaVersion: 3,
     },
 ];
 

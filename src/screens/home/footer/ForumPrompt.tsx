@@ -33,7 +33,7 @@ export const ForumPrompt: React.FC = () => {
                 </PDText>
             </PDView>
             <PDText type="content" color="greyDark" style={ styles.textContent }>
-                I'd love to hear it. Let's make the app better for everyone!
+                I'd love to hear it. Tell me what the app is missing!
             </PDText>
             <ButtonWithChildren onPress={ handlePressedButton } styles={ buttonStyles }>
                 <PDText type="subHeading" color="white" style={ styles.buttonText }>Open Forum</PDText>

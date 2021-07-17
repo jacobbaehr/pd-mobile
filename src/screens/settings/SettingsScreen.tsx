@@ -15,8 +15,7 @@ export const SettingsScreen = () => {
             <ScreenHeader color="blue" textType="heading">
                 Settings
             </ScreenHeader>
-            <PDSectionList sections={ settingsSections } />
+            <PDSectionList sections={ settingsSections } showFooter={ true }/>
         </PDSafeAreaView>
     );
 };
-

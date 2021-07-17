@@ -1,5 +1,6 @@
 import React from 'react';
 import { SectionList as RnSectionList, SectionListData, StyleSheet } from 'react-native';
+import { ForumPrompt } from '~/screens/home/footer/ForumPrompt';
 
 import { PDText } from '../PDText';
 import { PDColor, PDSpacing } from '../PDTheme';
@@ -22,12 +23,13 @@ export interface PDSectionListProps {
 
 interface SectionListProps {
     sections: SectionListData<PDSectionListItemProps, PDSectionListProps>[];
+    showFooter: boolean;
 }
 
 export const PDSectionList: React.FC<SectionListProps> = (props) => {
 
-    const { sections } = props;
-
+    const { sections, showFooter } = props;
+    const footerComponent = showFooter ? <ForumPrompt /> : <></>;
 
     return (
         <RnSectionList
@@ -44,6 +46,7 @@ export const PDSectionList: React.FC<SectionListProps> = (props) => {
             stickySectionHeadersEnabled={ false }
             contentContainerStyle={ styles.listContent }
             style={ styles.listContainer }
+            ListFooterComponent={ footerComponent }
         />
     );
 };

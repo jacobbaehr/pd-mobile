@@ -12,8 +12,12 @@ export const CreateListHeader: React.FC = () => {
     return (
         <AV opacity={ a.opacity }>
             <PDText color="greyDark" type="bodyMedium" style={ styles.headerText }>
-                Pooldash will pick a custom formula for your pool. Just fill out the Basic section and press "Save Pool".
+                Just fill out the top section.
             </PDText>
+            <PDText color="greyDark" type="bodyMedium" style={ styles.headerText2 }>
+                When you're done, press "Save Pool".
+            </PDText>
+
         </AV>
     );
 };
@@ -22,6 +26,9 @@ const styles = StyleSheet.create({
     headerText: {
         textAlign: 'center',
         marginTop: PDSpacing.md,
+    },
+    headerText2: {
+        textAlign: 'center',
     },
 });
 

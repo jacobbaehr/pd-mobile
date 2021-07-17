@@ -12,4 +12,7 @@ export interface IPool {
     waterType: WaterTypeValue;
     wallType: WallTypeValue;
     email?: string;
+
+    // If it was imported from pool doctor, this will be set:
+    poolDoctorId?: string;
 }
