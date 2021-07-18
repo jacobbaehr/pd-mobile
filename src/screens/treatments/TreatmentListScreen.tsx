@@ -140,7 +140,7 @@ export const TreatmentListScreen: React.FC = () => {
         const tes = CalculationService.mapTreatmentStatesToTreatmentEntries(finalTreatmentStates);
 
         const readingEntries = RealmUtil.createReadingEntriesFromReadingValues(readings, recipe);
-        const logEntry = LogEntry.make(id, pool.objectId, ts, readingEntries, tes, recipeKey, recipe.name, notes);
+        const logEntry = LogEntry.make(id, pool.objectId, ts, readingEntries, tes, recipeKey, recipe.name, notes, null);
 
         await Database.saveNewLogEntry(logEntry);
         // Save the last-used units:

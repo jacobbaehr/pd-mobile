@@ -10,7 +10,6 @@ import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PlayButton } from '~/components/buttons/PlayButton';
 import { PDView } from '~/components/PDView';
 import { PoolDoctorImportService, PoolDoctorPool } from '~/services/special/PoolDoctorImportService';
-import { IPool } from '~/models/Pool';
 import { useNavigation } from '@react-navigation/native';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { useImportablePools } from './PoolDoctorImportHooks';
@@ -28,6 +27,8 @@ export const PoolDoctorImportScreen: React.FC = () => {
     const [hasStartedImport, setHasStartedImport] = useState(false);
     const [createdPools, setCreatedPools] = useState(0);
     const [skippedPools, setSkippedPools] = useState(0);
+    const [createdLogs, setCreatedLogs] = useState(0);
+    const [skippedLogs, setSkippedLogs] = useState(0);
     const numPools = useImportablePools();
     useStandardStatusBar();
 
@@ -40,14 +41,15 @@ export const PoolDoctorImportScreen: React.FC = () => {
 
     // called whenever the native module learns about a new pool:
     const poolListener = useCallback(async (e: PoolDoctorPool) => {
-        const p: IPool = PoolDoctorImportService.mapPoolDoctorPoolToPoolDashPool(e);
-        const result = await PoolDoctorImportService.createOrOverwriteImportedPool(p);
-        if (result === 'created') {
+        const result = await PoolDoctorImportService.importPool(e);
+        if (result.poolStatus === 'created') {
             setCreatedPools(cp => cp + 1);
-        } else if (result === 'updated') {
+        } else if (result.poolStatus === 'skipped') {
             setSkippedPools(up => up + 1);
         }
-    }, [setSkippedPools, setCreatedPools]);
+        setSkippedLogs(sl => sl + result.logsSkipped);
+        setCreatedLogs(cl => cl + result.logsCreated);
+    }, [setSkippedPools, setCreatedPools, setCreatedLogs, setSkippedLogs]);
 
     useEffect(() => {
         // If we're all done importing:
@@ -76,6 +78,8 @@ export const PoolDoctorImportScreen: React.FC = () => {
         setHasStartedImport(true);
         setCreatedPools(0);
         setSkippedPools(0);
+        setSkippedLogs(0);
+        setCreatedLogs(0);
 
         // This causes a bunch of "pool" events to get fired.
         PDMigrator.importAllPools();
@@ -94,10 +98,16 @@ export const PoolDoctorImportScreen: React.FC = () => {
         if (hasImported) {
             return <>
                 <PDText type="subHeading" color="greyDarker">
-                    { createdPools } pools created!
+                    { createdPools } {pluralize('pool', createdPools)} created!
                 </PDText>
                 <PDText type="bodyMedium" color="greyDarker">
-                    { skippedPools } pools skipped
+                    { skippedPools } {pluralize('pool', skippedPools)} skipped
+                </PDText>
+                <PDText type="subHeading" color="greyDarker">
+                    { createdLogs } log {pluralize('entry', createdLogs)} created!
+                </PDText>
+                <PDText type="bodyMedium" color="greyDarker">
+                    { skippedLogs } log {pluralize('entry', skippedLogs)} skipped
                 </PDText>
                 <BoringButton title="Go Home" onPress={ goHome } containerStyles={ { backgroundColor: theme.colors.blue, marginTop: PDSpacing.lg } } />
             </>;
@@ -107,8 +117,14 @@ export const PoolDoctorImportScreen: React.FC = () => {
                 <PDText type="heading" color="greyDarker" style={ styles.bottomSpace }>
                     { numPools } {pluralize('pool', numPools)} found!
                 </PDText>
-                <PDText type="bodyMedium" color="greyDarker">
-                    This action will import the pools from the Pool Doctor app, but not their history. If any of the pools have already been imported, they will be skipped (not duplicated).
+                <PDText type="bodyMedium" color="greyDarker" style={ { marginBottom: PDSpacing.md } }>
+                    This imports pools and their history from the Pool Doctor app.
+                </PDText>
+                <PDText type="bodyMedium" color="greyDarker" style={ { marginBottom: PDSpacing.md } }>
+                    It's safe to run multiple times (we shouldn't duplicate anything already imported).
+                </PDText>
+                <PDText type="bodyMedium" color="greyDarker" style={ { marginBottom: PDSpacing.md } }>
+                    Thank you so much for continuing to try my apps. Please leave feedback in the forum if you have any questions, and keep in mind that Pool Doctor is 11 years old, so I couldn't get all of the data to import cleanly.
                 </PDText>
                 <PlayButton title={ `Import ${numPools} ${pluralize('Pool', numPools)}` } onPress={ handleImportPressed } />
             </>

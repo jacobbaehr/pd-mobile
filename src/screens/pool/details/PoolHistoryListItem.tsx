@@ -45,7 +45,11 @@ const TreatmentRow: React.FC<{ te: TreatmentEntry }> = (props) => {
         case 'dryChemical':
         case 'liquidChemical':
         case 'calculation':
-            content = `${name}: ${Util.removeSuffixIfPresent('.0', te.displayAmount)} ${te.displayUnits}`;
+            if (te.displayAmount.length > 0) {
+                content = `${name}: ${Util.removeSuffixIfPresent('.0', te.displayAmount)} ${te.displayUnits}`;
+            } else {
+                content = `${name}`;
+            }
             break;
         case 'task':
             content = `${name}`;

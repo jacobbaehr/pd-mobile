@@ -101,6 +101,7 @@ export class RecipeService {
                 waterType: pool.waterType,
                 wallType: pool.wallType,
                 recipeKey: RS.getKey(newInfo),
+                poolDoctorId: pool.poolDoctorId,
             };
 
             Database.updatePool(updatedPool);

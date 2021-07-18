@@ -11,7 +11,7 @@ import { WaterTypeValue } from '~/models/Pool/WaterType';
 export type FormulaMap = Record<WaterTypeValue, string[]>;
 
 export const devFormulaMap: FormulaMap = {
-    chlorine: ['wild_passenger_963', 'noteworthy_sensitive_924'],
+    chlorine: ['wild_passenger_963', 'noteworthy_sensitive_924', 'inconsequential_lawyer_485'],     // This last one is actually just the archived pool doctor one.
     uv: ['clumsy_hold_579', 'orange_status_288'],
     salt_water: ['simple_regret_621', 'orange_status_288'],
     bromine: ['lovely_plan_733'],
@@ -20,7 +20,7 @@ export const devFormulaMap: FormulaMap = {
 };
 
 export const prodFormulaMap: FormulaMap = {
-    chlorine: ['vast_argument_756', 'glum_marriage_172'],
+    chlorine: ['vast_argument_756', 'glum_marriage_172', 'awful_picture_479'],
     uv: ['academic_mouth_0', 'vast_argument_756', 'enraged_secret_755'],         // TODO: actually do these!
     salt_water: ['jumpy_bear_993'],
     bromine: ['meaty_start_588', 'moist_western_543'],

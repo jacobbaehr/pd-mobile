@@ -11,6 +11,7 @@ export const toPoolNoId = (pool: Partial<IPool>): IPool | null => {
             email: pool.email,
             recipeKey: pool.recipeKey,
             objectId: pool.objectId ?? Util.generateUUID(),
+            poolDoctorId: pool.poolDoctorId,
         };
     }
     return null;

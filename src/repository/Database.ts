@@ -85,6 +85,7 @@ export class Database {
                     recipeKey: entry.recipeKey,
                     formulaName: entry.formulaName,
                     notes: entry.notes,
+                    poolDoctorId: entry.poolDoctorId,
                 });
             });
             return Promise.resolve();
@@ -110,6 +111,15 @@ export class Database {
         }
 
         return realm.objects<LogEntry>(LogEntry.schema.name).filtered(query);
+    };
+
+    static doesLogEntryExist = (
+        poolId: string,
+        poolDoctorLogEntryId: string,
+    ): boolean => {
+        const realm = Database.realm;
+        let query = `poolId = "${poolId}" AND poolDoctorId = "${poolDoctorLogEntryId}"`;
+        return realm.objects<LogEntry>(LogEntry.schema.name).filtered(query).length > 0;
     };
 
     /// returns a Realm collection with either 1 or 0 elements

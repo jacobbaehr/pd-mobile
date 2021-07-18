@@ -39,27 +39,23 @@ export const useRealmPoolsHook = (): IPool[] => {
 };
 
 export const useRealmPoolHistoryHook = (poolId: string | null): LogEntry[] => {
-    const [data, setData] = useState<LogEntry[]>(() => {
-        if (!poolId) { return []; }
-        const realmLogEntries = Database.loadLogEntriesForPool(poolId, null, true);
-        const logEntries = RealmUtil.logEntriesToPojo(realmLogEntries);
-        return logEntries;
-    });
+    const [data, setData] = useState<LogEntry[]>([]);
 
     // This runs around the time when ComponentDidMount used to be called
     useEffect(() => {
         if (!poolId) { return () => {};}
 
         const handleChange = (newData: Realm.Collection<LogEntry>) => {
-            const parserData = RealmUtil.logEntriesToPojo(newData);
-            setData(parserData);
+            setData(RealmUtil.logEntriesToPojo(newData));
         };
 
-        const dataQuery = Database.loadLogEntriesForPool(poolId, null, true);
-        dataQuery.addListener(handleChange);
+        const logEntryCollection = Database.loadLogEntriesForPool(poolId, null, true);
+        setData(RealmUtil.logEntriesToPojo(logEntryCollection));
+
+        logEntryCollection.addListener(handleChange);
         // This will run sort-of like componentWillUnmount or whatever that lifecycle method was called
         return () => {
-            dataQuery.removeAllListeners();
+            logEntryCollection.removeAllListeners();
         };
 
     }, [poolId]);

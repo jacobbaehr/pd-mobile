@@ -42,7 +42,7 @@ export class TreatmentEntry {
         treatment: Treatment,
         ounces: number,
         displayAmount: string,
-        displayUnits?: string,
+        displayUnits: string,
         concentration?: number,
     ): TreatmentEntry {
         let entry = new TreatmentEntry();

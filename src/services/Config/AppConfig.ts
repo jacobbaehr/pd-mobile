@@ -24,4 +24,5 @@ export class Config {
         : 'https://play.google.com/store/apps/details?id=com.gazzini.pooldash';
 
     static preloadedFormulas = __DEV__ ? preloadedDev : preloadedProd;
+    static poolDoctorFormulaKey = __DEV__ ? 'inconsequential_lawyer_485' : 'awful_picture_479';
 }

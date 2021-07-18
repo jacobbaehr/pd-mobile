@@ -139,4 +139,14 @@ export class Util {
             setTimeout(resolve, seconds * 1000);
         });
     }
+
+    // These 2 methods use ISO strings (supposedly)
+    static stringFromTimestamp = (ts: number): string => {
+        const d = new Date(ts);
+        return d.toISOString();
+    }
+    static timestampFromString = (ds: string): number => {
+        const d = new Date(ds);
+        return d.getTime();
+    }
 }
