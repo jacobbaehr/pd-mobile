@@ -121,10 +121,10 @@ export const PoolDoctorImportScreen: React.FC = () => {
                     This imports pools and their history from the Pool Doctor app.
                 </PDText>
                 <PDText type="bodyMedium" color="greyDarker" style={ { marginBottom: PDSpacing.md } }>
-                    It's safe to run multiple times (we shouldn't duplicate anything already imported).
+                    It's safe to run multiple times (only new pools and logs will be imported).
                 </PDText>
                 <PDText type="bodyMedium" color="greyDarker" style={ { marginBottom: PDSpacing.md } }>
-                    Thank you so much for continuing to try my apps. Please leave feedback in the forum if you have any questions, and keep in mind that Pool Doctor is 11 years old, so I couldn't get all of the data to import cleanly.
+                    Keep in mind that I wrote Pool Doctor +11 years ago, while still in college, and I was a worse programmer back then. The pools and readings import nicely, but the treatments... I just had to do my best. Thank you so much for continuing to use my apps. I promise to keep improving this one!
                 </PDText>
                 <PlayButton title={ `Import ${numPools} ${pluralize('Pool', numPools)}` } onPress={ handleImportPressed } />
             </>
