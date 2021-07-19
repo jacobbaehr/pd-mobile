@@ -34,7 +34,7 @@ export namespace EmailService {
             .join('\n');
 
         // return string that will be body of email
-        return (
+        let emailBody = (
             dateFormat +
             '\n\n' +
             'Readings:\n' +
@@ -44,8 +44,14 @@ export namespace EmailService {
             treatments +
             '\n\n' +
             'Notes:\n' +
-            logEntry.notes
-        );
+            logEntry.notes);
+        if (logEntry.notes) {
+            emailBody += (
+            '\n\n' +
+            'Notes:\n' +
+            logEntry.notes);
+        }
+        return emailBody;
     };
 
     // function that sends the email and accepts strings for subject and logEntry

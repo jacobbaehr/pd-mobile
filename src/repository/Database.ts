@@ -136,6 +136,8 @@ export class Database {
         try {
             // We have to delete the actual realm object
             realm.write(() => {
+                const logEntries = realm.objects<LogEntry>(LogEntry.schema.name).filtered(`poolId = "${pool.objectId}"`);
+                realm.delete(logEntries);
                 const deletedPool = realm.objectForPrimaryKey<Pool>(Pool.schema.name, pool.objectId);
                 if (deletedPool) {
                     realm.delete(deletedPool);

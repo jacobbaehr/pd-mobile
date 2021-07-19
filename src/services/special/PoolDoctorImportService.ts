@@ -8,6 +8,7 @@ import { TreatmentType } from '~/models/recipe/Treatment';
 import { Database } from '~/repository/Database';
 import { Config } from '../Config/AppConfig';
 import { RealmUtil } from '../RealmUtil';
+import { RecipeService } from '../RecipeService';
 import { Util } from '../Util';
 
 type PoolStatus = 'created' | 'skipped' | 'error';
@@ -76,6 +77,7 @@ export namespace PoolDoctorImportService {
             gallons,
             wallType: 'plaster',
             waterType,
+            recipeKey: RecipeService.getFormulaKeyForWaterType(waterType),
             poolDoctorId: doctorPool.modified_at,       // We actually didn't use an id at all, I'm thankful this is here.
         };
     };
