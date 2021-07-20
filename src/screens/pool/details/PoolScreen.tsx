@@ -27,6 +27,8 @@ import { PoolHistoryListItem } from './PoolHistoryListItem';
 import PoolServiceConfigSection from './PoolServiceConfigSection';
 import { usePoolChart } from './usePoolChart';
 import { ForumPrompt } from '~/screens/home/footer/ForumPrompt';
+import { PDSpacing } from '~/components/PDTheme';
+import { PDView } from '~/components/PDView';
 
 export const PoolScreen: React.FC = () => {
     useStandardStatusBar();
@@ -186,7 +188,9 @@ export const PoolScreen: React.FC = () => {
         if (section.key !== 'history_section' || history.length === 0) {
             return <></>;
         }
-        return <ForumPrompt />;
+        return <PDView style={ { marginHorizontal: PDSpacing.md } }>
+            <ForumPrompt />
+        </PDView>;
     };
 
     const sections: SectionListData<any>[] = [

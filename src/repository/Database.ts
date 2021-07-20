@@ -110,6 +110,9 @@ export class Database {
             query += ' SORT(ts ASC)';
         }
 
+        // TODO: reconsider this.
+        query += 'LIMIT(100)';
+
         return realm.objects<LogEntry>(LogEntry.schema.name).filtered(query);
     };
 

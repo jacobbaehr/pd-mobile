@@ -95,6 +95,9 @@ export const PoolDoctorImportScreen: React.FC = () => {
                 <BoringButton title="Go Home" onPress={ goHome } containerStyles={ { backgroundColor: theme.colors.blue } } />
             </>;
         }
+        if (hasStartedImport && !hasImported) {
+            return <PDText type="subHeading" color="greyDarker">Working...</PDText>;
+        }
         if (hasImported) {
             return <>
                 <PDText type="subHeading" color="greyDarker">
