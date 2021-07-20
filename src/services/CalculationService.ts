@@ -2,10 +2,12 @@ import { WebViewMessageEvent } from 'react-native-webview';
 import { TreatmentEntry } from '~/models/logs/TreatmentEntry';
 import { ReadingValue } from '~/models/ReadingValue';
 import { EffectiveTargetRange } from '~/models/recipe/TargetRange';
+import { Treatment } from '~/models/recipe/Treatment';
 import { TreatmentState } from '~/screens/treatments/TreatmentListHelpers';
 
 import { Pool } from '../models/Pool';
 import { Recipe } from '../models/recipe/Recipe';
+import { Util } from './Util';
 
 export interface CalculationResult {
     value: number | null;
@@ -84,15 +86,17 @@ export class CalculationService {
         return `<body><h1 id="hello">hello</h1><script>${jsCall}</script></body>`;
     };
 
-    static getTreatmentEntriesFromWebviewMessage = (event: WebViewMessageEvent, recipe: Recipe): TreatmentEntry[] => {
+    static getTreatmentEntriesFromWebviewMessage = (event: WebViewMessageEvent, formula: Recipe): TreatmentEntry[] => {
         const results = JSON.parse(event.nativeEvent.data) as CalculationResult[];
         const tes: TreatmentEntry[] = [];
         results
-            .filter((tv) => tv.value)
+            // filter all null treatments
+            .filter(tv => (tv.value !== null) && (tv.value !== undefined))
+            // filter 0-value treatments for all non-calculations (for instance, we want to show LSI = 0, but not "add 0 ounces of x")
+            .filter(tv => (tv.value !== 0) || (CalculationService.getTreatment(tv.var, formula)?.type === 'calculation'))
             .forEach((tv) => {
-                const correspondingTreatments = recipe.treatments.filter((t) => t.var === tv.var);
-                if (correspondingTreatments.length > 0) {
-                    const correspondingTreatment = correspondingTreatments[0];
+                const correspondingTreatment = CalculationService.getTreatment(tv.var, formula);
+                if (correspondingTreatment) {
                     if (tv.value) {
                         tes.push({
                             var: tv.var,
@@ -108,6 +112,10 @@ export class CalculationService {
             });
         return tes;
     };
+
+    static getTreatment = (variable: string, formula: Recipe): Treatment | null => {
+        return Util.firstOrNull(formula.treatments.filter(t => t.var === variable)) ?? null;
+    }
 
     static mapTreatmentStatesToTreatmentEntries = (tss: TreatmentState[]): TreatmentEntry[] => {
         return tss
