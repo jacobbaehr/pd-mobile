@@ -28,6 +28,9 @@ export interface Reading {
 
     // Whether the slider is enabled the first time the user sees this formula
     isDefaultOn: boolean;
+
+    // If there is another reading that affects the possible range of this reading:
+    offsetReadingVar: string | null;
 }
 
 // export type ReadingType = 'number';

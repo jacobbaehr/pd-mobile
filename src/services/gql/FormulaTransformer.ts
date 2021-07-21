@@ -37,6 +37,7 @@ export class FormulaTransformer {
             sliderMax: apiReading.sliderMax || 0,
             sliderMin: apiReading.sliderMin || 0,
             decimalPlaces: apiReading.decimalPlaces || 0,
+            offsetReadingVar: apiReading.offsetReadingVar,
         };
     };
 

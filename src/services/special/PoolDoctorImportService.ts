@@ -59,6 +59,10 @@ export namespace PoolDoctorImportService {
         return { poolStatus, logsCreated, logsSkipped };
     };
 
+    export const deleteAllPoolDoctorPools = async () => {
+        await Database.deletePoolsWithPoolDoctorId();
+    };
+
     const mapPoolDoctorPoolToPoolDashPool = (doctorPool: PoolDoctorPool): IPool => {
         const gallons = doctorPool.isGallons
             ? doctorPool.volume
@@ -126,6 +130,7 @@ export namespace PoolDoctorImportService {
             isDefaultOn: true,
             idealMax: null,
             idealMin: null,
+            offsetReadingVar: null,
         };
 
         return ReadingEntry.make(

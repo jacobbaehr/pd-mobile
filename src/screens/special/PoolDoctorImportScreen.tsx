@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PDMigrator } from '~/services/migrator/NativeModule';
 import { useCallback, useEffect } from 'react';
 import { useState } from 'react';
-import { NativeEventEmitter, StyleSheet } from 'react-native';
+import { Alert, NativeEventEmitter, StyleSheet } from 'react-native';
 import { ScreenHeader } from '~/components/headers/ScreenHeader';
 import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { PDText } from '~/components/PDText';
@@ -20,6 +20,9 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { ForumPrompt } from '../home/footer/ForumPrompt';
 import { useStandardStatusBar } from '~/hooks/useStatusBar';
 import { Config } from '~/services/Config/AppConfig';
+import { PDButtonSolid } from '~/components/buttons/PDButtonSolid';
+import { SVG } from '~/assets/images';
+import { useSafeArea } from 'react-native-safe-area-context';
 
 
 export const PoolDoctorImportScreen: React.FC = () => {
@@ -33,6 +36,7 @@ export const PoolDoctorImportScreen: React.FC = () => {
     useStandardStatusBar();
 
     const theme = useTheme();
+    const insets = useSafeArea();
     const { navigate } = useNavigation<PDStackNavigationProps>();
 
     const goHome = () => {
@@ -85,6 +89,45 @@ export const PoolDoctorImportScreen: React.FC = () => {
         PDMigrator.importAllPools();
     };
 
+    const handleDeletePressed = () => {
+        Alert.alert(
+            'Delete Imported Pools?',
+            'This will undo the import operation.',
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {
+                    text: 'DELETE',
+                    onPress: handleDeleteConfirmed,
+                    style: 'destructive',
+                },
+            ],
+            { cancelable: true },
+        );
+    };
+
+    const handleDeleteConfirmed = async () => {
+        PoolDoctorImportService.deleteAllPoolDoctorPools();
+        navigate('Home');
+    };
+
+    const getDeleteButton = () => {
+        return <>
+            <PDText type="bodyRegular" color="greyDark" style={ { marginTop: PDSpacing.xl } }>
+                Want to start over? You can delete everything imported from Pool Doctor:
+            </PDText>
+            <PDButtonSolid
+                bgColor="red"
+                onPress={ handleDeletePressed }
+                icon={ <SVG.IconDeleteOutline fill={ theme.colors.white } /> }
+                title="Undo Import"
+                style={ { marginBottom: PDSpacing.xl, marginTop: PDSpacing.sm } } />
+        </>;
+    };
+
     const getContent = () => {
         if (!Config.isIos) {
             return <PDText type="bodyMedium" color="greyDarker">Sorry, this only imports data from the Pool Doctor iPhone app.</PDText>;
@@ -113,6 +156,7 @@ export const PoolDoctorImportScreen: React.FC = () => {
                     { skippedLogs } log {pluralize('entry', skippedLogs)} skipped
                 </PDText>
                 <BoringButton title="Go Home" onPress={ goHome } containerStyles={ { backgroundColor: theme.colors.blue, marginTop: PDSpacing.lg } } />
+                { getDeleteButton() }
             </>;
         }
         return (
@@ -130,16 +174,17 @@ export const PoolDoctorImportScreen: React.FC = () => {
                     Keep in mind that I wrote Pool Doctor +11 years ago, while still in college, and I was a worse programmer back then. The pools and readings import nicely, but the treatments... I just had to do my best. Thank you so much for continuing to use my apps. I promise to keep improving this one!
                 </PDText>
                 <PlayButton title={ `Import ${numPools} ${pluralize('Pool', numPools)}` } onPress={ handleImportPressed } />
+                { getDeleteButton() }
             </>
         );
     };
 
     return (
         <PDSafeAreaView style={ { backgroundColor: theme.colors.white } } forceInset={ { bottom: 'never' } } >
-                <ScreenHeader textType="heading" color="blue">
-                    Pool Doctor Import
-                </ScreenHeader>
-                <ScrollView style={ { flex: 1 } }>
+            <ScreenHeader textType="heading" color="blue">
+                Pool Doctor Import
+            </ScreenHeader>
+            <ScrollView style={ { flex: 1 } } contentInset={ { bottom: insets.bottom } }>
                 <PDView style={ styles.container }>
                     { getContent() }
                     <PDText type="bodyMedium" color="greyDarker" style={ { marginTop: PDSpacing.xl } }>Want to import pools from somewhere else? Tell us on the support forum:</PDText>

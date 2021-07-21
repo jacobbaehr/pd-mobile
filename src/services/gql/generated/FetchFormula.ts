@@ -20,6 +20,7 @@ export interface FetchFormula_formulaVersion_readings {
   units: string | null;
   defaultValue: number;
   isDefaultOn: boolean;
+  offsetReadingVar: string | null;
 }
 
 export interface FetchFormula_formulaVersion_treatments {

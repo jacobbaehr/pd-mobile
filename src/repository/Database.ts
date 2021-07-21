@@ -134,7 +134,7 @@ export class Database {
         return realm.objects<LogEntry>(LogEntry.schema.name).filtered(query);
     };
 
-    static deletePool = (pool: IPool) => {
+    static deletePool = (pool: {objectId: string}) => {
         const realm = Database.realm;
         try {
             // We have to delete the actual realm object
@@ -244,4 +244,20 @@ export class Database {
             return Promise.reject(e);
         }
     };
+
+    static deletePoolsWithPoolDoctorId = async () => {
+        const realm = Database.realm;
+        const query = 'poolDoctorId != null';
+        const pools = realm.objects<Pool>(Pool.schema.name).filtered(query);
+
+        const poolIdsToDelete = pools.map(p => p.objectId);
+        poolIdsToDelete.forEach(id => Database.deletePool({ objectId: id }));
+
+        // cleanup, just in case we missed some of these:
+        realm.write(() => {
+            realm.delete(
+                realm.objects<LogEntry>(LogEntry.schema.name).filtered(query)
+            );
+        });
+    }
 }

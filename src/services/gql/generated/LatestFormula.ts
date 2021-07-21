@@ -20,6 +20,7 @@ export interface LatestFormula_latestFormula_readings {
   units: string | null;
   defaultValue: number;
   isDefaultOn: boolean;
+  offsetReadingVar: string | null;
 }
 
 export interface LatestFormula_latestFormula_treatments {

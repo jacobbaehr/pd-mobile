@@ -56,6 +56,7 @@ export class FormulaAPI {
                         units
                         defaultValue
                         isDefaultOn
+                        offsetReadingVar
                     }
                     treatments {
                         name
@@ -141,6 +142,7 @@ export class FormulaAPI {
                     units
                     defaultValue
                     isDefaultOn
+                    offsetReadingVar
                 }
                 treatments {
                     name
