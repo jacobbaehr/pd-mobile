@@ -46,10 +46,10 @@ export class Converter {
                 prevToOunces = 16;
                 break;
             case 'grams':
-                prevToOunces = 0.035274;
+                prevToOunces = 0.03527396195;
                 break;
             case 'kilograms':
-                prevToOunces = 35.274;
+                prevToOunces = 35.27396195;
                 break;
             case 'scoops':
                 prevToOunces = scoop?.ounces ?? 1;
@@ -74,10 +74,10 @@ export class Converter {
                 prevToOunces = 128;
                 break;
             case 'milliliters':
-                prevToOunces = 0.033814;
+                prevToOunces = 0.03381402;
                 break;
             case 'liters':
-                prevToOunces = 33.814;
+                prevToOunces = 33.81402;
                 break;
             case 'scoops':
                 prevToOunces = scoop?.ounces ?? 1;

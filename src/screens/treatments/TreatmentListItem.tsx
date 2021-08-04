@@ -20,7 +20,6 @@ import { TreatmentState } from './TreatmentListHelpers';
 
 interface TreatmentListItemProps {
     treatmentState: TreatmentState;
-    onTextboxUpdated: (varName: string, text: string) => void;
     onTextboxFinished: (varName: string, text: string) => void;
     handleIconPressed: (varName: string) => void;
     handleUnitsButtonPressed: (varName: string) => void;
@@ -63,10 +62,6 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
         setTextIsEditing(true);
     };
 
-    const onTextChange = (newText: string) => {
-        props.onTextboxUpdated(t.var, newText);
-    };
-
     const onTextEndEditing = (event: NativeSyntheticEvent<TextInputEndEditingEventData>) => {
         setTextIsEditing(false);
         const finalText = event.nativeEvent.text;
@@ -80,8 +75,6 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
     const onPressedTreatmentNameButton = () => {
         props.handleTreatmentNameButtonPressed(t.var);
     };
-
-
 
     return (
         <AV y={ a.containerY } opacity={ a.opacity }>
@@ -99,11 +92,10 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
                                 <PDTextInput
                                     style={ textInputStyles }
                                     onFocus={ onTextBeginEditing }
-                                    onChangeText={ onTextChange }
                                     onEndEditing={ onTextEndEditing }
                                     keyboardType={ 'decimal-pad' }
                                     inputAccessoryViewID={ props.inputAccessoryId }
-                                    value={ valueText }
+                                    defaultValue={ valueText }
                                 />
                             </Conditional>
                             <Conditional condition={ t.type !== 'calculation' }>
@@ -115,11 +107,10 @@ export const TreatmentListItem: React.FunctionComponent<TreatmentListItemProps> 
                                     <PDTextInput
                                         style={ textInputStyles }
                                         onFocus={ onTextBeginEditing }
-                                        onChangeText={ onTextChange }
                                         onEndEditing={ onTextEndEditing }
                                         keyboardType={ 'decimal-pad' }
                                         inputAccessoryViewID={ props.inputAccessoryId }
-                                        value={ valueText }
+                                        defaultValue={ valueText }
                                     />
                                     <CycleButton
                                         title={ pluralize(ts.units, parseFloat(valueText)) }

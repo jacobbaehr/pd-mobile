@@ -270,33 +270,6 @@ export const TreatmentListScreen: React.FC = () => {
         TreatmentListHelpers.updateTreatmentState(varName, modification, treatmentStates, setTreatmentStates);
     };
 
-    const handleTextUpdated = (varName: string, newText: string) => {
-        const modification = (ts: TreatmentState) => {
-            let newOunces = 0;
-            if (newText.length > 0) {
-                let newValue = parseFloat(newText);
-                if (isNaN(newValue)) {
-                    newValue = 0;
-                }
-                const scoop = TreatmentListHelpers.getScoopForTreatment(ts.treatment.var, allScoops);
-
-                if (ts.treatment.type === 'dryChemical') {
-                    newOunces = Converter.dry(newValue, ts.units as DryChemicalUnits, 'ounces', scoop);
-                } else if (ts.treatment.type === 'liquidChemical') {
-                    newOunces = Converter.wet(newValue, ts.units as WetChemicalUnits, 'ounces', scoop);
-                } else if (ts.treatment.type === 'calculation') {
-                    newOunces = newValue;
-                }
-            }
-            if (ts.ounces !== newOunces) {
-                ts.ounces = newOunces;
-                return true;
-            }
-            return false;
-        };
-        TreatmentListHelpers.updateTreatmentState(varName, modification, treatmentStates, setTreatmentStates);
-    };
-
     const handleTextFinishedEditing = (varName: string, newText: string) => {
         const modification = (ts: TreatmentState) => {
             let newOunces = 0;
@@ -316,25 +289,14 @@ export const TreatmentListScreen: React.FC = () => {
                 }
             }
 
+            ts.ounces = newOunces;
             const decimalHalves = newText.split('.');
             let newDecimalPlaces = 1;
             if (decimalHalves.length > 1) {
                 newDecimalPlaces = Math.max(decimalHalves[1].length, 1);
             }
             ts.decimalPlaces = newDecimalPlaces;
-            const scoop = TreatmentListHelpers.getScoopForTreatment(ts.treatment.var, allScoops);
-
-            if (ts.treatment.type === 'dryChemical') {
-                ts.value = Converter.dry(newOunces, 'ounces', ts.units as DryChemicalUnits, scoop).toFixed(
-                    newDecimalPlaces,
-                );
-            } else if (ts.treatment.type === 'liquidChemical') {
-                ts.value = Converter.wet(newOunces, 'ounces', ts.units as WetChemicalUnits, scoop).toFixed(
-                    newDecimalPlaces,
-                );
-            } else if (ts.treatment.type === 'calculation') {
-                ts.value = newText;
-            }
+            ts.value = parseFloat(newText).toFixed(newDecimalPlaces);
             return true;
         };
         TreatmentListHelpers.updateTreatmentState(varName, modification, treatmentStates, setTreatmentStates);
@@ -393,7 +355,6 @@ export const TreatmentListScreen: React.FC = () => {
                 renderItem={ ({ item, index }) => (
                     <TreatmentListItem
                         treatmentState={ item }
-                        onTextboxUpdated={ handleTextUpdated }
                         onTextboxFinished={ handleTextFinishedEditing }
                         handleUnitsButtonPressed={ handleUnitsButtonPressed }
                         handleIconPressed={ handleIconPressed }
@@ -437,7 +398,7 @@ export const TreatmentListScreen: React.FC = () => {
                     onPress={ save }
                     buttonStyles={ { backgroundColor: theme.colors.purple } } />
             </PDView>
-            <KeyboardButton nativeID={ keyboardAccessoryViewId } bgColor="purple" textColor="black" >
+            <KeyboardButton nativeID={ keyboardAccessoryViewId } bgColor="purple" textColor="white" onPress={ () => Keyboard.dismiss() } >
                 Done Typing
             </KeyboardButton>
         </PDSafeAreaView>
