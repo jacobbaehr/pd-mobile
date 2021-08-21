@@ -56,7 +56,7 @@ export class ChartCard extends React.PureComponent<ChartCardProps, ChartCardStat
         const last = this.props.viewModel.timestamps[this.props.viewModel.timestamps.length - 1];
         const dateFormat = 'MMM';
         return [this.formatTimestamp(first, dateFormat), this.formatTimestamp(last, dateFormat)].map((range) => (
-            <PDText style={ styles.labelText } key={ count++ }>
+            <PDText color="greyDark" style={ styles.labelText } key={ count++ }>
                 {range}
             </PDText>
         ));
@@ -87,8 +87,8 @@ export class ChartCard extends React.PureComponent<ChartCardProps, ChartCardStat
             Platform.OS === 'android' ? 'file:///android_asset/charts/Charts.html' : './web.bundle/Charts.html';
 
         return (
-            <PDView style={ [styles.container, this.props.containerStyles] }>
-                <PDText style={ styles.title }>{this.props.viewModel.title}</PDText>
+            <PDView bgColor="white" style={ [styles.container, this.props.containerStyles] }>
+                <PDText type="subHeading" color="greyDark" style={ styles.title }>{this.props.viewModel.title}</PDText>
                 <PDView style={ styles.chartContainer }>
                     <PDView
                         style={ styles.chartWebViewContainer }
@@ -121,7 +121,6 @@ export class ChartCard extends React.PureComponent<ChartCardProps, ChartCardStat
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
         shadowOffset: { width: 0, height: 2 },
         shadowColor: 'grey',
         shadowOpacity: 0.3,
@@ -137,7 +136,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '600',
         fontFamily: 'Poppins-Regular',
-        color: '#676767',
     },
     chartContainer: {
         paddingHorizontal: 15,
@@ -165,7 +163,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '500',
         fontFamily: 'Poppins-Regular',
-        color: '#676767',
     },
     overlay: {
         position: 'absolute',

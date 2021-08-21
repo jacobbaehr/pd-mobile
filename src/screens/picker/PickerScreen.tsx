@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, SafeAreaView, View, SectionList, Keyboard } from 'react-native';
-
+import { StyleSheet, SectionList, Keyboard } from 'react-native';
 import { PDText } from '~/components/PDText';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp, useNavigation } from '@react-navigation/native';
@@ -15,6 +14,9 @@ import { BoringButton } from '~/components/buttons/BoringButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { CloseButton } from '~/components/buttons/CloseButton';
 import { PDNavParams } from '~/navigator/shared';
+import { PDSafeAreaView } from '~/components/PDSafeAreaView';
+import { PDView } from '~/components/PDView';
+import { PDColor, useTheme } from '~/components/PDTheme';
 
 export interface PDPickerRouteProps {
     title: string;
@@ -24,6 +26,7 @@ export interface PDPickerRouteProps {
     /// Otherwise, we'll assume we're moving a slider.
     pickerKey: PickerKey;
     prevSelection?: string;
+    color?: PDColor
 }
 
 interface PickerScreenProps {
@@ -32,8 +35,9 @@ interface PickerScreenProps {
 }
 
 export const PickerScreen: React.FunctionComponent<PickerScreenProps> = (props: PickerScreenProps) => {
-    const { title, subtitle, items, pickerKey, prevSelection } = props.route.params;
+    const { title, subtitle, items, pickerKey, prevSelection, color = 'blue' } = props.route.params;
     const { goBack } = useNavigation();
+    const theme = useTheme();
 
     // This state only applies to the slider (yuck)
     const [textValue, setTextValue] = React.useState(props.route.params.prevSelection || '1');
@@ -57,6 +61,38 @@ export const PickerScreen: React.FunctionComponent<PickerScreenProps> = (props: 
         goBack();
     };
 
+    const handleSliderChanged = (newValue: number) => {
+        if (newValue !== sliderValue) {
+            Haptic.bumpyGlide();
+            updateSliderValue(newValue);
+            setTextValue(newValue.toFixed(0));
+        }
+    };
+
+    const handleTextboxUpdated = (newValue: string) => {
+        setTextValue(newValue);
+    };
+
+    const handleTextboxDismissed = (newValue: string) => {
+        // Range enforcer:
+        let finalValue = newValue ? parseInt(newValue, 10) : 1;
+        finalValue = Math.max(Math.min(finalValue, 100), 1);
+
+        setTextValue(finalValue.toFixed(0));
+    };
+
+    /// Otherwise, show a slider from 0 - 100%:
+    const handleSavePressed = () => {
+        Haptic.medium();
+        Keyboard.dismiss();
+        const pickerState: PickerState = {
+            key: pickerKey,
+            value: textValue,
+        };
+        dispatch(updatePickerState(pickerState));
+        goBack();
+    };
+
     const getContent = (): JSX.Element => {
         /// If items are provided, show a listview
         if (items !== undefined) {
@@ -72,44 +108,10 @@ export const PickerScreen: React.FunctionComponent<PickerScreenProps> = (props: 
                 />
             );
         }
-        /// Otherwise, show a slider from 0 - 100%:
-
-        const handleSliderChanged = (newValue: number) => {
-            console.log('newValue: ', newValue);
-            if (newValue !== sliderValue) {
-                Haptic.bumpyGlide();
-                updateSliderValue(newValue);
-                setTextValue(newValue.toFixed(0));
-            }
-        };
-
-        const handleTextboxUpdated = (newValue: string) => {
-            console.log('booooooga');
-            setTextValue(newValue);
-        };
-
-        const handleTextboxDismissed = (newValue: string) => {
-            // Range enforcer:
-            let finalValue = newValue ? parseInt(newValue, 10) : 1;
-            finalValue = Math.max(Math.min(finalValue, 100), 1);
-
-            setTextValue(finalValue.toFixed(0));
-        };
-
-        const handleSavePressed = () => {
-            Haptic.medium();
-            Keyboard.dismiss();
-            const pickerState: PickerState = {
-                key: pickerKey,
-                value: textValue,
-            };
-            dispatch(updatePickerState(pickerState));
-            goBack();
-        };
 
         return (
-            <View style={ { flex: 1, display: 'flex', justifyContent: 'flex-start' } }>
-                <KeyboardAwareScrollView style={ { flex: 1, backgroundColor: '#F4F7FF' } } scrollEnabled={ !isSliding }>
+            <PDView style={ styles.sliderContainer }>
+                <KeyboardAwareScrollView style={ [styles.keyboardContainer , { backgroundColor: theme.colors.background  }] } scrollEnabled={ !isSliding }>
                     <PickerSlider
                         sliderState={ { value: textValue } }
                         onSlidingStart={ () => {
@@ -123,60 +125,51 @@ export const PickerScreen: React.FunctionComponent<PickerScreenProps> = (props: 
                         onTextboxFinished={ handleTextboxDismissed }
                     />
                 </KeyboardAwareScrollView>
-                <View style={ { backgroundColor: 'white' } }>
+                <PDView bgColor="white">
                     <BoringButton containerStyles={ styles.saveButton } onPress={ handleSavePressed } title="Save" />
-                </View>
-            </View>
+                </PDView>
+            </PDView>
         );
     };
 
     return (
-        <SafeAreaView style={ { flex: 1, backgroundColor: '#FFFFFF' } }>
-            <View style={ styles.container }>
-                <View style={ styles.header }>
-                    <View style={ styles.headerLeft }>
-                        <PDText type="default" style={ [styles.title, styles.titleTop] }>
+        <PDSafeAreaView bgColor="white">
+            <PDView style={ styles.container }>
+                <PDView style={ styles.header }>
+                    <PDView style={ styles.headerLeft }>
+                        <PDText type="heading" color="black" style={ [styles.title, styles.titleTop] }>
                             {title}
                         </PDText>
-                        <PDText type="default" style={ [styles.title, styles.titleBottom] }>
+                        <PDText type="heading" color={ color } style={ [styles.title, styles.titleBottom] }>
                             {subtitle}
                         </PDText>
-                    </View>
-                    <CloseButton onPress={ handleClosePressed } containerStyle={ styles.closeButton } />
-                </View>
+                    </PDView>
+                    <CloseButton onPress={ handleClosePressed } containerStyle={ styles.closeButton } backIconColor={ color } />
+                </PDView>
                 {getContent()}
-            </View>
-        </SafeAreaView>
+            </PDView>
+        </PDSafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-start',
-        backgroundColor: 'transparent',
         marginTop: 24,
     },
     header: {
-        display: 'flex',
         flexDirection: 'row',
     },
     headerLeft: {
-        display: 'flex',
-        flexDirection: 'column',
         flex: 1,
     },
     title: {
         marginLeft: 12,
-        fontSize: 28,
-        fontWeight: 'bold',
     },
     titleBottom: {
-        color: '#1E6BFF',
         marginBottom: 12,
     },
     titleTop: {
-        color: '#000',
         marginBottom: -3,
     },
     closeButton: {
@@ -185,8 +178,13 @@ const styles = StyleSheet.create({
     },
     saveButton: {
         alignSelf: 'stretch',
-        backgroundColor: '#1E6BFF',
         margin: 12,
         marginBottom: 24,
+    },
+    sliderContainer: {
+        flex: 1, justifyContent: 'flex-start',
+    },
+    keyboardContainer: {
+        flex: 1,
     },
 });

@@ -3,7 +3,7 @@ import { SectionList as RnSectionList, SectionListData, StyleSheet } from 'react
 import { ForumPrompt } from '~/screens/home/footer/ForumPrompt';
 
 import { PDText } from '../PDText';
-import { PDColor, PDSpacing } from '../PDTheme';
+import { PDColor, PDSpacing, useTheme } from '../PDTheme';
 import { PDSectionItemList } from './PDSectionItemList';
 
 // TODO: Use generics to identify the id
@@ -27,15 +27,15 @@ interface SectionListProps {
 }
 
 export const PDSectionList: React.FC<SectionListProps> = (props) => {
-
     const { sections, showFooter } = props;
     const footerComponent = showFooter ? <ForumPrompt /> : <></>;
+    const theme = useTheme();
 
     return (
         <RnSectionList
             sections={ sections }
             renderSectionHeader={ ({ section: { title } }) => (
-                <PDText type="bodyBold" color="grey" style={ styles.sectionHeaderText }>
+                <PDText type="bodyBold" color="greyDark" style={ styles.sectionHeaderText }>
                     {title}
                 </PDText>
             ) }
@@ -45,7 +45,7 @@ export const PDSectionList: React.FC<SectionListProps> = (props) => {
             keyExtractor={ (item, index) => item.id + index }
             stickySectionHeadersEnabled={ false }
             contentContainerStyle={ styles.listContent }
-            style={ styles.listContainer }
+            style={ [styles.listContainer, { backgroundColor: theme.colors.greyLightest  }] }
             ListFooterComponent={ footerComponent }
         />
     );
@@ -54,7 +54,6 @@ export const PDSectionList: React.FC<SectionListProps> = (props) => {
 const styles = StyleSheet.create({
     listContainer: {
         flex: 1,
-        backgroundColor: '#FAFAFA',
     },
     listContent: {
         paddingHorizontal: PDSpacing.md,

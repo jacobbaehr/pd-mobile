@@ -46,9 +46,13 @@ import IconScoop from './images/settings/icon_scoop.svg';
 import IconUnits from './images/settings/icon_units.svg';
 // Volume Estimator
 import Circle from './images/shapes/big_circle.svg';
+import CircleDark from './images/shapes/big_circle_dark.svg';
 import Other from './images/shapes/big_other.svg';
+import OtherDark from './images/shapes/big_other_dark.svg';
 import Oval from './images/shapes/big_oval.svg';
+import OvalDark from './images/shapes/big_oval_dark.svg';
 import Rectangle from './images/shapes/big_rectangle.svg';
+import RectangleDark from './images/shapes/big_rectangle_dark.svg';
 import IconCircle from './images/shapes/icon_circle.svg';
 import IconEstimator from './images/shapes/icon_estimator.svg';
 import IconOther from './images/shapes/icon_other.svg';
@@ -60,9 +64,15 @@ import IconCharts from './images/subscription/icon_charts.svg';
 import IconHeart from './images/subscription/icon_heart.svg';
 import IconInfinitive from './images/subscription/icon_infinitive.svg';
 // Home
-import HomeWelcomeText from './images/home/welcome_text.svg';
+import HomeWelcomeTextDark from './images/home/welcome_text_dark.svg';
+import HomeWelcomeTextWhite from './images/home/welcome_text_white.svg';
 import HomeDescriptionText from './images/home/home_pce.svg';
 import HomeWaves from './images/home/waves_home.svg';
+// Settings/Theme
+import SmallSunDark from './images/theme/theme_sun_small_light.svg';
+import SmallMoonDark from './images/theme/theme_moon_small_dark.svg';
+import AutomaticLight from './images/theme/theme_automatic_light.svg';
+import AutomaticDark from './images/theme/theme_automatic_dark.svg';
 
 export const images = {
     back: require('./images/back.png'),
@@ -83,8 +93,8 @@ export const images = {
     plusButton: require('./images/plus.png'),
     gearButton: require('./images/gear.png'),
     gearLightButton: require('./images/gear_light.png'),
-    logoGreenPlus: require('./images/logo_plus_green.png'),
-    logoGreenPlusWhite: require('./images/money_logo.png'),
+    logoGreenPlus: require('./images/logo/logo_plus_green.png'),
+    logoWhitePlus: require('./images/logo/logo_plus_white.png'),
     rightArrow: require('./images/right_arrow.png'),
     sliderThumb: require('./images/thumb.png'),
     sliderThumbSmall: require('./images/thumb_small.png'),
@@ -104,7 +114,10 @@ export const images = {
     importIcon: require('~/assets/images/icon-import.png'),
     deleteIcon: require('~/assets/images/icon-delete.png'),
     menuChevronIcon: require('~/assets/images/icon-menu-chevron.png'),
-    homeWelcomeText: require('~/assets/images/home/welcome_text.png'),
+    homeWelcomeTextDark: require('~/assets/images/home/welcome_text_dark.png'),
+    homeWelcomeTextWhite: require('~/assets/images/home/welcome_text_white.png'),
+    sunBig: require('./images/theme/theme_sun.png'),
+    moonBig: require('./images/theme/theme_moon.png'),
 };
 
 export interface OverrideSvgProps extends SvgProps {
@@ -121,9 +134,13 @@ export const SVG: Record<string, (props: OverrideSvgProps) => JSX.Element> = {
     IconCircleEdit: (props) => <IconCircleEdit { ...props } />,
     IconForward: (props) => <IconForward { ...props } />,
     Rectangle: (props) => <Rectangle { ...props } />,
+    RectangleDark: (props) => <RectangleDark { ...props } />,
     Oval: (props) => <Oval { ...props } />,
+    OvalDark: (props) => <OvalDark { ...props } />,
     Circle: (props) => <Circle { ...props } />,
+    CircleDark: (props) => <CircleDark { ...props } />,
     Other: (props) => <Other { ...props } />,
+    OtherDark: (props) => <OtherDark { ...props } />,
 
     // General Icons
     IconEstimator: (props) => <IconEstimator { ...props } />,
@@ -133,14 +150,7 @@ export const SVG: Record<string, (props: OverrideSvgProps) => JSX.Element> = {
     IconCircleForward: (props) => <IconCircleForward { ...props } />,
     IconInformation: (props) => <IconInformation { ...props } />,
     IconCloseButton: (props)=> <IconCloseButton { ...props } />,
-    IconWaterType: (props)=> <IconPoolWaterType { ...props } />,
-    IconVolume: (props)=> <IconVolume { ...props } />,
-    IconWallType: (props)=> <IconPoolWallType { ...props } />,
-    IconInfinitive: (props)=> <IconInfinitive { ...props } />,
-    IconHeart: (props)=> <IconHeart { ...props } />,
-    IconCharts: (props)=> <IconCharts { ...props } />,
     IconEmptyCircle: (props)=> <IconEmptyCircle { ...props } />,
-    IconCircleCheck: (props)=> <IconCheckmark { ...props } />,
     IconChevronForward: (props) => <IconChevronForward { ...props } />,
     IconExportData: (props) => <IconExportData { ...props } />,
     IconImportData: (props) => <IconImportData { ...props } />,
@@ -168,6 +178,12 @@ export const SVG: Record<string, (props: OverrideSvgProps) => JSX.Element> = {
     IconPoolVolume: (props) => <IconPoolVolume { ...props } />,
     IconPoolWallType: (props) => <IconPoolWallType { ...props } />,
     IconPoolWaterType: (props) => <IconPoolWaterType { ...props } />,
+    IconWaterType: (props)=> <IconPoolWaterType { ...props } />,
+    IconVolume: (props)=> <IconVolume { ...props } />,
+    IconWallType: (props)=> <IconPoolWallType { ...props } />,
+    IconInfinitive: (props)=> <IconInfinitive { ...props } />,
+    IconHeart: (props)=> <IconHeart { ...props } />,
+    IconCharts: (props)=> <IconCharts { ...props } />,
 
     // Settings
     IconPooldashPlus: (props) => <IconPooldashPlus { ...props } />,
@@ -175,9 +191,15 @@ export const SVG: Record<string, (props: OverrideSvgProps) => JSX.Element> = {
     IconUnits: (props) => <IconUnits { ...props } />,
     IconSettings: (props) => <IconSettings { ...props } />,
     IconSearch: (props) => <IconSearch { ...props } />,
+    // Setting.Theme
+    SmallSunDark: (props) => <SmallSunDark { ...props } />,
+    SmallMoonDark: (props) => <SmallMoonDark { ...props } />,
+    AutomaticLight: (props) => <AutomaticLight { ...props } />,
+    AutomaticDark: (props) => <AutomaticDark { ...props } />,
 
     // Home
-    HomeWelcomeText: (props) => <HomeWelcomeText { ...props } />,
+    HomeWelcomeTextDark: (props) => <HomeWelcomeTextDark { ...props } />,
+    HomeWelcomeTextWhite: (props) => <HomeWelcomeTextWhite { ...props } />,
     HomeDescriptionText: (props) => <HomeDescriptionText { ...props } />,
     HomeWaves: (props) => <HomeWaves { ...props } />,
 };

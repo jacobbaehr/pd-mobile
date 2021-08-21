@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { SVG } from '~/assets/images';
 import { TextButton } from '~/components/buttons/TextButton';
 import { PDText } from '~/components/PDText';
@@ -12,6 +12,7 @@ import { VolumeEstimatorHelpers } from '~/screens/pool/editOrCreate/volumeEstima
 import { useNavigation, useRoute } from '@react-navigation/core';
 import { useEntryPool } from '~/screens/pool/editOrCreate/hooks/useEntryPool';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
+import { PDView } from '~/components/PDView';
 
 interface EstimateVolumeProps {
     unit: PoolUnit
@@ -56,36 +57,34 @@ export const EstimateVolume: React.FC<EstimateVolumeProps> = (props) => {
         }
     };
 
-    const primaryColor = VolumeEstimatorHelpers.getPrimaryColorByShapeId(params.shapeId, theme);
-    const primaryBlurredColor = VolumeEstimatorHelpers.getPrimaryBlurredColorByShapeId(params.shapeId, theme);
+    const primaryColor = VolumeEstimatorHelpers.getPrimaryColorByShapeId(params.shapeId);
+    const primaryBlurredColor = VolumeEstimatorHelpers.getPrimaryBlurredColorByShapeId(params.shapeId);
     const result = calc();
     return (
         <>
-            <View style={ StyleSheet.flatten([styles.container, { backgroundColor: primaryBlurredColor }]) }>
-                <View style={ styles.row }>
+            <PDView bgColor={ primaryBlurredColor } style={ styles.container }>
+                <PDView style={ styles.row }>
                     <SVG.IconEstimator height={ 16 } width={ 16 } fill={ primaryColor } />
                     <PDText
                         type="bodySemiBold"
-                        style={ StyleSheet.flatten([styles.estimatedText, { color: primaryColor }]) }>
+                        color={ primaryColor }
+                        style={ styles.estimatedText }>
                         Estimated volume
                     </PDText>
-                </View>
-                <View>
-                    <PDText type={ 'subHeading' } style={ { textAlign: 'center', marginTop: PDSpacing.sm } }>{result}</PDText>
-                </View>
-            </View>
-            <View>
-                <TextButton
-                    text="Use Estimated Volume"
-                    onPress={ handlePressedEstimation }
-                    disabled={ !estimation }
-                    textStyles={ StyleSheet.flatten([styles.buttonText, !!estimation && { color: '#fff' }]) }
-                    containerStyles={ StyleSheet.flatten([
-                        styles.buttonContainer,
-                        !!estimation && { backgroundColor: primaryColor },
-                    ]) }
-                />
-            </View>
+                </PDView>
+                <PDText type={ 'subHeading' } color="greyDarker" style={ { marginTop: PDSpacing.sm } }>{result}</PDText>
+            </PDView>
+            <TextButton
+                text="Use Estimated Volume"
+                onPress={ handlePressedEstimation }
+                disabled={ !estimation }
+                textStyles={ StyleSheet.flatten([styles.buttonText, { color: theme.colors.grey }, !!estimation && { color: theme.colors.black }]) }
+                containerStyles={ StyleSheet.flatten([
+                    styles.buttonContainer,
+                    { backgroundColor: theme.colors.greyLightest },
+                    !!estimation && { backgroundColor: theme.colors[primaryColor] },
+                ]) }
+            />
         </>
     );
 };
@@ -104,22 +103,12 @@ const styles = StyleSheet.create({
         marginLeft: PDSpacing.xs,
         textTransform: 'uppercase',
     },
-    estimateResults: {
-        fontFamily: 'Poppins-SemiBold',
-        fontSize: 16,
-        lineHeight: 24,
-        letterSpacing: 0.5,
-        textAlign: 'left',
-        color: '#262626',
-    },
     buttonText: {
         fontSize: 18,
-        color: '#BBBBBB',
     },
     buttonContainer: {
         height: 40,
         width: '100%',
         borderRadius: 27.5,
-        backgroundColor: '#FAFAFA',
     },
 });

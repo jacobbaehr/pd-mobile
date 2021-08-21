@@ -3,6 +3,7 @@ import { StyleSheet, ViewStyle } from 'react-native';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
 import { PDText } from '~/components/PDText';
+import { PDView } from '../PDView';
 
 interface ChoosyButtonProps {
     title: string;
@@ -19,13 +20,14 @@ export const ChoosyButton: React.FunctionComponent<ChoosyButtonProps> = (props: 
 
     return (
         <TouchableScale
-            style={ [styles.container, props.styles] }
             activeScale={ 0.96 }
             onPress={ handleButtonPress }
             disabled={ props.disabled }>
-            <PDText type="default" style={ [styles.text, props.textStyles] }>
-                {props.title}
-            </PDText>
+            <PDView bgColor="white" borderColor="border" style={ [styles.container, props.styles]  }>
+                <PDText type="subHeading" color="blue" style={ [styles.text, props.textStyles] }>
+                    {props.title}
+                </PDText>
+            </PDView>
         </TouchableScale>
     );
 };
@@ -34,16 +36,10 @@ const styles = StyleSheet.create({
     container: {
         borderRadius: 6,
         borderWidth: 2,
-        borderColor: '#F0F0F0',
         paddingTop: 4,
         paddingHorizontal: 7,
     },
     text: {
-        color: '#1E6BFF',
-        textAlign: 'center',
-        // TOOD: use theme-specific spacing & fonts
-        margin: '.5%',
-        fontSize: 18,
-        fontWeight: '600',
+        margin: 4,
     },
 });

@@ -21,7 +21,7 @@ export const TextButton: React.FunctionComponent<TextButtonProps> = (props) => {
             onPress={ props.onPress }
             disabled={ props.disabled }
             activeScale={ 0.96 }>
-            <PDText type="default" style={ [styles.text, props.textStyles] }>
+            <PDText type="heading" color="white"textAlign="center" style={ [styles.text, props.textStyles] }>
                 {props.text}
             </PDText>
         </TouchableScale>
@@ -34,9 +34,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     text: {
-        color: 'white',
-        textAlign: 'center',
-        fontSize: 24,
         fontWeight: '700',
     },
 });

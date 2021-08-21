@@ -28,6 +28,7 @@ export interface PDColorPalette {
     border: string
 
     white: string;
+    greyLightest: string;
     greyLighter: string
     greyLight: string;
     grey: string;
@@ -101,6 +102,7 @@ export const lightTheme: PDTheme = {
 
     colors: {
         white: '#FFFFFF',
+        greyLightest: '#FAFAFA',
         greyLighter: '#F7F7F7',
         greyLight: '#EDEDED',
         grey: '#BBBBBB',
@@ -122,6 +124,7 @@ export const darkTheme: PDTheme = {
     statusBarContrast: 'dark-content',
     colors: {
         white: '#000000' ,
+        greyLightest: '#0D0D0D',
         greyLighter: '#080808',
         greyLight: '#1F1F1F',
         grey: '#454545',
@@ -137,5 +140,6 @@ export const darkTheme: PDTheme = {
 };
 
 export const PDThemeContext = React.createContext<PDTheme>(darkTheme);
+
 export const useTheme = () => React.useContext(PDThemeContext);
 

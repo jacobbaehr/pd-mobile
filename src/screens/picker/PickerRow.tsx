@@ -3,8 +3,11 @@ import { PickerItem } from './PickerItem';
 import { PDText } from '~/components/PDText';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
-import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { StyleSheet  } from 'react-native';
 import { Haptic } from '~/services/HapticService';
+import { PDView } from '~/components/PDView';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { PDNavParams } from '~/navigator/shared';
 
 interface PickerRowProps {
     item: PickerItem;
@@ -13,12 +16,8 @@ interface PickerRowProps {
 }
 
 export const PickerRow: React.FunctionComponent<PickerRowProps> = (props: PickerRowProps) => {
-    const containerStyles: ViewStyle[] = [styles.container];
-    const textStyles: TextStyle[] = [styles.text];
-    if (props.isSelected) {
-        containerStyles.push(styles.activeContainer);
-        textStyles.push(styles.activeText);
-    }
+    const { params } = useRoute<RouteProp<PDNavParams, 'PickerScreen'>>();
+    const { color } = params;
 
     const handleSelection = () => {
         Haptic.selection();
@@ -26,10 +25,12 @@ export const PickerRow: React.FunctionComponent<PickerRowProps> = (props: Picker
     };
 
     return (
-        <TouchableScale style={ containerStyles } onPress={ handleSelection } activeScale={ 0.99 }>
-            <PDText type="default" style={ textStyles }>
-                {props.item.name}
-            </PDText>
+        <TouchableScale onPress={ handleSelection } activeScale={ 0.99 }>
+            <PDView bgColor={ props.isSelected ? color : 'greyLightest' } style={ styles.container }>
+                <PDText type="heading" color={ props.isSelected ? 'white' : 'black' } style={ styles.text }>
+                    {props.item.name}
+                </PDText>
+            </PDView>
         </TouchableScale>
     );
 };
@@ -40,19 +41,11 @@ const styles = StyleSheet.create({
         borderRadius: 24,
         marginHorizontal: 12,
         marginVertical: 6,
-        backgroundColor: '#F5F5F5',
     },
     text: {
-        color: 'black',
         fontSize: 22,
         marginVertical: 12,
         marginHorizontal: 24,
         fontWeight: '600',
-    },
-    activeContainer: {
-        backgroundColor: '#2C5FFF',
-    },
-    activeText: {
-        color: 'white',
     },
 });

@@ -7,8 +7,8 @@ import { ExportService } from '~/services/ExportService';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { PoolUnit, PoolUnitOptions } from '../../models/Pool/PoolUnit';
-import { useDeviceSettings } from '../../services/DeviceSettings/Hooks';
+import { PoolUnit, PoolUnitOptions } from '~/models/Pool/PoolUnit';
+import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
 import pluralize from 'pluralize';
 import { DS } from '~/services/DSUtil';
 
@@ -45,6 +45,9 @@ export const useSettings = () => {
     };
     const handleNavigatePoolDoctorImport = () => {
         navigate('PoolDoctorImport');
+    };
+    const handleNavigateThemeToggled = () => {
+        navigate('ThemeToggleScreen');
     };
 
     const handleExportData = async () => {
@@ -111,6 +114,18 @@ export const useSettings = () => {
                     label: 'Import Pools',
                     valueColor: 'black',
                     onPress: handleNavigatePoolDoctorImport,
+                },
+            ],
+        },
+        {
+            title: 'theme',
+            data: [
+                {
+                    id: 'theme',
+                    image: 'IconExportData',
+                    label: 'Theme ',
+                    valueColor: 'black',
+                    onPress: handleNavigateThemeToggled,
                 },
             ],
         },

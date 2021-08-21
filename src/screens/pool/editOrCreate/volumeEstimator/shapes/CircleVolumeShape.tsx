@@ -17,7 +17,7 @@ const circleVolumeEstimatorAccessoryId = 'circleVolumeEstimatorAccessoryIdViewKe
 export const CircleVolumeShape: React.FC<ShapesProps> = (props) => {
     const { params } = useRoute<EstimateRoute>();
     const { unit } = props;
-    const { setShape , setEstimation } = useVolumeEstimator(params.shapeId);
+    const { setShape, setEstimation } = useVolumeEstimator(params.shapeId);
     const theme = useTheme();
     const [shapeValues, setShapeValues] = useState<CircleMeasurements>({
         diameter: '',
@@ -76,7 +76,7 @@ export const CircleVolumeShape: React.FC<ShapesProps> = (props) => {
     const unitName = VolumeEstimatorHelpers.getAbbreviationUnit(unit);
     const primaryKeyColor = VolumeEstimatorHelpers.getPrimaryThemKeyByShapeId(params.shapeId);
     const onFocusLabel = VolumeEstimatorHelpers.getInputAccessoryLabelByShapeKey(inputFocus);
-    const primaryColor = VolumeEstimatorHelpers.getPrimaryColorByShapeId(params.shapeId, theme);
+    const primaryColor = VolumeEstimatorHelpers.getPrimaryColorByShapeId(params.shapeId);
 
     return (
         <View>
@@ -89,7 +89,7 @@ export const CircleVolumeShape: React.FC<ShapesProps> = (props) => {
                     keyboardType="numeric"
                     maxLength={ 4 }
                     returnKeyLabel="Next"
-                    textInputStyleProps={ { color: primaryColor } }
+                    textInputStyleProps={ { color: theme.colors[primaryColor], fontWeight: '600' } }
                     inputAccessoryViewID={ circleVolumeEstimatorAccessoryId }
                     onFocus={ () => setInputFocus('diameter') }
                     ref={ diameterRef }
@@ -105,7 +105,8 @@ export const CircleVolumeShape: React.FC<ShapesProps> = (props) => {
                     maxLength={ 4 }
                     returnKeyType="next"
                     returnKeyLabel="Next"
-                    textInputStyleProps={ { color: primaryColor } }
+                    containerStyles={ styles.textInput }
+                    textInputStyleProps={ { color: theme.colors[primaryColor], fontWeight: '600' } }
                     inputAccessoryViewID={ circleVolumeEstimatorAccessoryId }
                     onFocus={ () => setInputFocus('deepest') }
                     ref={ deepestRef }
@@ -119,13 +120,19 @@ export const CircleVolumeShape: React.FC<ShapesProps> = (props) => {
                     maxLength={ 4 }
                     returnKeyType="done"
                     returnKeyLabel="Done"
-                    textInputStyleProps={ { color: primaryColor } }
+                    containerStyles={ styles.textInput }
+                    textInputStyleProps={ { color: theme.colors[primaryColor], fontWeight: '600' } }
                     inputAccessoryViewID={ circleVolumeEstimatorAccessoryId }
                     onFocus={ () => setInputFocus('shallowest') }
                     ref={ shallowestRef }
                 />
             </View>
-            <KeyboardButton nativeID={ circleVolumeEstimatorAccessoryId } bgColor={ primaryKeyColor } onPress={ handlePressedNext }>
+            <KeyboardButton
+                nativeID={ circleVolumeEstimatorAccessoryId }
+                bgColor={ primaryKeyColor }
+                textColor="black"
+                hitSlop={ { top: 5, left: 5, bottom: 5, right: 5 } }
+                onPress={ handlePressedNext }>
                 {onFocusLabel}
             </KeyboardButton>
         </View>

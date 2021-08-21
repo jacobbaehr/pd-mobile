@@ -12,6 +12,7 @@ import { Util } from '~/services/Util';
 
 export const ForumPrompt: React.FC = () => {
     const theme = useTheme();
+
     const handlePressedButton = () => {
         Haptic.light();
         Util.doAsync(() => {
@@ -36,7 +37,7 @@ export const ForumPrompt: React.FC = () => {
                 I'd love to hear it. Tell me what the app is missing!
             </PDText>
             <ButtonWithChildren onPress={ handlePressedButton } styles={ buttonStyles }>
-                <PDText type="subHeading" color="white" style={ styles.buttonText }>Open Forum</PDText>
+                <PDText type="subHeading" style={ styles.buttonText }>Open Forum</PDText>
                 <SVG.IconRightArrow style={ styles.buttonIcon } width={ 22 } height={ 21 } />
             </ButtonWithChildren>
         </PDView>
@@ -63,6 +64,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     buttonText: {
+        color: '#fff',
         textAlign: 'center',
     },
     buttonIcon: {

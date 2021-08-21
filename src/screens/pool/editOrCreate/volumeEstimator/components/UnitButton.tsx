@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 import { CycleButton } from '~/components/buttons/CycleButton';
 import { PDText } from '~/components/PDText';
 import { useTheme } from '~/components/PDTheme';
@@ -32,20 +31,18 @@ const UnitButton: React.FC<UnitButtonProps> = (props) => {
         updateDeviceSettingsUnit(nextUnit);
         handleUnit(nextUnit);
     };
-    const primaryColor = VolumeEstimatorHelpers.getPrimaryColorByShapeId(params.shapeId, theme);
+    const primaryColor = VolumeEstimatorHelpers.getPrimaryColorByShapeId(params.shapeId);
 
     // Unit Values
     const unitName = VolumeEstimatorHelpers.getButtonLabelForUnit(unit);
 
     return (
-        <View>
-            <View>
-                <PDText type="bodyGreyBold" color="grey">
-                    Unit
-                </PDText>
-                <CycleButton title={ unitName } onPress={ handlerPressedUnitButton } textStyles={ { color: primaryColor } } />
-            </View>
-        </View>
+        <>
+            <PDText type="bodyGreyBold" color="grey">
+                Unit
+            </PDText>
+            <CycleButton title={ unitName } onPress={ handlerPressedUnitButton } textStyles={ { color: theme.colors[primaryColor] } } />
+        </>
     );
 };
 

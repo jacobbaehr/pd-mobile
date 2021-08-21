@@ -45,10 +45,10 @@ export const PopoverScreen = () => {
                 <PDView
                     bgColor={ prevSelection === item.value ? color : 'greyLight' }
                     style={ styles.itemContainer }>
-                    <PDText type="bodySemiBold" color={ prevSelection === item.value ? 'white' : 'black' }>
+                    <PDText type="bodySemiBold" color={ 'black'  }>
                         {item.name}
                     </PDText>
-                    <PDView>{(prevSelection === item.value) ? <SVG.IconCircleCheck fill={ color } /> : null}</PDView>
+                    {prevSelection === item.value && <SVG.IconCircleCheckmark fill={ color } />}
                 </PDView>
             </TouchableScale>
         );
@@ -56,7 +56,7 @@ export const PopoverScreen = () => {
 
     return (
         <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never' } }>
-            <ScreenHeader textType="subHeading" hasBackButton hasBottomLine={ false }>
+            <ScreenHeader textType="subHeading" color={ color } hasBackButton hasBottomLine={ false }>
                 {title}
             </ScreenHeader>
             <PDView style={ styles.descriptionContainer }>

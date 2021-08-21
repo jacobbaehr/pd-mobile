@@ -29,7 +29,7 @@ export const ScoopListItem: React.FC<ScoopListItemProps> = (props) => {
 
     return (
         <TouchableScale onPress={ handlePressed } activeScale={ 0.96 }>
-            <PDView bgColor="white" style={ styles.listItemContainer }>
+            <PDView bgColor="white" borderColor="border" style={ styles.listItemContainer }>
                 <PDText type="bodySemiBold" style={ styles.chemNameText }>
                     {props.scoop.chemName}
                 </PDText>
@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: PDSpacing.lg,
         borderRadius: 24,
         borderWidth: 2,
-        borderColor: '#F0F0F0',
         justifyContent: 'space-between',
         alignItems: 'center',
     },

@@ -6,7 +6,7 @@ import { SVG } from '~/assets/images';
 import { Button } from '~/components/buttons/Button';
 import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
 import { PDText } from '~/components/PDText';
-import { PDSpacing } from '~/components/PDTheme';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { useThunkDispatch, useTypedSelector } from '~/redux/AppState';
@@ -23,6 +23,7 @@ export const DeletePool: React.FC<DeletePoolModal> = (props ) => {
     const selectedPool = useTypedSelector((state) => state.selectedPool);
     const navigation = useNavigation<PDStackNavigationProps>();
     const dispatch = useThunkDispatch();
+    const theme = useTheme();
 
     if (!visible) {
         return null;
@@ -40,27 +41,28 @@ export const DeletePool: React.FC<DeletePoolModal> = (props ) => {
         <PDView style={ styles.modalContainer }>
             <Modal isVisible={ visible } onBackdropPress={ toggleVisible } animationOut="slideOutDown">
                 <PDView style={ styles.modalContainer }>
-                    <PDView style={ styles.modal }>
+                    <PDView bgColor="white" style={ styles.modal }>
                         <PDText type="subHeading" color="black">
                             Deletion Warning
                         </PDText>
-                        <PDView style={ styles.warning }>
-                            <PDText type="bodyRegular" color="red" style={ styles.warningText }>
+                        <PDView bgColor="blurredRed" style={ styles.warning }>
+                            <PDText type="bodyMedium" color="red" textAlign="center">
                                 Continuing will permanently delete {selectedPool?.name}. This cannot be undone.
                             </PDText>
                         </PDView>
                         <ButtonWithChildren
                             onPress={ onPressDelete }>
-                            <PDView style={ styles.deleteButton }>
+                            <PDView bgColor="red" style={ styles.deleteButton }>
                                 <SVG.IconDelete width={ 16 } height={ 16 } fill="white" />
-                                <PDText style={ styles.deleteButtonText }> Delete {selectedPool?.name}</PDText>
+                                <PDText type="subHeading" textAlign="center" style={ styles.deleteButtonText }> Delete {selectedPool?.name}</PDText>
                             </PDView>
                         </ButtonWithChildren>
                         <Button
                             title="Cancel"
                             onPress={ toggleVisible }
                             styles={ styles.cancelButton }
-                            textStyles={ styles.cancelButtonText }
+                            textStyles={ [ styles.cancelButtonText , { color: theme.colors.black }] }
+                            bgColor="greyLight"
                         />
                     </PDView>
                 </PDView>
@@ -73,17 +75,15 @@ const styles = StyleSheet.create({
     modalContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 22,
+        marginTop: PDSpacing.lg,
     },
     modal: {
         paddingHorizontal: 35,
         paddingVertical: 25,
-        backgroundColor: 'white',
         borderRadius: 24,
         alignItems: 'center',
     },
     warning: {
-        backgroundColor: '#FFF2F2',
         borderRadius: 8,
         paddingHorizontal:  50,
         paddingVertical: 10,
@@ -91,13 +91,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    warningText: {
-        textAlign: 'center',
-    },
     deleteButton: {
         width: 295,
         height: 40,
-        backgroundColor: 'red',
         borderRadius: 27.5,
         marginVertical: PDSpacing.sm,
         justifyContent: 'center',
@@ -106,22 +102,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     deleteButtonText: {
-        fontWeight: '700',
-        fontSize: 18,
         color: 'white',
-        alignSelf: 'center',
     },
     cancelButton: {
         width: 295,
         height: 40,
-        backgroundColor: '#EDEDED',
         borderRadius: 27.5,
         justifyContent: 'center',
     },
     cancelButtonText: {
         fontWeight: '700',
         fontSize: 18,
-        color: 'black',
         alignSelf: 'center',
     },
 });

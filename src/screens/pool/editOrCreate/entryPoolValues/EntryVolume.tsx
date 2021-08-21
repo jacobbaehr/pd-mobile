@@ -82,7 +82,7 @@ export const EntryVolume = () => {
                     returnKeyType="done"
                     onSubmitEditing={ handleOnPressSaveButton }
                 />
-                <PDView style={ { flexShrink: 1 } }>
+                <PDView style={ { minWidth: 150 } }>
                     <PDText type="bodyGreyBold" color="grey">
                         unit
                     </PDText>

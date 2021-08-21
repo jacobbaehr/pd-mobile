@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SVG } from '~/assets/images';
 import { ScreenHeader } from '~/components/headers/ScreenHeader';
-import { useTheme } from '~/components/PDTheme';
 import { EstimateRoute } from '~/navigator/shared';
-import { useTypedSelector } from '~/redux/AppState';
 
 import { useRoute } from '@react-navigation/native';
 
@@ -14,24 +11,27 @@ import UnitButton from './components/UnitButton';
 import { getElementByShapeId, ShapesProps } from './shapes/ShapeUtils';
 import styles from './shapes/VolumeEstimatorStyles';
 import { VolumeEstimatorHelpers } from './VolumeEstimatorHelpers';
+import { PDView } from '~/components/PDView';
+import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
+import { useTheme } from '~/components/PDTheme';
 
 const EntryShapeScreen: React.FC = () => {
     const { params } = useRoute<EstimateRoute>();
+    const { ds } = useDeviceSettings();
+    const [unit, setUnit] = useState(ds.units);
     const theme = useTheme();
-    const deviceSettings = useTypedSelector(state => state.deviceSettings);
-    const [unit, setUnit] = useState(deviceSettings.units);
 
     /// SVG Rendering
-    const shapeName = VolumeEstimatorHelpers.getBigShapeForSVG(params.shapeId);
+    const shapeName = theme.isDarkMode ? VolumeEstimatorHelpers.getDarkBigShapeForSVG(params.shapeId) : VolumeEstimatorHelpers.getBigShapeForSVG(params.shapeId);
     const ShapeSVG = SVG[shapeName];
 
     // Colors
-    const primaryBlurredColor = VolumeEstimatorHelpers.getPrimaryBlurredColorByShapeId(params.shapeId, theme);
+    const primaryBlurredColor = VolumeEstimatorHelpers.getPrimaryBlurredColorByShapeId(params.shapeId);
     // Entry Shape
-    const EntryShape : React.FC<ShapesProps> = getElementByShapeId(params.shapeId);
+    const EntryShape: React.FC<ShapesProps> = getElementByShapeId(params.shapeId);
 
     return (
-        <View style={ styles.container }>
+        <PDView bgColor="white" style={ styles.container }>
             <ScreenHeader textType="subHeading" hasBottomLine={ false }>Volume Estimator</ScreenHeader>
             <KeyboardAwareScrollView
                 style={ styles.content }
@@ -39,14 +39,14 @@ const EntryShapeScreen: React.FC = () => {
                 enableOnAndroid
                 keyboardShouldPersistTaps={ 'handled' }
                 >
-                <View style={ StyleSheet.flatten([styles.shapeContainer, { backgroundColor: primaryBlurredColor }]) }>
+                <PDView bgColor={ primaryBlurredColor } style={ styles.shapeContainer }>
                     <ShapeSVG width={ '100%' } />
-                </View>
-                <UnitButton  unit={ unit } handleUnit={ setUnit } />
+                </PDView>
+                <UnitButton unit={ unit } handleUnit={ setUnit } />
                 <EntryShape unit={ unit } />
                 <EstimateVolume unit={ unit } />
             </KeyboardAwareScrollView>
-        </View>
+        </PDView>
     );
 };
 

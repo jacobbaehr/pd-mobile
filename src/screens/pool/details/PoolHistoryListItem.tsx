@@ -83,7 +83,7 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
         ));
 
         expandedContent = <>
-            <PDView style={ { borderWidth: 1, borderColor: theme.colors.border, marginTop: PDSpacing.xs } } />
+            <PDView borderColor="border"  style={ { borderWidth: 1,  marginTop: PDSpacing.xs } } />
             <PDView style={ styles.sectionContainer } >
                 <Conditional condition={ !!formulaName }>
                     <PDText type="buttonSmall" color="grey" >
@@ -122,12 +122,13 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
                     bgColor="greyLight"
                     textColor="black"
                     onPress={ () => props.handleEmailPressed(props.logEntry) }
-                    icon={ <SVG.IconMail fill="black" /> }
+                    icon={ <SVG.IconMail fill="white" /> }
                     title="Email" />
                 <PDButtonSolid
+                    textColor="black"
                     bgColor="red"
                     onPress={ () => props.handleDeletePressed(props.logEntry.objectId) }
-                    icon={ <SVG.IconDeleteOutline fill={ theme.colors.white } /> }
+                    icon={ <SVG.IconDeleteOutline fill={ theme.colors.black } /> }
                     title="Delete" />
             </View>
         </>;
@@ -139,38 +140,34 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
 
     const Icon = props.isExpanded ? SVG.IconChevronCircleUp : SVG.IconChevronCircleDown;
     return (
-        <TouchableScale style={ styles.container } onPress={ handleButtonPressed } activeScale={ 0.99 }>
-            <PDView style={ styles.rowContainer }>
-                <PDView>
-                    <PDText type="bodyMedium" color="greyDarker">
-                        {dayOfWeek}
-                    </PDText>
-                    <PDText type="bodyRegular" color="grey">
-                        {boringDate}
-                    </PDText>
+        <TouchableScale onPress={ handleButtonPressed } activeScale={ 0.99 }>
+            <PDView bgColor="white" borderColor="greyLightest" style={ styles.container }>
+                <PDView style={ styles.rowContainer }>
+                    <PDView>
+                        <PDText type="bodyMedium" color="greyDarker">
+                            {dayOfWeek}
+                        </PDText>
+                        <PDText type="bodyRegular" color="grey">
+                            {boringDate}
+                        </PDText>
+                    </PDView>
+                    <PDView>
+                        <Icon />
+                    </PDView>
                 </PDView>
-                <PDView>
-                    <Icon />
-                </PDView>
+                {expandedContent}
             </PDView>
-            {expandedContent}
         </TouchableScale>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
         borderRadius: 24,
         borderWidth: 2,
-        borderColor: '#F0F0F0',
         paddingHorizontal: PDSpacing.lg,
         paddingVertical: PDSpacing.md,
         marginBottom: PDSpacing.xs,
-    },
-    readingRowContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
     },
     rowContainer: {
         flexDirection: 'row',
@@ -180,12 +177,6 @@ const styles = StyleSheet.create({
     sectionContainer: {
         marginVertical: PDSpacing.xs,
     },
-    header: {
-        fontSize: 16,
-        fontWeight: '600',
-        opacity: 0.6,
-        marginTop: 12,
-    },
     lineItem: {
         marginLeft: PDSpacing.xs,
         fontWeight: '500',
@@ -194,28 +185,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         marginTop: PDSpacing.md,
-    },
-    deleteButtonContainer: {
-        backgroundColor: '#FFF4F3',
-        marginVertical: 12,
-        shadowColor: 'transparent',
-        height: 50,
-    },
-    deleteButtonText: {
-        color: '#FB2315',
-        padding: 5,
-        paddingHorizontal: 25,
-    },
-    emailButtonContainer: {
-        backgroundColor: '#DFE6F7',
-        marginVertical: 12,
-        shadowColor: 'transparent',
-        height: 50,
-        padding: 5,
-        paddingHorizontal: 25,
-    },
-    emailButtonText: {
-        color: '#1E6BFF',
     },
     rowItemContainer: {
         flexDirection: 'row',

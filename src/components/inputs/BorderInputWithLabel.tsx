@@ -14,8 +14,9 @@ interface BorderInputWithLabel extends TextInputProps {
 }
 
 const BorderInputWithLabel = React.forwardRef<TextInput, BorderInputWithLabel>((props, ref) => {
-    const { label, labelStyleProps, style,  textInputStyleProps, color = 'black', ...restTextInputProps } = props;
+    const { label, labelStyleProps, style, textInputStyleProps, color = 'black', ...restTextInputProps } = props;
     const theme = useTheme();
+
     const defaultStyle = [ styles.textInput, { borderColor: theme.colors.border, color: theme.colors[color] },  textInputStyleProps, style ];
 
     return (

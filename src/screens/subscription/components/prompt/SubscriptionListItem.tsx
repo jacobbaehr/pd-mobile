@@ -4,11 +4,10 @@ import { PurchasesProduct } from 'react-native-purchases';
 import TouchableScale from 'react-native-touchable-scale';
 import { SVG } from '~/assets/images';
 import { PDText } from '~/components/PDText';
-import { PDSpacing } from '~/components/PDTheme';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { ProductId, Products } from '~/models/InAppPurchase';
 import { Haptic } from '~/services/HapticService';
-import { Util } from '~/services/Util';
 
 interface SubscriptionListItemProps {
     product: PurchasesProduct;
@@ -19,9 +18,8 @@ interface SubscriptionListItemProps {
 
 export const SubscriptionListItem: React.FC<SubscriptionListItemProps> = (props) => {
     const { product, selected, updateSelection } = props;
-    const Icon = SVG[selected ? 'IconCircleCheck' : 'IconEmptyCircle'];
+    const theme = useTheme();
 
-    const compactStyles = Util.excludeFalsy([styles.container, selected && styles.active]);
 
     const handleSelection = () => {
         Haptic.light();
@@ -34,7 +32,7 @@ export const SubscriptionListItem: React.FC<SubscriptionListItemProps> = (props)
 
     return (
         <TouchableScale onPress={ handleSelection } activeScale={ 0.98 }>
-            <PDView bgColor="white" style={ compactStyles }>
+            <PDView bgColor={ selected ? 'blurredGreen' : 'white' } borderColor={ selected ? 'green' : 'border' } style={ styles.container }>
                 <PDView>
                     <PDText type="bodySemiBold" color="black">
                         {product.title}
@@ -43,7 +41,11 @@ export const SubscriptionListItem: React.FC<SubscriptionListItemProps> = (props)
                         {product.price_string} per {product.identifier === Products.MONTHLY ? 'month' : 'year'}
                     </PDText>
                 </PDView>
-                <PDView>{selected ? <Icon height={ 24 } width={ 24 } color="green" /> : null}</PDView>
+                <PDView>
+                    {selected && (
+                        <SVG.IconCircleCheckmark height={ 24 } width={ 24 } color={ theme.colors.green } />
+                    )}
+                </PDView>
             </PDView>
         </TouchableScale>
     );
@@ -53,7 +55,6 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         borderWidth: 2,
-        borderColor: '#EDEDED',
         borderRadius: 18,
         marginBottom: PDSpacing.xs,
         alignItems: 'center',
@@ -63,9 +64,5 @@ const styles = StyleSheet.create({
     },
     content: {
         marginVertical: PDSpacing.sm,
-    },
-    active: {
-        borderColor: '#00B25C',
-        backgroundColor: '#00B25C05',
     },
 });

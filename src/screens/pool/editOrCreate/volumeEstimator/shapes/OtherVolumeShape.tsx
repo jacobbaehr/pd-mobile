@@ -86,7 +86,7 @@ export const OtherVolumeShape: React.FC<ShapesProps> = (props) => {
 
     const unitName = VolumeEstimatorHelpers.getAbbreviationUnit(unit);
     const primaryKeyColor = VolumeEstimatorHelpers.getPrimaryThemKeyByShapeId(params.shapeId);
-    const primaryColor = VolumeEstimatorHelpers.getPrimaryColorByShapeId(params.shapeId, theme);
+    const primaryColor = VolumeEstimatorHelpers.getPrimaryColorByShapeId(params.shapeId);
     const onFocusLabel = VolumeEstimatorHelpers.getInputAccessoryLabelByShapeKey(inputFocus);
 
     return (
@@ -101,7 +101,7 @@ export const OtherVolumeShape: React.FC<ShapesProps> = (props) => {
                     maxLength={ 4 }
                     returnKeyType="search"
                     returnKeyLabel="Next"
-                    textInputStyleProps={ { color: primaryColor } }
+                    textInputStyleProps={ { color: theme.colors[primaryColor], fontWeight: '600' } }
                     inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
                     onFocus={ () => handleFocusInput('area') }
                     ref={ areaRef }
@@ -117,7 +117,8 @@ export const OtherVolumeShape: React.FC<ShapesProps> = (props) => {
                     maxLength={ 4 }
                     returnKeyType="next"
                     returnKeyLabel="Next"
-                    textInputStyleProps={ { color: primaryColor } }
+                    containerStyles={ styles.textInput }
+                    textInputStyleProps={ { color: theme.colors[primaryColor], fontWeight: '600' } }
                     inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
                     onFocus={ () => handleFocusInput('deepest') }
                     ref={ deepestRef }
@@ -131,7 +132,8 @@ export const OtherVolumeShape: React.FC<ShapesProps> = (props) => {
                     maxLength={ 4 }
                     returnKeyType="done"
                     returnKeyLabel="Done"
-                    textInputStyleProps={ { color: primaryColor } }
+                    containerStyles={ styles.textInput }
+                    textInputStyleProps={ { color: theme.colors[primaryColor], fontWeight: '600' } }
                     inputAccessoryViewID={ VolumeEstimatorHelpers.inputAccessoryId }
                     onFocus={ () => handleFocusInput('shallowest') }
                     onSubmitEditing={ handleNextFocused }
@@ -141,6 +143,7 @@ export const OtherVolumeShape: React.FC<ShapesProps> = (props) => {
             <KeyboardButton
                 nativeID={ VolumeEstimatorHelpers.inputAccessoryId }
                 bgColor={ primaryKeyColor }
+                textColor="black"
                 onPress={ handleNextFocused }
                 hitSlop={ { top: 5, left: 5, bottom: 5, right: 5 } }>
                 {onFocusLabel}

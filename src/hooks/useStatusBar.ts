@@ -5,13 +5,13 @@ import { useFocusEffect } from '@react-navigation/native';
 
 /**
  * Switches the color scheme of the status bar
- * to the constrast color under the current theme
+ * to the contrast color under the current theme
  */
 export const useContrastStatusBar = () => {
     const { statusBarContrast, statusBarDefault, isDarkMode } = useTheme();
 
     useFocusEffect(() => {
-      StatusBar.setBarStyle(isDarkMode ? statusBarDefault : statusBarContrast);
+        StatusBar.setBarStyle(isDarkMode ? statusBarDefault : statusBarContrast);
     });
 };
 
@@ -19,10 +19,10 @@ export const useContrastStatusBar = () => {
  * Switches the color scheme of the status bar
  * to the default color under the current theme
  */
- export const useStandardStatusBar = () => {
+export const useStandardStatusBar = () => {
     const { statusBarContrast, statusBarDefault, isDarkMode } = useTheme();
 
     useFocusEffect(() => {
-        StatusBar.setBarStyle(isDarkMode ? statusBarContrast : statusBarDefault );
+        StatusBar.setBarStyle(isDarkMode ? statusBarDefault : statusBarContrast  );
     });
 };

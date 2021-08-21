@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Alert, Linking, SectionList, StyleSheet } from 'react-native';
-import SafeAreaView from 'react-native-safe-area-view';
 import { PDText } from '~/components/PDText';
 import { useLoadRecipeHook } from '~/hooks/RealmPoolHook';
 import { FormulaMeta } from '~/models/recipe/FormulaMeta';
@@ -18,6 +17,7 @@ import { FormulaListItem } from './FormulaListItem';
 import { ScreenHeader } from '~/components/headers/ScreenHeader';
 import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { useContrastStatusBar } from '~/hooks/useStatusBar';
+import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 
 export interface FormulaListNavParams {
     poolName?: string;
@@ -108,7 +108,7 @@ export const FormulaListScreen: React.FC = () => {
     ];
 
     return (
-        <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } } forceInset={ { bottom: 'never' } }>
+        <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never' } }>
             <ScreenHeader color="orange" hasBackButton hasBottomLine>Change Formula</ScreenHeader>
             <SectionList
                 style={ { ...styles.scrollView, backgroundColor } }
@@ -118,14 +118,14 @@ export const FormulaListScreen: React.FC = () => {
                 ) }
                 renderSectionHeader={ ({ section: { title, subTitle } }) => (
                     <>
-                        <PDText type="default" style={ styles.sectionTitle }>{title}</PDText>
+                        <PDText type="default" color="black" style={ styles.sectionTitle }>{title}</PDText>
                         <PDText type="content" color="greyDark" style={ styles.explainerText }>{subTitle}</PDText>
                     </>
                 ) }
                 contentInset={ { bottom: 34 } }
                 stickySectionHeadersEnabled={ false }
             />
-        </SafeAreaView>
+        </PDSafeAreaView>
     );
 };
 
@@ -133,14 +133,12 @@ export const FormulaListScreen: React.FC = () => {
 const styles = StyleSheet.create({
     scrollView: {
         flex: 1,
-        backgroundColor: '#F2F9F9',
     },
     sectionTitle: {
         marginTop: 12,
         marginLeft: 16,
         fontSize: 28,
         fontWeight: '700',
-        color: 'black',
     },
     explainerText: {
         marginBottom: PDSpacing.sm,

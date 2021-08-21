@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import * as React from 'react';
 import {
-    Linking, SafeAreaView, ScrollView, StyleSheet, TouchableHighlight, View,
+    Linking, ScrollView, StyleSheet, TouchableHighlight, View,
 } from 'react-native';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { PDText } from '~/components/PDText';
@@ -21,6 +21,7 @@ import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { SVG } from '~/assets/images';
 import { PDView } from '~/components/PDView';
 import { useContrastStatusBar } from '~/hooks/useStatusBar';
+import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 
 export interface FormulaDetailsNavParams {
     formulaKey: FormulaKey;
@@ -38,7 +39,7 @@ export const FormulaScreen: React.FC = () => {
     useContrastStatusBar();
 
     if (!formula) {
-        return <></>;
+        return <PDView bgColor="background" />;
     }
 
     const isOfficial = RS.isOfficial(formula);
@@ -72,11 +73,11 @@ export const FormulaScreen: React.FC = () => {
     const scrollViewStyle = { backgroundColor: theme.colors.blurredOrange };
 
     return (
-        <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } }>
-            <PDView style={ styles.container }>
+        <PDSafeAreaView  bgColor="white">
+            <PDView bgColor="white" style={ styles.container }>
                 <ScreenHeader color="orange" hasBackButton hasBottomLine={ false }>Formula Details</ScreenHeader>
                 <PDView style={ [styles.titleContainer, bottomBorderStyle] }>
-                    <PDView style={ {  display: 'flex', flexDirection: 'row', marginBottom: PDSpacing.xs } }>
+                    <PDView style={ {  flexDirection: 'row', marginBottom: PDSpacing.xs } }>
                         <PDText type="heading" color="black">
                             {formula.name}{'  '}
                         </PDText>
@@ -91,7 +92,6 @@ export const FormulaScreen: React.FC = () => {
                             </PDText>
                     }
                 </PDView>
-                {/* <RecipeScreenHeader handleBackPress={ handleBackPressed } meta={ meta } /> */}
                 <ScrollView style={ [bottomBorderStyle, scrollViewStyle] } contentInset={ { top: 12, bottom: 12 } }>
                     <PDText type="content" style={ styles.textBody }>
                         {formula.description}
@@ -130,7 +130,7 @@ export const FormulaScreen: React.FC = () => {
                     title="Use formula"
                 />
             </PDView>
-        </SafeAreaView>
+        </PDSafeAreaView>
     );
 };
 
@@ -138,14 +138,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'flex-start',
-        backgroundColor: 'white',
     },
     titleContainer: {
         paddingLeft: PDSpacing.md,
     },
     button: {
         alignSelf: 'stretch',
-        backgroundColor: '#009384',
         margin: 12,
         marginBottom: 24,
     },
@@ -161,10 +159,6 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         marginLeft: 24,
     },
-    changeRecipeIntro: {
-        color: 'rgba(0,0,0,.6)',
-        fontSize: 18,
-    },
     recipeLinkPressed: {
         backgroundColor: 'transparent',
         color: '#3910E8',
@@ -175,21 +169,5 @@ const styles = StyleSheet.create({
         color: '#3910E8',
         fontSize: 18,
         textDecorationLine: 'underline',
-    },
-    recipeNameIntroText: {
-        marginTop: 16,
-        color: 'rgba(0,0,0,.6)',
-        fontSize: 18,
-        marginLeft: 24,
-    },
-    recipeNameText: {
-        color: 'rgba(0,0,0,.6)',
-        fontWeight: '700',
-        fontSize: 18,
-    },
-    recipeDescriptionText: {
-        color: 'rgba(0,0,0,.6)',
-        fontSize: 18,
-        marginTop: 12,
     },
 });

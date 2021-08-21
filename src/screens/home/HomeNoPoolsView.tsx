@@ -1,13 +1,11 @@
-import React from 'react';
-import { useRef } from 'react';
-import { useEffect } from 'react';
+import React, { useLayoutEffect,useRef } from 'react';
 import { Animated, Dimensions, Image, StyleSheet } from 'react-native';
 import { images, SVG } from '~/assets/images';
 import { AV } from '~/components/animation/AnimationHelpers';
 import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
 import { Conditional } from '~/components/Conditional';
 import { PDText } from '~/components/PDText';
-import { PDSpacing } from '~/components/PDTheme';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { useImportablePools } from '../special/PoolDoctorImportHooks';
 
@@ -17,7 +15,7 @@ interface HomeNoPoolsViewProps {
 }
 
 export const HomeNoPoolsView: React.FC<HomeNoPoolsViewProps> = (props) => {
-
+    const theme = useTheme();
     const a = useHomeScreenAnimation();
     const totalImportablePools = useImportablePools();
 
@@ -29,7 +27,7 @@ export const HomeNoPoolsView: React.FC<HomeNoPoolsViewProps> = (props) => {
     return (
         <PDView style={ styles.container }>
             <AV xy={ a.logoXY } opacity={ a.opacity }>
-                <Image source={ images.homeWelcomeText } style={ styles.topText }/>
+                <Image source={ theme.isDarkMode ? images.homeWelcomeTextWhite : images.homeWelcomeTextDark } style={ styles.topText }/>
             </AV>
             <AV xy={ a.descriptionXY } opacity={ a.opacity }>
                 <SVG.HomeDescriptionText style={ styles.bottomText }/>
@@ -119,7 +117,7 @@ const useHomeScreenAnimation = () => {
     const waterY = useRef(new Animated.Value(100)).current;
     const opacity = useRef(new Animated.Value(0)).current;
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         Animated.sequence([
             Animated.parallel([
                 Animated.timing(descriptionXY, {

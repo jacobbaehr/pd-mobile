@@ -1,8 +1,7 @@
 import * as React from 'react';
 import {
-    Alert, LayoutAnimation, SectionList, SectionListData, StyleSheet, View,
+    Alert, LayoutAnimation, SectionList, SectionListData, StyleSheet,
 } from 'react-native';
-import SafeAreaView from 'react-native-safe-area-view';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
 import { ChartCard } from '~/components/charts/ChartCard';
@@ -27,16 +26,20 @@ import { PoolHistoryListItem } from './PoolHistoryListItem';
 import PoolServiceConfigSection from './PoolServiceConfigSection';
 import { usePoolChart } from './usePoolChart';
 import { ForumPrompt } from '~/screens/home/footer/ForumPrompt';
-import { PDSpacing } from '~/components/PDTheme';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
+import { PDSafeAreaView } from '~/components/PDSafeAreaView';
+import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
+
 
 export const PoolScreen: React.FC = () => {
     useStandardStatusBar();
-    const deviceSettings = useTypedSelector((state) => state.deviceSettings);
+    const { ds } = useDeviceSettings();
     const selectedPool = useTypedSelector((state) => state.selectedPool);
     const dispatchThunk = useThunkDispatch();
+    const theme = useTheme();
 
-    const isUnlocked = DS.isSubscriptionValid(deviceSettings, Date.now());
+    const isUnlocked = DS.isSubscriptionValid(ds, Date.now());
 
     const { navigate } = useNavigation<PDStackNavigationProps>();
 
@@ -65,7 +68,7 @@ export const PoolScreen: React.FC = () => {
     }, [selectedFormulaKey]);
 
     if (!selectedPool || !recipe) {
-        return <></>;
+        return <PDView  />;
     }
 
     const handleEditButtonPressed = () => {
@@ -136,7 +139,7 @@ export const PoolScreen: React.FC = () => {
 
     const renderItem = (section: SectionListData<any>, item: any): JSX.Element => {
         let titleElement = (
-            <PDText type="default" style={ styles.sectionTitle }>
+            <PDText type="heading" style={ styles.sectionTitle }>
                 {section.title}
             </PDText>
         );
@@ -177,10 +180,10 @@ export const PoolScreen: React.FC = () => {
 
         // We need the key here to change after a purchase to cause a re-render:
         return (
-            <View key={ `${section}-${item.objectId}` } style={ { marginBottom, marginHorizontal } }>
+            <PDView key={ `${section}-${item.objectId}` } style={ { marginBottom, marginHorizontal } }>
                 {section.key === 'service_section' || titleElement}
                 {contentBody}
-            </View>
+            </PDView>
         );
     };
 
@@ -188,9 +191,11 @@ export const PoolScreen: React.FC = () => {
         if (section.key !== 'history_section' || history.length === 0) {
             return <></>;
         }
-        return <PDView style={ { marginHorizontal: PDSpacing.md } }>
-            <ForumPrompt />
-        </PDView>;
+        return (
+            <PDView style={ { marginHorizontal: PDSpacing.md } }>
+                <ForumPrompt />
+            </PDView>
+        );
     };
 
     const sections: SectionListData<any>[] = [
@@ -211,59 +216,30 @@ export const PoolScreen: React.FC = () => {
         },
     ];
     return (
-        <SafeAreaView style={ { flex: 1, backgroundColor: 'white' } } forceInset={ { bottom: 'never' } }>
+        <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never' } }>
             <ScreenHeader textType="heading" hasEditButton color="blue" handlePressedEdit={ handleEditButtonPressed }>
                 Pool Details
             </ScreenHeader>
             <SectionList
                 sections={ sections }
-                style={ styles.sectionList }
+                style={ [styles.sectionList , { backgroundColor: theme.colors.greyLighter }] }
                 renderItem={ ({ section, item }) => renderItem(section, item) }
                 contentInset={ { bottom: 34 } }
                 stickySectionHeadersEnabled={ true }
                 keyExtractor={ (section, item) => `${section.key}|${item}|${isUnlocked ? 'unlocked' : 'locked'}` }
                 renderSectionFooter={ (info) => renderSectionFooter(info.section) }
             />
-        </SafeAreaView>
+        </PDSafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
     sectionList: {
         flex: 1,
-        backgroundColor: '#F8F8F8',
     },
     sectionTitle: {
-        fontWeight: '700',
-        fontSize: 24,
-        lineHeight: 36,
         marginTop: 6,
         marginBottom: 4,
-    },
-    recipeName: {
-        fontSize: 28,
-        fontWeight: '700',
-        color: '#1E6BFF',
-        alignSelf: 'center',
-    },
-    arrowImage: {
-        alignSelf: 'center',
-        marginLeft: 8,
-    },
-    startButton: {
-        backgroundColor: '#1E6BFF',
-        marginTop: 12,
-        marginBottom: 5,
-        marginHorizontal: 12,
-    },
-    lastServiceLabel: {
-        color: '#737373',
-        fontWeight: '600',
-        fontSize: 16,
-        marginTop: 6,
-    },
-    recipeSection: {
-        marginBottom: 12,
     },
     recipeButton: {
         flexDirection: 'row',
@@ -272,14 +248,5 @@ const styles = StyleSheet.create({
         borderRadius: 24,
         marginHorizontal: 12,
         marginBottom: 12,
-    },
-    dataButton: {
-        alignSelf: 'stretch',
-        backgroundColor: '#DFE6F7',
-        marginHorizontal: 12,
-        marginVertical: 24,
-    },
-    dataButtonText: {
-        color: '#1E6BFF',
     },
 });

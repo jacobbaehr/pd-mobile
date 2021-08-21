@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { StyleSheet, Text, TextProps } from 'react-native';
+import { StyleSheet, Text, TextProps, TextStyle } from 'react-native';
 import { PDColor, PDTextType, useTheme } from '~/components/PDTheme';
 
 interface PDTextProps extends TextProps {
     type?: PDTextType;
     textAlign?: 'left' | 'center' | 'right' | 'auto' | 'justify'
     color?: PDColor;
+    textTransform?: TextStyle['textTransform']
 }
 
 /// PDTheme-compliant wrapper for the Text component. Stick to the theme & avoid using the style prop too often.
@@ -16,6 +17,7 @@ const BaseText: React.FC<PDTextProps> = (props) => {
         children,
         style,
         textAlign = 'auto',
+        textTransform = 'capitalize',
         color,
         ...restProps
     } = props;
@@ -27,7 +29,7 @@ const BaseText: React.FC<PDTextProps> = (props) => {
     const textColor = theme.colors[color ?? 'black'];
     const colorStylesFromTheme = { color: textColor };
     /// Any custom TextStyle properties are also applied at the end, via the "style" prop:
-    const textStyles = StyleSheet.flatten([defaultStyles, colorStylesFromTheme, { textAlign }, style]);
+    const textStyles = StyleSheet.flatten([defaultStyles, colorStylesFromTheme, { textAlign, textTransform }, style]);
 
     return (
         <Text style={ textStyles } allowFontScaling={ true } maxFontSizeMultiplier={ 1.4 } { ...restProps }>

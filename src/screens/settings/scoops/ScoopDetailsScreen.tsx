@@ -1,25 +1,21 @@
 import pluralize from 'pluralize';
 import * as React from 'react';
-import { Alert, InputAccessoryView, Keyboard, SafeAreaView, StyleSheet, View } from 'react-native';
+import { Alert, Keyboard, StyleSheet } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { connect } from 'react-redux';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { ChoosyButton } from '~/components/buttons/ChoosyButton';
 import { CloseButton } from '~/components/buttons/CloseButton';
 import { CycleButton } from '~/components/buttons/CycleButton';
 import { PDTextInput } from '~/components/inputs/PDTextInput';
 import { PDText } from '~/components/PDText';
-import { PlatformSpecific } from '~/components/PlatformSpecific';
 import { useContrastStatusBar } from '~/hooks/useStatusBar';
 import { DeviceSettings } from '~/models/DeviceSettings';
 import { Treatment, TreatmentType } from '~/models/recipe/Treatment';
 import { Scoop } from '~/models/Scoop';
 import { DryChemicalUnits, Units, WetChemicalUnits } from '~/models/TreatmentUnits';
-import { PDNavParams } from '~/navigator/shared';
-import { AppState, dispatch } from '~/redux/AppState';
+import { dispatch, useTypedSelector } from '~/redux/AppState';
 import { addScoop, editScoop } from '~/redux/deviceSettings/Actions';
 import { clearPickerState } from '~/redux/picker/Actions';
-import { PickerState } from '~/redux/picker/PickerState';
 import { PDPickerRouteProps } from '~/screens/picker/PickerScreen';
 import { DeviceSettingsService } from '~/services/DeviceSettings/DeviceSettingsService';
 import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
@@ -28,42 +24,43 @@ import { ScoopService } from '~/services/ScoopService';
 import { Converter } from '~/services/TreatmentUnitsService';
 import { Util } from '~/services/Util';
 
-import { RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
+import { RouteProp, useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { getTreatmentWithVar, mapScoopDeviceSettings } from './ScoopDetailsUtils';
+import { PDSafeAreaView } from '~/components/PDSafeAreaView';
+import { PDView } from '~/components/PDView';
+import { KeyboardButton } from '~/components/buttons/KeyboardButton';
+import { useTheme } from '~/components/PDTheme';
+import { PDRootNavigatorParams } from '~/navigator/PDRootNavigator';
+
+const getUnits = (type: TreatmentType, s?: string): Units => {
+    if (type === 'dryChemical') {
+        return Converter.dryFromString(s);
+    } else {
+        // <Ricky Bobby voice> If you ain't dry, you're wet.
+        return Converter.wetFromString(s);
+    }
+};
 
 export interface ScoopDetailsRouteProps {
     prevScoop: Scoop | null;
 }
 
-interface ScoopDetailsScreenProps {
-    navigation: StackNavigationProp<PDNavParams, 'ScoopDetails'>;
-    route: RouteProp<PDNavParams, 'ScoopDetails'>;
-    pickerState: PickerState | null;
-}
+export const ScoopDetailsScreen = () => {
+    useContrastStatusBar();
+    const route = useRoute<RouteProp<PDRootNavigatorParams, 'ScoopDetails'>>();
+    const { goBack, navigate } = useNavigation<StackNavigationProp<PDRootNavigatorParams>>();
+    const { prevScoop } = route.params;
+    const theme = useTheme();
+    const { ds, updateDS } = useDeviceSettings();
+    const pickerState = useTypedSelector(state => state.pickerState);
 
-const mapStateToProps = (state: AppState, ownProps: ScoopDetailsScreenProps): ScoopDetailsScreenProps => {
-    return {
-        navigation: ownProps.navigation,
-        route: ownProps.route,
-        pickerState: state.pickerState,
-    };
-};
-
-const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenProps> = (
-    props: ScoopDetailsScreenProps,
-) => {
-    const { prevScoop } = props.route.params;
-
-    const { goBack, navigate } = useNavigation();
     const [treatments, setTreatments] = React.useState<Treatment[]>([]);
     const [textValue, setTextValue] = React.useState(prevScoop?.displayValue || '1');
     const [treatment, setTreatment] = React.useState<Treatment | null>(null);
     const [isSelectingInitialTreatment, setIsSelectingInitialTreatment] = React.useState(false);
     const type = treatment?.type || 'dryChemical';
-    const { ds, updateDS } = useDeviceSettings();
-    useContrastStatusBar();
 
     const [units, setUnits] = React.useState<Units>(getUnits(type, prevScoop?.displayUnits));
     const headerTitle = prevScoop ? 'Edit Scoop' : 'Add Scoop';
@@ -102,7 +99,6 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
     // Handle selection of a treatment
     // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => {
-        const { pickerState } = props;
         if (pickerState && pickerState.key === 'scoop_chem' && pickerState.value !== null) {
             setIsSelectingInitialTreatment(false);
             const treatmentVar = pickerState.value;
@@ -119,7 +115,7 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
     });
 
     useFocusEffect(() => {
-        if (props.pickerState && props.pickerState.key === 'nothing' && isSelectingInitialTreatment) {
+        if (pickerState && pickerState.key === 'nothing' && isSelectingInitialTreatment) {
             // Hacky, awful special-case to handle the user pressing the "+" button on the settings screen
             // and immediately pressing the x button on chem-selection. In that case, we just dismiss this
             // screen as well. TODO: handle this somewhere else.
@@ -142,6 +138,7 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
                 value: t.var,
             })),
             pickerKey: 'scoop_chem',
+            color: 'pink',
             prevSelection: treatment?.var || prevScoop?.var,
         };
         navigate('PickerScreen', pickerProps);
@@ -228,7 +225,7 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
             return null;
         }
 
-        return <BoringButton containerStyles={ styles.deleteButton } onPress={ handleDeletePressed } title="Delete" />;
+        return <BoringButton containerStyles={ [styles.deleteButton, { backgroundColor:  theme.colors.red }] } onPress={ handleDeletePressed } title="Delete" />;
     };
 
     let chemButtonTitle = 'choose';
@@ -239,31 +236,31 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
     }
 
     return (
-        <SafeAreaView style={ { display: 'flex', flex: 1, backgroundColor: '#FFFFFF' } }>
-            <View style={ styles.header }>
-                <View style={ styles.headerLeft }>
-                    <PDText type="default" style={ styles.title }>
+        <PDSafeAreaView bgColor="white" >
+            <PDView style={ [styles.header, { borderBottomColor: theme.colors.border }] }>
+                <PDView style={ styles.headerLeft }>
+                    <PDText type="heading" color="black" style={ styles.title }>
                         {headerTitle}
                     </PDText>
-                </View>
-                <CloseButton onPress={ handleClosePressed } containerStyle={ styles.closeButton } />
-            </View>
-            <KeyboardAwareScrollView style={ { flex: 1, backgroundColor: '#F4F7FF' } }>
-                <PDText type="default" style={ styles.sectionTitle }>
+                </PDView>
+                <CloseButton onPress={ handleClosePressed } containerStyle={ styles.closeButton } backIconColor="pink" />
+            </PDView>
+            <KeyboardAwareScrollView style={ { flex: 1, backgroundColor: theme.colors.blurredPink } }>
+                <PDText type="heading" color="black" style={ styles.sectionTitle }>
                     Chemical
                 </PDText>
                 <ChoosyButton
                     title={ chemButtonTitle }
                     onPress={ () => showChemPicker(treatments) }
                     styles={ styles.chemButton }
-                    textStyles={ styles.chemButtonText }
+                    textStyles={ [styles.chemButtonText, { color: theme.colors.pink }] }
                 />
-                <PDText type="default" style={ styles.sectionTitle }>
+                <PDText type="heading" color="black" style={ styles.sectionTitle }>
                     Size
                 </PDText>
-                <View style={ styles.bubbleContainer }>
+                <PDView borderColor="border" bgColor="white" style={ styles.bubbleContainer }>
                     <PDTextInput
-                        style={ styles.textInput }
+                        style={ [styles.textInput, { borderColor: theme.colors.border, color: theme.colors.pink }] }
                         onChangeText={ handleTextboxUpdated }
                         keyboardType={ 'decimal-pad' }
                         inputAccessoryViewID={ keyboardAccessoryViewId }
@@ -274,55 +271,31 @@ const ScoopDetailsScreenComponent: React.FunctionComponent<ScoopDetailsScreenPro
                         title={ pluralize(units, +(textValue || '0')) }
                         onPress={ handleUnitsPressed }
                         styles={ styles.unitsButton }
-                        textStyles={ styles.unitsText }
+                        textStyles={ [styles.unitsText, { color: theme.colors.pink }] }
                     />
-                </View>
+                </PDView>
             </KeyboardAwareScrollView>
-            <View style={ { backgroundColor: 'white' } }>
-                <BoringButton containerStyles={ styles.saveButton } onPress={ handleSavePressed } title="Save" />
+            <PDView bgColor="white" >
+                <BoringButton containerStyles={ [styles.saveButton, { backgroundColor: theme.colors.pink }] } onPress={ handleSavePressed } title="Save" />
                 {getDeleteButtonOrNull()}
-            </View>
-            <PlatformSpecific include={ ['ios'] }>
-                <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
-                    <View style={ styles.keyboardAccessoryContainer }>
-                        <BoringButton
-                            containerStyles={ styles.keyboardAccessoryButton }
-                            textStyles={ styles.keyboardAccessoryButtonText }
-                            onPress={ () => {
-                                Keyboard.dismiss();
-                                Haptic.light();
-                            } }
-                            title="Done Typing"
-                        />
-                    </View>
-                </InputAccessoryView>
-            </PlatformSpecific>
-        </SafeAreaView>
+            </PDView>
+            <KeyboardButton nativeID={ keyboardAccessoryViewId } bgColor="pink" textColor="white">
+                Done Typing
+            </KeyboardButton>
+        </PDSafeAreaView>
     );
 };
 
-export const ScoopDetailsScreen = connect(mapStateToProps)(ScoopDetailsScreenComponent);
 
-const getUnits = (type: TreatmentType, s?: string): Units => {
-    if (type === 'dryChemical') {
-        return Converter.dryFromString(s);
-    } else {
-        // <Ricky Bobby voice> If you ain't dry, you're wet.
-        return Converter.wetFromString(s);
-    }
-};
 
 const styles = StyleSheet.create({
     header: {
         marginTop: 24,
         paddingBottom: 12,
-        display: 'flex',
         flexDirection: 'row',
-        borderBottomColor: '#F0F0F0',
         borderBottomWidth: 2,
     },
     headerLeft: {
-        display: 'flex',
         flexDirection: 'column',
         flex: 1,
     },
@@ -333,22 +306,14 @@ const styles = StyleSheet.create({
     title: {
         marginLeft: 12,
         fontSize: 28,
-        fontWeight: 'bold',
-        color: '#000',
-    },
-    titleBottom: {
-        color: '#1E6BFF',
-        marginBottom: 12,
     },
     saveButton: {
         alignSelf: 'stretch',
-        backgroundColor: '#1E6BFF',
         margin: 12,
         marginBottom: 24,
     },
     deleteButton: {
         alignSelf: 'stretch',
-        backgroundColor: '#FF4C4C',
         margin: 12,
         marginBottom: 24,
         marginTop: -6,
@@ -357,9 +322,7 @@ const styles = StyleSheet.create({
         minWidth: 60,
         paddingHorizontal: 12,
         borderWidth: 2,
-        borderColor: '#F8F8F8',
         borderRadius: 6,
-        color: '#1E6BFF',
         fontFamily: 'Poppins-Regular',
         fontWeight: '600',
         fontSize: 22,
@@ -371,30 +334,24 @@ const styles = StyleSheet.create({
         marginTop: 12,
         marginLeft: 16,
         fontSize: 28,
-        fontWeight: '700',
-        color: 'black',
     },
     chemButton: {
         marginBottom: 12,
         alignSelf: 'flex-start',
         marginTop: 5,
-        backgroundColor: 'white',
         marginLeft: 24,
     },
     chemButtonText: {
         fontSize: 20,
     },
     bubbleContainer: {
-        backgroundColor: 'white',
         borderRadius: 24,
         overflow: 'hidden',
-        borderColor: '#F0F0F0',
         borderWidth: 2,
         paddingVertical: 12,
         paddingHorizontal: 16,
         marginBottom: 24,
         marginHorizontal: 24,
-        display: 'flex',
         flexDirection: 'row',
     },
     unitsButton: {
@@ -404,17 +361,5 @@ const styles = StyleSheet.create({
     unitsText: {
         fontSize: 22,
         fontWeight: '600',
-    },
-    keyboardAccessoryContainer: {
-        backgroundColor: '#F8F8F8',
-        padding: 12,
-    },
-    keyboardAccessoryButton: {
-        backgroundColor: 'rgba(57, 16, 232, 0.6)',
-        marginHorizontal: 24,
-    },
-    keyboardAccessoryButtonText: {
-        color: 'white',
-        fontSize: 18,
     },
 });

@@ -1,4 +1,4 @@
-import { PDColor, PDTheme } from '~/components/PDTheme';
+import { PDColor } from '~/components/PDTheme';
 import { PoolUnit } from '~/models/Pool/PoolUnit';
 
 export interface RectangleMeasurements {
@@ -79,24 +79,33 @@ export class VolumeEstimatorHelpers {
         };
         return bigShapeNamesById[shapeId];
     };
+    static getDarkBigShapeForSVG = (shapeId: ShapeId): string => {
+        const bigShapeNamesById: Record<ShapeId, string> = {
+            rectangle: 'RectangleDark',
+            circle: 'CircleDark',
+            oval: 'OvalDark',
+            other: 'OtherDark',
+        };
+        return bigShapeNamesById[shapeId];
+    };
 
-    static getPrimaryColorByShapeId = (shapeId: ShapeId, theme: PDTheme): string => {
-        const shapeByPrimaryColor: Record<ShapeId, string> = {
-            rectangle: theme.colors.blue,
-            circle: theme.colors.green,
-            oval: theme.colors.orange,
-            other: theme.colors.purple,
+    static getPrimaryColorByShapeId = (shapeId: ShapeId): PDColor => {
+        const shapeByPrimaryColor: Record<ShapeId, PDColor> = {
+            rectangle: 'blue',
+            circle:'green',
+            oval: 'orange',
+            other: 'purple',
         };
 
         return shapeByPrimaryColor[shapeId];
     };
 
-    static getPrimaryBlurredColorByShapeId = (shapeId: ShapeId, theme: PDTheme): string => {
-        const shapeByPrimaryColor: Record<ShapeId, string> = {
-            rectangle: theme.colors.blurredBlue,
-            circle: theme.colors.blurredGreen,
-            oval: theme.colors.blurredOrange,
-            other: theme.colors.blurredPurple,
+    static getPrimaryBlurredColorByShapeId = (shapeId: ShapeId): PDColor => {
+        const shapeByPrimaryColor: Record<ShapeId, PDColor> = {
+            rectangle:'blurredBlue',
+            circle: 'blurredGreen',
+            oval: 'blurredOrange',
+            other: 'blurredPurple',
         };
 
         return shapeByPrimaryColor[shapeId];

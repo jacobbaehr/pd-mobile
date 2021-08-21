@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, Image, StyleSheet, ViewStyle, StyleProp } from 'react-native';
+import { Image, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { images } from '~/assets/images';
 import { BoringButton } from './buttons/BoringButton';
 import { SubscriptionFeatures } from '~/screens/subscription/components/shared/SubscriptionFeatures';
+import { PDView } from './PDView';
+import { useTheme } from './PDTheme';
 
 interface UpgradeProps {
     onPress: () => void;
@@ -10,32 +12,33 @@ interface UpgradeProps {
 }
 
 export const Upgrade: React.FunctionComponent<UpgradeProps> = (props) => {
+    const theme = useTheme();
+
     return (
-        <View style={ [styles.plusContainer, props.style] }>
-            <View style={ { flexDirection: 'row', display: 'flex' } }>
-                <View style={ { flex: 1 } } />
+        <PDView bgColor="white" borderColor="blue" style={ [styles.plusContainer, props.style] }>
+            <PDView style={ { flexDirection: 'row', display: 'flex' } }>
+                <PDView style={ { flex: 1 } } />
                 <Image
                     style={ styles.pdProImageStyles }
-                    source={ images.logoGreenPlus }
+                    source={ theme.isDarkMode ? images.logoWhitePlus : images.logoGreenPlus }
                     width={ 3000 }
                     resizeMode={ 'contain' }
                 />
-                <View style={ { flex: 1 } } />
-            </View>
-            <SubscriptionFeatures showTitle={ false }/>
+                <PDView style={ { flex: 1 } } />
+            </PDView>
+            <SubscriptionFeatures showTitle={ false } />
             <BoringButton
                 title={ 'Upgrade' }
                 onPress={ props.onPress }
-                containerStyles={ styles.dataButton }
-                textStyles={ styles.dataButtonText }
+                containerStyles={ [styles.dataButton, { backgroundColor: theme.colors.greyLighter }] }
+                textStyles={ { color: theme.colors.blue } }
             />
-        </View>
+        </PDView>
     );
 };
 
 const styles = StyleSheet.create({
     plusContainer: {
-        backgroundColor: 'white',
         shadowOffset: { width: 0, height: 2 },
         shadowColor: 'grey',
         shadowOpacity: 0.3,
@@ -44,7 +47,6 @@ const styles = StyleSheet.create({
         flex: 1,
         borderRadius: 24,
         borderWidth: 2,
-        borderColor: '#1E6BFF',
         alignItems: 'center',
     },
     pdProImageStyles: {
@@ -63,27 +65,11 @@ const styles = StyleSheet.create({
         opacity: 0.6,
         marginBottom: 4,
     },
-    plusButton: {
-        backgroundColor: '#1E6BFF',
-        borderRadius: 12,
-        shadowColor: 'transparent',
-        paddingHorizontal: 12,
-        marginBottom: 12,
-        marginTop: 16,
-        alignSelf: 'stretch',
-    },
-    plusButtonText: {
-        color: 'white',
-    },
     dataButton: {
         alignSelf: 'stretch',
-        backgroundColor: '#DFE6F7',
         marginHorizontal: 12,
         marginVertical: 24,
         borderRadius: 12,
         shadowColor: 'transparent',
-    },
-    dataButtonText: {
-        color: '#1E6BFF',
     },
 });

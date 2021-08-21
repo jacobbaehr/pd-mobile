@@ -4,10 +4,8 @@ import { PDSpacing } from '~/components/PDTheme';
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
     },
     content: {
-        flex: 1,
         paddingHorizontal: PDSpacing.lg,
     },
     formRow: {
@@ -21,7 +19,6 @@ export default StyleSheet.create({
         alignItems: 'center',
         marginTop: PDSpacing.sm,
         marginBottom: PDSpacing.lg,
-        backgroundColor: '#1E6BFF10',
         padding: PDSpacing.md,
         borderRadius: 16,
     },
@@ -29,6 +26,6 @@ export default StyleSheet.create({
         marginTop: PDSpacing.sm,
     },
     textInput: {
-        width: '50%',
+        width: '49%',
     },
 });

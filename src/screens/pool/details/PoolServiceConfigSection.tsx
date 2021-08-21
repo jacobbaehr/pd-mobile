@@ -22,12 +22,14 @@ import { PlayButton } from '~/components/buttons/PlayButton';
  */
 const PoolServiceConfigSection = () => {
     const { navigate } = useNavigation<StackNavigationProp<PDNavParams>>();
-    const selectedPool = useTypedSelector(state => state.selectedPool);
+    const selectedPool = useTypedSelector((state) => state.selectedPool);
     const recipe = useLoadRecipeHook(selectedPool?.recipeKey || RecipeService.defaultFormulaKey);
     const history = useRealmPoolHistoryHook(selectedPool?.objectId ?? null);
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
 
-    if (!selectedPool) { return <></>; }
+    if (!selectedPool) {
+        return <></>;
+    }
 
     const navigateToCustomTargets = () => {
         navigate('CustomTargets', { prevScreen: 'EditPoolNavigator' });
@@ -39,52 +41,52 @@ const PoolServiceConfigSection = () => {
     };
 
     const getLastTimeUpdate = () =>
-        history.length > 0
-            ? `Last Serviced: ${formatDistanceStrict(history[0].ts, Date.now())} ago`
-            : '';
+        history.length > 0 ? `Last Serviced: ${formatDistanceStrict(history[0].ts, Date.now())} ago` : '';
 
     const abbreviateVolume = VolumeUnitsUtil.getDisplayVolume(selectedPool.gallons, deviceSettings);
 
     return (
         <>
             <PDView bgColor="white" style={ styles.container }>
-            <PDText type="subHeading" numberOfLines={ 0 }>{selectedPool.name}</PDText>
-            <PDView>
-                <PDView style={ styles.row }>
-                <PDView style={ styles.sectionIcon }>
-                    <SVG.IconWater height={ 16 } width={ 16 } />
-                </PDView>
-                <PDText type="bodyBold" color="greyDark">
-                    {abbreviateVolume}
+                <PDText type="subHeading" numberOfLines={ 0 }>
+                    {selectedPool.name}
                 </PDText>
-                </PDView>
                 <PDView>
-                    <PDView>
-                        <PDText type="bodyBold" color="black" style={ styles.subTitle }>
-                            formula
+                    <PDView style={ styles.row }>
+                        <PDView style={ styles.sectionIcon }>
+                            <SVG.IconWater height={ 16 } width={ 16 } />
+                        </PDView>
+                        <PDText type="bodyBold" color="greyDark">
+                            {abbreviateVolume}
                         </PDText>
-                        <PDView style={ styles.row }>
-                            <PDView style={ styles.sectionIcon }>
-                                <SVG.IconBeaker height={ 16 } width={ 16 }/>
-                            </PDView>
-                            <PDText type="bodyBold" color="greyDark" numberOfLines={ 1 } ellipsizeMode="tail">
-                                {recipe?.name}
+                    </PDView>
+                    <PDView>
+                        <PDView>
+                            <PDText type="bodyBold" color="black" style={ styles.subTitle }>
+                                formula
                             </PDText>
+                            <PDView style={ styles.row }>
+                                <PDView style={ styles.sectionIcon }>
+                                    <SVG.IconBeaker height={ 16 } width={ 16 } />
+                                </PDView>
+                                <PDText type="bodyBold" color="greyDark" numberOfLines={ 1 } ellipsizeMode="tail">
+                                    {recipe?.name}
+                                </PDText>
+                            </PDView>
+                        </PDView>
+                        <PDView>
+                            <PDText type="bodyBold" color="black" style={ styles.subTitle }>
+                                Target Levels
+                            </PDText>
+                            <ChipButton title="Customize" onPress={ navigateToCustomTargets } icon="levels" />
                         </PDView>
                     </PDView>
-                    <PDView>
-                        <PDText type="bodyBold" color="black"  style={ styles.subTitle }>
-                            Target Levels
-                        </PDText>
-                        <ChipButton title="Customize" onPress={ navigateToCustomTargets } icon="levels" />
-                    </PDView>
                 </PDView>
+                <PlayButton onPress={ navigateToReadings } title="Enter Readings" />
+                <PDText type="content" style={ styles.lastUpdateText } color="greyDark">
+                    {getLastTimeUpdate()}
+                </PDText>
             </PDView>
-            <PlayButton onPress={ navigateToReadings } title="Enter Readings" />
-            <PDText type="content" style={ styles.lastUpdateText } color="greyDark">
-                { getLastTimeUpdate() }
-            </PDText>
-        </PDView>
         </>
     );
 };
@@ -93,7 +95,6 @@ const styles = StyleSheet.create({
     container: {
         paddingHorizontal: PDSpacing.md,
         paddingTop: PDSpacing.md,
-        borderBottomColor: '#F0F0F0',
         borderBottomWidth: 2,
     },
     subTitle: {

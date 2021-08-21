@@ -80,7 +80,8 @@ export const SubscriptionList = () => {
                 <PDButton
                     onPress={ handlePurchase }
                     bgColor={ !selectedSku ? 'greyLight' : 'blue' }
-                    textStyle={ { color: theme.colors.white } }
+                    textStyle={ { color: 'white' } }
+
                     touchableProps={ {
                         disabled: !selectedSku,
                     } }>
@@ -98,7 +99,7 @@ export const SubscriptionList = () => {
                 </PDButton>
             </PDView>
             <PDView style={ styles.termsContainer }>
-                <PDText type="default" style={ styles.termsText }>
+                <PDText type="default" color="black" style={ styles.termsText }>
                     By subscribing, you agree to our
                     {' '}
                 </PDText>
@@ -128,22 +129,13 @@ const styles = StyleSheet.create({
     content: {
         marginVertical: PDSpacing.sm,
     },
-    container: {
-        marginTop: 20,
-        marginHorizontal: 16,
-        marginBottom: 40,
-        backgroundColor: 'transparent',
-    },
     termsContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        alignSelf: 'center',
-        textAlign: 'center',
         justifyContent: 'center',
     },
     termsText: {
         textAlign: 'center',
-        color: 'rgba(0,0,0,.6)',
         fontSize: 14,
     },
     termsLink: {

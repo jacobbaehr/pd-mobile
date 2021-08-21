@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    StyleProp, StyleSheet, TextInput, TextInputProps, TextStyle, ViewStyle
+    StyleProp, StyleSheet, TextInput, TextInputProps, TextStyle, ViewStyle,
 } from 'react-native';
 
 import { PDText } from './PDText';
