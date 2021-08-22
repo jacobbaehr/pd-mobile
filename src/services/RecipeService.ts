@@ -50,6 +50,7 @@ export class RecipeService {
         client: ApolloClient<NormalizedCacheObject>,
     ): Promise<void> => {
         /// latestKey may or may not be equal to "key"
+        try {
         const latestInfo = await FormulaAPI.fetchLatestMetaForFormula(key, client);
 
         if (RS.needUpdateToUseRecipe(latestInfo, Config.version)) {
@@ -58,8 +59,12 @@ export class RecipeService {
         }
 
         const latestKey = RS.getKey(latestInfo);
-        // As a side-effect, this saves it locally if we neededt ofetch it
+        // As a side-effect, this saves it locally if we needed to fetch it
         await RecipeService.resolveRecipeWithKey(latestKey, client);
+    } catch (e) {
+        console.warn('Could not fetch formula: ' + key);
+        console.warn(e);
+    }
     };
 
     static updateAllLocalRecipes = async (client: ApolloClient<NormalizedCacheObject>): Promise<void> => {
