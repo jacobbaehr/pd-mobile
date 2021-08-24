@@ -44,6 +44,7 @@ import IconPoolWaterType from './images/pool/icon_water_type.svg';
 import IconPooldashPlus from './images/settings/icon_pooldash_plus.svg';
 import IconScoop from './images/settings/icon_scoop.svg';
 import IconUnits from './images/settings/icon_units.svg';
+import IconTheme from './images/settings/icon_theme.svg';
 // Volume Estimator
 import Circle from './images/shapes/big_circle.svg';
 import CircleDark from './images/shapes/big_circle_dark.svg';
@@ -191,6 +192,7 @@ export const SVG: Record<string, (props: OverrideSvgProps) => JSX.Element> = {
     IconUnits: (props) => <IconUnits { ...props } />,
     IconSettings: (props) => <IconSettings { ...props } />,
     IconSearch: (props) => <IconSearch { ...props } />,
+    IconTheme: (props) => <IconTheme { ...props } />,
     // Setting.Theme
     SmallSunDark: (props) => <SmallSunDark { ...props } />,
     SmallMoonDark: (props) => <SmallMoonDark { ...props } />,

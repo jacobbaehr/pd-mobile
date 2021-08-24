@@ -11,6 +11,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { EditPoolNavigator } from './EditPoolNavigator';
 import { PDCardNavigator } from './PDCardNavigator';
 import ThemeToggleScreen from '~/screens/settings/themeToggle/ThemeToggleScreen';
+import { useTheme } from '~/components/PDTheme';
 
 // This defines the navigation params accepted by each possible screen in PDRootNavigator
 export type PDRootNavigatorParams = {
@@ -26,8 +27,22 @@ export type PDRootNavigatorParams = {
 const RootStack = createNativeStackNavigator<PDRootNavigatorParams>();
 
 export const PDRootNavigator = (): JSX.Element => {
+    // Setting this theme here helps the background-color be less jarring on screen transitions:
+    const pdTheme = useTheme();
+    const navTheme = {
+        dark: pdTheme.isDarkMode,
+        colors: {
+            background: pdTheme.colors.background,    // This is the only important one
+            primary: pdTheme.colors.greyDarker,
+            border: pdTheme.colors.border,
+            notification: pdTheme.colors.blue,
+            card: pdTheme.colors.card,
+            text: pdTheme.colors.black,
+        },
+    };
+
     return (
-        <NavigationContainer>
+        <NavigationContainer theme={ navTheme }>
             <RootStack.Navigator
                 screenOptions={ {
                     stackPresentation: 'formSheet',

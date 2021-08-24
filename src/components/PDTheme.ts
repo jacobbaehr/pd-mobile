@@ -37,6 +37,9 @@ export interface PDColorPalette {
     black: string;
 
     transparent: string
+
+    // White on both light & dark themes:
+    alwaysWhite: string;
 }
 
 export type PDColor = keyof PDColorPalette;
@@ -77,6 +80,7 @@ export const PDSpacing = {
 };
 
 const universalColors = {
+    alwaysWhite: '#FFFFFF',
     blurredRed: '#F9000007',
     blurredBlue: '#1E6BFF07',
     blurredOrange: '#FF750207',
@@ -142,4 +146,3 @@ export const darkTheme: PDTheme = {
 export const PDThemeContext = React.createContext<PDTheme>(darkTheme);
 
 export const useTheme = () => React.useContext(PDThemeContext);
-

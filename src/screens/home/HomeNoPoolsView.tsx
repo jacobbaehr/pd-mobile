@@ -25,7 +25,7 @@ export const HomeNoPoolsView: React.FC<HomeNoPoolsViewProps> = (props) => {
     const imageHeight = imageWidth * imageHeightRatio;
 
     return (
-        <PDView style={ styles.container }>
+        <PDView style={ styles.container } bgColor={ 'background' }>
             <AV xy={ a.logoXY } opacity={ a.opacity }>
                 <Image source={ theme.isDarkMode ? images.homeWelcomeTextWhite : images.homeWelcomeTextDark } style={ styles.topText }/>
             </AV>

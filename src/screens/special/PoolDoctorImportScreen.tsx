@@ -121,8 +121,9 @@ export const PoolDoctorImportScreen: React.FC = () => {
             </PDText>
             <PDButtonSolid
                 bgColor="red"
+                textColor="alwaysWhite"
                 onPress={ handleDeletePressed }
-                icon={ <SVG.IconDeleteOutline fill={ theme.colors.white } /> }
+                icon={ <SVG.IconDeleteOutline fill={ theme.colors.alwaysWhite } /> }
                 title="Undo Import"
                 style={ { marginBottom: PDSpacing.xl, marginTop: PDSpacing.sm } } />
         </>;

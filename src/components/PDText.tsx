@@ -17,7 +17,6 @@ const BaseText: React.FC<PDTextProps> = (props) => {
         children,
         style,
         textAlign = 'auto',
-        textTransform = 'capitalize',
         color,
         ...restProps
     } = props;
@@ -29,7 +28,7 @@ const BaseText: React.FC<PDTextProps> = (props) => {
     const textColor = theme.colors[color ?? 'black'];
     const colorStylesFromTheme = { color: textColor };
     /// Any custom TextStyle properties are also applied at the end, via the "style" prop:
-    const textStyles = StyleSheet.flatten([defaultStyles, colorStylesFromTheme, { textAlign, textTransform }, style]);
+    const textStyles = StyleSheet.flatten([defaultStyles, colorStylesFromTheme, { textAlign }, style]);
 
     return (
         <Text style={ textStyles } allowFontScaling={ true } maxFontSizeMultiplier={ 1.4 } { ...restProps }>

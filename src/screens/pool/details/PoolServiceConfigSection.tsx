@@ -3,7 +3,7 @@ import React from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
 import { SVG } from '~/assets/images';
 import { PDText } from '~/components/PDText';
-import { PDSpacing } from '~/components/PDTheme';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { useLoadRecipeHook, useRealmPoolHistoryHook } from '~/hooks/RealmPoolHook';
 import { PDNavParams } from '~/navigator/shared';
@@ -22,13 +22,14 @@ import { PlayButton } from '~/components/buttons/PlayButton';
  */
 const PoolServiceConfigSection = () => {
     const { navigate } = useNavigation<StackNavigationProp<PDNavParams>>();
+    const theme = useTheme();
     const selectedPool = useTypedSelector((state) => state.selectedPool);
     const recipe = useLoadRecipeHook(selectedPool?.recipeKey || RecipeService.defaultFormulaKey);
     const history = useRealmPoolHistoryHook(selectedPool?.objectId ?? null);
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
 
     if (!selectedPool) {
-        return <></>;
+        return <PDView />;
     }
 
     const navigateToCustomTargets = () => {
@@ -47,7 +48,7 @@ const PoolServiceConfigSection = () => {
 
     return (
         <>
-            <PDView bgColor="white" style={ styles.container }>
+            <PDView bgColor="background" style={ [styles.container, { borderBottomColor: theme.colors.border }] }>
                 <PDText type="subHeading" numberOfLines={ 0 }>
                     {selectedPool.name}
                 </PDText>

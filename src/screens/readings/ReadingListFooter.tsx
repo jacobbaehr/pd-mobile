@@ -13,7 +13,7 @@ export const ReadingListFooter: React.FunctionComponent<ReadingListFooterProps> 
     const [isChangeButtonPressed, setIsChangeButtonPressed] = React.useState(false);
 
     if (!props.recipe) {
-        return <></>;
+        return <PDView />;
     }
 
     const changeButtonStyles = isChangeButtonPressed ? styles.recipeLinkPressed : styles.recipeLinkNormal;

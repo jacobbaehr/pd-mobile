@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import TouchableScale from 'react-native-touchable-scale';
@@ -9,12 +10,15 @@ import { PDSafeAreaView } from '~/components/PDSafeAreaView';
 import { PDText } from '~/components/PDText';
 import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
+import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
+import { Haptic } from '~/services/HapticService';
 
-const themeOptions = [
-    {
-        key: 'automatic',
-        value: 'Automatic',
-    },
+interface ThemeOption {
+    key: 'system' | 'dark' | 'light';
+    value: string;
+}
+
+const themeOptions: ThemeOption[] = [
     {
         key: 'dark',
         value: 'Dark',
@@ -23,25 +27,23 @@ const themeOptions = [
         key: 'light',
         value: 'Light',
     },
+    {
+        key: 'system',
+        value: 'Same as System',
+    },
 ];
 
 const ThemeToggleScreen = () => {
     const theme = useTheme();
-    const [selectedTheme, setSelectedTheme] = useState('automatic');
+    const { ds, updateDS } = useDeviceSettings();
+    const { goBack } = useNavigation();
 
-    const handleThemeSelection = (newTheme: string) => {
-        console.log(newTheme);
-        setSelectedTheme(newTheme);
-    };
 
-    const IconSvgDark = {
-        automatic: SVG.AutomaticDark,
-        moon: SVG.SmallMoonDark,
-    };
-
-    const IconSvgLight = {
-        automatic: SVG.AutomaticLight,
-        sun: SVG.SmallSunDark,
+    const handleThemeSelection = (newTheme: 'system' | 'light' | 'dark') => {
+        Haptic.medium();
+        updateDS({
+            night_mode: newTheme,
+        });
     };
 
     return (
@@ -57,14 +59,14 @@ const ThemeToggleScreen = () => {
                     </PDText>
 
                     <PDView style={ { marginHorizontal: PDSpacing.lg } }>
-                        <PDText type="bodySemiBold" color="greyDark" textTransform="uppercase">
+                        <PDText type="bodySemiBold" color="greyDark">
                             Choose Theme
                         </PDText>
                         <PDView style={ { marginVertical: PDSpacing.md } }>
                             {themeOptions.map(option => (
-                                <TouchableScale key={ option.value } onPress={ () => handleThemeSelection(option.key) }>
-                                    <PDView  bgColor="greyLighter" style={ styles.renderItemContainer } >
-                                        {selectedTheme === option.key ? <SVG.IconCircleCheckmark color={ theme.colors.green }/> : <SVG.IconEmptyCircle  color={ theme.colors.white }/>}
+                                <TouchableScale key={ option.key } onPress={ () => handleThemeSelection(option.key) } activeScale={ 0.97 }>
+                                    <PDView bgColor="greyLighter" style={ styles.renderItemContainer } >
+                                        {ds.night_mode === option.key ? <Image source={ images.greenCheck } style={ { width: 24, height: 24 } } /> : <SVG.IconEmptyCircle color={ theme.colors.white }/>}
                                         <PDView style={ { marginLeft: PDSpacing.sm } }>
                                             <PDText type="bodyRegular" color="greyDarker">{option.value}</PDText>
                                         </PDView>
@@ -74,21 +76,9 @@ const ThemeToggleScreen = () => {
                         </PDView>
                     </PDView>
 
-                    <PDView style={ { marginHorizontal: PDSpacing.lg , flexDirection: 'row', alignItems: 'center' } }>
-                        { theme.isDarkMode ? <SVG.SmallMoonDark /> : <SVG.SmallSun />}
-                        <PDView style={ { marginHorizontal: PDSpacing.sm } }>
-                            <PDText type="bodyRegular" color="black">
-                                Automatic Switching
-                            </PDText>
-                            <PDText type="tooltip" color="greyDark">
-                                Pooldash will use your system-level settings
-                            </PDText>
-                        </PDView>
-                    </PDView>
-
                 </PDView>
                 <TextButton
-                    onPress={ () => {} }
+                    onPress={ goBack }
                     containerStyles={ [styles.buttonContainer , { backgroundColor: theme.colors.greyLightest }] }
                     textStyles={ [styles.buttonText, { color: theme.colors.black } ] }
                     text="Looks Great" />

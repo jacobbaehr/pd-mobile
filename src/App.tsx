@@ -15,12 +15,14 @@ import { getApolloClient } from './services/gql/Client';
 import { IAP } from '~/services/subscription/IAP';
 import { RecipeService } from './services/RecipeService';
 import { useDeviceSettings } from './services/DeviceSettings/Hooks';
+import { darkTheme, lightTheme, PDThemeContext } from './components/PDTheme';
+import { Appearance } from 'react-native';
 
 export const App: React.FC = () => {
     const [isDatabaseLoaded, setIsDatabaseLoaded] = React.useState(false);
     const [areRecipesPreloaded, setAreRecipesPreloaded] = React.useState(false);
     const [areDeviceSettingsLoaded, setAreDeviceSettingsLoaded] = React.useState(false);
-    const { updateDSForPurchaseState } = useDeviceSettings();   // Can i do this before loadDeviceSettings is called?
+    const { updateDSForPurchaseState, ds } = useDeviceSettings();   // Can i do this before loadDeviceSettings is called?
     const apolloClient = getApolloClient();
 
     React.useEffect(() => {
@@ -67,9 +69,19 @@ export const App: React.FC = () => {
         return <></>;
     }
 
+    // TODO: move into another helper
+    let theme = darkTheme;
+    if (ds.night_mode === 'light') {
+        theme = lightTheme;
+    } else if (ds.night_mode === 'system' && Appearance.getColorScheme() === 'light') {
+        theme = lightTheme;
+    }
+
     return (
         <ApolloProvider client={ apolloClient }>
-            <PDRootNavigator />
+            <PDThemeContext.Provider value={ theme }>
+                <PDRootNavigator />
+            </PDThemeContext.Provider>
         </ApolloProvider>
     );
 };

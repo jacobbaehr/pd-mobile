@@ -55,13 +55,13 @@ export const PopoverScreen = () => {
     };
 
     return (
-        <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never' } }>
+        <PDSafeAreaView bgColor="background" forceInset={ { bottom: 'never' } }>
             <ScreenHeader textType="subHeading" color={ color } hasBackButton hasBottomLine={ false }>
                 {title}
             </ScreenHeader>
             <PDView style={ styles.descriptionContainer }>
                 {!!description && (
-                    <PDText type="bodyMedium" color="grey" textAlign="center" numberOfLines={ 3 }>
+                    <PDText type="bodyMedium" color="greyDark" textAlign="center" numberOfLines={ 3 }>
                         {description}
                     </PDText>
                 )}

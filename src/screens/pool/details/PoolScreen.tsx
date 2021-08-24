@@ -152,7 +152,7 @@ export const PoolScreen: React.FC = () => {
         } else if (section.key === 'trends_section') {
             marginHorizontal = 18;
             if (history.length < 1) {
-                return <></>;
+                return <PDView />;
             }
             contentBody = (
                 <TouchableScale onPress={ handleChartsPressed } activeScale={ 0.98 } style={ styles.recipeButton }>
@@ -189,7 +189,7 @@ export const PoolScreen: React.FC = () => {
 
     const renderSectionFooter = (section: SectionListData<any>) => {
         if (section.key !== 'history_section' || history.length === 0) {
-            return <></>;
+            return <PDView />;
         }
         return (
             <PDView style={ { marginHorizontal: PDSpacing.md } }>
@@ -222,7 +222,7 @@ export const PoolScreen: React.FC = () => {
             </ScreenHeader>
             <SectionList
                 sections={ sections }
-                style={ [styles.sectionList , { backgroundColor: theme.colors.greyLighter }] }
+                style={ [styles.sectionList , { backgroundColor: theme.colors.background }] }
                 renderItem={ ({ section, item }) => renderItem(section, item) }
                 contentInset={ { bottom: 34 } }
                 stickySectionHeadersEnabled={ true }

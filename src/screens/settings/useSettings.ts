@@ -122,7 +122,7 @@ export const useSettings = () => {
             data: [
                 {
                     id: 'theme',
-                    image: 'IconExportData',
+                    image: 'IconTheme',
                     label: 'Theme ',
                     valueColor: 'black',
                     onPress: handleNavigateThemeToggled,

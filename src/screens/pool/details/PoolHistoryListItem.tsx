@@ -141,13 +141,13 @@ export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemPro
     const Icon = props.isExpanded ? SVG.IconChevronCircleUp : SVG.IconChevronCircleDown;
     return (
         <TouchableScale onPress={ handleButtonPressed } activeScale={ 0.99 }>
-            <PDView bgColor="white" borderColor="greyLightest" style={ styles.container }>
+            <PDView bgColor="white" borderColor="border" style={ styles.container }>
                 <PDView style={ styles.rowContainer }>
                     <PDView>
                         <PDText type="bodyMedium" color="greyDarker">
                             {dayOfWeek}
                         </PDText>
-                        <PDText type="bodyRegular" color="grey">
+                        <PDText type="bodyRegular" color="greyDark">
                             {boringDate}
                         </PDText>
                     </PDView>

@@ -187,7 +187,7 @@ export const ReadingListScreen: React.FC = () => {
     return (
         <PDSafeAreaView style={ { flex: 1 } } bgColor="white" forceInset={ { bottom: 'never' } }>
             <ScreenHeader textType="heading" color="blue">Readings</ScreenHeader>
-            <PDView style={ styles.container } bgColor="white">
+            <PDView style={ styles.container } bgColor="background">
                 <KeyboardAwareSectionList
                     style={ StyleSheet.flatten([styles.sectionList, { backgroundColor: theme.colors.blurredBlue }]) }
                     scrollEnabled={ !isSliding }

@@ -4,10 +4,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import SafeAreaView, { useSafeArea } from 'react-native-safe-area-view';
 
-import { BackButton } from '~/components/buttons/BackButton';
 import { ChartCard } from '~/components/charts/ChartCard';
 import { DateRangeSelector, DateRange } from '~/components/DateRangeSelector';
-import { PDGradientText } from '~/components/PDGradientText';
 import { Pool } from '~/models/Pool';
 import { AppState } from '~/redux/AppState';
 import { ChartCardViewModel } from '~/components/charts/ChartCardViewModel';
@@ -16,6 +14,9 @@ import { useNavigation } from '@react-navigation/native';
 import { DS } from '~/services/DSUtil';
 import { ChartService } from '~/services/ChartService';
 import { PDNavParams } from '~/navigator/shared';
+import { useTheme } from '~/components/PDTheme';
+import { PDView } from '~/components/PDView';
+import { ScreenHeader } from '~/components/headers/ScreenHeader';
 
 interface PoolHistoryProps {
     /**  */
@@ -35,6 +36,7 @@ const PoolHistoryComponent: React.FunctionComponent<PoolHistoryProps> = (props) 
     const [chartData, setChartData] = React.useState<ChartCardViewModel[]>([]);
     const { goBack } = useNavigation<StackNavigationProp<PDNavParams, 'PoolHistory'>>();
     const insets = useSafeArea();
+    const theme = useTheme();
 
     const { selectedPool, deviceSettings } = props;
     const isUnlocked = DS.isSubscriptionValid(deviceSettings, Date.now());
@@ -52,26 +54,22 @@ const PoolHistoryComponent: React.FunctionComponent<PoolHistoryProps> = (props) 
         setDateRange(selectedRange);
     };
     const dateRanges: DateRange[] = ['24H', '7D', '1M', '3M', '1Y', 'ALL'];
-    const poolTitle = selectedPool ? selectedPool.name : '';
 
     const charts = chartData.map((vm) => {
         return <ChartCard key={ vm.masterId + dateRange } viewModel={ vm } containerStyles={ styles.chartCard } />;
     });
 
     return (
-        <SafeAreaView style={ { backgroundColor: 'white', flex: 1 } } forceInset={ { bottom: 'never' } }>
-            <View style={ styles.header }>
-                <BackButton title={ poolTitle } onPress={ handleBackPress } />
-                <PDGradientText style={ styles.gradientText } colors={ titleGradientColors }>
-                    History
-                </PDGradientText>
+        <SafeAreaView style={ { backgroundColor: theme.colors.white, flex: 1 } } forceInset={ { bottom: 'never' } }>
+            <ScreenHeader hasBackButton hasBottomLine={ false } handlePressedBack={ handleBackPress } textType="heading" color="blue">History</ScreenHeader>
+            <PDView style={ styles.header } borderColor="border">
                 <DateRangeSelector
                     onRangeUpdated={ onRangeChanged }
                     dateRange={ dateRanges }
                     currentDateRange={ dateRange }
                 />
-            </View>
-            <ScrollView style={ styles.scrollView } contentInset={ { bottom: insets.bottom } }>
+            </PDView>
+            <ScrollView style={ [styles.scrollView, { backgroundColor: theme.colors.background }] } contentInset={ { bottom: insets.bottom } }>
                 <View style={ styles.chartContainer }>{charts}</View>
             </ScrollView>
         </SafeAreaView>
@@ -80,7 +78,6 @@ const PoolHistoryComponent: React.FunctionComponent<PoolHistoryProps> = (props) 
 
 export const PoolHistoryScreen = connect(mapStateToProps)(PoolHistoryComponent);
 
-const titleGradientColors: string[] = ['#00C6FF', '#0072FF'];
 
 const styles = StyleSheet.create({
     scrollView: {
@@ -90,9 +87,7 @@ const styles = StyleSheet.create({
     },
     header: {
         paddingHorizontal: 16,
-        backgroundColor: 'white',
         paddingBottom: 12,
-        borderBottomColor: '#F0F0F0',
         borderBottomWidth: 2,
     },
     gradientText: {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { SectionList as RnSectionList, SectionListData, StyleSheet } from 'react-native';
+import { Insets, SectionList as RnSectionList, SectionListData, StyleSheet } from 'react-native';
 import { ForumPrompt } from '~/screens/home/footer/ForumPrompt';
 
 import { PDText } from '../PDText';
@@ -24,6 +24,7 @@ export interface PDSectionListProps {
 interface SectionListProps {
     sections: SectionListData<PDSectionListItemProps, PDSectionListProps>[];
     showFooter: boolean;
+    insets?: Insets;
 }
 
 export const PDSectionList: React.FC<SectionListProps> = (props) => {
@@ -47,6 +48,7 @@ export const PDSectionList: React.FC<SectionListProps> = (props) => {
             contentContainerStyle={ styles.listContent }
             style={ [styles.listContainer, { backgroundColor: theme.colors.greyLightest  }] }
             ListFooterComponent={ footerComponent }
+            contentInset={ props.insets }
         />
     );
 };

@@ -14,7 +14,7 @@ export const ServiceNonStickyHeader: React.FC<{}> = () => {
     const pool = useTypedSelector((state) => state.selectedPool);
     const deviceSettings = useTypedSelector((state) => state.deviceSettings);
 
-    if (!pool) { return <></>; }
+    if (!pool) { return <PDView />; }
 
     const volumeDisplay = VolumeUnitsUtil.getDisplayVolume(pool.gallons, deviceSettings);
     const detailsText = getDisplayForWaterType(pool.waterType);

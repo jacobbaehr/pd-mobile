@@ -346,7 +346,7 @@ export const TreatmentListScreen: React.FC = () => {
         : completed.length / countedTreatmentStates.length;
 
     return (
-        <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never' } }>
+        <PDSafeAreaView bgColor="background" forceInset={ { bottom: 'never' } }>
             <ScreenHeader textType="heading" color="purple">Treatments</ScreenHeader>
             <KeyboardAwareSectionList
                 style={ StyleSheet.flatten([styles.sectionList, { backgroundColor: theme.colors.blurredBlue }]) }
@@ -372,13 +372,13 @@ export const TreatmentListScreen: React.FC = () => {
                     if (section.isHeader && haveCalculationsProcessed) {
                         return <TreatmentListHeader totalActionableTreatments={ countedTreatmentStates.length }/>;
                     } else {
-                        return <></>;
+                        return <PDView />;
                     }
                 } }
                 renderSectionFooter={ ({ section }) => {
                     // The second part is just to wait on the animation until after the treatments have all been loaded up.
                     if (section.isHeader || !haveCalculationsProcessed) {
-                        return <></>;
+                        return <PDView />;
                     } else {
                         return <TreatmentListFooter text={ notes } updatedText={ setNotes } index={ treatmentStates.length } />;
                     }
