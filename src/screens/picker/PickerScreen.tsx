@@ -126,7 +126,7 @@ export const PickerScreen: React.FunctionComponent<PickerScreenProps> = (props: 
                     />
                 </KeyboardAwareScrollView>
                 <PDView bgColor="white">
-                    <BoringButton containerStyles={ styles.saveButton } onPress={ handleSavePressed } title="Save" />
+                    <BoringButton containerStyles={ [styles.saveButton, { backgroundColor: theme.colors.grey }] } onPress={ handleSavePressed } title="Save" />
                 </PDView>
             </PDView>
         );

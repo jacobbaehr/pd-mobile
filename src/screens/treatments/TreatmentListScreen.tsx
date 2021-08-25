@@ -346,10 +346,10 @@ export const TreatmentListScreen: React.FC = () => {
         : completed.length / countedTreatmentStates.length;
 
     return (
-        <PDSafeAreaView bgColor="background" forceInset={ { bottom: 'never' } }>
+        <PDSafeAreaView bgColor="white" forceInset={ { bottom: 'never' } }>
             <ScreenHeader textType="heading" color="purple">Treatments</ScreenHeader>
             <KeyboardAwareSectionList
-                style={ StyleSheet.flatten([styles.sectionList, { backgroundColor: theme.colors.blurredBlue }]) }
+                style={ StyleSheet.flatten([styles.sectionList, { backgroundColor: theme.colors.background }]) }
                 keyboardDismissMode="interactive"
                 keyboardShouldPersistTaps="handled"
                 renderItem={ ({ item, index }) => (
@@ -392,7 +392,8 @@ export const TreatmentListScreen: React.FC = () => {
             />
             <PDView
                 borderColor="border"
-                style={ [styles.bottomButtonContainer, { paddingBottom: insets.bottom }] }>
+                style={ [styles.bottomButtonContainer, { paddingBottom: insets.bottom }] }
+                bgColor="background">
                 <PlayButton
                     title={ (hasSelectedAnyTreatments || countedTreatmentStates.length === 0) ? 'Save' : 'Save All' }
                     onPress={ save }

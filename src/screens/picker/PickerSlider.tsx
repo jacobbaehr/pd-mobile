@@ -8,6 +8,8 @@ import Slider from 'react-native-slider';
 import { images } from '~/assets/images';
 import { BoringButton } from '~/components/buttons/BoringButton';
 import { PDTextInput } from '~/components/inputs/PDTextInput';
+import { useTheme } from '~/components/PDTheme';
+import { PDView } from '~/components/PDView';
 import { PlatformSpecific } from '~/components/PlatformSpecific';
 import { Haptic } from '~/services/HapticService';
 
@@ -28,6 +30,7 @@ interface PickerSliderProps {
 
 export const PickerSlider: React.FunctionComponent<PickerSliderProps> = (props) => {
     const keyboardAccessoryViewId = 'picker-percent-keyboard-accessory-view-id';
+    const theme = useTheme();
 
     const rs = props.sliderState;
 
@@ -59,12 +62,12 @@ export const PickerSlider: React.FunctionComponent<PickerSliderProps> = (props) 
     };
 
     return (
-        <View style={ styles.container }>
-            <View style={ styles.content }>
-                <View style={ styles.topRow }>
-                    <View style={ styles.topRowContent }>
+        <PDView style={ styles.container } bgColor="background">
+            <PDView style={ styles.content } bgColor="white" borderColor="border">
+                <PDView style={ styles.topRow }>
+                    <PDView style={ styles.topRowContent }>
                         <PDTextInput
-                            style={ styles.textInput }
+                            style={ [styles.textInput, { color: theme.colors.blue, borderColor: theme.colors.border }] }
                             onChangeText={ onTextChange }
                             onEndEditing={ onTextEndEditing }
                             keyboardType={ 'number-pad' }
@@ -73,18 +76,19 @@ export const PickerSlider: React.FunctionComponent<PickerSliderProps> = (props) 
                             maxFontSizeMultiplier={ 1.4 }
                             allowFontScaling
                         />
-                        <PDText type="default" style={ styles.unitsText }>
+                        <PDText type="default" color="blue" style={ styles.unitsText }>
                             %
                         </PDText>
-                    </View>
-                </View>
+                    </PDView>
+                </PDView>
                 <Slider
                     style={ styles.slider }
                     minimumValue={ sliderMin }
                     maximumValue={ sliderMax }
-                    minimumTrackTintColor="#E3E3E3"
-                    maximumTrackTintColor="#E3E3E3"
-                    thumbImage={ images.sliderThumbBlue }
+                    minimumTrackTintColor={ theme.colors.greyLight }
+                    maximumTrackTintColor={ theme.colors.greyLight }
+                    thumbImage={ theme.isDarkMode ? images.sliderThumbDark : images.sliderThumbLight }
+                    thumbStyle={ { backgroundColor: 'transparent' } }
                     onSlidingStart={ onSliderStart }
                     onSlidingComplete={ onSliderEnd }
                     onValueChange={ (value: number) => props.onSliderUpdatedValue(value) }
@@ -92,10 +96,10 @@ export const PickerSlider: React.FunctionComponent<PickerSliderProps> = (props) 
                     step={ sliderStep }
                     thumbTouchSize={ { width: 55, height: 55 } }
                 />
-            </View>
+            </PDView>
             <PlatformSpecific include={ ['ios'] }>
                 <InputAccessoryView nativeID={ keyboardAccessoryViewId }>
-                    <View style={ styles.keyboardAccessoryContainer }>
+                    <PDView style={ styles.keyboardAccessoryContainer } bgColor="blue">
                         <BoringButton
                             containerStyles={ styles.keyboardAccessoryButton }
                             textStyles={ styles.keyboardAccessoryButtonText }
@@ -105,10 +109,10 @@ export const PickerSlider: React.FunctionComponent<PickerSliderProps> = (props) 
                             } }
                             title="Save"
                         />
-                    </View>
+                    </PDView>
                 </InputAccessoryView>
             </PlatformSpecific>
-        </View>
+        </PDView>
     );
 };
 
@@ -120,9 +124,7 @@ const styles = StyleSheet.create({
         marginTop: 22,
     },
     content: {
-        backgroundColor: 'white',
         borderRadius: 24,
-        borderColor: '#F0F0F0',
         borderWidth: 2,
         elevation: 2,
         marginBottom: 6,
@@ -149,16 +151,13 @@ const styles = StyleSheet.create({
     textInput: {
         width: 80,
         borderWidth: 2,
-        borderColor: '#F8F8F8',
         borderRadius: 6,
-        color: '#1E6BFF',
         fontFamily: 'Poppins-Regular',
         fontWeight: '600',
         fontSize: 22,
         textAlign: 'center',
     },
     unitsText: {
-        color: '#1E6BFF',
         fontSize: 22,
         textAlignVertical: 'center',
         marginLeft: 6,
