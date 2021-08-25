@@ -65,8 +65,6 @@ import IconCharts from './images/subscription/icon_charts.svg';
 import IconHeart from './images/subscription/icon_heart.svg';
 import IconInfinitive from './images/subscription/icon_infinitive.svg';
 // Home
-import HomeWelcomeTextDark from './images/home/welcome_text_dark.svg';
-import HomeWelcomeTextWhite from './images/home/welcome_text_white.svg';
 import HomeDescriptionText from './images/home/home_pce.svg';
 import HomeWaves from './images/home/waves_home.svg';
 // Settings/Theme
@@ -115,7 +113,7 @@ export const images = {
     deleteIcon: require('~/assets/images/icon-delete.png'),
     menuChevronIcon: require('~/assets/images/icon-menu-chevron.png'),
     homeWelcomeTextDark: require('~/assets/images/home/welcome_text_dark.png'),
-    homeWelcomeTextWhite: require('~/assets/images/home/welcome_text_white.png'),
+    homeWelcomeTextWhite: require('~/assets/images/home/welcome_white.png'),
     sunBig: require('./images/theme/theme_sun.png'),
     moonBig: require('./images/theme/theme_moon.png'),
 };
@@ -199,8 +197,6 @@ export const SVG: Record<string, (props: OverrideSvgProps) => JSX.Element> = {
     AutomaticDark: (props) => <AutomaticDark { ...props } />,
 
     // Home
-    HomeWelcomeTextDark: (props) => <HomeWelcomeTextDark { ...props } />,
-    HomeWelcomeTextWhite: (props) => <HomeWelcomeTextWhite { ...props } />,
     HomeDescriptionText: (props) => <HomeDescriptionText { ...props } />,
     HomeWaves: (props) => <HomeWaves { ...props } />,
 };

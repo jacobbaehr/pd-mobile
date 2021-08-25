@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
     InputAccessoryView, Keyboard, NativeSyntheticEvent, StyleSheet, TextInputEndEditingEventData,
-    View,
 } from 'react-native';
 // @ts-ignore
 import Slider from 'react-native-slider';
