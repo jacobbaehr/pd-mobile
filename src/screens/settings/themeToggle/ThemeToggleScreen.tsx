@@ -102,9 +102,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    subHeadingContainer: {
-        marginVertical: PDSpacing.lg,
-    },
     buttonContainer: {
         height: 40,
         width: '100%',

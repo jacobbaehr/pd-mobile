@@ -61,7 +61,7 @@ const PoolHistoryComponent: React.FunctionComponent<PoolHistoryProps> = (props) 
 
     return (
         <SafeAreaView style={ { backgroundColor: theme.colors.white, flex: 1 } } forceInset={ { bottom: 'never' } }>
-            <ScreenHeader hasBackButton hasBottomLine={ false } handlePressedBack={ handleBackPress } textType="heading" color="blue">History</ScreenHeader>
+            <ScreenHeader hasBackButton hasBottomLine={ false } handlePressedBack={ handleBackPress } textType="heading" color="blue">Trends</ScreenHeader>
             <PDView style={ styles.header } borderColor="border">
                 <DateRangeSelector
                     onRangeUpdated={ onRangeChanged }

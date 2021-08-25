@@ -4,7 +4,7 @@ import { Animated, Dimensions, Image, StyleSheet, TouchableOpacity } from 'react
 import { images } from '~/assets/images';
 import { AV } from '~/components/animation/AnimationHelpers';
 import { PDText } from '~/components/PDText';
-import { PDSpacing } from '~/components/PDTheme';
+import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
 import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
 import { DS } from '~/services/DSUtil';
@@ -21,16 +21,18 @@ export const PoolListFooterUpgrade: React.FunctionComponent<PoolListFooterNonEmp
     const { ds } = useDeviceSettings();
     const isPlus = DS.isSubscriptionValid(ds, Date.now());
     const a = useAnimation(props.numPools);
+    const theme = useTheme();
 
     if (isPlus) {
         // I don't know if this is necessary:
         const imageWidth = Dimensions.get('window').width - 20;
         const imageHeight = imageWidth * 0.3108;
+        const imageSource = theme.isDarkMode ? images.logoWhitePlus : images.logoGreenPlus;
         return (
             <AV opacity={ a.opacity } style={ { alignSelf: 'center' } }>
                 <Image
                     style={ styles.image }
-                    source={ images.logoGreenPlus }
+                    source={ imageSource }
                     width={ imageWidth }
                     height={ imageHeight }
                     resizeMode={ 'contain' }
@@ -51,7 +53,7 @@ export const PoolListFooterUpgrade: React.FunctionComponent<PoolListFooterNonEmp
                         onPressIn={ toggleChangeButtonPressed }
                         onPressOut={ toggleChangeButtonPressed }
                         onPress={ props.pressedUpgrade }>
-                        <PDText type="default" style={ Util.excludeFalsy([styles.recipeLinkNormal, isChangeButtonPressed && styles.recipeLinkPressed]) }>
+                        <PDText type="default" color="blue" style={ Util.excludeFalsy([styles.recipeLinkNormal, isChangeButtonPressed && styles.recipeLinkPressed]) }>
                             Upgrade
                         </PDText>
                     </TouchableOpacity>
@@ -84,7 +86,6 @@ const styles = StyleSheet.create({
     },
     recipeLinkNormal: {
         backgroundColor: 'transparent',
-        color: '#3910E8',
         fontSize: 18,
         textDecorationLine: 'underline',
     },
