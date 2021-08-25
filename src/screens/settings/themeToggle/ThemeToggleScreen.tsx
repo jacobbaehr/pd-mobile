@@ -46,6 +46,8 @@ const ThemeToggleScreen = () => {
         });
     };
 
+    const subHeading = theme.isDarkMode ? 'Dive into darkness' : 'Swim in the sunshine';
+
     return (
         <PDSafeAreaView bgColor="white">
             <ModalHeader />
@@ -55,7 +57,7 @@ const ThemeToggleScreen = () => {
                     { theme.isDarkMode ? <Image source={ images.moonBig } /> : <Image source={ images.sunBig } />}
                     </PDView>
                     <PDText type="subHeading" color="black" textAlign="center">
-                        Dive into our New Themes
+                        { subHeading }
                     </PDText>
 
                     <PDView style={ { marginHorizontal: PDSpacing.lg } }>
