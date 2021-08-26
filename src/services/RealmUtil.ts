@@ -9,7 +9,7 @@ import { Util } from './Util';
 
 // Every time we add a property to these classes, we have to mirror them here (yuck).
 const PoolProps = ['name', 'gallons', 'waterType', 'wallType', 'objectId', 'recipeKey', 'email', 'poolDoctorId'];
-const LogEntryProps = ['objectId', 'poolId', 'ts', 'readingEntries', 'treatmentEntries', 'recipeKey', 'formulaName', 'notes', 'poolDoctorId'];
+const LogEntryProps = ['objectId', 'poolId', 'userTS', 'clientTS', 'serverTS', 'readingEntries', 'treatmentEntries', 'recipeKey', 'formulaName', 'notes', 'poolDoctorId'];
 const TargetRangeProps = ['objectId', 'poolId', 'var', 'min', 'max'];
 
 /**

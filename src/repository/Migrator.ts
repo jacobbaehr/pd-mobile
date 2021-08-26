@@ -2,6 +2,7 @@ import Realm from 'realm';
 import { LogEntryV0 } from '~/models/logs/LogEntry/LogEntryV0';
 import { LogEntryV1 } from '~/models/logs/LogEntry/LogEntryV1';
 import { LogEntryV2 } from '~/models/logs/LogEntry/LogEntryV2';
+import { LogEntryV3 } from '~/models/logs/LogEntry/LogEntryV3';
 import { ReadingEntry } from '~/models/logs/ReadingEntry';
 import { TreatmentEntry } from '~/models/logs/TreatmentEntry';
 import { PoolV0 } from '~/models/Pool/PoolV0';
@@ -13,7 +14,7 @@ import { TargetRangeOverride } from '~/models/Pool/TargetRangeOverride';
  * List of schemas for the Realm database. This array should be updated every
  * time there is a change to the data model.
  */
-export const schemas = [
+const schemas: Realm.Configuration[] = [
     {
         schema: [PoolV0.schema, LogEntryV0.schema, ReadingEntry.schema, TreatmentEntry.schema, TargetRangeOverride.schema],
         schemaVersion: 0,
@@ -33,6 +34,22 @@ export const schemas = [
     {
         schema: [PoolV2.schema, LogEntryV2.schema, ReadingEntry.schema, TreatmentEntry.schema, TargetRangeOverride.schema],
         schemaVersion: 4,
+    },
+    {
+        schema: [PoolV2.schema, LogEntryV3.schema, ReadingEntry.schema, TreatmentEntry.schema, TargetRangeOverride.schema],
+        schemaVersion: 5,
+        migration: (oldRealm, newRealm) => {
+            if (oldRealm.schemaVersion < 5) {
+                const oldLogEntries = oldRealm.objects<LogEntryV2>('LogEntry');
+                const newLogEntries = newRealm.objects<LogEntryV3>('LogEntry');
+
+                // loop through all objects and set the name property in the new schema
+                for (let i = 0; i < oldLogEntries.length; i++) {
+                    newLogEntries[i].clientTS = oldLogEntries[i].ts;
+                    newLogEntries[i].userTS = oldLogEntries[i].ts;
+                }
+            }
+        },
     },
 ];
 

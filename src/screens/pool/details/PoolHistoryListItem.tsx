@@ -67,8 +67,9 @@ const TreatmentRow: React.FC<{ te: TreatmentEntry }> = (props) => {
 };
 
 export const PoolHistoryListItem: React.FunctionComponent<PoolHistoryListItemProps> = (props) => {
-    const dayOfWeek = format(props.logEntry.ts, 'cccc');
-    const boringDate = format(props.logEntry.ts, 'MMM d, y') + format(props.logEntry.ts, '  //  h:mma').toLowerCase();
+    const ts = props.logEntry.userTS;
+    const dayOfWeek = format(ts, 'cccc');
+    const boringDate = format(ts, 'MMM d, y') + format(ts, '  //  h:mma').toLowerCase();
     const formulaName = props.logEntry.formulaName;
     const theme = useTheme();
 

@@ -50,7 +50,7 @@ export namespace DataService {
 
     const getRowsForEntry = (logEntry: LogEntry): string => {
         let result = `\nlog_entry,\
-            ${new Date(logEntry.ts).toISOString()},\
+            ${new Date(logEntry.userTS).toISOString()},\
             ${logEntry.notes ?? '---'},\
             ${logEntry.recipeKey},\
             ${logEntry.objectId}`;

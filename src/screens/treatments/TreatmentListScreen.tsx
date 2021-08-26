@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Keyboard, LayoutAnimation, SectionListData, StyleSheet, View } from 'react-native';
+import { Keyboard, LayoutAnimation, SectionList, SectionListData, StyleSheet, View } from 'react-native';
 import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-view';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import { KeyboardButton } from '~/components/buttons/KeyboardButton';
@@ -59,6 +59,8 @@ export const TreatmentListScreen: React.FC = () => {
     const [isSavingDebounce, setIsSavingDebounce] = React.useState(false);
     const allScoops = ds.scoops;
     const [haveCalculationsProcessed, setHaveCalculationsProcessed] = React.useState(false);
+    const [userTS, setUserTS] = React.useState<number>(Date.now());
+    const scrollViewRef = React.useRef<KeyboardAwareSectionList>(null);
 
     const keyboardAccessoryViewId = 'dedgumThisIsSomeReallyUniqueTextTreatmentListKeyboard';
 
@@ -140,7 +142,19 @@ export const TreatmentListScreen: React.FC = () => {
         const tes = CalculationService.mapTreatmentStatesToTreatmentEntries(finalTreatmentStates);
 
         const readingEntries = RealmUtil.createReadingEntriesFromReadingValues(readings, recipe);
-        const logEntry = LogEntry.make(id, pool.objectId, ts, readingEntries, tes, recipeKey, recipe.name, notes, null);
+        const logEntry = LogEntry.make(     // TODO: make these named / keyed properties.
+            id,
+            pool.objectId,
+            ts,
+            userTS,
+            null,
+            readingEntries,
+            tes,
+            recipeKey,
+            recipe.name,
+            notes,
+            null
+        );
 
         await Database.saveNewLogEntry(logEntry);
         // Save the last-used units:
@@ -352,6 +366,7 @@ export const TreatmentListScreen: React.FC = () => {
                 style={ StyleSheet.flatten([styles.sectionList, { backgroundColor: theme.colors.background }]) }
                 keyboardDismissMode="interactive"
                 keyboardShouldPersistTaps="handled"
+                ref={ scrollViewRef }
                 renderItem={ ({ item, index }) => (
                     <TreatmentListItem
                         treatmentState={ item }
@@ -380,7 +395,13 @@ export const TreatmentListScreen: React.FC = () => {
                     if (section.isHeader || !haveCalculationsProcessed) {
                         return <PDView />;
                     } else {
-                        return <TreatmentListFooter text={ notes } updatedText={ setNotes } index={ treatmentStates.length } />;
+                        return <TreatmentListFooter
+                        notes={ notes }
+                        updatedNotes={ setNotes }
+                        index={ treatmentStates.length }
+                        ts={ userTS }
+                        updatedTS={ setUserTS }
+                        willShowDatePicker={ () => scrollViewRef?.current?.scrollToEnd(true) } />;
                     }
                 } }
             />

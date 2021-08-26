@@ -65,13 +65,13 @@ export class ChartService {
             entries.forEach((entry) => {
                 entry.readingEntries.forEach((reading) => {
                     if (reading.var === graphable.id) {
-                        dates.push(entry.ts);
+                        dates.push(entry.userTS);
                         values.push(reading.value);
                     }
                 });
                 entry.treatmentEntries.forEach((treatment) => {
                     if (treatment.var === graphable.id) {
-                        dates.push(entry.ts);
+                        dates.push(entry.userTS);
                         values.push(treatment.ounces);
                     }
                 });

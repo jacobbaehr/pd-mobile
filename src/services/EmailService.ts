@@ -13,7 +13,8 @@ export namespace EmailService {
     // function that accepts LogEntry and returns string for email body
     const createEmailBody = (logEntry: LogEntry) => {
         // putting date in format desired for email body
-        const dateFormat = format(logEntry.ts, 'MMM d, y') + format(logEntry.ts, '  //  h:mma').toLowerCase();
+        const ts = logEntry.userTS;
+        const dateFormat = format(ts, 'MMM d, y') + format(ts, '  //  h:mma').toLowerCase();
 
         // creating Readings string for body of email
         const readings = logEntry.readingEntries

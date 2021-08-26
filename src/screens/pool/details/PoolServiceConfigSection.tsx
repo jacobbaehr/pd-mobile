@@ -16,6 +16,7 @@ import { ChipButton } from '~/screens/home/ChipButton';
 import { Haptic } from '~/services/HapticService';
 import { VolumeUnitsUtil } from '~/services/VolumeUnitsUtil';
 import { PlayButton } from '~/components/buttons/PlayButton';
+import { Util } from '~/services/Util';
 
 /**
  * Displays info about the recipe & customizations in the SectionList on the pool details screen.
@@ -41,9 +42,11 @@ const PoolServiceConfigSection = () => {
         navigate('ReadingList');
     };
 
-    const getLastTimeUpdate = () =>
-        history.length > 0 ? `Last Serviced: ${formatDistanceStrict(history[0].ts, Date.now())} ago` : '';
-
+    const getLastTimeUpdate = () => {
+        const lastLogEntry = Util.firstOrNull(history);
+        if (!lastLogEntry) { return ''; }
+        return `Last Serviced: ${formatDistanceStrict(lastLogEntry.userTS, Date.now())} ago`;
+    };
     const abbreviateVolume = VolumeUnitsUtil.getDisplayVolume(selectedPool.gallons, deviceSettings);
 
     return (

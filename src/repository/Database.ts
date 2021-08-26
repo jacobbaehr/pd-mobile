@@ -81,7 +81,9 @@ export class Database {
                     poolId: entry.poolId,
                     readingEntries: entry.readingEntries,
                     treatmentEntries: entry.treatmentEntries,
-                    ts: entry.ts,
+                    clientTS: entry.clientTS,
+                    userTS: entry.userTS,
+                    serverTS: entry.serverTS,
                     recipeKey: entry.recipeKey,
                     formulaName: entry.formulaName,
                     notes: entry.notes,
@@ -102,12 +104,12 @@ export class Database {
         const realm = Database.realm;
         let query = `poolId = "${poolId}"`;
         if (since_ts) {
-            query += `AND ts > ${since_ts}`;
+            query += `AND userTS > ${since_ts}`;
         }
         if (recentFirst) {
-            query += ' SORT(ts DESC)';
+            query += ' SORT(userTS DESC)';
         } else {
-            query += ' SORT(ts ASC)';
+            query += ' SORT(userTS ASC)';
         }
 
         // TODO: reconsider this.
@@ -130,7 +132,7 @@ export class Database {
         poolId: string,
     ): Realm.Collection<LogEntry> => {
         const realm = Database.realm;
-        const query = `poolId = "${poolId}" SORT(ts DESC) LIMIT(1)`;
+        const query = `poolId = "${poolId}" SORT(userTS DESC) LIMIT(1)`;
         return realm.objects<LogEntry>(LogEntry.schema.name).filtered(query);
     };
 

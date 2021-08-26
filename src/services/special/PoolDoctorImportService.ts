@@ -93,6 +93,8 @@ export namespace PoolDoctorImportService {
             Util.generateUUID(),
             poolId,
             ts,
+            ts,
+            null,
             log.readings.map(mapPoolDoctorReadingEntryToPoolDashReadingEntry),
             // Exclude treatments with units that have a value of 0 or less.
             log.treatments.map(mapPoolDoctorTreatmentEntryToPoolDashTreatmentEntry).filter(te => !(!!te.displayUnits && te.ounces <= 0)),
