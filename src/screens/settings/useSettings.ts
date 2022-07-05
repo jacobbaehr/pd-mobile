@@ -31,7 +31,7 @@ export const useSettings = () => {
         navigate('PopoverScreen', {
             title: 'Volume Units',
             color: 'orange',
-            description: 'This will affect how pool volume is displayed throughout the app.',
+            description: 'Pool volume filler.',
             items: PoolUnitOptions.map((item) => ({ name: item.display, value: item.value })),
             prevSelection: ds.units,
         });
