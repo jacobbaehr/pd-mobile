@@ -33,7 +33,7 @@ interface TreatmentListScreenState {
     setHasSelectedAnyTreatments: React.Dispatch<React.SetStateAction<boolean>>;
     notes: string;
     setNotes: React.Dispatch<React.SetStateAction<string>>;
-    navigate: StackNavigationProp<PDNavParams>
+    navigate: StackNavigationProp<PDNavParams>;
     concentrationTreatmentVar: string | null;
     updateConcentrationTreatment: React.Dispatch<React.SetStateAction<string | null>>;
     formula: Formula; // not sure which Formula to import, picked '~/formulas/models/Formula'

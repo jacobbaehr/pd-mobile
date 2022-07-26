@@ -4,57 +4,44 @@ import { KeyboardAwareSectionList } from 'react-native-keyboard-aware-scroll-vie
 import { KeyboardButton } from '~/components/buttons/KeyboardButton';
 import { ScreenHeader } from '~/components/headers/ScreenHeader';
 import { PDSafeAreaView } from '~/components/PDSafeAreaView';
-import { PDSpacing, useTheme } from '~/components/PDTheme';
+import { PDSpacing } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
-import { useLastLogEntryHook, useLoadFormulaHook } from '~/hooks/RealmPoolHook';
-import { PDStackNavigationProps } from '~/navigator/shared';
-import { dispatch, useTypedSelector } from '~/redux/AppState';
+import { dispatch } from '~/redux/AppState';
 import { clearReadings, recordInput } from '~/redux/readingEntries/Actions';
 import { Config } from '~/services/Config/AppConfig';
 import { Haptic } from '~/services/HapticService';
 import { Util } from '~/services/Util';
 
-import { useNavigation } from '@react-navigation/native';
-
 import { ReadingListItem, ReadingState } from './ReadingListItem';
 import { ReadingListHeader } from './ReadingListHeader';
 import { PlayButton } from '~/components/buttons/PlayButton';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useStandardStatusBar } from '~/hooks/useStatusBar';
+import { useReadingListState } from './UseReadingListState';
 
 export const ReadingListScreen: React.FC = () => {
-    const [isSliding, setIsSliding] = React.useState(false);
-    const [readingStates, setReadingStates] = React.useState<ReadingState[]>([]);
-    const pool = useTypedSelector(state => state.selectedPool);
-    const formula = useLoadFormulaHook(pool?.formulaId);
-    const { setOptions, navigate } = useNavigation<PDStackNavigationProps>();
-    const theme = useTheme();
-    const lastLogEntry = useLastLogEntryHook(pool?.objectId ?? '');
-    const insets = useSafeAreaInsets();
-    useStandardStatusBar();
+    const state = useReadingListState();
 
     const keyboardAccessoryViewId = 'wowThisIsSomeReallyUniqueTextReadingListKeyboard';
 
     React.useEffect(() => {
-        setOptions({ gestureResponseDistance: 5 });
-        if (formula) {
+        state.setOptions({ gestureResponseDistance: 5 });
+        if (state.formula) {
             const readingsOnByDefault = new Set<string>();
-            if (lastLogEntry) {
-                lastLogEntry.readingEntries
+            if (state.lastLogEntry) {
+                state.lastLogEntry.readingEntries
                     .forEach(r => readingsOnByDefault.add(r.id));
             } else {
-                formula.readings
+                state.formula.readings
                     .filter(r => r.isDefaultOn)
                     .forEach(r => readingsOnByDefault.add(r.id));
             }
-            const initialReadingStates = formula.readings.map((r) => ({
+            const initialReadingStates = state.formula.readings.map((r) => ({
                 reading: r,
                 value: r.defaultValue.toFixed(r.decimalPlaces),
                 isOn: readingsOnByDefault.has(r.id),
             }));
 
             // Just incase we had some old reading entries laying around:
-            readingStates.forEach((rs) => {
+            state.readingStates.forEach((rs) => {
                 initialReadingStates.forEach((is) => {
                     if (is.reading.id === rs.reading.id) {
                         is.value = rs.value || is.reading.defaultValue.toFixed(is.reading.decimalPlaces);
@@ -63,26 +50,26 @@ export const ReadingListScreen: React.FC = () => {
                 });
             });
 
-            setReadingStates(initialReadingStates);
+            state.setReadingStates(initialReadingStates);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [formula?.id, pool]);
+    }, [state.formula?.id, state.pool]);
 
     const handleCalculatePressed = (): void => {
         Haptic.medium();
         dispatch(clearReadings());
-        readingStates.forEach((rs) => {
+        state.readingStates.forEach((rs) => {
             if (rs.isOn && rs.value !== undefined) {
                 dispatch(recordInput(rs.reading, parseFloat(rs.value)));
             }
         });
-        navigate('TreatmentList');
+        state.navigate.navigate('TreatmentList');
     };
 
     const handleSlidingStopped = (varName: string) => {
-        setIsSliding(false);
+        state.setIsSliding(false);
         let isChanged = false;
-        const rs = Util.deepCopy(readingStates);
+        const rs = Util.deepCopy(state.readingStates);
         rs.forEach((r) => {
             if (r.reading.id === varName && !r.isOn) {
                 isChanged = true;
@@ -102,16 +89,16 @@ export const ReadingListScreen: React.FC = () => {
                 delete: undefined,
             };
             LayoutAnimation.configureNext(animationConfig);
-            setReadingStates(rs);
+            state.setReadingStates(rs);
         }
     };
 
     const handleSlidingStarted = () => {
-        setIsSliding(true);
+        state.setIsSliding(true);
     };
 
     const handleSliderUpdatedValue = (varName: string, value: number) => {
-        const rs = Util.deepCopy(readingStates);
+        const rs = Util.deepCopy(state.readingStates);
         let isChanged = false;
         rs.forEach((r) => {
             if (r.reading.id === varName) {
@@ -123,35 +110,35 @@ export const ReadingListScreen: React.FC = () => {
             }
         });
         if (isChanged) {
-            setReadingStates(rs);
+            state.setReadingStates(rs);
             Haptic.bumpyGlide();
         }
     };
 
     const handleTextboxUpdated = (varName: string, text: string) => {
-        const rs = Util.deepCopy(readingStates);
+        const rs = Util.deepCopy(state.readingStates);
         rs.forEach((r) => {
             if (r.reading.id === varName) {
                 r.value = text;
             }
         });
-        setReadingStates(rs);
+        state.setReadingStates(rs);
     };
 
     const handleTextboxDismissed = (varName: string, text: string) => {
-        const rs = Util.deepCopy(readingStates);
+        const rs = Util.deepCopy(state.readingStates);
         rs.forEach((r) => {
             if (r.reading.id === varName) {
                 r.value = text;
                 r.isOn = text.length > 0;
             }
         });
-        setReadingStates(rs);
+        state.setReadingStates(rs);
     };
 
     const handleIconPressed = (varName: string) => {
         Haptic.light();
-        const rs = Util.deepCopy(readingStates);
+        const rs = Util.deepCopy(state.readingStates);
         rs.forEach((r) => {
             if (r.reading.id === varName) {
                 r.isOn = !r.isOn;
@@ -172,7 +159,7 @@ export const ReadingListScreen: React.FC = () => {
             delete: undefined,
         };
         LayoutAnimation.configureNext(animationConfig);
-        setReadingStates(rs);
+        state.setReadingStates(rs);
     };
 
     // The first section is just a dummy header thing to enable some fancy scrolling behavior
@@ -180,7 +167,7 @@ export const ReadingListScreen: React.FC = () => {
         // dummy header
         { data: [], isHeader: true },
         // actual readings
-        { data: readingStates, isHeader: false },
+        { data: state.readingStates, isHeader: false },
     ];
 
     return (
@@ -188,8 +175,8 @@ export const ReadingListScreen: React.FC = () => {
             <ScreenHeader textType="heading" color="blue">Readings</ScreenHeader>
             <PDView style={ styles.container } bgColor="background">
                 <KeyboardAwareSectionList
-                    style={ StyleSheet.flatten([styles.sectionList, { backgroundColor: theme.colors.blurredBlue }]) }
-                    scrollEnabled={ !isSliding }
+                    style={ StyleSheet.flatten([styles.sectionList, { backgroundColor: state.theme.colors.blurredBlue }]) }
+                    scrollEnabled={ !state.isSliding }
                     keyboardDismissMode={ 'interactive' }
                     keyboardShouldPersistTaps={ 'handled' }
                     renderItem={ ({ item, index }) => (
@@ -222,8 +209,8 @@ export const ReadingListScreen: React.FC = () => {
                     style={ [
                         styles.bottomButtonContainer,
                         {
-                            borderColor: theme.colors.border,
-                            paddingBottom: insets.bottom,
+                            borderColor: state.theme.colors.border,
+                            paddingBottom: state.insets.bottom,
                         },
                     ] }
                     bgColor="white">
