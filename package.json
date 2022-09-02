@@ -8,7 +8,7 @@
         "start": "npx react-native start",
         "test": "jest --passWithNoTests",
         "lint": "eslint . --ext .ts,.tsx",
-        "generate": "npx apollo codegen:generate --endpoint https://dev-api.pooldash.com/graphql --target typescript --tagName=gql --outputFlat src/services/gql/generated --globalTypesFile /_garbage.txt",
+        "generate": "npx apollo codegen:generate --endpoint https://devapi.poolcloud.com/graphql --target typescript --tagName=gql --outputFlat src/services/gql/generated --globalTypesFile /_garbage.txt",
         "debug": "open \"rndebugger://set-debugger-loc?host=localhost&port=8081\"",
         "preload": "npx ts-node -T src/services/formulas/preload/preloader.ts"
     },

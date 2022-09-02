@@ -8,13 +8,12 @@
 // ====================================================
 
 export interface Register_register {
-  __typename: "UserAndMaybeDiscourse";
+  __typename: "User";
   id: string;
-  discourse_payload: string | null;
 }
 
 export interface Register {
-  register: Register_register;
+  register: Register_register | null;
 }
 
 export interface RegisterVariables {
