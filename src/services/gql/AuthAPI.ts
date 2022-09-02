@@ -13,7 +13,6 @@ export const REGISTER = gql`
   mutation Register($username: String!, $email: String!, $password: String!, $sso: String, $sig: String) {
     register(username: $username, email: $email, password: $password, sso: $sso, sig: $sig) {
       id
-      discourse_payload
     }
   }
 `;
