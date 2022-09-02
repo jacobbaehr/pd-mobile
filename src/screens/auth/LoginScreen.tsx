@@ -7,9 +7,8 @@ import { PDText } from '~/components/PDText';
 import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { Formik } from 'formik';
 import { useMutation } from '@apollo/react-hooks';
-import { REGISTER, USERNAME_CHECK } from '~/services/gql/AuthAPI';
-import { checkUsername, checkUsernameVariables } from '~/services/gql/generated/checkUsername';
-import { Register, RegisterVariables } from '~/services/gql/generated/Register';
+import { LOGIN } from '~/services/gql/AuthAPI';
+import { Login, LoginVariables } from '~/services/gql/generated/Login';
 import { AuthTextField } from './AuthTextField';
 import { ButtonWithChildren } from '~/components/buttons/ButtonWithChildren';
 import { SVG } from '~/assets/images';
@@ -20,25 +19,20 @@ import { PDStackNavigationProps } from '~/navigator/shared';
 import { useNavigation } from '@react-navigation/native';
 
 interface Values {
-    email: string;
-    username: string;
+    usernameOrEmail: string;
     password: string;
-    password2: string;
 }
 
 const initialValues: Values = {
-    email: '',
-    username: '',
+    usernameOrEmail: '',
     password: '',
-    password2: '',
 };
 
 
 export const LoginScreen: React.FC = () => {
 
     const theme = useTheme();
-    const [checkUsernameMutation] = useMutation<checkUsername, checkUsernameVariables>(USERNAME_CHECK);
-    const [register] = useMutation<Register, RegisterVariables>(REGISTER);
+    const [login] = useMutation<Login, LoginVariables>(LOGIN);
     const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
     const [hasSubmittedForm, setHasSubmittedForm] = React.useState(false);
     const { navigate } = useNavigation<PDStackNavigationProps>();
@@ -49,14 +43,8 @@ export const LoginScreen: React.FC = () => {
     const pw2Ref = React.useRef<TextInput>(null);
 
     const validationSchema = Yup.object({
-        username: Yup.string()
-            .min(2, 'Username must be at least 2 characters')
-            .matches(/^\w+$/, { message: 'Username can only contain letters, numbers, and underscore characters' })
-            .test('checkUsernameUnique', 'Username is taken, try another', async username => {
-                if (!username) { return true; }
-                const result = await checkUsernameMutation({ variables: { username } });
-                return result.data?.checkUsername?.available ?? false;
-            })
+        usernameOrEmail: Yup.string()
+            .min(2, 'Username or email must be at least 2 characters')
             .required('Required'),
         password: Yup.string()
             .min(4, 'Password must be at least 4 characters')
@@ -67,13 +55,14 @@ export const LoginScreen: React.FC = () => {
         console.log('Submitting!');
         console.log(JSON.stringify(values));
         try {
-            const res = await register({
+            const res = await login({
                 variables: {
-                    username: values.username,
-                    email: values.email,
+                    usernameOrEmail: values.usernameOrEmail,
                     password: values.password,
                 },
             });
+            console.log(JSON.stringify(res));
+
             if (res?.data?.register?.id) {
                 console.log('we did it!');
                 // handleAuthSuccess(res.data.register);
@@ -89,6 +78,7 @@ export const LoginScreen: React.FC = () => {
             }
         } catch (e) {
             console.error(e);
+            console.error(JSON.stringify(e));
             setErrorMessage(
                 ErrorParser.getUserError(
                     JSON.stringify(e)
@@ -127,13 +117,13 @@ export const LoginScreen: React.FC = () => {
                         { errorMessage && <PDText type="content" color="red" textAlign="center">{errorMessage}</PDText>}
                         <AuthTextField
                             label="Email Or Username"
-                            name="email"
-                            type="email"
+                            name="usernameOrEmail"
+                            type="usernameOrEmail"
                             placeholder="Email or Username"
-                            onBlur={ handleBlur('email') }
-                            onChangeText={ handleChange('email') }
-                            value={ values.email }
-                            errorText={ hasSubmittedForm && errors.email }
+                            onBlur={ handleBlur('usernameOrEmail') }
+                            onChangeText={ handleChange('usernameOrEmail') }
+                            value={ values.usernameOrEmail }
+                            errorText={ hasSubmittedForm && errors.usernameOrEmail }
                             ref={ emailRef }
                             nextRef={ usernameRef }
                             returnKeyType="next"

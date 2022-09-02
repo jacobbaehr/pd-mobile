@@ -4,20 +4,19 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: Register
+// GraphQL mutation operation: Login
 // ====================================================
 
-export interface Register_register {
+export interface Login_register {
   __typename: "User";
   id: string;
 }
 
-export interface Register {
-  register: Register_register | null;
+export interface Login {
+  register: Login_register | null;
 }
 
-export interface RegisterVariables {
-  username: string;
-  email: string;
+export interface LoginVariables {
+  usernameOrEmail: string;
   password: string;
 }
