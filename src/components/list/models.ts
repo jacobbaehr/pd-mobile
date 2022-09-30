@@ -5,7 +5,7 @@ export interface PDSectionListData {
     value?: string | null;
     label: string;
     image: string;
-    onPress: () => void;
+    onPress: (() => void) | null;
     valueColor: PDColor;
     animationIndex: number;
 }

@@ -76,6 +76,14 @@ import AutomaticDark from './images/theme/theme_automatic_dark.svg';
 import AccountSettings from './images/icons/icon_account.svg';
 import IconAppleWhite from './images/icons/icon_apple_white.svg';
 import IconAppleBlack from './images/icons/icon_apple_black.svg';
+import IconCal from './images/icons/cal.svg';
+import IconPages from './images/icons/pages.svg';
+import IconPaper from './images/icons/paper.svg';
+import IconVerified from './images/icons/verified.svg';
+import IconReset from './images/icons/reset.svg';
+import IconEmail from './images/icons/email.svg';
+import IconLogOut from './images/icons/log_out.svg';
+
 
 export const images = {
     back: require('./images/back.png'),
@@ -208,4 +216,11 @@ export const SVG: Record<string, (props: OverrideSvgProps) => JSX.Element> = {
     // Account
     IconAppleWhite: (props) => <IconAppleWhite { ...props } />,
     IconAppleBlack: (props) => <IconAppleBlack { ...props } />,
+    IconCal: (props) => <IconCal { ...props } />,
+    IconPages: (props) => <IconPages { ...props } />,
+    IconPaper: (props) => <IconPaper { ...props } />,
+    IconVerified: (props) => <IconVerified { ...props } />,
+    IconReset: (props) => <IconReset { ...props } />,
+    IconEmail: (props) => <IconEmail { ...props } />,
+    IconLogOut: (props) => <IconLogOut { ...props } />,
 };

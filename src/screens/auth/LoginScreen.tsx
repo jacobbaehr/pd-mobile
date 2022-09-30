@@ -63,19 +63,19 @@ export const LoginScreen: React.FC = () => {
             });
             console.log(JSON.stringify(res));
 
-            if (res?.data?.register?.id) {
-                console.log('we did it!');
-                // handleAuthSuccess(res.data.register);
-            } else {
-                // TODO: check errors
-                // setErrorMessage(
-                //     ErrorParser.getUserError(
-                //         Util.firstOrNull(
-                //             res?.errors
-                //         )?.message ?? null
-                //     )
-                // );
-            }
+            // if (res?.data?.register?.id) {
+            //     console.log('we did it!');
+            //     // handleAuthSuccess(res.data.register);
+            // } else {
+            //     // TODO: check errors
+            //     // setErrorMessage(
+            //     //     ErrorParser.getUserError(
+            //     //         Util.firstOrNull(
+            //     //             res?.errors
+            //     //         )?.message ?? null
+            //     //     )
+            //     // );
+            // }
         } catch (e) {
             console.error(e);
             console.error(JSON.stringify(e));
@@ -102,7 +102,7 @@ export const LoginScreen: React.FC = () => {
         <ScreenHeader hasBackButton color="blue" textType="nav">Sign In</ScreenHeader>
         <KeyboardAwareScrollView style={ { ...styles.scrollView, backgroundColor: theme.colors.background } } extraScrollHeight={ 65 }>
             <PDText type="content" color="greyDark" textAlign="center" style={ styles.headerText }>
-                Login to your account
+                Sign In to your account
             </PDText>
             <Formik
                 initialValues={ initialValues }
@@ -147,7 +147,7 @@ export const LoginScreen: React.FC = () => {
                                 { backgroundColor: (isValid || !hasSubmittedForm) ? theme.colors.blue : theme.colors.greyLight },
                                 styles.buttonContainer,
                             ] }>
-                                <PDText type="subHeading" color="alwaysWhite">Create Account</PDText>
+                                <PDText type="subHeading" color="alwaysWhite">Sign In</PDText>
                         </ButtonWithChildren>
                         {/* <button className={ styles.enterButton } type="submit">Create Account</button>
                         <div className={ styles.formInfo }>Already have an account? <Link href={ getLoginLink(props) }><a>Log in</a></Link></div> */}

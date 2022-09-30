@@ -75,7 +75,6 @@ export const useSettings = () => {
                     valueColor: 'orange',
                     value: getDisplayForPoolValue(ds.units),
                     onPress: handleNavigationUnits,
-
                     animationIndex: 0,
                 },
                 {
@@ -85,7 +84,6 @@ export const useSettings = () => {
                     valueColor: 'pink',
                     value: scoopsSubtitle,
                     onPress: handleNavigationScoops,
-
                     animationIndex: 1,
                 },
             ],
@@ -98,9 +96,7 @@ export const useSettings = () => {
                     image: 'IconPooldashPlus',
                     label: 'About',
                     valueColor: 'black',
-
                     onPress: handleNavigationSubscription,
-
                     animationIndex: 2,
                 },
             ],
@@ -114,7 +110,6 @@ export const useSettings = () => {
                     label: 'Export Data',
                     valueColor: 'black',
                     onPress: handleExportData,
-
                     animationIndex: 3,
                 },
                 {
@@ -123,7 +118,6 @@ export const useSettings = () => {
                     label: 'Import Pools',
                     valueColor: 'black',
                     onPress: handleNavigatePoolDoctorImport,
-
                     animationIndex: 4,
                 },
                 {
@@ -132,7 +126,6 @@ export const useSettings = () => {
                     label: 'Create Account',
                     valueColor: 'black',
                     onPress: handleNavigateAuth,
-
                     animationIndex: 5,
                 },
             ],
@@ -146,7 +139,6 @@ export const useSettings = () => {
                     label: 'Theme ',
                     valueColor: 'black',
                     onPress: handleNavigateThemeToggled,
-
                     animationIndex: 6,
                 },
             ],
