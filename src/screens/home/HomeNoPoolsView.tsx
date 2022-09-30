@@ -1,3 +1,4 @@
+import { useLazyQuery } from '@apollo/client';
 import React, { useLayoutEffect,useRef } from 'react';
 import { Animated, Dimensions, Image, StyleSheet } from 'react-native';
 import { images, SVG } from '~/assets/images';
@@ -7,6 +8,8 @@ import { Conditional } from '~/components/Conditional';
 import { PDText } from '~/components/PDText';
 import { PDSpacing, useTheme } from '~/components/PDTheme';
 import { PDView } from '~/components/PDView';
+import { ME } from '~/services/gql/AuthAPI';
+import { Me } from '~/services/gql/generated/Me';
 import { useImportablePools } from '../special/PoolDoctorImportHooks';
 
 interface HomeNoPoolsViewProps {
@@ -19,6 +22,10 @@ export const HomeNoPoolsView: React.FC<HomeNoPoolsViewProps> = (props) => {
     const a = useHomeScreenAnimation();
     const totalImportablePools = useImportablePools();
 
+    const [runQuery, queryResult] = useLazyQuery<Me>(ME);
+    console.log(queryResult.loading);
+    console.log(queryResult.data?.me?.id);
+
     const screenWidth = Dimensions.get('window').width;
     const imageHeightRatio = 0.4695;
     const imageWidth = screenWidth + 20;
@@ -26,6 +33,9 @@ export const HomeNoPoolsView: React.FC<HomeNoPoolsViewProps> = (props) => {
 
     return (
         <PDView style={ styles.container } bgColor={ 'background' }>
+            <ButtonWithChildren onPress={ runQuery }>
+                <PDText>Run Me Query</PDText>
+            </ButtonWithChildren>
             <AV xy={ a.logoXY } opacity={ a.opacity }>
                 <Image source={ theme.isDarkMode ? images.homeWelcomeTextWhite : images.homeWelcomeTextDark } style={ styles.topText }/>
             </AV>

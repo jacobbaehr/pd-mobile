@@ -28,7 +28,8 @@ export const LinkText: React.FC<Props> = (props) => {
             return (
                 <TouchableHighlight
                     underlayColor="transparent"
-                    onPress={ s.action }>
+                    onPress={ s.action }
+                    key={ i }>
                     <PDText style={ linkTextStyles } key={ i }>{s.text}</PDText>
                 </TouchableHighlight>
             );

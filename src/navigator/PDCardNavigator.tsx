@@ -18,9 +18,11 @@ import { TermsScreen } from '~/screens/subscription/TermsScreen';
 import { PrivacyScreen } from '~/screens/subscription/PrivacyScreen';
 import { PoolDoctorImportScreen } from '~/screens/special/PoolDoctorImportScreen';
 import { AuthNavigator } from './AuthNavigator';
+import { AccountsScreen } from '~/screens/auth/AccountsScreen';
 
 // This defines the navigation params accepted by each possible screen in PDCardNavigator
 export type PDCardNavigatorParams = {
+    AccountsScreen: undefined;
     Home: undefined;
     PoolScreen: undefined;
     ReadingList: undefined;
@@ -43,6 +45,7 @@ const CardStack = createStackNavigator<PDCardNavigatorParams>();
 export const PDCardNavigator = (): JSX.Element => {
     return (
         <CardStack.Navigator screenOptions={ { headerShown: false } }>
+            <CardStack.Screen name="AccountsScreen" component={ AccountsScreen }/>
             <CardStack.Screen name="Home" component={ HomeScreen } />
             <CardStack.Screen name="PoolScreen" component={ PoolScreen } />
             <CardStack.Screen name="ReadingList" component={ ReadingListScreen } />

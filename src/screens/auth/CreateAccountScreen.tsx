@@ -215,7 +215,7 @@ export const CreateAccountScreen: React.FC = () => {
             </ButtonWithChildren>
             <LinkText spans={ [
                 { text: 'Already have an account? ' },
-                { text: 'Login.', action: () => navigate('Login') },
+                { text: 'Sign In.', action: () => navigate('Login') },
             ] }/>
         </KeyboardAwareScrollView>
     </PDSafeAreaView>;

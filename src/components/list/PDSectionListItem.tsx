@@ -13,6 +13,7 @@ export const PDSectionListItem: React.FC<PDSectionListItemProps> = (props) => {
     const { index, sectionLength, animationIndex } = props;
     const theme = useTheme();
     const a = useStandardListAnimation(animationIndex, 'fast');
+    const isClickable = !!props.onPress;
 
     const isFirstItem = index === 0;
     const isLastItem = index === sectionLength - 1;
@@ -50,7 +51,7 @@ export const PDSectionListItem: React.FC<PDSectionListItemProps> = (props) => {
                     <PDText color={ props.valueColor } type="bodySemiBold" style={ styles.value }>
                         {props.value}
                     </PDText>
-                    <SVG.IconChevronForward width={ 16 } height={ 16 } style={ styles.arrow } />
+                    {isClickable && <SVG.IconChevronForward width={ 16 } height={ 16 } style={ styles.arrow } />}
                 </PDView>
             </Pressable>
         </AV>
