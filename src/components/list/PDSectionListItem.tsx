@@ -45,13 +45,13 @@ export const PDSectionListItem: React.FC<PDSectionListItemProps> = (props) => {
                     <PDText
                         color={ colorLabel }
                         type="bodySemiBold"
-                        style={ { textAlign: 'center', marginRight: PDSpacing.xs / 2 } }>
+                        style={ { marginRight: PDSpacing.xs / 2 } }>
                         {props.label}
                     </PDText>
                     <PDText color={ props.valueColor } type="bodySemiBold" style={ styles.value }>
                         {props.value}
                     </PDText>
-                    {isClickable && <SVG.IconChevronForward width={ 16 } height={ 16 } style={ styles.arrow } />}
+                    {isClickable && <SVG.IconChevronForward width={ 16 } height={ 16 } />}
                 </PDView>
             </Pressable>
         </AV>
@@ -70,9 +70,7 @@ const styles = StyleSheet.create({
     },
     value: {
         flexShrink: 1,
-    },
-    arrow: {
-        marginLeft: 'auto',
+        marginRight: 'auto',
     },
     roundBottomCorners: {
         borderBottomLeftRadius: 14,
