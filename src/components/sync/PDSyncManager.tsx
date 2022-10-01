@@ -10,6 +10,7 @@ const InnerPDSyncManager: React.FC = ({ children }) => {
     const { updateDS } = useDeviceSettings();
     const [runQuery] = useLazyQuery<Me>(ME);
 
+    /// On first load, make sure the user is still logged in:
     useEffect(() => {
         console.log('a');
         const asyncStuff = async () => {
