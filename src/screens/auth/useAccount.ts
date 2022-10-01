@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
-import {  } from '~/components/list/PDSectionList';
-
+import CookieManager from '@react-native-cookies/cookies';
 
 import { PDSection } from '~/components/list/models';
 import { ACCOUNT } from '~/services/gql/AccountAPI';
-import { useQuery } from '@apollo/client';
+import { useApolloClient, useQuery } from '@apollo/client';
 import { AccountInfo } from '~/services/gql/generated/AccountInfo';
 import format from 'date-fns/format';
+import { useDeviceSettings } from '~/services/DeviceSettings/Hooks';
+import { useNavigation } from '@react-navigation/native';
 
 export const useAccount = () => {
 
@@ -15,6 +16,16 @@ export const useAccount = () => {
     }, []);
 
     const { data } = useQuery<AccountInfo>(ACCOUNT);
+    const client = useApolloClient();
+    const { updateDS } = useDeviceSettings();
+    const { goBack } = useNavigation();
+
+    const handleLogout = () => {
+        CookieManager.clearAll();
+        client.clearStore();
+        updateDS({ authenticatedUserId: null });
+        goBack();
+    };
 
     let dateString = '';
     if (data?.me?.joined_ts) {
@@ -87,7 +98,7 @@ export const useAccount = () => {
                     image: 'IconLogOut',
                     label: 'Log out',
                     valueColor: 'black',
-                    onPress: () => {},
+                    onPress: handleLogout,
                     animationIndex: 5,
                 },
             ],

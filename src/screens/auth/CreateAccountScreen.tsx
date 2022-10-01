@@ -84,7 +84,7 @@ export const CreateAccountScreen: React.FC = () => {
             });
             if (res?.data?.register?.id) {
                 console.log('we did it!');
-                // handleAuthSuccess(res.data.register.id);
+                handleAuthSuccess(res.data.register.id);
             } else {
                 console.log('Nope! Show error or something');
                 // TODO: handle errors here.

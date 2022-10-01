@@ -67,7 +67,7 @@ export const LoginScreen: React.FC = () => {
 
             if (res?.data?.login?.id) {
                 console.log('we did it!');
-                // handleAuthSuccess(res.data.login.id);
+                handleAuthSuccess(res.data.login.id);
             } else {
                 console.log('Show errors here!');
                 // TODO: check errors

@@ -12,7 +12,6 @@ const InnerPDSyncManager: React.FC = ({ children }) => {
 
     /// On first load, make sure the user is still logged in:
     useEffect(() => {
-        console.log('a');
         const asyncStuff = async () => {
             const res = await runQuery();
             updateDS({
