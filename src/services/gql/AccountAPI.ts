@@ -1,13 +1,16 @@
 import gql from 'graphql-tag';
 
-export const POOLS = gql`
-    query Pools {
+export const ACCOUNT = gql`
+    query AccountInfo {
         pools {
             count
         }
         me {
             joined_ts
             email
+        }
+        history {
+            count
         }
     }
 `;
