@@ -3,6 +3,10 @@ import {  } from '~/components/list/PDSectionList';
 
 
 import { PDSection } from '~/components/list/models';
+import { ACCOUNT } from '~/services/gql/AccountAPI';
+import { useQuery } from '@apollo/client';
+import { AccountInfo } from '~/services/gql/generated/AccountInfo';
+import format from 'date-fns/format';
 
 export const useAccount = () => {
 
@@ -10,46 +14,65 @@ export const useAccount = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const { data } = useQuery<AccountInfo>(ACCOUNT);
+
+    let dateString = '';
+    if (data?.me?.joined_ts) {
+        dateString = format(data.me.joined_ts, 'MM/dd/yyyy');
+    }
+
     const accountSection : PDSection[] = [
         {
-            title: 'account information',
+            title: 'info',
             data: [
                 {
-                    id: 'calendar',
-                    image: 'IconCal',
-                    label: 'Account Created: 5/5/21',
-                    valueColor: 'orange',
+                    id: 'emailSupport',
+                    image: 'IconEmail',
+                    label: 'Email: ',
+                    value: data?.me?.email ?? '',
+                    valueColor: 'green',
                     onPress: null,
                     animationIndex: 0,
                 },
                 {
-                    id: 'pages',
-                    image: 'IconPages',
-                    label: 'Number of Pools: 13',
-                    valueColor: 'pink',
+                    id: 'calendar',
+                    image: 'IconCal',
+                    value: dateString,
+                    label: 'Created: ',
+                    valueColor: 'purple',
                     onPress: null,
                     animationIndex: 1,
                 },
                 {
-                    id: 'page',
-                    image: 'IconPaper',
-                    label: 'Number of Entries: 102',
-                    valueColor: 'pink',
+                    id: 'pages',
+                    image: 'IconPages',
+                    label: 'Pools: ',
+                    value: `${data?.pools.count ?? ''}`,
+                    valueColor: 'teal',
                     onPress: null,
                     animationIndex: 2,
                 },
                 {
-                    id: 'sync',
-                    image: 'IconVerified',
-                    label: 'Sync Data: 100%',
-                    valueColor: 'pink',
+                    id: 'page',
+                    image: 'IconPaper',
+                    label: 'Logs: ',
+                    value: `${data?.history.count ?? ''}`,
+                    valueColor: 'orange',
                     onPress: null,
                     animationIndex: 3,
                 },
+                // {
+                //     id: 'sync',
+                //     image: 'IconVerified',
+                //     label: 'Sync Data: 100%',
+                //     valueColor: 'pink',
+                //     onPress: null,
+                //     animationIndex: 3,
+                // },
             ],
         },
         {
-            title: 'additional actions',
+            title: 'actions',
             data: [
                 {
                     id: 'resetPassword',
@@ -60,20 +83,12 @@ export const useAccount = () => {
                     animationIndex: 4,
                 },
                 {
-                    id: 'emailSupport',
-                    image: 'IconEmail',
-                    label: 'Email support',
-                    valueColor: 'black',
-                    onPress: () => {},
-                    animationIndex: 5,
-                },
-                {
                     id: 'logOut',
                     image: 'IconLogOut',
                     label: 'Log out',
                     valueColor: 'black',
                     onPress: () => {},
-                    animationIndex: 6,
+                    animationIndex: 5,
                 },
             ],
         },
