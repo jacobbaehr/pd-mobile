@@ -16,6 +16,7 @@ export class DeviceSettingsService {
                 units: {},
             },
             scoops: [],
+            authenticatedUserId: null,
         };
     };
 
@@ -47,6 +48,7 @@ export class DeviceSettingsService {
                 concentrations: raw.treatments.concentrations,
                 units: raw.treatments.units || {},
             },
+            authenticatedUserId: raw.authenticatedUserId ?? null,
         };
     };
 }

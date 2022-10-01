@@ -35,6 +35,7 @@ export const AuthTextField = React.forwardRef<TextInput, AuthInputProps>((props,
             label={ props.label }
             placeholder={ props.placeholder }
             onChangeText={ props.onChangeText }
+            autoCapitalize="none"
             onBlur={ props.onBlur }
             value={ props.value }
             returnKeyType={ props.returnKeyType ?? 'done' }

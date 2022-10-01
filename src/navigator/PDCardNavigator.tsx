@@ -45,7 +45,6 @@ const CardStack = createStackNavigator<PDCardNavigatorParams>();
 export const PDCardNavigator = (): JSX.Element => {
     return (
         <CardStack.Navigator screenOptions={ { headerShown: false } }>
-            <CardStack.Screen name="AccountsScreen" component={ AccountsScreen }/>
             <CardStack.Screen name="Home" component={ HomeScreen } />
             <CardStack.Screen name="PoolScreen" component={ PoolScreen } />
             <CardStack.Screen name="ReadingList" component={ ReadingListScreen } />
@@ -70,6 +69,7 @@ export const PDCardNavigator = (): JSX.Element => {
             <CardStack.Screen name="ScoopsList" component={ ScoopsListScreen }  />
             <CardStack.Screen name="PoolDoctorImport" component={ PoolDoctorImportScreen }  />
             <CardStack.Screen name="AuthScreen" component={ AuthNavigator }  />
+            <CardStack.Screen name="AccountsScreen" component={ AccountsScreen }/>
         </CardStack.Navigator>
     );
 };

@@ -17,6 +17,7 @@ import { ErrorParser } from './ErrorParser';
 import { LinkText } from '~/components/misc/LinkText';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { useNavigation } from '@react-navigation/native';
+import { useAuthHandler } from './useAuthHandler';
 
 interface Values {
     usernameOrEmail: string;
@@ -36,6 +37,7 @@ export const LoginScreen: React.FC = () => {
     const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
     const [hasSubmittedForm, setHasSubmittedForm] = React.useState(false);
     const { navigate } = useNavigation<PDStackNavigationProps>();
+    const { handleAuthSuccess } = useAuthHandler();
 
     const emailRef = React.useRef<TextInput>(null);
     const usernameRef = React.useRef<TextInput>(null);
@@ -63,19 +65,20 @@ export const LoginScreen: React.FC = () => {
             });
             console.log(JSON.stringify(res));
 
-            // if (res?.data?.register?.id) {
-            //     console.log('we did it!');
-            //     // handleAuthSuccess(res.data.register);
-            // } else {
-            //     // TODO: check errors
-            //     // setErrorMessage(
-            //     //     ErrorParser.getUserError(
-            //     //         Util.firstOrNull(
-            //     //             res?.errors
-            //     //         )?.message ?? null
-            //     //     )
-            //     // );
-            // }
+            if (res?.data?.login?.id) {
+                console.log('we did it!');
+                // handleAuthSuccess(res.data.login.id);
+            } else {
+                console.log('Show errors here!');
+                // TODO: check errors
+                // setErrorMessage(
+                //     ErrorParser.getUserError(
+                //         Util.firstOrNull(
+                //             res?.errors
+                //         )?.message ?? null
+                //     )
+                // );
+            }
         } catch (e) {
             console.error(e);
             console.error(JSON.stringify(e));

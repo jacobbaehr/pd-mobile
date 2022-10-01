@@ -18,6 +18,7 @@ import { ErrorParser } from './ErrorParser';
 import { LinkText } from '~/components/misc/LinkText';
 import { PDStackNavigationProps } from '~/navigator/shared';
 import { useNavigation } from '@react-navigation/native';
+import { useAuthHandler } from './useAuthHandler';
 
 interface Values {
     email: string;
@@ -42,6 +43,7 @@ export const CreateAccountScreen: React.FC = () => {
     const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
     const [hasSubmittedForm, setHasSubmittedForm] = React.useState(false);
     const { navigate } = useNavigation<PDStackNavigationProps>();
+    const { handleAuthSuccess } = useAuthHandler();
 
     const emailRef = React.useRef<TextInput>(null);
     const usernameRef = React.useRef<TextInput>(null);
@@ -82,8 +84,9 @@ export const CreateAccountScreen: React.FC = () => {
             });
             if (res?.data?.register?.id) {
                 console.log('we did it!');
-                // handleAuthSuccess(res.data.register);
+                // handleAuthSuccess(res.data.register.id);
             } else {
+                console.log('Nope! Show error or something');
                 // TODO: handle errors here.
                 // setErrorMessage(
                 //     ErrorParser.getUserError(

@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+
 import * as React from 'react';
 import { PDRootNavigator } from '~/navigator/PDRootNavigator';
 import { loadDeviceSettings } from '~/redux/deviceSettings/Actions';
@@ -13,11 +13,13 @@ import { getApolloClient } from './services/gql/Client';
 import { useDeviceSettings } from './services/DeviceSettings/Hooks';
 import { darkTheme, lightTheme, PDThemeContext } from './components/PDTheme';
 import { Appearance } from 'react-native';
+import { PDSyncManager } from './components/sync/PDSyncManager';
 
 export const App: React.FC = () => {
     const [isDatabaseLoaded, setIsDatabaseLoaded] = React.useState(false);
     const [areDeviceSettingsLoaded, setAreDeviceSettingsLoaded] = React.useState(false);
-    const { ds } = useDeviceSettings();   // Can i do this before loadDeviceSettings is called?
+    const { ds } = useDeviceSettings();
+
     const apolloClient = getApolloClient();
 
     React.useEffect(() => {
@@ -32,23 +34,32 @@ export const App: React.FC = () => {
     }, []);
 
     const isAppReady = isDatabaseLoaded && areDeviceSettingsLoaded;
-    if (!isAppReady) {
-        return <></>;
-    }
+    const { night_mode } = ds;
 
-    // TODO: move into another helper
-    let theme = darkTheme;
-    if (ds.night_mode === 'light') {
-        theme = lightTheme;
-    } else if (ds.night_mode === 'system' && Appearance.getColorScheme() === 'light') {
-        theme = lightTheme;
-    }
+    const appContent = React.useMemo(() => {
+        console.log('Re Rendering App');
+        if (!isAppReady) {
+            return <></>;
+        }
+        // TODO: move into another helper
+        let theme = darkTheme;
+        if (night_mode === 'light') {
+            theme = lightTheme;
+        } else if (night_mode === 'system' && Appearance.getColorScheme() === 'light') {
+            theme = lightTheme;
+        }
+        return (
+            <PDThemeContext.Provider value={ theme }>
+                <PDSyncManager>
+                    <PDRootNavigator />
+                </PDSyncManager>
+            </PDThemeContext.Provider>
+        );
+    }, [night_mode, isAppReady]);
 
     return (
         <ApolloProvider client={ apolloClient }>
-            <PDThemeContext.Provider value={ theme }>
-                <PDRootNavigator />
-            </PDThemeContext.Provider>
+            { appContent }
         </ApolloProvider>
     );
 };

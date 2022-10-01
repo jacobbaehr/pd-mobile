@@ -50,7 +50,11 @@ export const useSettings = () => {
         navigate('ThemeToggleScreen');
     };
     const handleNavigateAuth = () => {
-        navigate('AuthScreen');
+        if (ds.authenticatedUserId) {
+            navigate('AccountsScreen');
+        } else {
+            navigate('AuthScreen');
+        }
     };
 
     const handleExportData = async () => {
@@ -123,7 +127,7 @@ export const useSettings = () => {
                 {
                     id: 'createAccount',
                     image: 'IconAccount',
-                    label: 'Create Account',
+                    label: ds.authenticatedUserId ? 'Account' : 'Create Account',
                     valueColor: 'black',
                     onPress: handleNavigateAuth,
                     animationIndex: 5,

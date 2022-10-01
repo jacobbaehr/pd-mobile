@@ -14,6 +14,7 @@ export interface DeviceSettings {
     };
     // Custom scoops, keyed to output vars
     scoops: Scoop[];
+    authenticatedUserId: string | null;
 }
 
 // This is the way we must handle the DeviceSettings when loading them from persistent storage.
@@ -32,4 +33,6 @@ export interface RawDeviceSettings {
     // All the info about a user's subscription:
     sub_exp?: number | null;
     sub_will_renew?: boolean;
+
+    authenticatedUserId?: string | null;
 }
